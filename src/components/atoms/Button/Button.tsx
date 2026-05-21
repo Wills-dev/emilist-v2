@@ -19,9 +19,9 @@ const Button = ({
     "rounded-[10px] px-5 py-3 cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap font-exo transition-all duration-300 border";
   const variants = {
     primary:
-      "bg-green-500 hover:bg-green-600 border-green-500 text-[#FBFFF8] font-bold",
+      "bg-[#25C269] hover:bg-green-600 border-[#25C269] text-[#FBFFF8] font-bold",
     secondary:
-      "bg-green-50 hover:bg-green-100 text-green-500 font-semibold border-green-500",
+      "bg-green-50 hover:bg-green-100 text-[#25C269] font-semibold border-[#25C269]",
     default: "bg-gray-50 hover:bg-gray-100 font-semibold border-gray-100",
   };
 

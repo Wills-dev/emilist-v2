@@ -6,7 +6,7 @@ import NavMenu from "@/components/molecules/NavMenu/NavMenu";
 
 const Navbar = () => {
   return (
-    <div className="w-full bg-[#FBFFF8]">
+    <div className="w-full bg-[#FBFFF8] border-b border-gray-100">
       <Container>
         <header className="w-full flex justify-between items-center lg:gap-30 md:gap-20 lg:h-26.25 h-20">
           <Logo />
