@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <div className="w-full bg-[#FBFFF8]">
       <Container>
-        <header className="w-full flex justify-between items-center lg:gap-30 md:gap-20 lg:h-26.25 h-24">
+        <header className="w-full flex justify-between items-center lg:gap-30 md:gap-20 lg:h-26.25 h-20">
           <Logo />
           <div className="flex items-center flex-1 w-full justify-between gap-10 max-lg:hidden">
             <NavMenu />
