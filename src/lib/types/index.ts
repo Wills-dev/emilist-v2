@@ -17,3 +17,13 @@ export interface ButtonProps {
   onClick?: () => void;
   icon?: React.ReactElement;
 }
+
+export interface SearchBarProps {
+  setSearch: (search: string) => void;
+  placeholder?: string;
+  variant?: "primary" | "secondary";
+  onSubmit: () => void;
+  onVoiceCommand?: () => void;
+  showVoiceIcon?: boolean;
+  onShowSearchOverlay?: () => void;
+}
