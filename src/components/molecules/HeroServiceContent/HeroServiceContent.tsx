@@ -4,7 +4,7 @@ import { heroSeviceContent } from "@/lib/constants";
 
 const HeroServiceContent = () => {
   return (
-    <div className="flex justify-center items-center flex-wrap md:gap-10 sm:gap-8 gap-6 pt-[56px]">
+    <div className="flex justify-center items-center flex-wrap md:gap-10 sm:gap-8 gap-6 pt-14">
       {heroSeviceContent?.map((item, index) => (
         <HeroSeviceItem
           key={index}

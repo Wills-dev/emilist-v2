@@ -1,9 +1,11 @@
 export type NavLinkProps = {
-  href: string;
+  href?: string;
   title: string;
   icon?: React.ReactElement;
   className?: string;
   variant?: "default" | "sidebar" | "header";
+  onClick?: () => void;
+  activeTab?: boolean;
 };
 
 export interface ButtonProps {

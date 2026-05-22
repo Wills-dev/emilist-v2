@@ -17,8 +17,7 @@ const exo = Exo({
 
 export const metadata: Metadata = {
   title: {
-    default:
-      "Emilist – Jobs, Services, Materials & Project Management Platform",
+    default: "Emilist – Jobs, Experts, Materials & Project Management Platform",
     template: "%s | Emilist",
   },
 
@@ -30,6 +29,7 @@ export const metadata: Metadata = {
     "job marketplace",
     "project management platform",
     "hire professionals online",
+    "hire experts online",
     "post jobs and tasks",
     "freelance services marketplace",
     "skills and services platform",
