@@ -1,4 +1,4 @@
-import ArrowUp from "../ArrowUp/ArrowUp";
+import ArrowUp from "../icons/ArrowUp";
 
 const SectionTitle = ({
   title,

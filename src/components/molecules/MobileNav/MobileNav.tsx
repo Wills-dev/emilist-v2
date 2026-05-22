@@ -1,7 +1,10 @@
+"use client";
+
 import { Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -25,8 +28,13 @@ const MobileNav = () => {
         <SheetContent side="right" className="max-w-75 w-full">
           <SheetHeader>
             <SheetTitle>
-              <Logo />
+              <Logo
+                className="max-w-30 w-full min-w-25"
+                height={24}
+                width={140}
+              />
             </SheetTitle>
+            <SheetDescription></SheetDescription>
           </SheetHeader>
           <Container>
             <div className="mt-8 flex flex-col gap-20">
