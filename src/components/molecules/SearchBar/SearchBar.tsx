@@ -25,7 +25,7 @@ const SearchBar = ({
   const variants = {
     primary: {
       base: "bg-white max-w-228.5 md:pl-8 pl-4 md:pr-6 pr-3 sm:py-5 py-3 border-[#F1F2F9] focus-within:border-[#25C269]  sm:gap-3 gap-2",
-      icon: "text-[#25C269] sm:text-xl text-lg",
+      icon: "text-[#25C269] sm:text-xl text-lg cursor-pointer",
       input: "placeholder:text-[#737774] placeholder:font-medium",
       button:
         "sm:text-xl text-lg text-[#737774] hover:text-[#25C269] cursor-pointer",

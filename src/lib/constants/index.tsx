@@ -43,7 +43,7 @@ export const navbarLinks = [
   },
   {
     title: "For Enterprise",
-    href: routes?.marketplace,
+    href: routes?.marketplace?.jobs,
     icon: (
       <svg
         viewBox="0 0 16 16"
@@ -108,7 +108,7 @@ export const heroSeviceContent = [
     imgUrl: "/assets/images/find-job.svg",
     desc: "Find job offers  with guaranteed payments near you",
     title: "Find a Job",
-    href: `${routes?.marketplace}?service=jobs`,
+    href: routes?.marketplace?.jobs,
   },
   {
     icon: (
@@ -131,6 +131,21 @@ export const heroSeviceContent = [
     imgUrl: "/assets/images/material.svg",
     desc: "Buy your materials from verified suppliers today",
     title: "Buy Materials",
-    href: `${routes?.marketplace}?service=materials`,
+    href: routes?.marketplace?.materials,
   },
 ];
+
+export const sectionServiceActions = {
+  experts: {
+    title: "Hire Experts",
+    href: routes?.marketplace?.experts,
+  },
+  jobs: {
+    title: "Find Jobs",
+    href: routes?.marketplace?.jobs,
+  },
+  materials: {
+    title: "Buy Materials",
+    href: routes?.marketplace?.materials,
+  },
+};
