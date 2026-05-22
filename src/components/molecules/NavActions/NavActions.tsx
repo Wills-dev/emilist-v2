@@ -1,4 +1,4 @@
-import ArrowUp from "@/components/atoms/ArrowUp/ArrowUp";
+import ArrowUp from "@/components/atoms/icons/ArrowUp";
 import Button from "@/components/atoms/Button/Button";
 
 import { routes } from "@/lib/helpers/routes";
