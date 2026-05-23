@@ -1,3 +1,4 @@
+import CustomerCommentSection from "@/components/organisms/CustomerCommentSection/CustomerCommentSection";
 import HeroSection from "@/components/organisms/HeroSection/HeroSection";
 import ServiceSection from "@/components/organisms/ServiceSection/ServiceSection";
 import TrustSection from "@/components/organisms/TrustSection/TrustSection";
@@ -9,6 +10,7 @@ export default function Home() {
       <HeroSection />
       <ServiceSection />
       <TrustSection />
+      <CustomerCommentSection />
     </MainLayout>
   );
 }
