@@ -30,6 +30,9 @@ const ServiceSection = () => {
         {currentService === "jobs" && (
           <SectionWrapper>
             <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
           </SectionWrapper>
         )}
       </AnimatePresence>

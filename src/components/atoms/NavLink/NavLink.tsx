@@ -20,7 +20,7 @@ const NavLink = ({
 
   const variants = {
     default: {
-      base: "font-exo gap-2 flex items-center transition-all duration-300 whitespace-nowrap  sm:px-4 px-2 sm:text-sm text-xs rounded-[24px] sm:h-9 h-7",
+      base: "font-exo gap-2 flex items-center transition-all duration-300 whitespace-nowrap  sm:px-4 px-2 sm:text-sm text-xs rounded-[24px] sm:h-9 h-7 font-medium",
       active: "text-green-800 bg-[#9EF76929]",
       inactive: "bg-[#F9F9F9] hover:bg-gray-100 hover:text-gray-800",
     },
