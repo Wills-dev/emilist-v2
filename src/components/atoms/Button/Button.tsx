@@ -21,8 +21,8 @@ const Button = ({
     primary:
       "bg-[#25C269] hover:bg-green-600 border-[#25C269] text-[#FBFFF8] font-bold",
     secondary:
-      "bg-green-50 hover:bg-green-100 text-[#25C269] font-semibold border-[#25C269]",
-    default: "bg-gray-50 hover:bg-gray-100 font-semibold border-gray-100",
+      "bg-[#FBFFF8] hover:bg-green-100 text-[#25C269] font-semibold border-[#25C269]",
+    default: "bg-[#FBFFF8] border-[#D9D9D9] hover:bg-gray-100 font-semibold",
   };
 
   const styles = variants[variant];

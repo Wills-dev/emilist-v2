@@ -6,6 +6,7 @@ import UserIcon from "@/components/atoms/icons/UserIcon";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import Price from "@/components/atoms/Price/Price";
 import UserProfileCard from "@/components/molecules/UserProfileCard/UserProfileCard";
+import DatedPosted from "@/components/atoms/DatedPosted/DatedPosted";
 
 import { useToggleLike } from "../../hooks/useToggleLike";
 
@@ -22,7 +23,8 @@ const JobCardDetails = ({
   fullName,
   rating,
   noOfReviews,
-  imgUrl,
+  profileImgUrl,
+  date,
 }: {
   title: string;
   currency: string;
@@ -36,7 +38,8 @@ const JobCardDetails = ({
   fullName: string;
   rating: number;
   noOfReviews: number;
-  imgUrl?: string;
+  profileImgUrl?: string;
+  date: string;
 }) => {
   const { handleToggleLike } = useToggleLike();
 
@@ -78,16 +81,19 @@ const JobCardDetails = ({
           </div>
         </div>
       </div>
-      <UserProfileCard
-        id={id}
-        isLiked={isLiked}
-        fullName={fullName}
-        rating={rating}
-        noOfReviews={noOfReviews}
-        imgUrl={imgUrl}
-        handleToggleLike={toggleLike}
-        type="job"
-      />
+      <div className="space-y-4">
+        <UserProfileCard
+          id={id}
+          isLiked={isLiked}
+          fullName={fullName}
+          rating={rating}
+          noOfReviews={noOfReviews}
+          imgUrl={profileImgUrl}
+          handleToggleLike={toggleLike}
+          type="job"
+        />
+        <DatedPosted date={date} />
+      </div>
     </div>
   );
 };
