@@ -28,7 +28,7 @@ const ServiceSection = () => {
       </Container>
       <AnimatePresence mode="wait">
         {currentService === "jobs" && (
-          <SectionWrapper>
+          <SectionWrapper className="no-scrollbar">
             <JobCard />
             <JobCard />
             <JobCard />

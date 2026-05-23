@@ -2,7 +2,9 @@ import Container from "@/components/atoms/Container/Container";
 import Logo from "@/components/atoms/Logo/Logo";
 import MobileNav from "@/components/molecules/MobileNav/MobileNav";
 import NavActions from "@/components/molecules/NavActions/NavActions";
-import NavMenu from "@/components/molecules/NavMenu/NavMenu";
+import dynamic from "next/dynamic";
+
+const NavMenu = dynamic(() => import("@/components/molecules/NavMenu/NavMenu"));
 
 const Navbar = () => {
   return (

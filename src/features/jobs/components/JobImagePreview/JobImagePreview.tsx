@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 
 import ImageIcon from "@/components/atoms/icons/ImageIcon";
-import ImagePreview from "@/components/atoms/ImagePreview/ImagePreview";
+
+const ImagePreview = dynamic(
+  () => import("@/components/atoms/ImagePreview/ImagePreview"),
+);
 
 import { defaultJobImage } from "../../constants";
 

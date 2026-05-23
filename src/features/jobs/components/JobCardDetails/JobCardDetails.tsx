@@ -1,9 +1,13 @@
+"use client";
+
 import ClockIcon from "@/components/atoms/icons/ClockIcon";
 import LocationIcon from "@/components/atoms/icons/LocationIcon";
 import UserIcon from "@/components/atoms/icons/UserIcon";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import Price from "@/components/atoms/Price/Price";
 import UserProfileCard from "@/components/molecules/UserProfileCard/UserProfileCard";
+
+import { useToggleLike } from "../../hooks/useToggleLike";
 
 const JobCardDetails = ({
   title,
@@ -34,6 +38,12 @@ const JobCardDetails = ({
   noOfReviews: number;
   imgUrl?: string;
 }) => {
+  const { handleToggleLike } = useToggleLike();
+
+  const toggleLike = () => {
+    handleToggleLike(id);
+  };
+
   return (
     <div className="w-full space-y-4">
       <div className="w-full space-y-2">
@@ -75,6 +85,8 @@ const JobCardDetails = ({
         rating={rating}
         noOfReviews={noOfReviews}
         imgUrl={imgUrl}
+        handleToggleLike={toggleLike}
+        type="job"
       />
     </div>
   );
