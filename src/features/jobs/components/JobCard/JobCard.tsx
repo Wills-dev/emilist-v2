@@ -1,3 +1,4 @@
+import JobCardActions from "../JobCardActions/JobCardActions";
 import JobCardDetails from "../JobCardDetails/JobCardDetails";
 import JobCategory from "../JobCategory/JobCategory";
 import JobImagePreview from "../JobImagePreview/JobImagePreview";
@@ -9,23 +10,23 @@ const JobCard = () => {
         <JobCategory category="Carpentry" />
         <JobImagePreview imgUrl="" />
       </div>
-      <div className="">
-        <JobCardDetails
-          title="Home Furniture Upgrade"
-          currency="NGN"
-          price={4500000}
-          description="Remake old chairs, cabinets, beds & doors"
-          location="Gbagada Phase 1"
-          projectDuration="3 weeks"
-          noOfpplicants={10}
-          id="1"
-          isLiked={false}
-          fullName="Arthur Phillips"
-          rating={4}
-          noOfReviews={51}
-          imgUrl=""
-        />
-      </div>
+      <JobCardDetails
+        title="Home Furniture Upgrade"
+        currency="NGN"
+        price={4500000}
+        description="Remake old chairs, cabinets, beds & doors"
+        location="Gbagada Phase 1"
+        projectDuration="3 weeks"
+        noOfpplicants={10}
+        id="1"
+        isLiked={false}
+        fullName="Arthur Phillips"
+        rating={4}
+        noOfReviews={51}
+        profileImgUrl=""
+        date="2026-05-19T14:32:10.123Z"
+      />
+      <JobCardActions jobId={"1"} />
     </div>
   );
 };
