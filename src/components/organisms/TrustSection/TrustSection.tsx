@@ -8,7 +8,7 @@ const TrustSection = () => {
   return (
     <section className="md:py-20 py-10 bg-white">
       <Container>
-        <div className="space-y-8">
+        <div className="sm:space-y-8 space-y-4">
           <SectionTitle title="Why you can trust Emilist" />
           <div className="flex items-center justify-center flex-wrap gap-8">
             {trustList?.map((trustItem) => (
