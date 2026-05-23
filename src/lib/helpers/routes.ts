@@ -3,10 +3,15 @@ export const routes = {
   joinExpert: "/become-expert",
   postJob: "/post-job",
   marketplace: {
-    jobs: "/marketplace?service=jobs",
-    experts: "/marketplace?service=experts",
-    materials: "/marketplace?service=materials",
+    jobs: "/marketplace/jobs",
+    jobInfo: (jobId: string) => `/marketplace/jobs/${jobId}`,
+    experts: "/marketplace/experts",
+    expertInfo: (expertId: string) => `/marketplace/experts/${expertId}`,
+    materials: "/marketplace/materials",
+    materialInfo: (materialId: string) =>
+      `/marketplace/materials/${materialId}`,
   },
+  profile: (userId: string) => `/profile/${userId}`,
   login: "/auth/login",
   signUp: "/auth/register",
   dashboard: "/dashboard/overview",
