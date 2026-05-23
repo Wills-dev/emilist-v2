@@ -26,16 +26,18 @@ const ServiceSection = () => {
           />
         </div>
       </Container>
-      <AnimatePresence mode="wait">
-        {currentService === "jobs" && (
-          <SectionWrapper className="no-scrollbar">
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-          </SectionWrapper>
-        )}
-      </AnimatePresence>
+      <div className="min-h-90.5">
+        <AnimatePresence mode="wait">
+          {currentService === "jobs" && (
+            <SectionWrapper className="no-scrollbar ">
+              <JobCard />
+              <JobCard />
+              <JobCard />
+              <JobCard />
+            </SectionWrapper>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
