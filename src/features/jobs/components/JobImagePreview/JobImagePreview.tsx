@@ -10,6 +10,7 @@ const ImagePreview = dynamic(
 );
 
 import { defaultJobImage } from "../../constants";
+import { AnimatePresence } from "framer-motion";
 
 const JobImagePreview = ({ imgUrl }: { imgUrl?: string }) => {
   const [openPreview, setOpenPreview] = useState(false);
@@ -25,13 +26,15 @@ const JobImagePreview = ({ imgUrl }: { imgUrl?: string }) => {
       >
         <ImageIcon />
       </button>
-      {openPreview && (
-        <ImagePreview
-          imageUrl={jobImage}
-          onCancel={() => setOpenPreview(false)}
-          alt="job-image"
-        />
-      )}
+      <AnimatePresence mode="wait">
+        {openPreview && (
+          <ImagePreview
+            imageUrl={jobImage}
+            onCancel={() => setOpenPreview(false)}
+            alt="job-image"
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };

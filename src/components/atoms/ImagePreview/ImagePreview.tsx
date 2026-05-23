@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+
+import { motion } from "framer-motion";
 
 const ImagePreview = ({
   onCancel,
@@ -10,7 +14,11 @@ const ImagePreview = ({
   alt: string;
 }) => {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
       onClick={onCancel}
     >
@@ -23,7 +31,7 @@ const ImagePreview = ({
           height={700}
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
