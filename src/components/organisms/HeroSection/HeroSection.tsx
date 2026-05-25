@@ -12,7 +12,7 @@ const HeroSection = () => {
   const { handleSubmit, setSearch } = useGeneralSearch();
 
   return (
-    <section className="py-10">
+    <section className="py-10 bg-[#FBFFF8]">
       <Container>
         <div className="flex flex-col items-center justify-center  w-full gap-4">
           <WatchEmilist />

@@ -6,7 +6,7 @@ import { trustList } from "@/lib/constants";
 
 const TrustSection = () => {
   return (
-    <section className="md:pb-20 md:pt-15 pb-10 pt-7.5 bg-white">
+    <section className="md:pb-20 md:pt-15 pb-10 pt-7.5">
       <Container>
         <div className="sm:space-y-8 space-y-4">
           <SectionTitle title="Why you can trust Emilist" />
