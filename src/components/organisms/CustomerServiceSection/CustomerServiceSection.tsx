@@ -40,7 +40,7 @@ const CustomerServiceSection = () => {
           </div>
           <div className="max-w-153 min-w-72.5 w-full sm:h-135 h-70 rounded-[16px] bg-[#D9D9D9] overflow-hidden">
             <Image
-              src=""
+              src="/assets/images/customer.svg"
               alt=""
               width={612}
               height={540}
