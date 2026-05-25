@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import NavLink from "@/components/atoms/NavLink/NavLink";
+import SeeMoreBtn from "@/components/atoms/SeeMoreBtn/SeeMoreBtn";
 
 import { sectionServiceActions } from "@/lib/constants";
 
@@ -33,12 +32,7 @@ const ServiceSectionAction = ({
         />
       </div>
       <div className="flex justify-end flex-1">
-        <Link
-          href={isCurrentService?.href}
-          className="text-[#6667FF] hover:text-purple-600 duration-300 transition-all ease-out font-medium max-sm:text-xs underline whitespace-nowrap"
-        >
-          See all →
-        </Link>
+        <SeeMoreBtn href={isCurrentService?.href} title="See all" />
       </div>
     </div>
   );
