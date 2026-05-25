@@ -17,7 +17,7 @@ const CustomerCommentSection = () => {
   };
 
   return (
-    <section className="md:pb-20 md:pt-15 pb-10 pt-7.5 bg-white">
+    <section className="md:pb-20 md:pt-15 pb-10 pt-7.5">
       <Container>
         <div className="sm:space-y-6 space-y-4">
           <SectionTitle title="What customers say about Emilist" />

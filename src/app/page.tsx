@@ -1,4 +1,5 @@
 import CustomerCommentSection from "@/components/organisms/CustomerCommentSection/CustomerCommentSection";
+import CustomerServiceSection from "@/components/organisms/CustomerServiceSection/CustomerServiceSection";
 import HeroSection from "@/components/organisms/HeroSection/HeroSection";
 import HireExpertGuideSection from "@/components/organisms/HireExpertGuideSection/HireExpertGuideSection";
 import ServiceSection from "@/components/organisms/ServiceSection/ServiceSection";
@@ -13,6 +14,7 @@ export default function Home() {
       <TrustSection />
       <CustomerCommentSection />
       <HireExpertGuideSection />
+      <CustomerServiceSection />
     </MainLayout>
   );
 }

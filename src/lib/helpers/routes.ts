@@ -15,4 +15,7 @@ export const routes = {
   login: "/auth/login",
   signUp: "/auth/register",
   dashboard: "/dashboard/overview",
+  bookService: "/book-service",
+  bookMaintenance: "/book-maintenance",
+  bookMeeting: "/book-meeting",
 };
