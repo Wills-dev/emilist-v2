@@ -1,3 +1,4 @@
+import AppSection from "@/components/organisms/AppSection/AppSection";
 import CustomerCommentSection from "@/components/organisms/CustomerCommentSection/CustomerCommentSection";
 import CustomerServiceSection from "@/components/organisms/CustomerServiceSection/CustomerServiceSection";
 import FaqSection from "@/components/organisms/FaqSection/FaqSection";
@@ -17,6 +18,7 @@ export default function Home() {
       <HireExpertGuideSection />
       <CustomerServiceSection />
       <FaqSection />
+      <AppSection />
     </MainLayout>
   );
 }
