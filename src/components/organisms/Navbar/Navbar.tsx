@@ -10,7 +10,10 @@ const Navbar = () => {
   return (
     <div className="w-full bg-[#FBFFF8] border-b border-gray-100">
       <Container>
-        <header className="w-full flex justify-between items-center lg:gap-30 md:gap-20 lg:h-26.25 h-20">
+        <header
+          id="header"
+          className="w-full flex justify-between items-center lg:gap-30 md:gap-20 lg:h-26.25 h-20"
+        >
           <Logo />
           <div className="flex items-center flex-1 w-full justify-between gap-10 max-lg:hidden">
             <NavMenu />

@@ -5,7 +5,12 @@ import BriefcaseIcon from "@/components/atoms/icons/BriefcaseIcon";
 import BonicularIcon from "@/components/atoms/icons/BonicularIcon";
 import GiverIcon from "@/components/atoms/icons/GiverIcon";
 
+import Twitter from "@/components/atoms/icons/Twitter";
+import LinkedIn from "@/components/atoms/icons/LinkedIn";
+import Instagram from "@/components/atoms/icons/Instagram";
+
 import { routes } from "../helpers/routes";
+import FacebookIcon from "@/components/atoms/icons/FacebookIcon";
 
 export const navbarLinks = [
   {
@@ -92,5 +97,90 @@ export const trustList = [
     desc: "Our team steps in to resolve issues quickly and fairly whenever you need us",
     imgUrl: "/assets/images/support.svg",
     imgStyle: "sm:max-w-[94.31px]  max-w-[40px] w-full",
+  },
+];
+
+export const footerLinks = [
+  {
+    caption: "Company",
+    links: [
+      {
+        title: "About Us",
+        url: routes.aboutUs,
+      },
+      {
+        title: "Privacy Policy",
+        url: routes.policy,
+      },
+      {
+        title: "Terms of Use",
+        url: routes.terms,
+      },
+      {
+        title: "Cookie Policy",
+        url: routes.cookiePolicy,
+      },
+    ],
+  },
+  {
+    caption: "Support",
+    links: [
+      {
+        title: "How it works",
+        url: routes.how,
+      },
+      {
+        title: "FAQ",
+        url: routes.faq,
+      },
+      {
+        title: "Guides",
+        url: routes.guides,
+      },
+      {
+        title: "Help Center",
+        url: routes.helpCenter,
+      },
+    ],
+  },
+  {
+    caption: "Community",
+    links: [
+      {
+        title: "Blogs",
+        url: routes.blog,
+      },
+      {
+        title: "Press & News",
+        url: routes.news,
+      },
+      {
+        title: "Helpful Tips",
+        url: routes.tips,
+      },
+      {
+        title: "Customer Testimonial",
+        url: routes.testimonial,
+      },
+    ],
+  },
+];
+
+export const socialLinks = [
+  {
+    icon: <FacebookIcon />,
+    href: "",
+  },
+  {
+    icon: <Twitter />,
+    href: "",
+  },
+  {
+    icon: <LinkedIn />,
+    href: "",
+  },
+  {
+    icon: <Instagram />,
+    href: "",
   },
 ];
