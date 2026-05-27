@@ -13,10 +13,10 @@ const Footer = ({
 
   const variants = {
     primary: {
-      parent: "bg-[#155231]",
+      parent: "bg-[#155231] text-[#FBFFF8]",
     },
     secondary: {
-      parent: "",
+      parent: "text-[#1A201B]",
     },
   };
 
@@ -25,8 +25,8 @@ const Footer = ({
   return (
     <div className={clsx(styles.parent, baseParentClassName)}>
       <Container>
-        <div className="space-y-10">
-          <NewsLetter variant={variant} />
+        <div className="sm:space-y-10 space-y-6">
+          <NewsLetter />
           <FooterWrapper />
         </div>
       </Container>

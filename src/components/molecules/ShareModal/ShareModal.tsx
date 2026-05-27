@@ -33,7 +33,7 @@ const ShareModal = ({
       shareText: `Check out this job: "${name}" on Emilist. Explore and apply now before it's closed.`,
     },
     material: {
-      title: "Learning Material on Emilist",
+      title: "Checkout Product on Emilist",
       link: `${webUrl}${routes?.marketplace?.materialInfo(id)}`,
       shareText: `I found this material "${name}" on Emilist. You might find it useful too.`,
     },

@@ -8,6 +8,7 @@ import SeeMoreBtn from "@/components/atoms/SeeMoreBtn/SeeMoreBtn";
 import FaqCard from "@/components/molecules/FaqCard/FaqCard";
 
 import { faqQuestions } from "@/lib/constants/faqs";
+import { routes } from "@/lib/helpers/routes";
 
 const FaqSection = () => {
   const [openId, setOpenId] = useState<number | null>(null);
@@ -27,7 +28,7 @@ const FaqSection = () => {
             <div className="flex items-center justify-between flex-wrap">
               <SectionTitle title="Frequently asked questions" />
               <div className="flex justify-end flex-1">
-                <SeeMoreBtn href="/" title="I have more questions" />
+                <SeeMoreBtn href={routes?.faq} title="I have more questions" />
               </div>
             </div>
           </div>
