@@ -29,7 +29,7 @@ const UserProfileCard = ({
       <div className="flex items-center gap-2">
         <ProfileAvatar profileImage={imgUrl} />
         <div className="space-y-1">
-          <p className="text-[#5E625F] text-sm font-exo font-semibold">
+          <p className="text-[#5E625F] text-sm font-exo font-semibold truncate">
             {fullName}
           </p>
           <div className="flex items-center gap-[6.88px]">
