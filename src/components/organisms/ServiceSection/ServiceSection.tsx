@@ -10,6 +10,7 @@ import SectionTitle from "@/components/atoms/SectionTitle/SectionTitle";
 import ServiceSectionAction from "@/components/molecules/ServiceSectionActions/ServiceSectionAction";
 import SectionWrapper from "@/components/molecules/SectionWrapper/SectionWrapper";
 import MaterialCard from "@/features/materials/components/MaterialCard/MaterialCard";
+import ExpertCard from "@/features/experts/components/ExpertCard/ExpertCard";
 
 const ServiceSection = () => {
   const [currentService, setCurrentService] = useState<
@@ -29,6 +30,26 @@ const ServiceSection = () => {
       </Container>
       <div className="min-h-90.5">
         <AnimatePresence mode="wait">
+          {currentService === "experts" && (
+            <SectionWrapper className="no-scrollbar ">
+              <ExpertCard
+                id="1"
+                imgUrl="/assets/dummyImages/pipe.svg"
+                busniessName="Olawale Pipes & Fittings"
+                isVerified={true}
+                rating={2}
+                noOfReviews={25}
+                price={50000}
+                period="day"
+                currency="NGN"
+                location="Lagos, Nigeria helloooooooooooodhdh yest I dont"
+                noOfCompletedJobs={28}
+                serviceType="Plumber"
+                level="Senior"
+                isLiked={false}
+              />
+            </SectionWrapper>
+          )}
           {currentService === "jobs" && (
             <SectionWrapper className="no-scrollbar ">
               <JobCard />

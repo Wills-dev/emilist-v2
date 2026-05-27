@@ -13,7 +13,7 @@ const Dot = ({
     primary: "bg-[#25C269]",
     danger: "bg-red-500",
     default: "bg-[#D0CFCF]",
-    secondary: "bg-yellow-500",
+    secondary: "bg-[#5E625F]",
     purple: "bg-[#6667FF]",
   };
 
