@@ -1,4 +1,4 @@
-import { getCurrencySign } from "@/lib/helpers/currentSign";
+import { getCurrencySign } from "@/lib/helpers/currencySign";
 import { formatAmount, numberWithCommas } from "@/lib/helpers/formatNumbers";
 
 const Price = ({
