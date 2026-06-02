@@ -14,6 +14,8 @@ export const routes = {
   profile: (userId: string) => `/profile/${userId}`,
   login: "/auth/login",
   signUp: "/auth/register",
+  verifyEmail: "/auth/verify-email",
+
   dashboard: "/dashboard/overview",
   bookService: "/book-service",
   bookMaintenance: "/book-maintenance",
@@ -30,4 +32,5 @@ export const routes = {
   news: "/news",
   tips: "/tips",
   testimonial: "/testimonial",
+  completeProfile: "/dashboard/profile/complete",
 };

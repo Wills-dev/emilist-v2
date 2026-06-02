@@ -19,7 +19,7 @@ export const useSubscribeNewsLetter = () => {
       setEmail("");
     },
     onError: (error: ApiErrorResponse) => {
-      console.log("error toggling like", error);
+      console.log("error subscribing to news letter", error);
       promiseErrorFunction(error);
     },
   });
