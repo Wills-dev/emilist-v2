@@ -1,6 +1,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { toast } from "sonner";
+import { useShallow } from "zustand/react/shallow";
 import { useMutation } from "@tanstack/react-query";
 
 import { useAuthState } from "./useAuthState";
@@ -14,22 +15,29 @@ export const useSignUp = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { setOtpEmail, redirectPath, setPendingFlow } = useStore((state) => ({
-    setOtpEmail: state.setOtpEmail,
-    redirectPath: state.redirectPath,
-    setPendingFlow: state.setPendingFlow,
-    pendingFlow: state.pendingFlow,
-    pendingFormData: state.pendingFormData,
-  }));
+  const { redirectPath, isModalFlow } = useStore(
+    useShallow((state) => ({
+      pendingFlow: state.pendingFlow,
+      redirectPath: state.redirectPath,
+      isModalFlow: state.isModalFlow,
+    })),
+  );
+
+  const setOtpEmail = useStore((state) => state.setOtpEmail);
+  const openModal = useStore((state) => state.openModal);
+  const setPendingFlow = useStore((state) => state.setPendingFlow);
 
   const {
-    isOpen,
-    setIsOpen,
     inputType,
     userInfo,
     handleChange,
     toggleInputType,
-    onCancel,
+    acceptTerms,
+    setAcceptTerms,
+    openPolicy,
+    setOpenPolicy,
+    openTerms,
+    setOpenTerms,
   } = useAuthState();
 
   const { mutate, isPending: isRegistering } = useMutation({
@@ -45,6 +53,11 @@ export const useSignUp = () => {
 
       if (queryRedirect && !redirectPath) {
         setPendingFlow(null, {}, queryRedirect);
+      }
+
+      if (isModalFlow) {
+        openModal("verify-otp");
+        return;
       }
 
       const destination = redirectPath || queryRedirect || routes.dashboard;
@@ -67,18 +80,28 @@ export const useSignUp = () => {
     } else if (password.trim() === "") {
       toast.error("Please enter your password");
       return;
+    } else if (!acceptTerms) {
+      toast.error("Almost There!", {
+        description:
+          "Please review and accept the Terms & Conditions and Privacy Policy before creating your account.",
+      });
     }
+
     mutate({ email, password });
   };
 
   return {
+    userInfo,
     handleChange,
-    isOpen,
     handleSignup,
-    setIsOpen,
     inputType,
     toggleInputType,
-    onCancel,
     isRegistering,
+    acceptTerms,
+    setAcceptTerms,
+    openPolicy,
+    setOpenPolicy,
+    openTerms,
+    setOpenTerms,
   };
 };

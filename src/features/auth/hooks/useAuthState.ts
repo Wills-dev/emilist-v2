@@ -1,8 +1,10 @@
 import { ChangeEvent, useState } from "react";
 
 export const useAuthState = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [inputType, setInputType] = useState<"text" | "password">("password");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [openPolicy, setOpenPolicy] = useState(false);
+  const [openTerms, setOpenTerms] = useState(false);
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -17,25 +19,26 @@ export const useAuthState = () => {
     setInputType((prev) => (prev === "password" ? "text" : "password"));
   };
 
-  const onCancel = () => setIsOpen(false);
-
   const resetForm = () => {
     setUserInfo({
       email: "",
       password: "",
     });
-    setIsOpen(false);
+
     setInputType("password");
   };
 
   return {
-    isOpen,
-    setIsOpen,
     inputType,
     userInfo,
     handleChange,
     toggleInputType,
-    onCancel,
     resetForm,
+    acceptTerms,
+    setAcceptTerms,
+    openPolicy,
+    setOpenPolicy,
+    openTerms,
+    setOpenTerms,
   };
 };

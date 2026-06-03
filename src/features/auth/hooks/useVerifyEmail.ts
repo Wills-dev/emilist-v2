@@ -21,14 +21,25 @@ export const useVerifyEmail = () => {
     return () => clearTimeout(timer);
   }, [countdown]);
 
-  const { setCurrentUser, clearOtpEmail, otpEmail, pendingFlow, redirectPath } =
-    useStore((state) => ({
-      setCurrentUser: state.setCurrentUser,
-      clearOtpEmail: state.clearOtpEmail,
-      otpEmail: state.otpEmail,
-      pendingFlow: state.pendingFlow,
-      redirectPath: state.redirectPath,
-    }));
+  const {
+    setCurrentUser,
+    clearOtpEmail,
+    openModal,
+    closeAllModals,
+    otpEmail,
+    pendingFlow,
+    redirectPath,
+    isModalFlow,
+  } = useStore((state) => ({
+    setCurrentUser: state.setCurrentUser,
+    clearOtpEmail: state.clearOtpEmail,
+    openModal: state.openModal,
+    closeAllModals: state.closeAllModals,
+    otpEmail: state.otpEmail,
+    pendingFlow: state.pendingFlow,
+    redirectPath: state.redirectPath,
+    isModalFlow: state.isModalFlow,
+  }));
 
   const { mutate, isPending } = useMutation({
     mutationFn: verifyEmail,
@@ -42,9 +53,20 @@ export const useVerifyEmail = () => {
 
       queryClient.setQueryData(["currentUser"], data.user);
       clearOtpEmail();
-
       setOtp("");
 
+      //modal flow
+      if (isModalFlow) {
+        if (pendingFlow === "register-expert") {
+          closeAllModals();
+          return;
+        }
+
+        openModal("complete-profile");
+        return;
+      }
+
+      //page flow
       if (pendingFlow === "register-expert" && redirectPath) {
         router.push(redirectPath);
         return;

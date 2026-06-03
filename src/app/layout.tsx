@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Exo } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/QueryProvider";
+import { ModalManager } from "@/components/molecules/modals/ModalManager";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -95,7 +96,10 @@ export default function RootLayout({
       className={`${inter.variable} ${exo.variable} h-full antialiased`}
     >
       <QueryProvider>
-        <body className="min-h-full flex flex-col">{children}</body>
+        <body className="min-h-full flex flex-col">
+          {children}
+          <ModalManager />
+        </body>
       </QueryProvider>
     </html>
   );
