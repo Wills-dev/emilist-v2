@@ -2,6 +2,14 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export type FlowType = "post-job" | "post-material" | "register-expert" | null;
+export type ModalType =
+  | "login"
+  | "register"
+  | "verify-otp"
+  | "complete-profile"
+  | "forgot-password"
+  | "reset-password"
+  | null;
 
 export interface User {
   id: string;
@@ -11,6 +19,7 @@ export interface User {
   phone?: string;
   location?: string;
   profileComplete: boolean;
+  emailVerified: boolean;
   role: "user";
 }
 
@@ -19,14 +28,20 @@ interface AuthFlowSlice {
   pendingFormData: Record<string, unknown> | null;
   redirectPath: string | null;
   otpEmail: string | null;
+  activeModal: ModalType;
+  isModalFlow: boolean;
+  openModal: (modal: ModalType) => void;
+  closeAllModals: () => void;
   setPendingFlow: (
     flow: FlowType,
     data: Record<string, unknown>,
     path: string,
+    isModal?: boolean,
   ) => void;
   setOtpEmail: (email: string) => void;
   clearOtpEmail: () => void;
   clearPendingFlow: () => void;
+  setIsModalFlow: (isModal: boolean) => void;
 }
 
 interface UserSlice {
@@ -48,9 +63,21 @@ export const useStore = create<StoreState>()(
       pendingFormData: null,
       redirectPath: null,
       otpEmail: null,
+      activeModal: null,
+      isModalFlow: false,
 
-      setPendingFlow: (flow, data, path) =>
-        set({ pendingFlow: flow, pendingFormData: data, redirectPath: path }),
+      openModal: (modal) => set({ activeModal: modal }),
+      closeAllModals: () => set({ activeModal: null }),
+      setIsModalFlow: (isModal) => set({ isModalFlow: isModal }),
+
+      setPendingFlow: (flow, data, path, isModal = false) =>
+        set({
+          pendingFlow: flow,
+          pendingFormData: data,
+          redirectPath: path,
+          isModalFlow: isModal,
+          activeModal: isModal ? "login" : null,
+        }),
 
       setOtpEmail: (email) => set({ otpEmail: email }),
       clearOtpEmail: () => set({ otpEmail: null }),
@@ -61,6 +88,8 @@ export const useStore = create<StoreState>()(
           pendingFormData: null,
           redirectPath: null,
           otpEmail: null,
+          activeModal: null,
+          isModalFlow: false,
         }),
     }),
     {
@@ -71,6 +100,7 @@ export const useStore = create<StoreState>()(
         pendingFormData: state.pendingFormData,
         redirectPath: state.redirectPath,
         otpEmail: state.otpEmail,
+        isModalFlow: state.isModalFlow,
       }),
     },
   ),

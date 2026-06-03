@@ -16,10 +16,10 @@ const Button = ({
   type = "button",
 }: ButtonProps) => {
   const baseStyle =
-    "rounded-[10px] px-5 py-3 cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap font-exo transition-all duration-300 border";
+    "rounded-[10px] px-5 py-3 cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap font-exo transition-all duration-300 border ";
   const variants = {
     primary:
-      "bg-[#25C269] hover:bg-green-600 border-[#25C269] text-[#FBFFF8] font-bold",
+      "bg-[#25C269] hover:bg-green-600 border-[#25C269] text-[#FBFFF8] font-bold disabled:bg-[#25C269]/30 disabled:border-[#25C269]/30 disabled:cursor-not-allowed",
     secondary:
       "bg-[#FBFFF8] hover:bg-green-100 text-[#25C269] font-semibold border-[#25C269]",
     default: "bg-[#FBFFF8] border-[#D9D9D9] hover:bg-gray-100 font-semibold",

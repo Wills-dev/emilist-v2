@@ -25,10 +25,14 @@ const ModalWrapper = ({
 }: ModalWrapperProps) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className={`dark:bg-gray-800 ${className}`}>
+      <DialogContent className={`overflow-hidden ${className}`}>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+          <DialogTitle className="font-exo font font-bold">{title}</DialogTitle>
+          {description && (
+            <DialogDescription className="font-exo">
+              {description}
+            </DialogDescription>
+          )}
         </DialogHeader>
         <div className="w-full">{children}</div>
       </DialogContent>

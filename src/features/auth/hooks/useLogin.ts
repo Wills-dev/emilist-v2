@@ -1,6 +1,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { toast } from "sonner";
+import { useShallow } from "zustand/react/shallow";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { login } from "../api";
@@ -15,27 +16,42 @@ export const useLogin = () => {
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
 
-  const {
-    isOpen,
-    setIsOpen,
-    inputType,
-    userInfo,
-    handleChange,
-    toggleInputType,
-    onCancel,
-    resetForm,
-  } = useAuthState();
+  const { inputType, userInfo, handleChange, toggleInputType, resetForm } =
+    useAuthState();
 
-  const { setCurrentUser, pendingFlow, redirectPath } = useStore((state) => ({
-    setCurrentUser: state.setCurrentUser,
-    pendingFlow: state.pendingFlow,
-    redirectPath: state.redirectPath,
-  }));
+  const { pendingFlow, redirectPath, isModalFlow } = useStore(
+    useShallow((state) => ({
+      pendingFlow: state.pendingFlow,
+      redirectPath: state.redirectPath,
+      isModalFlow: state.isModalFlow,
+    })),
+  );
+
+  const setCurrentUser = useStore((state) => state.setCurrentUser);
+  const setOtpEmail = useStore((state) => state.setOtpEmail);
+  const openModal = useStore((state) => state.openModal);
+  const closeAllModals = useStore((state) => state.closeAllModals);
 
   const { mutate, isPending: isLogging } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       toast.success("Login successful!");
+
+      const queryRedirect = searchParams.get("redirect");
+
+      const destination = redirectPath || queryRedirect || routes.dashboard;
+
+      if (!data.user.emailVerified) {
+        setOtpEmail(data.user.email);
+        if (isModalFlow) {
+          openModal("verify-otp");
+        } else {
+          router.push(
+            `${routes.verifyEmail}?redirect=${encodeURIComponent(destination)}`,
+          );
+        }
+        return;
+      }
 
       setCurrentUser(data.user);
 
@@ -43,30 +59,37 @@ export const useLogin = () => {
 
       resetForm();
 
-      const queryRedirect = searchParams.get("redirect");
+      const bypassProfileCompletionFlows = ["register-expert"];
 
-      const destination = redirectPath || queryRedirect;
-
-      if (!data.user.profileComplete) {
-        if (pendingFlow === "register-expert" && redirectPath) {
-          router.push(redirectPath);
+      //modal flow
+      if (isModalFlow) {
+        if (!data.user.profileComplete && pendingFlow !== "register-expert") {
+          openModal("complete-profile");
           return;
-        } else if (destination) {
-          router.push(
-            `${routes.completeProfile}?redirect=${encodeURIComponent(destination)}`,
-          );
-          return;
-        } else {
-          router.push(
-            `${routes.completeProfile}?redirect=${encodeURIComponent(routes?.dashboard)}`,
-          );
         }
-      }
-      if (destination) {
-        router.push(destination);
+        // Profile complete or expert flow — close modals, form auto-submits via useEffect
+        closeAllModals();
         return;
       }
-      router.push(routes.dashboard);
+
+      //page flow
+
+      if (!data.user.profileComplete) {
+        if (
+          pendingFlow &&
+          bypassProfileCompletionFlows.includes(pendingFlow) &&
+          redirectPath
+        ) {
+          router.push(redirectPath);
+          return;
+        }
+
+        router.push(
+          `${routes.completeProfile}?redirect=${encodeURIComponent(destination)}`,
+        );
+        return;
+      }
+      router.push(destination);
     },
     onError: (error: ApiErrorResponse) => {
       console.log("error logging in", error);
@@ -93,9 +116,6 @@ export const useLogin = () => {
     inputType,
     toggleInputType,
     handleLogin,
-    onCancel,
-    isOpen,
-    setIsOpen,
     isLogging,
   };
 };
