@@ -29,3 +29,17 @@ export interface SearchBarProps {
   showVoiceIcon?: boolean;
   onShowSearchOverlay?: () => void;
 }
+
+export interface selectOption {
+  label: string;
+  value: string;
+  country?: string;
+  state?: string[];
+}
+
+export interface MultiSelectProps {
+  options: selectOption[];
+  value: string[];
+  onChange: (value: string) => void;
+  placeholder?: string;
+}

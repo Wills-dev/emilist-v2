@@ -16,8 +16,15 @@ export interface User {
   email: string;
   firstName?: string;
   lastName?: string;
-  phone?: string;
-  location?: string;
+  countryCode?: string;
+  mobile?: string;
+  language?: string[];
+  houseAddress?: string;
+  state?: string;
+  city?: string;
+  country?: string;
+  bio?: string;
+  image?: string;
   profileComplete: boolean;
   emailVerified: boolean;
   role: "user";
@@ -30,6 +37,7 @@ interface AuthFlowSlice {
   otpEmail: string | null;
   activeModal: ModalType;
   isModalFlow: boolean;
+  otpCountDown: number;
   openModal: (modal: ModalType) => void;
   closeAllModals: () => void;
   setPendingFlow: (
@@ -38,6 +46,7 @@ interface AuthFlowSlice {
     path: string,
     isModal?: boolean,
   ) => void;
+  setOtpCountDown: (count: number) => void;
   setOtpEmail: (email: string) => void;
   clearOtpEmail: () => void;
   clearPendingFlow: () => void;
@@ -65,6 +74,7 @@ export const useStore = create<StoreState>()(
       otpEmail: null,
       activeModal: null,
       isModalFlow: false,
+      otpCountDown: 0,
 
       openModal: (modal) => set({ activeModal: modal }),
       closeAllModals: () => set({ activeModal: null }),
@@ -80,6 +90,7 @@ export const useStore = create<StoreState>()(
         }),
 
       setOtpEmail: (email) => set({ otpEmail: email }),
+      setOtpCountDown: (count) => set({ otpCountDown: count }),
       clearOtpEmail: () => set({ otpEmail: null }),
 
       clearPendingFlow: () =>
@@ -101,6 +112,7 @@ export const useStore = create<StoreState>()(
         redirectPath: state.redirectPath,
         otpEmail: state.otpEmail,
         isModalFlow: state.isModalFlow,
+        otpCountDown: state.otpCountDown,
       }),
     },
   ),

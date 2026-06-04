@@ -87,7 +87,7 @@ const LoginForm = () => {
           Sign In
         </Button>
         <div className="w-full h-px bg-[#D9D9D9]" />
-        <GoogleAuth />
+        <GoogleAuth actionText="Sign In" />
         <AuthPrompt
           onClick={openSignUpModal}
           text="Don’t have an EmiList account?"

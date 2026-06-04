@@ -3,6 +3,7 @@ import { Inter, Exo } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/QueryProvider";
 import { ModalManager } from "@/components/molecules/modals/ModalManager";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -97,6 +98,7 @@ export default function RootLayout({
     >
       <QueryProvider>
         <body className="min-h-full flex flex-col">
+          <Toaster />
           {children}
           <ModalManager />
         </body>
