@@ -44,7 +44,7 @@ const ModalWrapper = ({
             </DialogDescription>
           )}
         </DialogHeader>
-        <div className="w-full">{children}</div>
+        <div className="w-full max-h-[80vh] overflow-y-auto">{children}</div>
       </DialogContent>
     </Dialog>
   );
