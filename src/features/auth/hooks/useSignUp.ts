@@ -26,6 +26,7 @@ export const useSignUp = () => {
   const setOtpEmail = useStore((state) => state.setOtpEmail);
   const openModal = useStore((state) => state.openModal);
   const setPendingFlow = useStore((state) => state.setPendingFlow);
+  const setOtpCountDown = useStore((state) => state.setOtpCountDown);
 
   const {
     inputType,
@@ -48,6 +49,7 @@ export const useSignUp = () => {
           "An OTP was sent to your email, enter the OTP to verify your email address.",
       });
       setOtpEmail(variables.email);
+      setOtpCountDown(300);
 
       const queryRedirect = searchParams.get("redirect");
 

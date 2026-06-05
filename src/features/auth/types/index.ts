@@ -14,9 +14,16 @@ export interface ResetPasswordType {
   newPassword: string;
 }
 
-export interface UpdateProfilePayload {
+export interface CompleteProfileForm {
   firstName: string;
   lastName: string;
-  phone: string;
-  location: string;
+  countryCode: string;
+  mobile: string;
+  language: string[];
+  houseAddress: string;
+  state: string;
+  city: string;
+  country: string;
+  bio: string;
+  image?: File | null;
 }

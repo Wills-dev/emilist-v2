@@ -13,6 +13,8 @@ interface ModalWrapperProps {
   className?: string;
   open: boolean;
   onClose: (open: boolean) => void;
+  titleClassName?: string;
+  descClassName?: string;
 }
 
 const ModalWrapper = ({
@@ -22,14 +24,22 @@ const ModalWrapper = ({
   className,
   open,
   onClose,
+  titleClassName,
+  descClassName,
 }: ModalWrapperProps) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className={`overflow-hidden ${className}`}>
         <DialogHeader>
-          <DialogTitle className="font-exo font font-bold">{title}</DialogTitle>
+          <DialogTitle
+            className={`font-exo font font-bold sm:text-[24px] text-lg ${titleClassName}`}
+          >
+            {title}
+          </DialogTitle>
           {description && (
-            <DialogDescription className="font-exo">
+            <DialogDescription
+              className={`${descClassName} font-exo text-[#303632]`}
+            >
               {description}
             </DialogDescription>
           )}

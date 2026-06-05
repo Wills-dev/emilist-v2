@@ -1,6 +1,6 @@
-interface ApiErrorData {
-  message?: string;
-  errors?: { message?: string }[];
+export interface ApiErrorData {
+  message?: string | string[];
+  errors?: string[] | { message: string }[];
 }
 
 export interface ApiErrorResponse {

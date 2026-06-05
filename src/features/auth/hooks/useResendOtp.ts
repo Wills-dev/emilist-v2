@@ -8,11 +8,13 @@ import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 
 export const useResendOtp = () => {
   const otpEmail = useStore((state) => state.otpEmail);
+  const setOtpCountDown = useStore((state) => state.setOtpCountDown);
 
   const { mutate, isPending } = useMutation({
     mutationFn: resendOtp,
     onSuccess: () => {
       toast.success("OTP resent successful.");
+      setOtpCountDown(300);
     },
     onError: (error: ApiErrorResponse) => {
       console.log("error resending otp", error);
