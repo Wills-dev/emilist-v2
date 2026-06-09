@@ -17,10 +17,7 @@ const PopOver = ({
   return (
     <Tooltip>
       <TooltipTrigger>{actionBtn}</TooltipTrigger>
-      <TooltipContent
-        sideOffset={8}
-        className={`${className} bg-gray-50 shadow text-[#272727]`}
-      >
+      <TooltipContent sideOffset={8} className={`${className}`}>
         {children}
       </TooltipContent>
     </Tooltip>

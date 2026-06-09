@@ -189,7 +189,7 @@ const ProfileSetup = ({
             ) : (
               <>
                 {" "}
-                <div className="w-full h-full bg-white rounded-[10px] border-dashed flex justify-center items-center border-[#A2A4A2] text-[#A2A4A2]">
+                <div className="w-full h-full bg-white rounded-[10px] border border-dashed flex justify-center items-center border-[#A2A4A2] text-[#A2A4A2]">
                   <ImagePlus />
                   <input
                     type="file"
