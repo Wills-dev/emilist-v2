@@ -12,6 +12,7 @@ import { useSignUp } from "@/features/auth/hooks/useSignUp";
 import { areAllFieldsFilled } from "@/lib/helpers/areAllFieldsFilled";
 import PolicyModal from "../../modals/PolicyModal/PolicyModal";
 import TermsOfUseModal from "../../modals/TermsOfUseModal/TermsOfUseModal";
+import Checkbox from "@/components/atoms/Checkbox/Checkbox";
 
 const SignUpForm = () => {
   const {
@@ -75,26 +76,7 @@ const SignUpForm = () => {
             />
           </div>
           <div className="flex gap-1 mt-1">
-            <label className="cursor-pointer">
-              <input
-                type="checkbox"
-                className="peer sr-only"
-                checked={acceptTerms}
-                onChange={(e) => setAcceptTerms(e.target.checked)}
-              />
-
-              <div className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 peer-checked:border-[#25C269] peer-checked:bg-[#25C269]">
-                <svg
-                  className="h-4 w-4 text-white block"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-            </label>
+            <Checkbox value={acceptTerms} onChange={setAcceptTerms} />
             <p className="text-sm leading-6">
               By signing up with email or Google, you need to agree to our{" "}
               <button

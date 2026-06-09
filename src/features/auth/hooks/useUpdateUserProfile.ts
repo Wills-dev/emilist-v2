@@ -9,9 +9,9 @@ import { routes } from "@/lib/helpers/routes";
 import { ApiErrorResponse } from "@/lib/types/error";
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { useStore } from "@/store/authStore";
-import { useUpdateUserProfileState } from "./useUpdateUserProfileState";
 import { updateProfileRequest } from "../api/user";
 import { validateProfileForm } from "../helpers/validateProfileForm";
+import { useUpdateUserProfileState } from "./useUpdateUserProfileState";
 
 export const useUpdateUserProfile = () => {
   const router = useRouter();
@@ -19,15 +19,14 @@ export const useUpdateUserProfile = () => {
   const queryClient = useQueryClient();
 
   const {
-    form,
-    imagePreview,
-    handleChange,
     handleImageChange,
     deleteImage,
     toggleLanguage,
-    setImagePreview,
-    setForm,
-    isFormComplete,
+    updateProfile,
+    profile,
+    profilePreview,
+    setProfile,
+    setProfileImage,
   } = useUpdateUserProfileState();
 
   const { redirectPath, isModalFlow } = useStore(
@@ -43,8 +42,7 @@ export const useUpdateUserProfile = () => {
   useEffect(() => {
     if (!currentUser) return;
 
-    setForm((prev) => ({
-      ...prev,
+    setProfile({
       firstName: currentUser.firstName ?? "",
       lastName: currentUser.lastName ?? "",
       countryCode: currentUser.countryCode ?? "+234",
@@ -55,10 +53,11 @@ export const useUpdateUserProfile = () => {
       city: currentUser.city ?? "",
       country: currentUser.country ?? "",
       bio: currentUser.bio ?? "",
-    }));
+      image: null,
+    });
 
-    setImagePreview(currentUser.image ?? "");
-  }, [currentUser, setForm, setImagePreview]);
+    setProfileImage(null, currentUser.image ?? "");
+  }, [currentUser, setProfile, setProfileImage]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateProfileRequest,
@@ -83,23 +82,22 @@ export const useUpdateUserProfile = () => {
     },
   });
 
-  const handleUpdateProfile = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleUpdateProfile = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!validateProfileForm(form)) return;
+    if (!validateProfileForm(profile)) return;
 
-    mutate(form);
+    mutate(profile);
   };
 
   return {
     isPending,
     handleUpdateProfile,
-    form,
-    imagePreview,
-    handleChange,
+    profile,
+    profilePreview,
+    updateProfile,
     handleImageChange,
     deleteImage,
     toggleLanguage,
-    isFormComplete,
   };
 };

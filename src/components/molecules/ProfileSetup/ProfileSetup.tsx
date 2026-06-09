@@ -7,10 +7,11 @@ import { ImagePlus } from "lucide-react";
 import Input from "@/components/atoms/Input/Input";
 import Label from "@/components/atoms/Label/Label";
 import MultiSelect from "@/components/atoms/MultiSelect/MultiSelect";
-import Select from "@/components/atoms/Select/Select";
 import Textarea from "@/components/atoms/TextArea/Textarea";
 import PopOver from "@/components/atoms/PopOver/PopOver";
 import QuestionBtn from "@/components/atoms/QuestionBtn/QuestionBtn";
+import InputWrapper from "../InputWrapper/InputWrapper";
+import SelectWrapper from "../SelectWrapper/SelectWrapper";
 
 import { CompleteProfileForm } from "@/features/auth/types";
 import { LANGUAGES } from "@/lib/constants/languages";
@@ -21,9 +22,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 interface ProfileSetupProps {
   form: CompleteProfileForm;
   imagePreview: string;
-  handleChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => void;
+  handleChange: (key: keyof CompleteProfileForm, value: unknown) => void;
   handleImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
   deleteImage: () => void;
   toggleLanguage: (lang: string) => void;
@@ -45,29 +44,25 @@ const ProfileSetup = ({
 
   return (
     <div className="grid grid-cols-2 gap-6">
-      <div className="sm:col-span-1 col-span-2 space-y-2">
-        <Label htmlFor="firstName" title="First name" />
-        <Input
-          id="text"
-          type="firstName"
+      <div className="sm:col-span-1 col-span-2">
+        <InputWrapper
+          title="First name"
           name="firstName"
           value={form.firstName}
-          onChange={handleChange}
+          onChange={(e) => handleChange("firstName", e.target.value)}
           placeholder="Patrick"
         />
       </div>{" "}
-      <div className="sm:col-span-1 col-span-2 space-y-2">
-        <Label htmlFor="lastName" title="Last name" />
-        <Input
-          id="text"
-          type="lastName"
+      <div className="sm:col-span-1 col-span-2">
+        <InputWrapper
+          title="Last name"
           name="lastName"
           value={form.lastName}
-          onChange={handleChange}
+          onChange={(e) => handleChange("lastName", e.target.value)}
           placeholder="Ogbonnaya"
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 w-full space-y-2">
+      <div className="sm:col-span-1 col-span-2 w-full flex flex-col gap-2">
         <Label htmlFor="countryCode" title="Phone number" />
         <div className="grid grid-cols-7 gap-2 w-full">
           <div className="col-span-2">
@@ -77,26 +72,25 @@ const ProfileSetup = ({
               type="countryCode"
               name="countryCode"
               value={form.countryCode}
-              onChange={handleChange}
+              onChange={(e) => handleChange("countryCode", e.target.value)}
               placeholder="+234"
               className=""
             />
           </div>
-
           <div className="w-full col-span-5">
             <Input
               id="text"
               type="mobile"
               name="mobile"
               value={form.mobile}
-              onChange={handleChange}
+              onChange={(e) => handleChange("mobile", e.target.value)}
               placeholder="Enter 10 digit number"
               className=" w-full"
             />
           </div>
         </div>
       </div>
-      <div className="sm:col-span-1 col-span-2 w-full space-y-2">
+      <div className="sm:col-span-1 col-span-2 w-full flex flex-col gap-2">
         <Label htmlFor="language" title="Language" />
         <MultiSelect
           value={form.language}
@@ -104,60 +98,54 @@ const ProfileSetup = ({
           options={LANGUAGES}
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 space-y-2">
-        <Label htmlFor="country" title="Country" />
-        <Select
-          id="country"
+      <div className="sm:col-span-1 col-span-2">
+        <SelectWrapper
+          title="Country"
           name="country"
           value={form.country}
-          onChange={handleChange}
+          onChange={(e) => handleChange("country", e.target.value)}
           options={countriesAndStates}
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 space-y-2">
-        <Label htmlFor="state" title="State" />
-        <Select
-          id="state"
+      <div className="sm:col-span-1 col-span-2">
+        <SelectWrapper
+          title="State"
           name="state"
           value={form.state}
-          onChange={handleChange}
+          onChange={(e) => handleChange("state", e.target.value)}
           options={stateOptions}
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 space-y-2">
-        <Label htmlFor="city" title="City" />
-        <Input
-          id="text"
-          type="city"
+      <div className="sm:col-span-1 col-span-2">
+        <InputWrapper
+          title="City"
           name="city"
           value={form.city}
-          onChange={handleChange}
+          onChange={(e) => handleChange("city", e.target.value)}
           placeholder="Surulere"
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 space-y-2">
-        <Label htmlFor="houseAddress" title="House Address" />
-        <Input
-          id="text"
-          type="houseAddress"
+      <div className="sm:col-span-1 col-span-2">
+        <InputWrapper
+          title="House Address"
           name="houseAddress"
           value={form.houseAddress}
-          onChange={handleChange}
+          onChange={(e) => handleChange("houseAddress", e.target.value)}
           placeholder="7 Funds street"
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 space-y-2">
+      <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
         <Label htmlFor="bio" title="Bio" />
         <Textarea
           id="bio"
           name="bio"
           value={form.bio}
-          onChange={handleChange}
+          onChange={(e) => handleChange("bio", e.target.value)}
           placeholder="Write a short description about yourself and what you do"
           className="h-35"
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 space-y-2">
+      <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
         <div className="flex items-center justify-between">
           {" "}
           <span className="text-[#474C48] font-medium font-exo max-sm:text-sm ">

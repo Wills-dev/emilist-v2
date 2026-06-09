@@ -4,26 +4,28 @@ import Button from "@/components/atoms/Button/Button";
 import ProfileSetup from "../../ProfileSetup/ProfileSetup";
 
 import { useUpdateUserProfile } from "@/features/auth/hooks/useUpdateUserProfile";
+import { isFormComplete } from "@/features/auth/helpers/validateProfileForm";
 
 const CompleteProfileForm = () => {
   const {
     isPending,
     handleUpdateProfile,
-    form,
-    imagePreview,
-    handleChange,
+    profile,
+    profilePreview,
+    updateProfile,
     handleImageChange,
     deleteImage,
     toggleLanguage,
-    isFormComplete,
   } = useUpdateUserProfile();
+
+  const isProfileFill = isFormComplete(profile);
 
   return (
     <form className="mt-4 space-y-8" onSubmit={handleUpdateProfile}>
       <ProfileSetup
-        form={form}
-        imagePreview={imagePreview}
-        handleChange={handleChange}
+        form={profile}
+        imagePreview={profilePreview}
+        handleChange={updateProfile}
         handleImageChange={handleImageChange}
         deleteImage={deleteImage}
         toggleLanguage={toggleLanguage}
@@ -33,7 +35,7 @@ const CompleteProfileForm = () => {
         type="submit"
         className="w-full h-11"
         loading={isPending}
-        disabled={isPending || !isFormComplete()}
+        disabled={isPending || !isProfileFill}
       >
         Proceed
       </Button>
