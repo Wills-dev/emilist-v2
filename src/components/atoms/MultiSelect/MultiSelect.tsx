@@ -13,7 +13,7 @@ const MultiSelect = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="relative">
+    <div className="relative space-y-4">
       <button
         type="button"
         onClick={() => setOpen((p) => !p)}
@@ -40,6 +40,42 @@ const MultiSelect = ({
 
               {value.includes(item.value) && <span>✓</span>}
             </button>
+          ))}
+        </div>
+      )}
+      {value?.length > 0 && (
+        <div className="flex gap-2 w-full flex-wrap">
+          {value?.map((item) => (
+            <div
+              key={item}
+              className="flex gap-2 items-center bg-[#F4F7F5] px-2 py-px rounded-full text-[#5E625F] text-sm h-6.5 cur"
+            >
+              <span className="capitalize">{item}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  onChange(item);
+                  setOpen(false);
+                }}
+                className="hover:text-red-500 transition-all duration-300 cursor-pointer"
+              >
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
           ))}
         </div>
       )}

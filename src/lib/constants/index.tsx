@@ -184,3 +184,9 @@ export const socialLinks = [
     href: "",
   },
 ];
+
+export const photoTips = [
+  "A photo of your face works better than a logo",
+  "Make sure to smile.",
+  "Try to use a solid background",
+];

@@ -54,3 +54,18 @@ export const validateProfileForm = (form: CompleteProfileForm) => {
 
   return true;
 };
+
+export const isFormComplete = (form: CompleteProfileForm) => {
+  return (
+    form.firstName.trim() !== "" &&
+    form.lastName.trim() !== "" &&
+    form.countryCode.trim() !== "" &&
+    form.mobile.trim() !== "" &&
+    form.language.length > 0 &&
+    form.houseAddress.trim() !== "" &&
+    form.state.trim() !== "" &&
+    form.city.trim() !== "" &&
+    form.country.trim() !== "" &&
+    form.bio.trim() !== ""
+  );
+};

@@ -58,15 +58,18 @@ const VerifyEmailForm = () => {
         <div className="flex items-center gap-1">
           <p className="text-[#333E49] text-sm">Didn’t receive it? </p>{" "}
           {otpCountDown > 0 ? (
-            <span className="text-sm text-[#6667FF] font-semibold">
-              {formattedTime}
-            </span>
+            <>
+              <span className="text-[#333E49] text-sm">Resend code in</span>
+              <span className="text-sm text-[#6667FF] font-semibold">
+                {formattedTime}mins
+              </span>
+            </>
           ) : (
             <button
               onClick={handleSendOtp}
               disabled={isResending}
               type="button"
-              className="text-sm text-[#6667FF] font-semibold"
+              className="text-sm text-[#6667FF] font-semibold cursor-pointer"
             >
               {isResending ? " Sending..." : " Resend code"}
             </button>

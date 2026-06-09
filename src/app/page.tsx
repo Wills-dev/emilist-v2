@@ -1,3 +1,5 @@
+"use client";
+
 import AppSection from "@/components/organisms/AppSection/AppSection";
 import CustomerCommentSection from "@/components/organisms/CustomerCommentSection/CustomerCommentSection";
 import CustomerServiceSection from "@/components/organisms/CustomerServiceSection/CustomerServiceSection";

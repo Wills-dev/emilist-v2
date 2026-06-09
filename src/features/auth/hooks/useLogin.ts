@@ -32,14 +32,14 @@ export const useLogin = () => {
   const openModal = useStore((state) => state.openModal);
   const closeAllModals = useStore((state) => state.closeAllModals);
 
+  const queryRedirect = searchParams.get("redirect");
+
+  const destination = redirectPath || queryRedirect || routes.dashboard;
+
   const { mutate, isPending: isLogging } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       toast.success("Login successful!");
-
-      const queryRedirect = searchParams.get("redirect");
-
-      const destination = redirectPath || queryRedirect || routes.dashboard;
 
       if (!data.user.emailVerified) {
         setOtpEmail(data.user.email);
@@ -93,6 +93,20 @@ export const useLogin = () => {
     },
     onError: (error: ApiErrorResponse) => {
       console.log("error logging in", error);
+      if (
+        error?.response?.data?.message &&
+        error?.response?.data?.message === "Kindly verify your email!"
+      ) {
+        setOtpEmail(userInfo.email);
+        if (isModalFlow) {
+          openModal("verify-otp");
+        } else {
+          router.push(
+            `${routes.verifyEmail}?redirect=${encodeURIComponent(destination)}`,
+          );
+        }
+        return;
+      }
       promiseErrorFunction(error);
     },
   });

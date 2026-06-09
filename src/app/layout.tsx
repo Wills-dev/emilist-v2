@@ -4,6 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/components/QueryProvider";
 import { ModalManager } from "@/components/molecules/modals/ModalManager";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -99,7 +100,9 @@ export default function RootLayout({
       <QueryProvider>
         <body className="min-h-full flex flex-col">
           <Toaster />
-          {children}
+          <TooltipProvider delayDuration={0} skipDelayDuration={0}>
+            {children}
+          </TooltipProvider>
           <ModalManager />
         </body>
       </QueryProvider>
