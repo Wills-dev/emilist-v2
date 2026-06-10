@@ -1,30 +1,32 @@
 "use client";
 
+import Link from "next/link";
+
 import { routes } from "@/lib/helpers/routes";
-import { ExpertProfileFormProps } from "@/features/auth/types";
+import { useExpertTabs } from "@/features/experts/hooks/useExpertTabs";
+import { useUpdateUserProfileState } from "@/features/auth/hooks/useUpdateUserProfileState";
 
 import ProfileSetup from "../../ProfileSetup/ProfileSetup";
 import Button from "@/components/atoms/Button/Button";
-import Link from "next/link";
-import { isFormComplete } from "@/features/auth/helpers/validateProfileForm";
 
-const ExpertProfileForm = ({
-  form,
-  imagePreview,
-  handleChange,
-  handleImageChange,
-  deleteImage,
-  toggleLanguage,
-  switchTab,
-}: ExpertProfileFormProps) => {
-  const isProfileFill = isFormComplete(form);
+const ExpertProfileForm = () => {
+  const { switchTab } = useExpertTabs();
+  const {
+    handleImageChange,
+    deleteImage,
+    toggleLanguage,
+    updateProfile,
+    profile,
+    profilePreview,
+    isProfileFill,
+  } = useUpdateUserProfileState();
 
   return (
     <div className="space-y-8">
       <ProfileSetup
-        form={form}
-        imagePreview={imagePreview}
-        handleChange={handleChange}
+        form={profile}
+        imagePreview={profilePreview}
+        handleChange={updateProfile}
         handleImageChange={handleImageChange}
         deleteImage={deleteImage}
         toggleLanguage={toggleLanguage}

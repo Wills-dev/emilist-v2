@@ -3,6 +3,7 @@ import { useShallow } from "zustand/react/shallow";
 
 import { validateImage } from "@/lib/helpers/imageValidation";
 import { useExpertStore } from "@/store/expert/expertStore";
+import { isFormComplete } from "../helpers/validateProfileForm";
 
 export const useUpdateUserProfileState = () => {
   const { profile, profilePreview } = useExpertStore(
@@ -30,6 +31,8 @@ export const useUpdateUserProfileState = () => {
     setProfileImage(file, preview);
   };
 
+  const isProfileFill = isFormComplete(profile);
+
   return {
     handleImageChange,
     deleteImage,
@@ -39,5 +42,6 @@ export const useUpdateUserProfileState = () => {
     profilePreview,
     setProfile,
     setProfileImage,
+    isProfileFill,
   };
 };

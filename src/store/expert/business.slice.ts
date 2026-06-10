@@ -1,24 +1,5 @@
-import { BusinessProfileState } from "@/features/experts/types";
 import { StateCreator } from "zustand";
-
-export type BusinessSlice = {
-  business: BusinessProfileState;
-  setBusiness: (profile: BusinessProfileState) => void;
-
-  businessImages: File[];
-
-  businessPreviews: string[];
-
-  useProfileAddress: boolean;
-  setUseProfileAddress: (value: boolean) => void;
-
-  updateBusiness: (key: keyof BusinessProfileState, value: unknown) => void;
-  toggleService: (value: string) => void;
-  toggleCoverage: (value: string) => void;
-
-  addBusinessImages: (files: File[], preview: string[]) => void;
-  removeBusinessImage: (index: number) => void;
-};
+import { BusinessSlice } from "../types/expert";
 
 export const createBusinessSlice: StateCreator<BusinessSlice> = (set) => ({
   business: {

@@ -26,6 +26,7 @@ export interface Certification {
   issuingDate: string;
   expiringDate: string;
   isVerified: boolean;
+  doesntExpire: boolean;
 }
 
 export interface Membership {
@@ -33,36 +34,11 @@ export interface Membership {
   positionHeld: string;
   startDate: string;
   endDate: string;
+  doesntEnd: boolean;
 }
 
 export interface Insurance {
   issuingOrganisation: string;
   coverage: string;
   description: string;
-}
-
-export interface BusinessFormWrapperProps {
-  updateBusiness: (key: keyof BusinessProfileState, value: unknown) => void;
-  toggleService: (value: string) => void;
-  toggleCoverage: (value: string) => void;
-  removeBusinessImage: (index: number) => void;
-  handleBusinessImages: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  business: BusinessProfileState;
-  businessPreviews: string[];
-  switchTab: (tab: "business-profile" | "profile" | "experiences") => void;
-  handleSameAsProfile: (value: boolean) => void;
-  isBusinessFormFilled: boolean;
-  useProfileAddress: boolean;
-}
-
-export interface BusinessSetupProps {
-  updateBusiness: (key: keyof BusinessProfileState, value: unknown) => void;
-  toggleService: (value: string) => void;
-  toggleCoverage: (value: string) => void;
-  removeBusinessImage: (index: number) => void;
-  handleBusinessImages: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  business: BusinessProfileState;
-  businessPreviews: string[];
-  handleSameAsProfile: (value: boolean) => void;
-  useProfileAddress: boolean;
 }

@@ -4,33 +4,16 @@ import Image from "next/image";
 
 import Dot from "@/components/atoms/Dot/Dot";
 import ExpertProfileForm from "@/components/molecules/forms/ExpertProfileForm/ExpertProfileForm";
+import ExpertBusinessForm from "@/components/molecules/forms/ExpertBusinessForm/ExpertBusinessForm";
+import ExpertiseForm from "@/components/molecules/forms/ExpertiseForm/ExpertiseForm";
 
 import { expertTabs } from "../../constants";
-
 import { useExpertTabs } from "../../hooks/useExpertTabs";
 import { useCreateExpert } from "../../hooks/useCreateExpert";
-import ExpertBusinessForm from "@/components/molecules/forms/ExpertBusinessForm/ExpertBusinessForm";
 
 const ExpertFormWrapper = () => {
   const { tab, switchTab } = useExpertTabs();
-  const {
-    profile,
-    profilePreview,
-    updateProfile,
-    toggleLanguage,
-    deleteImage,
-    handleImageChange,
-    updateBusiness,
-    toggleService,
-    toggleCoverage,
-    removeBusinessImage,
-    handleBusinessImages,
-    business,
-    businessPreviews,
-    handleSameAsProfile,
-    isBusinessFormFilled,
-    useProfileAddress,
-  } = useCreateExpert();
+  const {} = useCreateExpert();
 
   const currentTab = expertTabs.find((item) => {
     return item.id === tab;
@@ -75,32 +58,9 @@ const ExpertFormWrapper = () => {
             </div>
           </div>
         </div>
-        {tab === "profile" && (
-          <ExpertProfileForm
-            form={profile}
-            imagePreview={profilePreview}
-            handleChange={updateProfile}
-            handleImageChange={handleImageChange}
-            deleteImage={deleteImage}
-            toggleLanguage={toggleLanguage}
-            switchTab={switchTab}
-          />
-        )}
-        {tab === "business-profile" && (
-          <ExpertBusinessForm
-            switchTab={switchTab}
-            updateBusiness={updateBusiness}
-            toggleService={toggleService}
-            toggleCoverage={toggleCoverage}
-            removeBusinessImage={removeBusinessImage}
-            handleBusinessImages={handleBusinessImages}
-            business={business}
-            businessPreviews={businessPreviews}
-            handleSameAsProfile={handleSameAsProfile}
-            isBusinessFormFilled={isBusinessFormFilled}
-            useProfileAddress={useProfileAddress}
-          />
-        )}
+        {tab === "profile" && <ExpertProfileForm />}
+        {tab === "business-profile" && <ExpertBusinessForm />}
+        {tab === "experiences" && <ExpertiseForm />}
       </div>
     </div>
   );

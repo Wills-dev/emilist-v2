@@ -1,34 +1,16 @@
 import Button from "@/components/atoms/Button/Button";
 import BusinessSetup from "@/features/experts/components/BusinessSetup/BusinessSetup";
 
-import { BusinessFormWrapperProps } from "../../../../features/experts/types";
+import { useExpertTabs } from "@/features/experts/hooks/useExpertTabs";
+import { useBusinessProfileState } from "@/features/experts/hooks/useBusinessProfileState";
 
-const ExpertBusinessForm = ({
-  updateBusiness,
-  toggleService,
-  toggleCoverage,
-  removeBusinessImage,
-  handleBusinessImages,
-  business,
-  businessPreviews,
-  handleSameAsProfile,
-  switchTab,
-  isBusinessFormFilled,
-  useProfileAddress,
-}: BusinessFormWrapperProps) => {
+const ExpertBusinessForm = () => {
+  const { switchTab } = useExpertTabs();
+  const { isBusinessFormFilled } = useBusinessProfileState();
+
   return (
     <div className="space-y-8">
-      <BusinessSetup
-        updateBusiness={updateBusiness}
-        toggleService={toggleService}
-        toggleCoverage={toggleCoverage}
-        removeBusinessImage={removeBusinessImage}
-        handleBusinessImages={handleBusinessImages}
-        business={business}
-        businessPreviews={businessPreviews}
-        handleSameAsProfile={handleSameAsProfile}
-        useProfileAddress={useProfileAddress}
-      />
+      <BusinessSetup />
       <div className="flex max-sm:flex-col gap-2">
         <Button
           variant="secondary"

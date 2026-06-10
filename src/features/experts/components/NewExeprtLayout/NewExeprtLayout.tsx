@@ -12,12 +12,12 @@ const NewExeprtLayout = ({
   imgUrl?: string;
 }) => {
   return (
-    <div className="min-h-screen h-screen w-full flex flex-col">
-      <div className="w-full border-b border-[#E5E5E5]">
+    <div className="min-h-screen h-screen w-full flex flex-col relative">
+      <div className="w-full border-b border-[#E5E5E5] bg-white absolute top-0 z-10 left-0 right-0 ">
         <Container>
           <header
             id="header"
-            className="w-full flex justify-between items-center lg:gap-30 md:gap-20 lg:h-[12vh] h-[10vh]"
+            className="w-full flex justify-between items-center lg:gap-30 md:gap-20 h-20"
           >
             <Logo />
             <UserInitial />
@@ -25,9 +25,9 @@ const NewExeprtLayout = ({
         </Container>
       </div>
       <Container variant="large">
-        <div className="lg:h-[88vh] h-[90vh] w-full">
+        <div className="h-screen w-full overflow-hidden">
           <div className="flex h-full">
-            <div className="max-w-156.25 w-full h-full min-h-full bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] flex justify-center items-center">
+            <div className="max-w-156.25 w-full h-full min-h-full bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] flex justify-center items-center max-xl:hidden">
               <Image
                 src={imgUrl}
                 alt="preview"
@@ -37,6 +37,7 @@ const NewExeprtLayout = ({
               />
             </div>
             <div className="h-full flex-1 w-full overflow-y-auto">
+              <div className="h-20 w-full" />
               {children}
             </div>
           </div>
