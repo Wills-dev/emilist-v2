@@ -1,3 +1,5 @@
+import { CompleteProfileForm } from "@/features/auth/types";
+
 export type NoticePeriodType = "day(s)" | "week(s)" | "month(s)";
 
 export interface BusinessProfileState {
@@ -26,7 +28,10 @@ export interface Certification {
   issuingDate: string;
   expiringDate: string;
   isVerified: boolean;
-  doesntExpire: boolean;
+  isCertificateExpire: boolean;
+
+  image?: File | null;
+  preview?: string;
 }
 
 export interface Membership {
@@ -34,11 +39,38 @@ export interface Membership {
   positionHeld: string;
   startDate: string;
   endDate: string;
-  doesntEnd: boolean;
+  isMembershipExpire: boolean;
 }
 
 export interface Insurance {
   issuingOrganisation: string;
   coverage: string;
   description: string;
+}
+
+export interface BusinessPayloadType {
+  services: string[];
+  coverageArea: string[];
+  businessName: string;
+  yearFounded: string;
+  numberOfEmployee: string;
+  businessAddress: string;
+  businessState: string;
+  businessCountry: string;
+  startingPrice: string;
+  currency: string;
+  rateUnit: string;
+  noticePeriod: string;
+  businessDescription: string;
+  certifications?: Certification[];
+  memberships?: Membership[];
+  insurances?: Insurance[];
+}
+
+export interface NewExpertFormType {
+  profile: CompleteProfileForm;
+  displayImage?: File;
+  businessImages: File[];
+  certificate?: (File | null | undefined)[] | [];
+  business: BusinessPayloadType;
 }

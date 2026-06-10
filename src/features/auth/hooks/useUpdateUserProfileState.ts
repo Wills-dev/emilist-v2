@@ -18,6 +18,7 @@ export const useUpdateUserProfileState = () => {
   const setProfileImage = useExpertStore((state) => state.setProfileImage);
   const deleteImage = useExpertStore((state) => state.deleteImage);
   const setProfile = useExpertStore((state) => state.setProfile);
+  const resetProfileForm = useExpertStore((state) => state.resetProfileForm);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -33,6 +34,10 @@ export const useUpdateUserProfileState = () => {
 
   const isProfileFill = isFormComplete(profile);
 
+  const { image, ...profilePayload } = profile;
+
+  const displayImage = image;
+
   return {
     handleImageChange,
     deleteImage,
@@ -43,5 +48,8 @@ export const useUpdateUserProfileState = () => {
     setProfile,
     setProfileImage,
     isProfileFill,
+    resetProfileForm,
+    profilePayload,
+    displayImage,
   };
 };

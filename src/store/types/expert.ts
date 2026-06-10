@@ -43,12 +43,11 @@ export type BusinessSlice = {
 
   addBusinessImages: (files: File[], preview: string[]) => void;
   removeBusinessImage: (index: number) => void;
+  resetBusiness: () => void;
 };
 
 export type CertificationSlice = {
   certifications: Certification[] | [];
-  certificationImages: (File | null)[];
-  certificationPreview: string[];
   certificationView: boolean[];
 
   addCertification: () => void;
@@ -65,6 +64,7 @@ export type CertificationSlice = {
     preview: string,
   ) => void;
   removeCertificationImage: (index: number) => void;
+  resetCertification: () => void;
 };
 
 export type MembershipSlice = {
@@ -75,6 +75,7 @@ export type MembershipSlice = {
   updateMembership: (i: number, key: keyof Membership, value: unknown) => void;
   removeMembership: (i: number) => void;
   toggleMembershipView: (i: number) => void;
+  resetMembership: () => void;
 };
 
 export type InsuranceSlice = {
@@ -85,4 +86,5 @@ export type InsuranceSlice = {
   updateInsurance: (i: number, key: keyof Insurance, value: unknown) => void;
   removeInsurance: (i: number) => void;
   toggleInsuranceView: (i: number) => void;
+  resetInsurance: () => void;
 };

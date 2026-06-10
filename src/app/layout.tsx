@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Exo } from "next/font/google";
+
 import "./globals.css";
+
 import QueryProvider from "@/components/QueryProvider";
+import AuthProvider from "@/components/AuthProvider";
+
 import { ModalManager } from "@/components/molecules/modals/ModalManager";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -101,7 +105,7 @@ export default function RootLayout({
         <body className="min-h-full flex flex-col">
           <Toaster />
           <TooltipProvider delayDuration={0} skipDelayDuration={0}>
-            {children}
+            <AuthProvider>{children}</AuthProvider>
           </TooltipProvider>
           <ModalManager />
         </body>

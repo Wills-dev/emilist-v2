@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import { AnimatePresence } from "framer-motion";
+
 import Dot from "@/components/atoms/Dot/Dot";
 import ExpertProfileForm from "@/components/molecules/forms/ExpertProfileForm/ExpertProfileForm";
 import ExpertBusinessForm from "@/components/molecules/forms/ExpertBusinessForm/ExpertBusinessForm";
@@ -58,9 +60,11 @@ const ExpertFormWrapper = () => {
             </div>
           </div>
         </div>
-        {tab === "profile" && <ExpertProfileForm />}
-        {tab === "business-profile" && <ExpertBusinessForm />}
-        {tab === "experiences" && <ExpertiseForm />}
+        <AnimatePresence mode="wait">
+          {tab === "profile" && <ExpertProfileForm />}
+          {tab === "business-profile" && <ExpertBusinessForm />}
+          {tab === "experiences" && <ExpertiseForm />}
+        </AnimatePresence>
       </div>
     </div>
   );

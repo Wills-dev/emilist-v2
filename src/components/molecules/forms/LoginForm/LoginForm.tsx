@@ -37,7 +37,7 @@ const LoginForm = () => {
 
   const openSignUpModal = () => {
     setIsModalFlow(true);
-    openModal("complete-profile");
+    openModal("register");
   };
 
   return (

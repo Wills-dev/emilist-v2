@@ -8,14 +8,15 @@ import { useStore } from "@/store/authStore";
 import { useShallow } from "zustand/react/shallow";
 
 const NavActions = ({ className = "items-center" }: { className?: string }) => {
-  const { openModal, setIsModalFlow } = useStore(
+  const { openModal, setIsModalFlow, currentUser } = useStore(
     useShallow((state) => ({
       openModal: state.openModal,
+      currentUser: state.currentUser,
       setIsModalFlow: state.setIsModalFlow,
     })),
   );
 
-  const currentUser = useStore((state) => state.currentUser);
+  console.log("currentUser", currentUser);
 
   const openLoginModal = () => {
     setIsModalFlow(true);

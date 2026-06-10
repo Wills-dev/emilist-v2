@@ -15,29 +15,34 @@ export function useProtectedSubmit(
   const router = useRouter();
   const setPendingFlow = useStore((state) => state.setPendingFlow);
 
-  const guardedSubmit = (
-    formData: Record<string, unknown>,
-    onAuthorized: (data: Record<string, unknown>) => void,
+  const guardedSubmit = <T extends object>(
+    formData: T,
+    onAuthorized: (data: T) => void,
   ) => {
     const { currentUser } = useStore.getState();
 
     if (!currentUser) {
-      // Save form data and open login modal OR redirect to auth page
-      setPendingFlow(flowType, formData, currentPath, useModal);
-
+      setPendingFlow(
+        flowType,
+        formData as Record<string, unknown>,
+        currentPath,
+        useModal,
+      );
       if (!useModal) {
         router.push(
           `${routes.login}?redirect=${encodeURIComponent(currentPath)}&flow=${flowType}`,
         );
       }
-      // If useModal=true, setPendingFlow already set activeModal='login'
       return;
     }
 
     if (flowType !== "register-expert" && !currentUser.profileComplete) {
-      // Save form data and open profile modal OR redirect
-      setPendingFlow(flowType, formData, currentPath, useModal);
-
+      setPendingFlow(
+        flowType,
+        formData as Record<string, unknown>,
+        currentPath,
+        useModal,
+      );
       if (!useModal) {
         router.push(
           `${routes.completeProfile}?redirect=${encodeURIComponent(currentPath)}`,

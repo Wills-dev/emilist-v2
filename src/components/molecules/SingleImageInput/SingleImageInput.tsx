@@ -7,13 +7,15 @@ const SingleImageInput = ({
   imagePreview,
   deleteImage,
   handleImageChange,
+  id = "image",
 }: {
   imagePreview: string;
   deleteImage: () => void;
   handleImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  id?: string;
 }) => {
   return (
-    <label htmlFor="image" className="">
+    <label htmlFor={id} className="">
       <div className="h-35 backdrop-blur-2xl bg-[#ECECEC] p-1.5 w-full rounded-[10px]">
         {imagePreview ? (
           <div className="relative overflow-hidden rounded-[10px] w-full h-full bg-white">
@@ -39,8 +41,8 @@ const SingleImageInput = ({
               <ImagePlus />
               <input
                 type="file"
-                name="image"
-                id="image"
+                name={id}
+                id={id}
                 accept="image/*"
                 onChange={handleImageChange}
                 className="invisible h-0 w-0"

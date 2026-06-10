@@ -20,7 +20,6 @@ const CertificateForm = ({
   certification: Certification;
 }) => {
   const {
-    certificationPreview,
     certificationView,
     addCertification,
     updateCertification,
@@ -35,10 +34,7 @@ const CertificateForm = ({
   };
 
   const handleExpires = (e: boolean) => {
-    if (e) {
-      updateCertification(index, "expiringDate", "");
-    }
-    updateCertification(index, "doesntExpire", e);
+    updateCertification(index, "isCertificateExpire", e);
   };
 
   return (
@@ -113,7 +109,7 @@ const CertificateForm = ({
               </div>
               <div className="flex items-center gap-2 col-span-2">
                 <Checkbox
-                  value={certification.doesntExpire}
+                  value={certification.isCertificateExpire}
                   onChange={handleExpires}
                 />
                 <Label htmlFor="" title="This certificate doesn’t expire" />
@@ -123,7 +119,8 @@ const CertificateForm = ({
               <Label htmlFor="" title="Upload certificate" />
               <div className="w-full">
                 <SingleImageInput
-                  imagePreview={certificationPreview[index]}
+                  id={`image_${index}`}
+                  imagePreview={certification.preview || ""}
                   handleImageChange={onImageChange}
                   deleteImage={() => removeCertificationImage(index)}
                 />

@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { motion } from "framer-motion";
+
 import { routes } from "@/lib/helpers/routes";
 import { useExpertTabs } from "@/features/experts/hooks/useExpertTabs";
 import { useUpdateUserProfileState } from "@/features/auth/hooks/useUpdateUserProfileState";
@@ -22,7 +24,13 @@ const ExpertProfileForm = () => {
   } = useUpdateUserProfileState();
 
   return (
-    <div className="space-y-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="space-y-8"
+    >
       <ProfileSetup
         form={profile}
         imagePreview={profilePreview}
@@ -63,7 +71,7 @@ const ExpertProfileForm = () => {
           </svg>
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

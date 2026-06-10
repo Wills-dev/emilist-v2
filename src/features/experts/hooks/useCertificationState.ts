@@ -3,18 +3,12 @@ import { useShallow } from "zustand/react/shallow";
 
 import { validateImage } from "@/lib/helpers/imageValidation";
 import { useExpertStore } from "@/store/expert/expertStore";
+import { isEmptyCertification } from "../helpers/validateCertifications";
 
 export const useCertificationState = () => {
-  const {
-    certificationPreview,
-    certificationView,
-    certifications,
-    certificationImages,
-  } = useExpertStore(
+  const { certificationView, certifications } = useExpertStore(
     useShallow((state) => ({
       certifications: state.certifications,
-      certificationImages: state.certificationImages,
-      certificationPreview: state.certificationPreview,
       certificationView: state.certificationView,
     })),
   );
@@ -37,6 +31,10 @@ export const useCertificationState = () => {
     (state) => state.toggleCertificationView,
   );
 
+  const resetCertification = useExpertStore(
+    (state) => state.resetCertification,
+  );
+
   const handleCertificateFile = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
@@ -53,16 +51,28 @@ export const useCertificationState = () => {
     updateCertificationImage(index, file, preview);
   };
 
+  const validCertifications = certifications.filter(
+    (cert) => !isEmptyCertification(cert),
+  );
+
+  const certificationsPayload = certifications.map(
+    ({ image, preview, ...rest }) => rest,
+  );
+
+  const certificate = certifications.map(({ image }) => image) || [];
+
   return {
-    certificationPreview,
+    resetCertification,
     certificationView,
     certifications,
-    certificationImages,
     addCertification,
     updateCertification,
     removeCertification,
     removeCertificationImage,
     toggleCertificationView,
     handleCertificateFile,
+    validCertifications,
+    certificate,
+    certificationsPayload,
   };
 };
