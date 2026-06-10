@@ -1,23 +1,5 @@
-import { CompleteProfileForm } from "@/features/auth/types";
 import { StateCreator } from "zustand";
-
-export type ProfileSlice = {
-  profile: CompleteProfileForm;
-
-  profilePreview: string;
-
-  updateProfile: (key: keyof CompleteProfileForm, value: unknown) => void;
-
-  setProfile: (profile: CompleteProfileForm) => void;
-
-  toggleLanguage: (language: string) => void;
-
-  setProfileImage: (file: File | null, preview: string) => void;
-
-  deleteImage: () => void;
-
-  resetProfileForm: () => void;
-};
+import { ProfileSlice } from "../types/expert";
 
 export const createProfileSlice: StateCreator<ProfileSlice> = (set) => ({
   profile: {

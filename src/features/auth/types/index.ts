@@ -1,5 +1,3 @@
-import { ChangeEvent } from "react";
-
 export interface AuthType {
   email: string;
   password: string;
@@ -28,14 +26,4 @@ export interface CompleteProfileForm {
   country: string;
   bio: string;
   image?: File | null;
-}
-
-export interface ExpertProfileFormProps {
-  form: CompleteProfileForm;
-  imagePreview: string;
-  handleChange: (key: keyof CompleteProfileForm, value: unknown) => void;
-  handleImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  deleteImage: () => void;
-  toggleLanguage: (lang: string) => void;
-  switchTab: (tab: "business-profile" | "profile" | "experiences") => void;
 }

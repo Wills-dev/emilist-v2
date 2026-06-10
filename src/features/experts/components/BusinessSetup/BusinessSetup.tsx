@@ -1,32 +1,37 @@
+"use client";
+
 import Checkbox from "@/components/atoms/Checkbox/Checkbox";
-import { BusinessSetupProps } from "../../types";
 import Label from "@/components/atoms/Label/Label";
 import InputWrapper from "@/components/molecules/InputWrapper/InputWrapper";
 import SelectWrapper from "@/components/molecules/SelectWrapper/SelectWrapper";
-import { countriesAndStates } from "@/lib/constants/countries";
 import MultiSelect from "@/components/atoms/MultiSelect/MultiSelect";
-import { expertServices } from "../../constants";
 import Select from "@/components/atoms/Select/Select";
-import { currencies } from "@/lib/constants/currencies";
 import Input from "@/components/atoms/Input/Input";
-import { rateUnits } from "@/lib/constants/rateUnits";
 import Textarea from "@/components/atoms/TextArea/Textarea";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import PopOver from "@/components/atoms/PopOver/PopOver";
 import QuestionBtn from "@/components/atoms/QuestionBtn/QuestionBtn";
 import MultiImageInput from "@/components/molecules/MultiImageInput/MultiImageInput";
 
-const BusinessSetup = ({
-  updateBusiness,
-  toggleService,
-  toggleCoverage,
-  removeBusinessImage,
-  handleBusinessImages,
-  business,
-  businessPreviews,
-  handleSameAsProfile,
-  useProfileAddress,
-}: BusinessSetupProps) => {
+import { expertServices } from "../../constants";
+import { countriesAndStates } from "@/lib/constants/countries";
+import { currencies } from "@/lib/constants/currencies";
+import { rateUnits } from "@/lib/constants/rateUnits";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { useBusinessProfileState } from "../../hooks/useBusinessProfileState";
+
+const BusinessSetup = () => {
+  const {
+    business,
+    businessPreviews,
+    useProfileAddress,
+    updateBusiness,
+    toggleCoverage,
+    toggleService,
+    removeBusinessImage,
+    handleBusinessImages,
+    handleSameAsProfile,
+  } = useBusinessProfileState();
+
   const selectedCountry = countriesAndStates.find(
     (item) => item.value === business.businessCountry,
   );

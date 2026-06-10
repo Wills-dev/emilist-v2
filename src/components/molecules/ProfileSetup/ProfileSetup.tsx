@@ -1,9 +1,5 @@
 import { ChangeEvent } from "react";
 
-import Image from "next/image";
-
-import { ImagePlus } from "lucide-react";
-
 import Input from "@/components/atoms/Input/Input";
 import Label from "@/components/atoms/Label/Label";
 import MultiSelect from "@/components/atoms/MultiSelect/MultiSelect";
@@ -18,6 +14,7 @@ import { LANGUAGES } from "@/lib/constants/languages";
 import { countriesAndStates } from "@/lib/constants/countries";
 import { photoTips } from "@/lib/constants";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import SingleImageInput from "../SingleImageInput/SingleImageInput";
 
 interface ProfileSetupProps {
   form: CompleteProfileForm;
@@ -167,7 +164,12 @@ const ProfileSetup = ({
             </PopOver>
           </TooltipProvider>
         </div>
-        <label htmlFor="image" className="">
+        <SingleImageInput
+          imagePreview={imagePreview}
+          deleteImage={deleteImage}
+          handleImageChange={handleImageChange}
+        />
+        {/* <label htmlFor="image" className="">
           <div className="h-35 backdrop-blur-2xl bg-[#ECECEC] p-1.5 w-full rounded-[10px]">
             {imagePreview ? (
               <div className="relative overflow-hidden rounded-[10px] w-full h-full bg-white">
@@ -203,7 +205,7 @@ const ProfileSetup = ({
               </>
             )}
           </div>
-        </label>
+        </label> */}
       </div>
     </div>
   );
