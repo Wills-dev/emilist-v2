@@ -20,7 +20,7 @@ const Select = ({
         className={`w-full bg-inherit h-full placeholder-gray-300 outline-none ${className}`}
         {...props}
       >
-        <option value="" disabled>
+        <option value="" disabled className="text-gray-300">
           {placeholder || "Select an option"}
         </option>
         {options.map((option) => {

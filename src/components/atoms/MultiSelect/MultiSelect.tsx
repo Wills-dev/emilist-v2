@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { MultiSelectProps } from "@/lib/types";
 
@@ -8,72 +8,162 @@ const MultiSelect = ({
   options,
   value,
   onChange,
-  placeholder = "Select languages",
+  placeholder = "Select option(s)",
+  showSearch = false,
+  searchPlaceholder = "Search...",
+  allowOthers = false,
+  customPlaceholder = "Enter custom value",
 }: MultiSelectProps) => {
   const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const [showCustomInput, setShowCustomInput] = useState(false);
+
+  const [customValue, setCustomValue] = useState("");
+
+  const normalizedOptions = useMemo(
+    () =>
+      options.map((item) =>
+        typeof item === "string" ? { label: item, value: item } : item,
+      ),
+    [options],
+  );
+
+  const filteredOptions = useMemo(
+    () =>
+      normalizedOptions.filter((option) =>
+        option.label.toLowerCase().includes(search.toLowerCase()),
+      ),
+    [normalizedOptions, search],
+  );
+
+  const handleAddCustomValue = () => {
+    const trimmed = customValue.trim();
+
+    if (!trimmed) return;
+
+    onChange(trimmed);
+
+    setCustomValue("");
+    setShowCustomInput(false);
+    setOpen(false);
+  };
 
   return (
     <div className="relative space-y-4">
       <button
         type="button"
-        onClick={() => setOpen((p) => !p)}
-        className="w-full h-11 px-3 flex items-center backdrop-blur-2xl bg-[#ECECEC] text-[#737774] active:border-[#25C269] active:border duration-300 transition-all rounded-[10px]"
+        onClick={() => setOpen((prev) => !prev)}
+        className="w-full h-11 px-3 flex items-center justify-between gap-4 text-left backdrop-blur-2xl bg-[#ECECEC] text-[#737774] rounded-[10px]"
       >
-        {value.length ? value.join(", ") : placeholder}
+        <span className="block">{placeholder}</span>
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m19.5 8.25-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </span>
       </button>
 
       {open && (
-        <div className="absolute z-20 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border bg-white shadow-lg">
-          {options.map((item) => (
-            <button
-              key={item.value}
-              type="button"
-              onClick={() => {
-                onChange(item.value);
-                setOpen(false);
-              }}
-              className={`flex w-full items-center justify-between px-4 py-3 hover:bg-gray-100 ${
-                value.includes(item.value) ? "bg-green-50" : ""
-              }`}
-            >
-              {item.label}
+        <div className="absolute z-20 mt-0 w-full rounded-lg border bg-white shadow-lg">
+          {showSearch && (
+            <div className="p-3 border-b">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={searchPlaceholder}
+                className="w-full h-10 px-3 border rounded-md outline-none focus:border-[#25C269]"
+              />
+            </div>
+          )}
 
-              {value.includes(item.value) && <span>✓</span>}
-            </button>
-          ))}
-        </div>
-      )}
-      {value?.length > 0 && (
-        <div className="flex gap-2 w-full flex-wrap">
-          {value?.map((item) => (
-            <div
-              key={item}
-              className="flex gap-2 items-center bg-[#F4F7F5] px-2 py-px rounded-full text-[#5E625F] text-sm h-6.5 cur"
-            >
-              <span className="capitalize">{item}</span>
+          {showCustomInput ? (
+            <div className="p-3 space-y-2">
+              <input
+                autoFocus
+                type="text"
+                value={customValue}
+                placeholder={customPlaceholder}
+                onChange={(e) => setCustomValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleAddCustomValue();
+                  }
+                }}
+                className="w-full h-10 px-3 border rounded-md outline-none focus:border-[#25C269]"
+              />
+
               <button
                 type="button"
-                onClick={() => {
-                  onChange(item);
-                  setOpen(false);
-                }}
-                className="hover:text-red-500 transition-all duration-300 cursor-pointer"
+                onClick={handleAddCustomValue}
+                className="w-full h-10 rounded-md bg-[#25C269] text-white"
               >
-                {" "}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
+                Add
+              </button>
+            </div>
+          ) : (
+            <div className="max-h-60 overflow-y-auto">
+              {filteredOptions.length ? (
+                filteredOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      const isOthers = option.value.toLowerCase() === "others";
+
+                      if (allowOthers && isOthers) {
+                        setShowCustomInput(true);
+                        return;
+                      }
+
+                      onChange(option.value);
+                    }}
+                    className={`flex w-full items-center justify-between px-4 py-3 hover:bg-gray-100 ${
+                      value.includes(option.value) ? "bg-green-50" : ""
+                    }`}
+                  >
+                    <span>{option.label}</span>
+
+                    {value.includes(option.value) && <span>✓</span>}
+                  </button>
+                ))
+              ) : (
+                <div className="p-4 text-center text-sm text-gray-500">
+                  No results found
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {value.length > 0 && (
+        <div className="flex gap-2 flex-wrap">
+          {value.map((item) => (
+            <div
+              key={item}
+              className="flex gap-2 items-center bg-[#F4F7F5] px-2 py-1 rounded-full text-sm"
+            >
+              <span>{item}</span>
+
+              <button
+                type="button"
+                onClick={() => onChange(item)}
+                className="hover:text-red-500 cursor-pointer transition-all duration-300"
+              >
+                ✕
               </button>
             </div>
           ))}

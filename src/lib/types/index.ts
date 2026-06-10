@@ -38,8 +38,15 @@ export interface selectOption {
 }
 
 export interface MultiSelectProps {
-  options: selectOption[];
+  options: selectOption[] | string[];
   value: string[];
   onChange: (value: string) => void;
+
   placeholder?: string;
+
+  showSearch?: boolean;
+  searchPlaceholder?: string;
+
+  allowOthers?: boolean;
+  customPlaceholder?: string;
 }
