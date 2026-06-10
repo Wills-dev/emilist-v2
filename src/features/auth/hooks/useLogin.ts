@@ -10,6 +10,7 @@ import { ApiErrorResponse } from "@/lib/types/error";
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { useStore } from "@/store/authStore";
 import { useAuthState } from "./useAuthState";
+import { createCookie } from "@/lib/helpers/cookie";
 
 export const useLogin = () => {
   const router = useRouter();
@@ -41,8 +42,10 @@ export const useLogin = () => {
     onSuccess: (data) => {
       toast.success("Login successful!");
 
-      if (!data.user.emailVerified) {
-        setOtpEmail(data.user.email);
+      createCookie("emilistToken", data.token);
+
+      if (!data?.userData?.isEmailVerified) {
+        setOtpEmail(data.userData.email);
         if (isModalFlow) {
           openModal("verify-otp");
         } else {
@@ -53,9 +56,9 @@ export const useLogin = () => {
         return;
       }
 
-      setCurrentUser(data.user);
+      setCurrentUser(data.userData);
 
-      queryClient.setQueryData(["currentUser"], data.user);
+      queryClient.setQueryData(["currentUser"], data.userData);
 
       resetForm();
 
@@ -63,7 +66,10 @@ export const useLogin = () => {
 
       //modal flow
       if (isModalFlow) {
-        if (!data.user.profileComplete && pendingFlow !== "register-expert") {
+        if (
+          !data?.userData?.isProfileComplete &&
+          pendingFlow !== "register-expert"
+        ) {
           openModal("complete-profile");
           return;
         }
@@ -74,7 +80,7 @@ export const useLogin = () => {
 
       //page flow
 
-      if (!data.user.profileComplete) {
+      if (!data?.userData?.isProfileComplete) {
         if (
           pendingFlow &&
           bypassProfileCompletionFlows.includes(pendingFlow) &&

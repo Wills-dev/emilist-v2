@@ -22,6 +22,7 @@ export const useBusinessProfileState = () => {
     })),
   );
 
+  const resetBusiness = useExpertStore((state) => state.resetBusiness);
   const updateBusiness = useExpertStore((state) => state.updateBusiness);
   const toggleService = useExpertStore((state) => state.toggleService);
   const toggleCoverage = useExpertStore((state) => state.toggleCoverage);
@@ -77,5 +78,6 @@ export const useBusinessProfileState = () => {
     setBusiness,
     handleBusinessImages,
     handleSameAsProfile,
+    resetBusiness,
   };
 };

@@ -5,8 +5,6 @@ export const createCertificationSlice: StateCreator<CertificationSlice> = (
   set,
 ) => ({
   certifications: [],
-  certificationImages: [],
-  certificationPreview: [],
   certificationView: [],
 
   addCertification: () =>
@@ -19,29 +17,41 @@ export const createCertificationSlice: StateCreator<CertificationSlice> = (
           issuingDate: "",
           expiringDate: "",
           isVerified: false,
-          doesntExpire: false,
+          isCertificateExpire: false,
+
+          image: null,
+          preview: "",
         },
       ],
-      certificationImages: [...state.certificationImages, null],
+
       certificationView: [...state.certificationView, true],
     })),
 
   updateCertification: (i, key, value) =>
     set((state) => {
-      const arr = [...state.certifications];
-      arr[i] = { ...arr[i], [key]: value };
-      return { certifications: arr };
+      const certifications = [...state.certifications];
+
+      const updated = {
+        ...certifications[i],
+        [key]: value,
+      };
+
+      if (key === "expiringDate" && value) {
+        updated.isCertificateExpire = false;
+      }
+
+      if (key === "isCertificateExpire" && value === true) {
+        updated.expiringDate = "";
+      }
+
+      certifications[i] = updated;
+
+      return { certifications };
     }),
 
   removeCertification: (i) =>
     set((state) => ({
       certifications: state.certifications.filter((_, index) => index !== i),
-      certificationImages: state.certificationImages.filter(
-        (_, index) => index !== i,
-      ),
-      certificationPreview: state.certificationPreview.filter(
-        (_, index) => index !== i,
-      ),
       certificationView: state.certificationView.filter(
         (_, index) => index !== i,
       ),
@@ -56,20 +66,32 @@ export const createCertificationSlice: StateCreator<CertificationSlice> = (
 
   updateCertificationImage: (i, file, preview) =>
     set((state) => {
-      const imgs = [...state.certificationImages];
-      const previewImg = [...state.certificationPreview];
-      imgs[i] = file;
-      previewImg[i] = preview;
-      return { certificationImages: imgs, certificationPreview: previewImg };
+      const certifications = [...state.certifications];
+
+      certifications[i] = {
+        ...certifications[i],
+        image: file,
+        preview,
+      };
+
+      return { certifications };
     }),
 
-  removeCertificationImage: (index) =>
-    set((state) => ({
-      certificationImages: state.certificationImages.map((img, i) =>
-        i === index ? null : img,
-      ),
-      certificationPreview: state.certificationPreview.map((img, i) =>
-        i === index ? "" : img,
-      ),
-    })),
+  removeCertificationImage: (i) =>
+    set((state) => {
+      const certifications = [...state.certifications];
+
+      certifications[i] = {
+        ...certifications[i],
+        image: null,
+        preview: "",
+      };
+
+      return { certifications };
+    }),
+  resetCertification: () =>
+    set({
+      certifications: [],
+      certificationView: [],
+    }),
 });

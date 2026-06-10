@@ -1,3 +1,7 @@
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+
 import Image from "next/image";
 
 import Container from "@/components/atoms/Container/Container";
@@ -13,7 +17,7 @@ const NewExeprtLayout = ({
 }) => {
   return (
     <div className="min-h-screen h-screen w-full flex flex-col relative">
-      <div className="w-full border-b border-[#E5E5E5] bg-white absolute top-0 z-10 left-0 right-0 ">
+      <div className="w-full border-b border-[#E5E5E5] bg-white absolute top-0 z-50 left-0 right-0 ">
         <Container>
           <header
             id="header"
@@ -27,15 +31,23 @@ const NewExeprtLayout = ({
       <Container variant="large">
         <div className="h-screen w-full overflow-hidden">
           <div className="flex h-full">
-            <div className="max-w-156.25 w-full h-full min-h-full bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] flex justify-center items-center max-xl:hidden">
-              <Image
-                src={imgUrl}
-                alt="preview"
-                width={625}
-                height={860}
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="max-w-156.25 w-full h-full min-h-full bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] flex justify-center items-center max-xl:hidden"
+              >
+                <Image
+                  src={imgUrl}
+                  alt="preview"
+                  width={625}
+                  height={860}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
             <div className="h-full flex-1 w-full overflow-y-auto">
               <div className="h-20 w-full" />
               {children}

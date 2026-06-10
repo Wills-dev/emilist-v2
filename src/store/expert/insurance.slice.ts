@@ -30,4 +30,10 @@ export const createInsuranceSlice: StateCreator<InsuranceSlice> = (set) => ({
       view[i] = !view[i];
       return { insuranceView: view };
     }),
+
+  resetInsurance: () =>
+    set({
+      insurances: [],
+      insuranceView: [],
+    }),
 });

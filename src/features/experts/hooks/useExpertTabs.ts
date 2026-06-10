@@ -17,7 +17,7 @@ export const useExpertTabs = () => {
     if (next === "business-profile" && !validateProfileForm(profile)) return;
 
     if (
-      next === "experiences" &&
+      (next === "experiences" && !validateProfileForm(profile)) ||
       !validateBusinessProfile(business, businessImages)
     )
       return;

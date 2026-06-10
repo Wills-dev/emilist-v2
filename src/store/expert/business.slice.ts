@@ -77,4 +77,25 @@ export const createBusinessSlice: StateCreator<BusinessSlice> = (set) => ({
       businessImages: state.businessImages.filter((_, i) => i !== index),
       businessPreviews: state.businessPreviews.filter((_, i) => i !== index),
     })),
+  resetBusiness: () =>
+    set({
+      business: {
+        services: [],
+        coverageArea: [],
+        businessName: "",
+        yearFounded: "",
+        numberOfEmployee: "",
+        businessAddress: "",
+        businessState: "",
+        businessCountry: "",
+        startingPrice: "",
+        currency: "",
+        rateUnit: "",
+        noticePeriod: "",
+        businessDescription: "",
+      },
+      businessImages: [],
+      businessPreviews: [],
+      useProfileAddress: false,
+    }),
 });

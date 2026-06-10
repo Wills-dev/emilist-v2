@@ -27,10 +27,7 @@ const MembershipForm = ({
   } = useMembershipState();
 
   const handleExpires = (e: boolean) => {
-    if (e) {
-      updateMembership(index, "endDate", "");
-    }
-    updateMembership(index, "doesntEnd", e);
+    updateMembership(index, "isMembershipExpire", e);
   };
 
   return (
@@ -97,7 +94,7 @@ const MembershipForm = ({
               </div>
               <div className="flex items-center gap-2 col-span-2">
                 <Checkbox
-                  value={membership.doesntEnd}
+                  value={membership.isMembershipExpire}
                   onChange={handleExpires}
                 />
                 <Label htmlFor="" title="No end date" />

@@ -1,6 +1,7 @@
 export const routes = {
   home: "/",
   joinExpert: "/become-expert",
+  congrats: "/become-expert/congratulations",
   postJob: "/post-job",
   marketplace: {
     jobs: "/marketplace/jobs",

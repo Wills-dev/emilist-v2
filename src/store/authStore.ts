@@ -12,7 +12,8 @@ export type ModalType =
   | null;
 
 export interface User {
-  id: string;
+  uniqueId: string;
+  _id: string;
   email: string;
   firstName?: string;
   lastName?: string;
