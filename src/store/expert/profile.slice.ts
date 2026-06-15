@@ -32,7 +32,7 @@ export const createProfileSlice: StateCreator<ProfileSlice> = (set) => ({
     set((state) => ({
       profile: {
         ...state.profile,
-        language: state.profile.languages.includes(language)
+        languages: state.profile.languages.includes(language)
           ? state.profile.languages.filter((x) => x !== language)
           : [...state.profile.languages, language],
       },

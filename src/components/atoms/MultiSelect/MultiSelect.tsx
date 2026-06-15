@@ -131,12 +131,12 @@ const MultiSelect = ({
                       onChange(option.value);
                     }}
                     className={`flex w-full items-center justify-between px-4 py-3 hover:bg-gray-100 ${
-                      value.includes(option.value) ? "bg-green-50" : ""
+                      value?.includes(option.value) ? "bg-green-50" : ""
                     }`}
                   >
                     <span>{option.label}</span>
 
-                    {value.includes(option.value) && <span>✓</span>}
+                    {value?.includes(option.value) && <span>✓</span>}
                   </button>
                 ))
               ) : (
@@ -149,7 +149,7 @@ const MultiSelect = ({
         </div>
       )}
 
-      {value.length > 0 && (
+      {value?.length > 0 && (
         <div className="flex gap-2 flex-wrap">
           {value.map((item) => (
             <div
