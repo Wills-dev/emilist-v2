@@ -16,8 +16,8 @@ export const updateProfileRequest = async (payload: CompleteProfileForm) => {
     formData.append("country", payload.country);
     formData.append("bio", payload.bio);
 
-    payload.language.forEach((lang) => {
-      formData.append("language", lang);
+    payload.languages.forEach((lang) => {
+      formData.append("languages", lang);
     });
 
     if (payload.image) {

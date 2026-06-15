@@ -1,7 +1,16 @@
-import React from "react";
+import CongratsContent from "@/components/molecules/CongratsContent/CongratsContent";
+import FormNav from "@/components/molecules/FormNav/FormNav";
 
-const page = () => {
-  return <div>page</div>;
+const CongratsPage = () => {
+  return (
+    <div className="h-screen w-full flex flex-col relative">
+      <FormNav />
+      <CongratsContent
+        title="Expert Profile Complete!"
+        desc="  Keep an eye out for job offers around you on the market place"
+      />
+    </div>
+  );
 };
 
-export default page;
+export default CongratsPage;

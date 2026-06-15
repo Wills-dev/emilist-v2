@@ -90,7 +90,7 @@ const ProfileSetup = ({
       <div className="sm:col-span-1 col-span-2 w-full flex flex-col gap-2">
         <Label htmlFor="language" title="Language" />
         <MultiSelect
-          value={form.language}
+          value={form.languages}
           onChange={toggleLanguage}
           options={LANGUAGES}
         />
@@ -169,43 +169,6 @@ const ProfileSetup = ({
           deleteImage={deleteImage}
           handleImageChange={handleImageChange}
         />
-        {/* <label htmlFor="image" className="">
-          <div className="h-35 backdrop-blur-2xl bg-[#ECECEC] p-1.5 w-full rounded-[10px]">
-            {imagePreview ? (
-              <div className="relative overflow-hidden rounded-[10px] w-full h-full bg-white">
-                <Image
-                  src={imagePreview}
-                  alt="Preview"
-                  fill
-                  className="h-full w-full object-cover"
-                />
-
-                <button
-                  type="button"
-                  onClick={deleteImage}
-                  className="absolute right-1 top-1 rounded-full bg-red-500 px-2 py-1 text-xs text-white cursor-pointer"
-                >
-                  ×
-                </button>
-              </div>
-            ) : (
-              <>
-                {" "}
-                <div className="w-full h-full bg-white rounded-[10px] border border-dashed flex justify-center items-center border-[#A2A4A2] text-[#A2A4A2]">
-                  <ImagePlus />
-                  <input
-                    type="file"
-                    name="image"
-                    id="image"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="invisible h-0 w-0"
-                  />
-                </div>
-              </>
-            )}
-          </div>
-        </label> */}
       </div>
     </div>
   );
