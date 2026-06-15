@@ -14,6 +14,8 @@ import {
 import { createCertificationSlice } from "./certification.slice";
 import { createMembershipSlice } from "./membership.slice";
 import { createInsuranceSlice } from "./insurance.slice";
+import { Certification } from "@/features/experts/types";
+import { CompleteProfileForm } from "@/features/auth/types";
 
 export const useExpertStore = create<
   ProfileSlice &
@@ -34,6 +36,43 @@ export const useExpertStore = create<
     }),
     {
       name: "expert-registration",
+      partialize: (state) => {
+        type PersistedCertification = Omit<Certification, "image" | "preview">;
+        type PersistedProfile = Omit<CompleteProfileForm, "image">;
+
+        return {
+          ...state,
+
+          profile: (({ image, ...rest }) => rest)(
+            state.profile,
+          ) as PersistedProfile,
+          profilePreview: undefined,
+
+          certifications: state.certifications.map(
+            ({ image, preview, ...rest }): PersistedCertification => rest,
+          ),
+
+          businessImages: undefined,
+          businessPreviews: undefined,
+        };
+      },
+      onRehydrateStorage: () => (state) => {
+        if (!state) return;
+
+        state.profile = {
+          ...state.profile,
+          image: null,
+        };
+
+        state.certifications = state.certifications.map((c) => ({
+          image: null,
+          preview: "",
+          ...c,
+        }));
+
+        state.businessImages = [];
+        state.businessPreviews = [];
+      },
     },
   ),
 );

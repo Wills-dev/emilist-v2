@@ -1,6 +1,9 @@
+import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+
+import { toast } from "sonner";
 import { useShallow } from "zustand/react/shallow";
 import { useMutation } from "@tanstack/react-query";
-import { usePathname, useRouter } from "next/navigation";
 
 import { useUpdateUserProfileState } from "@/features/auth/hooks/useUpdateUserProfileState";
 import { useBusinessProfileState } from "./useBusinessProfileState";
@@ -17,11 +20,9 @@ import { validateMemberships } from "../helpers/validateMemberships";
 import { validateInsurances } from "../helpers/validateInsurances";
 import { useStore } from "@/store/authStore";
 import { useProtectedSubmit } from "@/lib/hooks/useProtectedSubmit";
-import { useEffect } from "react";
 import { BusinessPayloadType, NewExpertFormType } from "../types";
-import { validatePersistedFiles } from "../helpers/validatePersistedFiles";
-import { toast } from "sonner";
 import { routes } from "@/lib/helpers/routes";
+import { useExpertTabs } from "./useExpertTabs";
 
 export const useCreateExpert = () => {
   const router = useRouter();
@@ -36,6 +37,8 @@ export const useCreateExpert = () => {
   );
 
   const clearPendingFlow = useStore((state) => state.clearPendingFlow);
+
+  const { switchTab } = useExpertTabs();
 
   const { profilePayload, displayImage } = useUpdateUserProfileState();
 
@@ -79,15 +82,25 @@ export const useCreateExpert = () => {
 
     if (!currentUser) return;
 
-    const { isValid, reason } = validatePersistedFiles(pendingFormData);
-
-    if (!isValid) {
-      toast.error(reason);
+    if (businessImages.length === 0) {
+      switchTab("profile");
+      toast.info(
+        "Almost there! Please re-attach your images to complete expert registration.",
+      );
+      clearPendingFlow();
       return;
     }
 
     mutate(pendingFormData as unknown as NewExpertFormType);
-  }, [mutate, pendingFlow, pendingFormData, currentUser]);
+  }, [
+    mutate,
+    pendingFlow,
+    pendingFormData,
+    currentUser,
+    businessImages.length,
+    switchTab,
+    clearPendingFlow,
+  ]);
 
   const handleSubmit = () => {
     const certValid = validateCertifications(validCertifications);
@@ -142,13 +155,6 @@ export const useCreateExpert = () => {
       certificate,
       ...(displayImage && { displayImage }),
     };
-
-    const { isValid, reason } = validatePersistedFiles(payload);
-
-    if (!isValid) {
-      toast.error(reason);
-      return;
-    }
 
     guardedSubmit(payload, mutate);
   };
