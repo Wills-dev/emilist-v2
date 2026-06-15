@@ -1,12 +1,11 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-
 import Image from "next/image";
 
+import { AnimatePresence, motion } from "framer-motion";
+
 import Container from "@/components/atoms/Container/Container";
-import Logo from "@/components/atoms/Logo/Logo";
-import UserInitial from "@/components/atoms/UserInitial/UserInitial";
+import FormNav from "@/components/molecules/FormNav/FormNav";
 
 const NewExeprtLayout = ({
   children,
@@ -18,15 +17,7 @@ const NewExeprtLayout = ({
   return (
     <div className="min-h-screen h-screen w-full flex flex-col relative">
       <div className="w-full border-b border-[#E5E5E5] bg-white absolute top-0 z-50 left-0 right-0 ">
-        <Container>
-          <header
-            id="header"
-            className="w-full flex justify-between items-center lg:gap-30 md:gap-20 h-20"
-          >
-            <Logo />
-            <UserInitial />
-          </header>
-        </Container>
+        <FormNav />
       </div>
       <Container variant="large">
         <div className="h-screen w-full overflow-hidden">

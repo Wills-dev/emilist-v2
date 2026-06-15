@@ -19,7 +19,7 @@ export interface CompleteProfileForm {
   lastName: string;
   countryCode: string;
   mobile: string;
-  language: string[];
+  languages: string[];
   houseAddress: string;
   state: string;
   city: string;

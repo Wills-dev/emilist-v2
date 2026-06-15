@@ -11,11 +11,9 @@ import ExpertiseForm from "@/components/molecules/forms/ExpertiseForm/ExpertiseF
 
 import { expertTabs } from "../../constants";
 import { useExpertTabs } from "../../hooks/useExpertTabs";
-import { useCreateExpert } from "../../hooks/useCreateExpert";
 
 const ExpertFormWrapper = () => {
   const { tab, switchTab } = useExpertTabs();
-  const {} = useCreateExpert();
 
   const currentTab = expertTabs.find((item) => {
     return item.id === tab;

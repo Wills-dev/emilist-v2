@@ -47,7 +47,7 @@ export const useUpdateUserProfile = () => {
       lastName: currentUser.lastName ?? "",
       countryCode: currentUser.countryCode ?? "+234",
       mobile: currentUser.mobile ?? "",
-      language: currentUser.language ?? [],
+      languages: currentUser.languages ?? [],
       houseAddress: currentUser.houseAddress ?? "",
       state: currentUser.state ?? "",
       city: currentUser.city ?? "",

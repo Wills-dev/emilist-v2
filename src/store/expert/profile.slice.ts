@@ -7,7 +7,7 @@ export const createProfileSlice: StateCreator<ProfileSlice> = (set) => ({
     lastName: "",
     countryCode: "+234",
     mobile: "",
-    language: [],
+    languages: [],
     houseAddress: "",
     state: "",
     city: "",
@@ -32,9 +32,9 @@ export const createProfileSlice: StateCreator<ProfileSlice> = (set) => ({
     set((state) => ({
       profile: {
         ...state.profile,
-        language: state.profile.language.includes(language)
-          ? state.profile.language.filter((x) => x !== language)
-          : [...state.profile.language, language],
+        language: state.profile.languages.includes(language)
+          ? state.profile.languages.filter((x) => x !== language)
+          : [...state.profile.languages, language],
       },
     })),
 
@@ -57,7 +57,7 @@ export const createProfileSlice: StateCreator<ProfileSlice> = (set) => ({
         lastName: "",
         countryCode: "+234",
         mobile: "",
-        language: [],
+        languages: [],
         houseAddress: "",
         state: "",
         city: "",
