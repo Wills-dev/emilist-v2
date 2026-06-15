@@ -22,7 +22,7 @@ export const validateProfileForm = (form: CompleteProfileForm) => {
     return false;
   }
 
-  if (form.languages.length === 0) {
+  if (form?.languages?.length === 0) {
     toast.error("Please select at least one language.");
     return false;
   }
@@ -61,7 +61,7 @@ export const isFormComplete = (form: CompleteProfileForm) => {
     form.lastName.trim() !== "" &&
     form.countryCode.trim() !== "" &&
     form.mobile.trim() !== "" &&
-    form.languages.length > 0 &&
+    form?.languages?.length > 0 &&
     form.houseAddress.trim() !== "" &&
     form.state.trim() !== "" &&
     form.city.trim() !== "" &&
