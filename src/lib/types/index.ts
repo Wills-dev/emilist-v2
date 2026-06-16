@@ -6,6 +6,7 @@ export type NavLinkProps = {
   variant?: "default" | "sidebar" | "header";
   onClick?: () => void;
   activeTab?: boolean;
+  aRef?: boolean;
 };
 
 export interface ButtonProps {

@@ -15,6 +15,7 @@ const NavLink = ({
   onClick,
   variant = "default",
   activeTab = false,
+  aRef = false,
 }: NavLinkProps) => {
   const isActive = useActivePath(href || "");
 
@@ -53,20 +54,41 @@ const NavLink = ({
     </button>
   );
 
+  const aElement = (
+    <a
+      href={href}
+      className={clsx(
+        styles.base,
+        isActive ? styles.active : styles?.inactive,
+        className,
+      )}
+    >
+      {" "}
+      {icon && icon}
+      <span className="block">{title}</span>
+    </a>
+  );
+
   return (
     <>
       {href ? (
-        <Link
-          href={href}
-          className={clsx(
-            styles.base,
-            isActive ? styles.active : styles?.inactive,
-            className,
+        <>
+          {aRef ? (
+            aElement
+          ) : (
+            <Link
+              href={href}
+              className={clsx(
+                styles.base,
+                isActive ? styles.active : styles?.inactive,
+                className,
+              )}
+            >
+              {icon && icon}
+              <span className="block">{title}</span>
+            </Link>
           )}
-        >
-          {icon && icon}
-          <span className="block">{title}</span>
-        </Link>
+        </>
       ) : (
         buttonElement
       )}
