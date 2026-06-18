@@ -8,7 +8,7 @@ import { routes } from "@/lib/helpers/routes";
 
 const CustomerServiceSection = () => {
   return (
-    <section className="sm:py-20 py-1">
+    <section className="sm:py-20 py-1" id="enterprise">
       <Container>
         <div className="flex items-center justify-center gap-10 flex-wrap">
           <div className="max-w-157 w-full min-w-72.5">
@@ -23,15 +23,15 @@ const CustomerServiceSection = () => {
               </div>
               <div className="space-y-4">
                 <CustomerServiceCard
-                  href={routes?.bookService}
+                  href={routes?.enterprise?.bookService}
                   title="Schedule a service"
                 />
                 <CustomerServiceCard
-                  href={routes?.bookMaintenance}
+                  href={routes?.enterprise?.bookMaintenance}
                   title="Book maintenance services"
                 />
                 <CustomerServiceCard
-                  href={routes?.bookMeeting}
+                  href={routes?.enterprise?.bookMeeting}
                   title="Schedule a meeting"
                 />
               </div>

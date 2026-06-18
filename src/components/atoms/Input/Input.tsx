@@ -30,7 +30,7 @@ const Input = ({
       <input
         style={{ fontSize: "16px" }}
         {...props}
-        className={`w-full bg-inherit h-full placeholder-gray-300 outline-none ${paddingX}`}
+        className={`w-full bg-inherit h-full placeholder-gray-400 outline-none ${paddingX}`}
       />
       {showPassword !== undefined && (
         <button

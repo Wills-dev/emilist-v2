@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 import { AnimatePresence } from "framer-motion";
 
 import Dot from "@/components/atoms/Dot/Dot";
@@ -11,6 +9,7 @@ import ExpertiseForm from "@/components/molecules/forms/ExpertiseForm/ExpertiseF
 
 import { expertTabs } from "../../constants";
 import { useExpertTabs } from "../../hooks/useExpertTabs";
+import FormTitleWrapper from "@/components/atoms/FormTitleWrapper/FormTitleWrapper";
 
 const ExpertFormWrapper = () => {
   const { tab, switchTab } = useExpertTabs();
@@ -23,24 +22,15 @@ const ExpertFormWrapper = () => {
     <div className="pt-10 pb-16 sm:px-16 px-6 w-full">
       <div className="max-w-170.25 w-full space-y-12">
         <div className="space-y-4 w-full border-b border-[#E5E5E5] sm:pb-4 pb-2">
-          <div className="flex gap-4 items-center">
-            <div className="bg-[#F4F7F5] h-8.5 w-8.5 rounded-[9px] flex justify-center items-center">
-              <Image
-                src={currentTab?.iconUrl || "/assets/icons/user-star.svg"}
-                alt="icon"
-                width={16}
-                height={16}
-                className="object-contain"
-              />
-            </div>
-            <h6 className="font-bold sm:text-[30px] text-2xl font-exo leading-9">
-              {currentTab?.title}
-            </h6>
-          </div>
+          <FormTitleWrapper
+            title={currentTab?.title || ""}
+            iconUrl={currentTab?.iconUrl}
+          />
+
           <div className="flex items-end justify-between gap-10">
-            <div className="max-w-111.75 w-full text-[#737774] leading-6 max-sm:text-sm">
+            <p className="max-w-111.75 w-full text-[#737774] leading-6 max-sm:text-sm">
               {currentTab?.desc}
-            </div>
+            </p>
             <div className="w-fit flex items-center gap-1.5 h-7.5 bg-[#F4F7F5] p-2.25 rounded-[9px]">
               {expertTabs.map((item, i) => (
                 <button

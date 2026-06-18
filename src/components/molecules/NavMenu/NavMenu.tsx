@@ -12,6 +12,7 @@ const NavMenu = ({ className = "items-center" }: { className?: string }) => {
           title={navItem?.title}
           icon={navItem?.icon}
           variant="header"
+          aRef={navItem?.aRef}
         />
       ))}
     </nav>

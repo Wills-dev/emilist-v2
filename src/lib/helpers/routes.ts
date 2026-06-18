@@ -18,9 +18,13 @@ export const routes = {
   verifyEmail: "/auth/verify-email",
 
   dashboard: "/dashboard/overview",
-  bookService: "/book-service",
-  bookMaintenance: "/book-maintenance",
-  bookMeeting: "/book-meeting",
+  enterprise: {
+    bookService: "/enterprise/book-service",
+    bookMaintenance: "/enterprise/book-maintenance",
+    bookMeeting: "/enterprise/book-meeting",
+    success: "/enterprise/success",
+  },
+
   aboutUs: "/about-us",
   policy: "/policy",
   terms: "/terms",

@@ -17,16 +17,19 @@ export const navbarLinks = [
     title: "Join as Expert",
     href: routes?.joinExpert,
     icon: <ExpertIcon />,
+    aRef: false,
   },
   {
     title: "Post a New Job",
     href: routes?.postJob,
     icon: <PostJobIcon />,
+    aRef: false,
   },
   {
     title: "For Enterprise",
-    href: routes?.marketplace?.jobs,
+    href: "#enterprise",
     icon: <EnterpriseIcon />,
+    aRef: true,
   },
 ];
 
