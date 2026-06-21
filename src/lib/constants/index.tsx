@@ -193,3 +193,5 @@ export const photoTips = [
   "Make sure to smile.",
   "Try to use a solid background",
 ];
+
+export const expertLevels = ["Apprentice", "Junior", "Intermediate", "Senior"];

@@ -25,7 +25,7 @@ const Input = ({
           : "px-2";
 
   return (
-    <div className="relative flex items-center backdrop-blur-2xl bg-[#ECECEC] text-[#737774] rounded-[10px] focus-within:border transition-all focus-within:border-[#25C269]  duration-300 h-11 p-1">
+    <div className="relative flex items-center backdrop-blur-2xl bg-[#ECECEC] text-[#737774] rounded-[10px] focus-within:border transition-all focus-within:border-[#25C269]  duration-300 h-11 p-1 ">
       {icon && icon}
       <input
         style={{ fontSize: "16px" }}

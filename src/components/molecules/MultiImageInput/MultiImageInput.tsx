@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { ImagePlus } from "lucide-react";
+import DeleteBtn from "@/components/atoms/DeleteBtn/DeleteBtn";
 
 const MultiImageInput = ({
   removeImage,
@@ -31,14 +32,7 @@ const MultiImageInput = ({
                   fill
                   className="h-full w-full object-cover"
                 />
-
-                <button
-                  type="button"
-                  onClick={() => removeImage(i)}
-                  className="absolute right-0.5 top-0.5 rounded-full bg-red-500 px-2 py-1 text-xs text-white cursor-pointer"
-                >
-                  ×
-                </button>
+                <DeleteBtn removeImg={() => removeImage(i)} />
               </div>
             ))}
             {/* <button

@@ -22,7 +22,7 @@ const EnterpriseWrapper = ({
           {desc}
         </p>
       </div>
-      <div className="w-full mb-24">{children}</div>
+      <div className="w-full">{children}</div>
     </div>
   );
 };
