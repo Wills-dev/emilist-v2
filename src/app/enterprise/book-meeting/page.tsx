@@ -1,18 +1,18 @@
-import RecurrinngRequestForm from "@/components/molecules/forms/RecurrinngRequestForm/RecurrinngRequestForm";
+import CustomRequestForm from "@/components/molecules/forms/CustomRequestForm/CustomRequestForm";
 import EnterpriseWrapper from "@/components/organisms/EnterpriseWrapper/EnterpriseWrapper";
 import CenteredFormLayout from "@/components/templates/CenteredFormLayout/CenteredFormLayout";
 
-const BookMaintenance = () => {
+const CustomRequestPage = () => {
   return (
     <CenteredFormLayout>
       <EnterpriseWrapper
-        title="Recurring Maintenance"
-        desc="Tell us more about your maintenance service request"
+        title="Custom request"
+        desc="Tell us more about your unique service needs"
       >
-        <RecurrinngRequestForm />
+        <CustomRequestForm />
       </EnterpriseWrapper>
     </CenteredFormLayout>
   );
 };
 
-export default BookMaintenance;
+export default CustomRequestPage;

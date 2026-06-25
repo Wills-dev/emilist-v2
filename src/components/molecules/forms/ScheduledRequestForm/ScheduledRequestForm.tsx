@@ -218,6 +218,9 @@ const ScheduledRequestForm = () => {
         </div>
       </div>
       <div className="col-span-2 flex flex-col gap-2">
+        <h6 className="text-gray-900 sm:text-xl text-lg leading-8 font-semibold font-exo">
+          Experience Level
+        </h6>
         <Label
           htmlFor="level"
           title="What level of expertise do you need on your request ?"
