@@ -19,7 +19,7 @@ import { useShallow } from "zustand/react/shallow";
 import { useScheduledStore } from "@/store/enterprise/scheduledStore";
 import { useScheduleRequest } from "@/lib/hooks/enterprise/useScheduleRequest";
 
-const CustomRequestForm = () => {
+const RecurrinngRequestForm = () => {
   const [form, setForm] = useState("");
 
   const { handleChangeImages } = useScheduleRequest();
@@ -101,13 +101,13 @@ const CustomRequestForm = () => {
         />
       </div>
       <div className="col-span-2 flex flex-col gap-2">
-        <Label htmlFor="description" title="Tell us what you need in detail" />
+        <Label htmlFor="description" title="Describe your request" />
         <Textarea
           id="description"
           name="description"
           value={form}
           onChange={(e) => setForm(e.target.value)}
-          placeholder="Talk about the services you need at length as well as your service preferences and we’ll reach out to you as fast as possible"
+          placeholder="Be as detailed as possible, talk about the services you need at length as well as your service preferences"
           className="h-35"
         />
       </div>
@@ -116,6 +116,71 @@ const CustomRequestForm = () => {
         removeImg={removeScheduleImage}
         handleChangeImages={handleChangeImages}
       />
+
+      <div className="col-span-2 flex flex-col gap-2">
+        <Label htmlFor="period" title="Set frequency" />
+        <div className="grid grid-cols-2 gap-4">
+          <Select
+            id="period"
+            name="period"
+            value={form}
+            onChange={(e) => setForm(e.target.value)}
+            options={periodOptions}
+            placeholder="Weekly"
+          />
+          <div className="sm:col-span-1 col-span-2 grid grid-cols-2 gap-4">
+            <Input
+              type="date"
+              name="startDate"
+              value={form}
+              onChange={(e) => setForm(e.target.value)}
+            />
+            <Input
+              type="date"
+              name="endDate"
+              value={form}
+              onChange={(e) => setForm(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="col-span-2 flex flex-col gap-2">
+        <Label
+          htmlFor="budget"
+          title=" What’s your estimated budget for this job"
+        />
+        <div className="grid grid-cols-10 gap-2">
+          <div className="col-span-2">
+            <Select
+              id="currency"
+              name="currency"
+              value={form}
+              onChange={(e) => setForm(e.target.value)}
+              options={currencies}
+              placeholder="NGN"
+            />
+          </div>
+          <div className="col-span-6 w-full">
+            <Input
+              id="amount"
+              name="amount"
+              value={form}
+              onChange={(e) => setForm(e.target.value)}
+              placeholder="25,000"
+            />
+          </div>
+          <div className="col-span-2">
+            <Select
+              id="rateUnit"
+              name="rateUnit"
+              value={form}
+              onChange={(e) => setForm(e.target.value)}
+              options={rateUnits}
+              placeholder="Every week"
+            />
+          </div>
+        </div>
+      </div>
       <div className="col-span-2 flex flex-col gap-2">
         <h6 className="text-gray-900 sm:text-xl text-lg leading-8 font-semibold font-exo">
           Experience Level
@@ -148,27 +213,6 @@ const CustomRequestForm = () => {
           placeholder="Enter Emilist ID"
         />
       </div>
-
-      <div className="col-span-2 flex flex-col gap-2">
-        <h6 className="text-gray-900 sm:text-xl text-lg leading-8 font-semibold font-exo">
-          Book appointment
-        </h6>
-        <Label
-          htmlFor="period"
-          title="Setup your availability for a virtual call to discuss what you need"
-        />
-        <div className="grid grid-cols-2 gap-4">
-          <div className="sm:col-span-1 col-span-2 ">
-            <Input
-              type="date"
-              name="startDate"
-              value={form}
-              onChange={(e) => setForm(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-
       <div className="col-span-2 pt-6">
         <Button className="w-full" variant="primary">
           Submit Request
@@ -179,4 +223,4 @@ const CustomRequestForm = () => {
   );
 };
 
-export default CustomRequestForm;
+export default RecurrinngRequestForm;
