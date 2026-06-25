@@ -1,8 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-
 import { useShallow } from "zustand/react/shallow";
 
 import InputWrapper from "../../InputWrapper/InputWrapper";
@@ -11,18 +8,17 @@ import Input from "@/components/atoms/Input/Input";
 import MultiSelect from "@/components/atoms/MultiSelect/MultiSelect";
 import SelectWrapper from "../../SelectWrapper/SelectWrapper";
 import Textarea from "@/components/atoms/TextArea/Textarea";
-import PlusIcon from "@/components/atoms/icons/PlusIcon";
+import EnterpriseImage from "../../EnterpriseImage/EnterpriseImage";
+import BackHomeBtn from "@/components/atoms/BackHomeBtn/BackHomeBtn";
 import Select from "@/components/atoms/Select/Select";
 import CustomCheckbox from "@/components/atoms/CustomCheckbox/CustomCheckbox";
 import Button from "@/components/atoms/Button/Button";
-import ArrowBack from "@/components/atoms/icons/ArrowBack";
-import DeleteBtn from "@/components/atoms/DeleteBtn/DeleteBtn";
 
 import { currencies } from "@/lib/constants/currencies";
 import { countriesAndStates } from "@/lib/constants/countries";
-import { rateUnits } from "@/lib/constants/rateUnits";
 import { expertLevels } from "@/lib/constants";
 import { expertServices } from "@/features/experts/constants";
+import { rateUnits } from "@/lib/constants/rateUnits";
 import { useScheduledStore } from "@/store/enterprise/scheduledStore";
 import { useScheduleRequest } from "@/lib/hooks/enterprise/useScheduleRequest";
 
@@ -165,43 +161,11 @@ const ScheduledRequestForm = () => {
           className="h-35"
         />
       </div>
-      <div className="space-y-2 pb-6 border-b border-[#E5E5E5] w-full col-span-2">
-        <label
-          htmlFor="image"
-          className="flex items-center gap-2 text-[#6667FF] text-sm font-semibold"
-        >
-          <PlusIcon />
-          <span>Upload images</span>
-          <input
-            type="file"
-            name="image"
-            id="image"
-            accept="image/*"
-            multiple
-            onChange={handleChangeImages}
-            className="invisible h-0 w-0"
-          />
-        </label>
-        {schedulePreviews.length > 0 && (
-          <div className="flex gap-2">
-            {schedulePreviews?.map((image, i) => (
-              <div
-                key={i}
-                className="max-w-12 w-12 h-12 overflow-hidden rounded-lg bg-gray-100  relative shrink-0"
-              >
-                <Image
-                  src={image}
-                  alt="image-preview"
-                  width={48}
-                  height={48}
-                  className="object-cover w-full h-full max-w-full"
-                />
-                <DeleteBtn removeImg={() => removeScheduleImage(i)} />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <EnterpriseImage
+        previews={schedulePreviews}
+        removeImg={removeScheduleImage}
+        handleChangeImages={handleChangeImages}
+      />
       <div className="sm:col-span-1 col-span-2">
         <InputWrapper
           type="date"
@@ -292,17 +256,7 @@ const ScheduledRequestForm = () => {
           Submit Request
         </Button>
       </div>
-      <div className="flex justify-center col-span-2">
-        <Link
-          href=""
-          className="flex items-center gap-2 text-[#18A154] font-exo font-semibold hover:underline duration-300 transition-all"
-        >
-          <span className="text-sm">
-            <ArrowBack />
-          </span>
-          <span>Back to Homepage</span>
-        </Link>
-      </div>
+      <BackHomeBtn />
     </form>
   );
 };

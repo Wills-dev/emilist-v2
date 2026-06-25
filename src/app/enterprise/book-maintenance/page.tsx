@@ -1,18 +1,18 @@
-import ScheduledRequestForm from "@/components/molecules/forms/ScheduledRequestForm/ScheduledRequestForm";
+import CustomRequestForm from "@/components/molecules/forms/CustomRequestForm/CustomRequestForm";
 import EnterpriseWrapper from "@/components/organisms/EnterpriseWrapper/EnterpriseWrapper";
 import CenteredFormLayout from "@/components/templates/CenteredFormLayout/CenteredFormLayout";
 
-const BookServicePage = () => {
+const BookMaintenance = () => {
   return (
     <CenteredFormLayout>
       <EnterpriseWrapper
-        title="Scheduled request"
-        desc="Tell us more about your service request"
+        title="Custom request"
+        desc="Tell us more about your unique service needs"
       >
-        <ScheduledRequestForm />
+        <CustomRequestForm />
       </EnterpriseWrapper>
     </CenteredFormLayout>
   );
 };
 
-export default BookServicePage;
+export default BookMaintenance;

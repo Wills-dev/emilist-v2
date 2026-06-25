@@ -195,3 +195,26 @@ export const photoTips = [
 ];
 
 export const expertLevels = ["Apprentice", "Junior", "Intermediate", "Senior"];
+
+export const periodOptions = [
+  {
+    label: "Daily",
+    value: "daily",
+  },
+  {
+    label: "Weekly",
+    value: "weekly",
+  },
+  {
+    label: "Monthly",
+    value: "monthly",
+  },
+  {
+    label: "Quarterly",
+    value: "quarterly",
+  },
+  {
+    label: "Yearly",
+    value: "yearly",
+  },
+];
