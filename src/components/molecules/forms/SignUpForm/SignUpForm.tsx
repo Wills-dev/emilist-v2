@@ -80,6 +80,7 @@ const SignUpForm = () => {
             <p className="text-sm leading-6">
               By signing up with email or Google, you need to agree to our{" "}
               <button
+                type="button"
                 className="text-[#25C269] hover:text-green-700 cursor-pointer transition-colors duration-300"
                 onClick={() => setOpenTerms(true)}
               >
@@ -87,6 +88,7 @@ const SignUpForm = () => {
               </button>{" "}
               and{" "}
               <button
+                type="button"
                 className="text-[#25C269] hover:text-green-700 cursor-pointer transition-colors duration-300"
                 onClick={() => setOpenPolicy(true)}
               >

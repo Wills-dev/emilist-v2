@@ -10,11 +10,8 @@ import Input from "@/components/atoms/Input/Input";
 import Textarea from "@/components/atoms/TextArea/Textarea";
 import CustomCheckbox from "@/components/atoms/CustomCheckbox/CustomCheckbox";
 import EnterpriseImage from "../../EnterpriseImage/EnterpriseImage";
-import Select from "@/components/atoms/Select/Select";
 
-import { expertLevels, periodOptions } from "@/lib/constants";
-import { currencies } from "@/lib/constants/currencies";
-import { rateUnits } from "@/lib/constants/rateUnits";
+import { expertLevels } from "@/lib/constants";
 import { useShallow } from "zustand/react/shallow";
 import { useScheduledStore } from "@/store/enterprise/scheduledStore";
 import { useScheduleRequest } from "@/lib/hooks/enterprise/useScheduleRequest";

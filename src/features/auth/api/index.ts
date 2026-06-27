@@ -51,6 +51,22 @@ export const forgotPassword = async ({ email }: { email: string }) => {
   }
 };
 
+export const verifyForgotPasswordOtp = async ({
+  email,
+  otp,
+}: {
+  email: string;
+  otp: string;
+}) => {
+  try {
+    const url = `/auth/verify-password-otp`;
+    const { data } = await axiosInstance.post(url, { email, otp });
+    return data?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const resetPassword = async ({
   email,
   otp,
