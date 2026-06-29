@@ -5,14 +5,12 @@ import GoogleAuth from "@/components/atoms/GoogleAuth/GoogleAuth";
 import Input from "@/components/atoms/Input/Input";
 import Label from "@/components/atoms/Label/Label";
 import AuthPrompt from "@/components/atoms/AuthPrompt/AuthPrompt";
+import AcceptTermsPolicies from "@/components/atoms/AcceptTermsPolicies/AcceptTermsPolicies";
 
 import { useStore } from "@/store/authStore";
 import { useShallow } from "zustand/react/shallow";
 import { useSignUp } from "@/features/auth/hooks/useSignUp";
 import { areAllFieldsFilled } from "@/lib/helpers/areAllFieldsFilled";
-import PolicyModal from "../../modals/PolicyModal/PolicyModal";
-import TermsOfUseModal from "../../modals/TermsOfUseModal/TermsOfUseModal";
-import Checkbox from "@/components/atoms/Checkbox/Checkbox";
 
 const SignUpForm = () => {
   const {
@@ -22,12 +20,8 @@ const SignUpForm = () => {
     inputType,
     toggleInputType,
     isRegistering,
-    acceptTerms,
-    setAcceptTerms,
-    openPolicy,
-    setOpenPolicy,
-    openTerms,
-    setOpenTerms,
+    termsAccepted,
+    setTermsAccepted,
   } = useSignUp();
 
   const isFormFilled = areAllFieldsFilled(userInfo);
@@ -75,27 +69,10 @@ const SignUpForm = () => {
               onTogglePassword={toggleInputType}
             />
           </div>
-          <div className="flex gap-1 mt-1">
-            <Checkbox value={acceptTerms} onChange={setAcceptTerms} />
-            <p className="text-sm leading-6">
-              By signing up with email or Google, you need to agree to our{" "}
-              <button
-                type="button"
-                className="text-[#25C269] hover:text-green-700 cursor-pointer transition-colors duration-300"
-                onClick={() => setOpenTerms(true)}
-              >
-                Terms of Use
-              </button>{" "}
-              and{" "}
-              <button
-                type="button"
-                className="text-[#25C269] hover:text-green-700 cursor-pointer transition-colors duration-300"
-                onClick={() => setOpenPolicy(true)}
-              >
-                Privacy Policy.
-              </button>
-            </p>
-          </div>
+          <AcceptTermsPolicies
+            termsAccepted={termsAccepted}
+            setTermsAccepted={setTermsAccepted}
+          />
         </div>
         <div className="space-y-8">
           <Button
@@ -103,7 +80,7 @@ const SignUpForm = () => {
             className="w-full h-11"
             variant="primary"
             loading={isRegistering}
-            disabled={!isFormFilled || !acceptTerms}
+            disabled={!isFormFilled || !termsAccepted}
           >
             Create your Account
           </Button>
@@ -116,8 +93,6 @@ const SignUpForm = () => {
           />
         </div>
       </form>
-      <PolicyModal isOpen={openPolicy} onClose={() => setOpenPolicy(false)} />
-      <TermsOfUseModal isOpen={openTerms} onClose={() => setOpenTerms(false)} />
     </>
   );
 };

@@ -69,12 +69,11 @@ export const verifyForgotPasswordOtp = async ({
 
 export const resetPassword = async ({
   email,
-  otp,
   newPassword,
 }: ResetPasswordType) => {
   try {
     const url = `/auth/reset-password`;
-    const { data } = await axiosInstance.post(url, { email, otp, newPassword });
+    const { data } = await axiosInstance.post(url, { email, newPassword });
     return data?.data;
   } catch (error) {
     throw error;
@@ -95,6 +94,16 @@ export const changePassword = async ({
       newPassword,
     });
     return data?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getGoogleAuthUrl = async () => {
+  try {
+    const url = `/auth/google`;
+    const { data } = await axiosInstance.post(url);
+    return data;
   } catch (error) {
     throw error;
   }

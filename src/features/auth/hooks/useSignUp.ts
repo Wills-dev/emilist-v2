@@ -15,11 +15,11 @@ export const useSignUp = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { redirectPath, isModalFlow } = useStore(
+  const { redirectPath, isModalFlow, termsAccepted } = useStore(
     useShallow((state) => ({
-      pendingFlow: state.pendingFlow,
       redirectPath: state.redirectPath,
       isModalFlow: state.isModalFlow,
+      termsAccepted: state.termsAccepted,
     })),
   );
 
@@ -27,19 +27,9 @@ export const useSignUp = () => {
   const openModal = useStore((state) => state.openModal);
   const setPendingFlow = useStore((state) => state.setPendingFlow);
   const setOtpCountDown = useStore((state) => state.setOtpCountDown);
+  const setTermsAccepted = useStore((state) => state.setTermsAccepted);
 
-  const {
-    inputType,
-    userInfo,
-    handleChange,
-    toggleInputType,
-    acceptTerms,
-    setAcceptTerms,
-    openPolicy,
-    setOpenPolicy,
-    openTerms,
-    setOpenTerms,
-  } = useAuthState();
+  const { inputType, userInfo, handleChange, toggleInputType } = useAuthState();
 
   const { mutate, isPending: isRegistering } = useMutation({
     mutationFn: register,
@@ -82,7 +72,7 @@ export const useSignUp = () => {
     } else if (password.trim() === "") {
       toast.error("Please enter your password");
       return;
-    } else if (!acceptTerms) {
+    } else if (!termsAccepted) {
       toast.error("Almost There!", {
         description:
           "Please review and accept the Terms & Conditions and Privacy Policy before creating your account.",
@@ -99,11 +89,7 @@ export const useSignUp = () => {
     inputType,
     toggleInputType,
     isRegistering,
-    acceptTerms,
-    setAcceptTerms,
-    openPolicy,
-    setOpenPolicy,
-    openTerms,
-    setOpenTerms,
+    termsAccepted,
+    setTermsAccepted,
   };
 };

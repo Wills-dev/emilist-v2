@@ -10,7 +10,6 @@ export interface OtpType {
 
 export interface ResetPasswordType {
   email: string;
-  otp: string;
   newPassword: string;
 }
 
