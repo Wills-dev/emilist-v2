@@ -9,6 +9,7 @@ export type ModalType =
   | "complete-profile"
   | "forgot-password"
   | "reset-password"
+  | "terms-prompt"
   | null;
 
 export interface User {
@@ -52,6 +53,9 @@ interface AuthFlowSlice {
   clearOtpEmail: () => void;
   clearPendingFlow: () => void;
   setIsModalFlow: (isModal: boolean) => void;
+
+  termsAccepted: boolean;
+  setTermsAccepted: (value: boolean) => void;
 }
 
 interface UserSlice {
@@ -103,6 +107,9 @@ export const useStore = create<StoreState>()(
           activeModal: null,
           isModalFlow: false,
         }),
+
+      termsAccepted: false,
+      setTermsAccepted: (value) => set({ termsAccepted: value }),
     }),
     {
       name: "emilist-store",

@@ -2,9 +2,6 @@ import { ChangeEvent, useState } from "react";
 
 export const useAuthState = () => {
   const [inputType, setInputType] = useState<"text" | "password">("password");
-  const [acceptTerms, setAcceptTerms] = useState(false);
-  const [openPolicy, setOpenPolicy] = useState(false);
-  const [openTerms, setOpenTerms] = useState(false);
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -34,11 +31,5 @@ export const useAuthState = () => {
     handleChange,
     toggleInputType,
     resetForm,
-    acceptTerms,
-    setAcceptTerms,
-    openPolicy,
-    setOpenPolicy,
-    openTerms,
-    setOpenTerms,
   };
 };

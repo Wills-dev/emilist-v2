@@ -6,6 +6,8 @@ import LoginModal from "./LoginModal/LoginModal";
 import SignUpModal from "./SignUpModal/SignUpModal";
 import VerifyEmailModal from "./VerifyEmailModal/VerifyEmailModal";
 import CompleteProfileModal from "./CompleteProfileModal/CompleteProfileModal";
+import ForgotPasswordModal from "./ForgotPasswordModal/ForgotPasswordModal";
+import ResetPasswordModal from "./ResetPasswordModal/ResetPasswordModal";
 
 export const ModalManager = () => {
   const activeModal = useStore((state) => state.activeModal);
@@ -18,6 +20,8 @@ export const ModalManager = () => {
       {activeModal === "register" && <SignUpModal />}
       {activeModal === "verify-otp" && <VerifyEmailModal />}
       {activeModal === "complete-profile" && <CompleteProfileModal />}
+      {activeModal === "forgot-password" && <ForgotPasswordModal />}
+      {activeModal === "reset-password" && <ResetPasswordModal />}
     </>
   );
 };
