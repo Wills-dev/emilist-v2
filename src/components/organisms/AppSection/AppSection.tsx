@@ -12,24 +12,35 @@ const AppSection = () => {
             <div className="w-full sm:space-y-8 space-y-4">
               <div className="sm:space-y-4 space-y-2">
                 <div className="space-y-1">
-                  <div className="sm:text-[40px] text-[30px] text-white">
+                  <div className="sm:text-[40px]  text-white">
                     <ArrowUp />
                   </div>
-                  <h6 className="text-[#9EF769] sm:text-[36px] text-[28px] font-exo font-semibold">
+                  <h6 className="text-[#9EF769] sm:text-[36px] font-exo font-semibold">
                     Manage your projects on the go right from your mobile phone
                   </h6>
                 </div>
-                <p className="font-medium max-sm:text-sm tracking-[-3%] leading-7 text-[#FBFFF8]">
+                <p className="font-medium max-sm:text-sm tracking-[-3%] sm:leading-7 leading-6 text-[#FBFFF8]">
                   Never miss an update on your project, post new jobs, hire
                   experts, track your projects and handle all your payments from
                   your smartphone.
                 </p>
               </div>
+              <div className="max-lg:flex items-center justify-center max-lg:flex-1 max-sm:w-full sm:hidden">
+                <div className="max-w-lg w-full min-w-72.5 sm:h-115 shadow-sm ">
+                  <Image
+                    src="/assets/images/phone-download.svg"
+                    alt="downloand"
+                    width={517}
+                    height={460}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
               <div className="sm:pt-5 pt-2 sm:space-y-4 space-y-2">
-                <h6 className="tracking-[5%] leading-6 font-exo font-semibold sm:text-[18px] text-white">
+                <h6 className="tracking-[5%] leading-6 font-exo sm:font-semibold sm:text-[18px] text-white max-sm:text-center">
                   GET THE APP
                 </h6>
-                <div className="flex items-center sm:gap-4 gap-2">
+                <div className="flex items-center max-sm:justify-center sm:gap-4 gap-2">
                   <DownloadBtn
                     href="http://"
                     alt="app store"
@@ -48,7 +59,7 @@ const AppSection = () => {
               </div>
             </div>
           </div>
-          <div className="max-lg:flex items-center justify-center max-lg:flex-1 max-sm:w-full">
+          <div className="max-lg:flex items-center justify-center max-lg:flex-1 max-sm:w-full max-sm:hidden">
             <div className="max-w-lg w-full min-w-72.5 sm:h-115 shadow-sm ">
               <Image
                 src="/assets/images/phone-download.svg"

@@ -18,7 +18,7 @@ const SectionWrapper = ({
   children: React.ReactNode;
 }) => {
   const variants = {
-    horizontal: "flex items-center gap-6 overflow-x-auto",
+    horizontal: "flex items-center max-sm:flex-col gap-6 overflow-x-auto",
     vertical: "flex ",
   };
 

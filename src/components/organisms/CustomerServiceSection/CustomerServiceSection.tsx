@@ -15,7 +15,7 @@ const CustomerServiceSection = () => {
             <div className="sm:space-y-12 space-y-8">
               <div className="space-y-2">
                 <SectionTitle title="Request for custom services" />
-                <p className="tracking-[-3%] leading-6 font-medium max-sm:text-sm ">
+                <p className="tracking-[-3%] leading-6 sm:font-medium max-sm:text-xs ">
                   Need something beyond a one-time job? We support scheduled,
                   recurring and custom service arrangements designed around your
                   operational or business needs

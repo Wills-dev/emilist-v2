@@ -16,8 +16,6 @@ const NavActions = ({ className = "items-center" }: { className?: string }) => {
     })),
   );
 
-  console.log("currentUser", currentUser);
-
   const openLoginModal = () => {
     setIsModalFlow(true);
     openModal("login");

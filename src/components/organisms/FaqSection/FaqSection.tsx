@@ -21,18 +21,18 @@ const FaqSection = () => {
     <section className="md:pb-20 md:pt-15 pb-10 pt-7.5 bg-[#F4F7F5]">
       <Container>
         <div className="sm:space-y-10 space-y-6">
-          <div className="">
-            <span className="bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] p-2 pt-1.5 rounded-[6px] text-[#FBFFF8] text-xs font-medium">
+          <div className="flex flex-col gap-1">
+            <span className="bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] p-2 pt-1.5 rounded-[6px] text-[#FBFFF8] text-xs font-medium w-fit">
               General
             </span>
             <div className="flex items-center justify-between flex-wrap">
               <SectionTitle title="Frequently asked questions" />
               <div className="flex justify-end flex-1">
-                <SeeMoreBtn href={routes?.faq} title="I have more questions" />
+                <SeeMoreBtn href={routes?.faq} title="Ask us" />
               </div>
             </div>
           </div>
-          <div className="sm:px-6 px-2 grid md:grid-cols-2 grid-cols-1 gap-6">
+          <div className="sm:px-6 px-2 grid md:grid-cols-2 grid-cols-1 sm:gap-6 gap-2">
             {faqQuestions?.map((faq, index) => (
               <FaqCard
                 key={index}

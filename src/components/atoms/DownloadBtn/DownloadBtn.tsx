@@ -18,7 +18,7 @@ const DownloadBtn = ({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center justify-center sm:gap-3 gap-2 bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] rounded-[8px] px-4 py-6 max-h-16"
+      className="flex items-center justify-center sm:gap-3 gap-2 bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] rounded-[8px] px-4 sm:py-6 py-4 sm:max-h-16 max-h-12"
     >
       <span className="block w-7 h-7">
         <Image

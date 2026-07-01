@@ -24,12 +24,12 @@ const FaqCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 * index }}
-      className={`sm:p-6 max-sm:py-3 max-sm:px-3 rounded-2xl overflow-hidden ${isActive ? "bg-[#155231]" : "bg-linear-to-b from-0% from-[#FFFFFF] to-100% to-[#FBFBFB]"}`}
+      className={`sm:p-6 max-sm:py-3 max-sm:px-3 sm:rounded-2xl rounded-[8px] overflow-hidden ${isActive ? "bg-[#155231]" : "bg-linear-to-b from-0% from-[#FFFFFF] to-100% to-[#FBFBFB]"}`}
     >
       <div className="space-y-2.75" onClick={() => toggleFaq(id)}>
         <div className="flex items-center justify-between">
           <div
-            className={`${isActive ? "text-white" : "text-[#5E625F]"} sm:text-[24px]`}
+            className={`${isActive ? "text-white" : "text-[#5E625F]"} sm:text-[24px] text-sm`}
           >
             <ArrowUp />
           </div>

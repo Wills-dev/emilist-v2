@@ -21,11 +21,11 @@ const CustomerServiceCard = ({
             variant="default"
             className="w-2.5 h-2.5 group-hover:bg-[#25C269] transition-colors duration-200"
           />
-          <p className="font-exo tracking-[-3%] leading-6 font-medium text-[#474C48] group-hover:text-white transition-colors duration-200">
+          <p className="font-exo tracking-[-3%] leading-6 font-medium max-sm:text-sm text-[#474C48] group-hover:text-white transition-colors duration-200">
             {title}
           </p>
         </div>
-        <div className="text-[24px] group-hover:text-[28px] text-[#A2A4A2] group-hover:text-white transition-all duration-200">
+        <div className="sm:text-2xl group-hover:text-[28px] text-[#A2A4A2] group-hover:text-white transition-all duration-200">
           <ArrowUp />
         </div>
       </div>
