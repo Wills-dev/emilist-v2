@@ -1,8 +1,7 @@
 const BankNote = () => {
   return (
     <svg
-      width="42"
-      height="41"
+      className="w-[1em] h-[1em]"
       viewBox="0 0 42 41"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

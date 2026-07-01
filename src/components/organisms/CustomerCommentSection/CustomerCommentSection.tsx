@@ -21,7 +21,7 @@ const CustomerCommentSection = () => {
       <Container>
         <div className="sm:space-y-6 space-y-4">
           <SectionTitle title="What customers say about Emilist" />
-          <div className="flex items-center justify-center gap-6 flex-wrap">
+          <div className="flex items-center justify-center sm:gap-6 gap-2 flex-wrap">
             <CommentTab
               name={comments[currentComment].name}
               comment={comments[currentComment].comment}
@@ -30,13 +30,20 @@ const CustomerCommentSection = () => {
               onCommentSwitch={handleSwitchComment}
               index={comments[currentComment].index}
             />
-            <div className="max-w-157 w-full md:min-w-157 min-w-72.5 shadow-sm overflow-hidden rounded-[24px] max-h-119.25 sm:h-full h-auto">
+            <div className="max-w-157 w-full md:min-w-157 min-w-72.5 sm:shadow-sm overflow-hidden rounded-[24px] max-h-119.25 sm:h-full h-90">
               <Image
                 src="/assets/images/comment.svg"
                 width={628}
                 height={477}
                 alt="comment"
-                className="w-full h-auto"
+                className="w-full h-auto sm:block hidden"
+              />
+              <Image
+                src="/assets/images/comment2.svg"
+                width={628}
+                height={477}
+                alt="comment"
+                className="w-full h-full sm:hidden block"
               />
             </div>
           </div>

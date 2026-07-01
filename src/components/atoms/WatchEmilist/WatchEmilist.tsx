@@ -4,12 +4,12 @@ const WatchEmilist = () => {
       href="http://"
       target="_blank"
       rel="noopener noreferrer"
-      className="sm:max-w-63.25 max-w-50 w-full whitespace-nowrap flex items-center bg-[#F4F7F5] py-1.5 pl-2 sm:pr-2.5 pr-1.5 rounded-[12px] gap-2"
+      className="sm:max-w-63.25 max-w-54.5 w-full whitespace-nowrap flex items-center bg-[#F4F7F5] py-1.5 pl-2 sm:pr-2.5 pr-1.5 rounded-[12px] gap-2"
     >
-      <span className="bg-[#FF9933] sm:w-8.75 min-w-6 sm:h-8.5 h-6 rounded-[6px] flex justify-center items-center text-[#FBFFF8] sm:text-[10px] text-[6px] font-exo font-bold">
+      <span className="bg-[#FF9933] sm:w-8.75 min-w-6 sm:h-8.5 h-3.5 rounded-[6px] flex justify-center items-center text-[#FBFFF8] text-[10px] font-exo font-bold px-1 py-px">
         NEW
       </span>
-      <span className="font-medium sm:text-sm text-[10px] text-center text-[#1A201B]">
+      <span className="font-medium sm:text-sm text-xs text-center text-[#1A201B] font-exo">
         Watch how Emilist works
       </span>
       <div className="h-5 w-5 rounded-full bg-white">

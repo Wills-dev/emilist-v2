@@ -17,7 +17,7 @@ const HireExpertGuideCard = ({
             {index}
           </span>
         </div>
-        <div className="w-22 h-22 rounded-full bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] flex justify-center items-center">
+        <div className="sm:w-22 w-14.25 sm:h-22 h-14.25 rounded-full bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] flex justify-center items-center sm:text-3xl text-xl">
           {icon}
         </div>
         <div className="space-y-4">

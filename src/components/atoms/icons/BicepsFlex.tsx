@@ -1,9 +1,8 @@
 const BicepsFlex = () => {
   return (
     <svg
-      width="40"
-      height="40"
       viewBox="0 0 40 40"
+      className="w-[1em] h-[1em]"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

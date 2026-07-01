@@ -26,13 +26,13 @@ const CommentTab = ({
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -40, opacity: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="sm:p-16 p-6 sm:space-y-10 space-y-4 rounded-[24px] shadow-sm max-w-157 w-full md:min-w-157 min-w-72.5 sm:h-119.25 h-auto"
+      className="sm:p-16 p-4 sm:space-y-10 space-y-4 rounded-[24px] shadow-sm max-w-157 w-full md:min-w-157 min-w-72.5 sm:h-119.25 h-auto"
     >
-      <div className="sm:max-w-22.75 max-w-16 w-full h-auto">
+      <div className="sm:max-w-22.75 max-w-14.75 w-full h-auto">
         <QuoteIcon />
       </div>
       <div className="sm:space-y-6 space-y-3">
-        <p className="font-exo sm:text-[20px] leading-7 text-[#8A8D8B]">
+        <p className="font-exo sm:text-[20px] sm:leading-7 leading-6 text-[#8A8D8B]">
           {comment}
         </p>
         <p className="font-semibold max-sm:text-sm text-[#474C48]">
