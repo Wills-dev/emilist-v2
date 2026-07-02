@@ -218,3 +218,9 @@ export const periodOptions = [
     value: "yearly",
   },
 ];
+
+export const marketplaceTabs = [
+  { label: "Find jobs", link: routes?.marketplace?.jobs },
+  { label: "Hire experts", link: routes?.marketplace?.experts },
+  { label: "Explore materials", link: routes?.marketplace?.materials },
+];
