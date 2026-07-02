@@ -1,9 +1,10 @@
 import Container from "@/components/atoms/Container/Container";
-import BonicularIcon from "@/components/atoms/icons/BonicularIcon";
+import Binoculars from "@/components/atoms/icons/Binoculars";
 import SearchGreen from "@/components/atoms/icons/SearchGreen";
 import Streamline from "@/components/atoms/icons/Streamline";
 import Truck from "@/components/atoms/icons/Truck";
 import MarketIconWrap from "@/components/atoms/MarketIconWrap/MarketIconWrap";
+
 import Image from "next/image";
 
 const MarketplaceBanner = ({
@@ -20,7 +21,7 @@ const MarketplaceBanner = ({
   type: "jobs" | "materials" | "experts";
 }) => {
   return (
-    <div className={`min-h-74.5  w-full ${className}`}>
+    <div className={`sm:min-h-74.5 h-fit  w-full ${className}`}>
       <Container>
         <div className="flex max-xl:flex-col items-center">
           <div className="max-w-231 w-full space-y-1 sm:py-20 pt-6 pb-4">
@@ -35,7 +36,7 @@ const MarketplaceBanner = ({
             <h2 className="font-exo font-semibold text-[clamp(0.8rem,5vw,3.375rem)] flex items-center sm:gap-6 gap-2 text-[#F2F4F0]">
               {" "}
               <span className="flex items-center sm:gap-2 gap-1">
-                <MarketIconWrap icon={<BonicularIcon />} />
+                <MarketIconWrap icon={<Binoculars />} />
                 <MarketIconWrap icon={<Streamline />} />
                 <MarketIconWrap icon={<Truck />} />
               </span>
@@ -43,7 +44,7 @@ const MarketplaceBanner = ({
             </h2>
           </div>
           <div className="">
-            <div className="sm:w-87.5 w-50 sm:h-74.5 h-50 relative overflow-hidden">
+            <div className="sm:w-87.5 w-50 sm:h-74.5 h-40 relative overflow-hidden">
               <div className="h-full w-full ">
                 <Image
                   src={src}

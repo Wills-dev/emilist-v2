@@ -27,7 +27,7 @@ const Footer = ({
       <Container>
         <div className="sm:space-y-10 space-y-6">
           <NewsLetter />
-          <FooterWrapper />
+          <FooterWrapper variant={variant} />
         </div>
       </Container>
     </div>
