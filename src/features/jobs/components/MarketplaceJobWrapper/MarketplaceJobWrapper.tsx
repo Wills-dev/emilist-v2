@@ -3,11 +3,13 @@
 import Container from "@/components/atoms/Container/Container";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
+import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/MarketplaceFilterBtns";
+import MarketplaceFilter from "@/components/molecules/MarketplaceFilter/MarketplaceFilter";
 
 import { marketplaceTabs } from "@/lib/constants";
 import { useFilters } from "@/lib/hooks/useFilters";
-import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/MarketplaceFilterBtns";
-import MarketplaceFilter from "@/components/molecules/MarketplaceFilter/MarketplaceFilter";
+import { expertServices } from "@/features/experts/constants";
+import { countriesAndStates } from "@/lib/constants/countries";
 
 const MarketplaceJobWrapper = () => {
   const {
@@ -49,6 +51,14 @@ const MarketplaceJobWrapper = () => {
                 toggleCategory={toggleCategory}
                 isCategorySelected={isCategorySelected}
                 setPriceRange={setPriceRange}
+                categories={expertServices}
+                locations={countriesAndStates}
+                showLocation
+                showPrice
+                showNoticePeriod
+                showLevel
+                showRating
+                clearFilter={clearFilter}
               />
             </div>
           </div>

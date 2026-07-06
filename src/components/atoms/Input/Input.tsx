@@ -19,10 +19,10 @@ const Input = ({
     icon !== undefined && showPassword !== undefined
       ? "px-9"
       : icon !== undefined && showPassword === undefined
-        ? "pl-9 pr-2"
+        ? "pl-9 pr-1"
         : icon === undefined && showPassword !== undefined
-          ? "pl-2 pr-9"
-          : "px-2";
+          ? "pl-1 pr-9"
+          : "px-1";
 
   return (
     <div className="relative flex items-center backdrop-blur-2xl bg-[#ECECEC] text-[#737774] rounded-[10px] focus-within:border transition-all focus-within:border-[#25C269]  duration-300 h-11 p-1 ">
