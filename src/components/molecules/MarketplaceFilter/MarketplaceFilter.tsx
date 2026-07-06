@@ -45,7 +45,7 @@ const MarketplaceFilter = ({
   showRating,
 }: MarketplaceFilterProps) => {
   const showCat = categories !== undefined && showCategory;
-  const showLoc = location !== undefined && showLocation;
+  const showLoc = locations !== undefined && showLocation;
   const showPrices = setPriceRange !== undefined && showPrice;
 
   return (
