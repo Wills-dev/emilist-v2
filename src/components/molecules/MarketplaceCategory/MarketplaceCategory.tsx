@@ -6,13 +6,14 @@ import { FilterState } from "@/lib/hooks/useFilters";
 
 import FilterTitle from "@/components/atoms/FilterTilte/FilterTilte";
 import FilterSelector from "@/components/atoms/FilterSelector/FilterSelector";
-import { expertServices } from "@/features/experts/constants";
+import FilterSectionWrapper from "@/components/atoms/FilterSectionWrapper/FilterSectionWrapper";
 
 const MarketplaceCategory = ({
   filters,
   setFilter,
+  categories,
   toggleCategory,
-  isCategorySelected,
+  clearFilter,
 }: {
   filters: FilterState;
   setFilter: <K extends keyof FilterState>(
@@ -20,20 +21,22 @@ const MarketplaceCategory = ({
     value: FilterState[K],
   ) => void;
   toggleCategory: (category: string) => void;
+  categories: { label: string; value: string }[];
   isCategorySelected: (category: string) => boolean;
+  clearFilter: (key: keyof FilterState) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const selectedCategoryLength = filters.categories.length > 0;
 
   const availableCategories = useMemo(() => {
-    return expertServices.filter(
+    return categories?.filter(
       (category) => !filters.categories.includes(category.value),
     );
-  }, [filters.categories]);
+  }, [categories, filters.categories]);
 
   return (
-    <div className="bg-[#F6F7F9] p-6 space-y-3.75 w-full">
+    <FilterSectionWrapper>
       <div className="flex items-center justify-between gap-2.5">
         <FilterTitle title="JOB Category" />
         <button
@@ -60,7 +63,7 @@ const MarketplaceCategory = ({
       <div className="space-y-3 w-full">
         <FilterSelector
           value={"All"}
-          onClick={() => setFilter("categories", [])}
+          onClick={() => clearFilter("categories")}
           variant={!selectedCategoryLength ? "secondary" : "primary"}
         />
         {selectedCategoryLength && (
@@ -87,7 +90,7 @@ const MarketplaceCategory = ({
           ))}
         </div>
       </div>
-    </div>
+    </FilterSectionWrapper>
   );
 };
 

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { priceMap } from "../constants/priceMap";
+import { formatInputTextNumberWithCommas } from "../helpers/formatNumbers";
 
 export type PriceRange =
   | "<20"
@@ -14,13 +15,13 @@ export interface FilterState {
   categories: string[];
   location: string | null;
   deliveryTime: string | null;
-  rating: number | null;
+  rating: string | null;
   level: string | null;
   noticePeriod: string | null;
 
   priceRange: PriceRange;
-  minPrice: number | null;
-  maxPrice: number | null;
+  minPrice: string | null;
+  maxPrice: string | null;
 }
 
 const initialFilters: FilterState = {
@@ -46,7 +47,12 @@ export const useFilters = () => {
   ) => {
     setFilters((prev) => ({
       ...prev,
-      [key]: value,
+      [key]:
+        (key === "minPrice" || key === "maxPrice") &&
+        value !== null &&
+        value !== undefined
+          ? formatInputTextNumberWithCommas(String(value))
+          : value,
     }));
   };
 
