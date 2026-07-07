@@ -31,10 +31,10 @@ const SearchBar = ({
         "sm:text-xl text-lg text-[#737774] hover:text-[#25C269] cursor-pointer",
     },
     secondary: {
-      base: "bg-white max-w-228.5 md:pl-8 pl-4 md:pr-6 pr-3 py-5 border-[#F1F2F9]",
-      icon: "",
+      base: "max-w-228.5 md:pl-3 pl-2 md:pr-4 pr-3 py-2.5 border-[#F1F2F9] sm:gap-3 gap-2 text-sm bg-[#F6F7F9]",
+      icon: "text-[#737774]",
       input: "outline-none ",
-      button: "",
+      button: "text-[#737774]",
     },
   };
 
