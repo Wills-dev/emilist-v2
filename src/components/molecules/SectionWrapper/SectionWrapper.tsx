@@ -19,7 +19,7 @@ const SectionWrapper = ({
 }) => {
   const variants = {
     horizontal: "flex items-center max-sm:flex-col gap-6 overflow-x-auto",
-    vertical: "flex ",
+    vertical: "flex flex-wrap gap-6",
   };
 
   const styles = variants[variant];

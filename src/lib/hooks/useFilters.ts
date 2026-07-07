@@ -105,11 +105,15 @@ export const useFilters = () => {
     setFilters(initialFilters);
   };
 
-  const hasFilters = useMemo(
-    () =>
-      Object.values(filters).some((value) => value !== null && value !== ""),
-    [filters],
-  );
+  const hasFilters = useMemo(() => {
+    return Object.values(filters).some((value) => {
+      if (Array.isArray(value)) {
+        return value.length > 0;
+      }
+
+      return value !== null && value !== undefined && value !== "";
+    });
+  }, [filters]);
 
   return {
     tab,
