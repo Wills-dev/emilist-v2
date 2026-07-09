@@ -1,5 +1,7 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
+
 import Container from "@/components/atoms/Container/Container";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
@@ -45,7 +47,6 @@ const MarketplaceJobWrapper = () => {
             <div className="max-w-96.75 w-full min-w-72.5 space-y-6">
               <MarketplaceTab tabContent={marketplaceTabs} />
               <MarketplaceFilterBtns
-                onOpen={() => setTab("filter")}
                 onReset={resetFilters}
                 hasFilter={hasFilters}
               />
@@ -68,7 +69,7 @@ const MarketplaceJobWrapper = () => {
                 />
               </div>
             </div>
-            <div className="xl:max-w-197.75 w-full space-y-16">
+            <div className="max-w-197.75 w-full space-y-16">
               <div className="lg:space-y-8 space-y-4">
                 <div className="space-y-2">
                   <h6 className="font-exo font-semibold sm:text-[32px] text-[20px] tracking-[0%] leading-10">
@@ -99,17 +100,51 @@ const MarketplaceJobWrapper = () => {
                   hasFilter={hasFilters}
                   tab={tab}
                 />
-                <div className="flex flex-wrap gap-6 max-h-screen overflow-y-auto no-scrollbar">
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  <JobCard />
-                  {/* <JobCard /> */}
-                </div>
+                <AnimatePresence mode="wait">
+                  {tab === "" ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="flex flex-wrap gap-6 xl:max-h-screen xl:overflow-y-auto no-scrollbar"
+                    >
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                      <JobCard />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="w-full xl:hidden"
+                    >
+                      <MarketplaceFilter
+                        showCategory={true}
+                        filters={filters}
+                        setFilter={setFilter}
+                        toggleCategory={toggleCategory}
+                        isCategorySelected={isCategorySelected}
+                        setPriceRange={setPriceRange}
+                        categories={expertServices}
+                        locations={countriesAndStates}
+                        showLocation
+                        showPrice
+                        showNoticePeriod
+                        showLevel
+                        showRating
+                        clearFilter={clearFilter}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>

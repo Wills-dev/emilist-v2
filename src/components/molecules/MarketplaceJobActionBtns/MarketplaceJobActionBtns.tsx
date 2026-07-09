@@ -60,9 +60,6 @@ const MarketplaceJobActionBtns = ({
           className="flex items-center cursor-pointer gap-2 bg-[#F6F7F9] hover:shadow transition-all duration-300 sm:h-8.5 h-7.5 px-3 rounded-[24px] text-[#5D6771] text-sm  xl:hidden"
         >
           <FilterIcon />
-          <span className={` ${hasFilter ? "" : "sm:block hidden"}`}>
-            Filters
-          </span>
         </button>
       </div>
       <Link

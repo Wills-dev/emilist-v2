@@ -6,11 +6,9 @@ import { X } from "lucide-react";
 import FilterIcon from "@/components/atoms/icons/FilterIcon";
 
 const MarketplaceFilterBtns = ({
-  onOpen,
   onReset,
   hasFilter,
 }: {
-  onOpen: () => void;
   onReset: () => void;
   hasFilter: boolean;
 }) => {
@@ -19,7 +17,6 @@ const MarketplaceFilterBtns = ({
       <div className="flex items-center gap-4">
         <button
           type="button"
-          onClick={onOpen}
           className="flex items-center cursor-pointer gap-2 bg-[#F6F7F9] hover:shadow transition-all duration-300 sm:h-8.5 h-7.5 px-3 rounded-[24px] text-[#5D6771] text-sm"
         >
           <FilterIcon />
