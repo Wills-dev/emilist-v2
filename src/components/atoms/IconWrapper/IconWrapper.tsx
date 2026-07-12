@@ -3,7 +3,7 @@ import { memo } from "react";
 const IconWrapper = memo(function IconWrapper({
   onClick,
   children,
-  className = "text-sm",
+  className = "text-sm px-2 py-1.5",
   textColor = "text-[#737774]",
 }: {
   onClick: () => void;
@@ -14,7 +14,7 @@ const IconWrapper = memo(function IconWrapper({
   return (
     <button
       type="button"
-      className={`bg-[#EDEEF0] px-2 py-1.5 rounded-[6px] cursor-pointer ${textColor} ${className}`}
+      className={`bg-[#EDEEF0] rounded-[6px] cursor-pointer ${textColor} ${className}`}
       onClick={onClick}
     >
       {children}

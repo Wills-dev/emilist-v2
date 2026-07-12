@@ -10,16 +10,18 @@ const ShareButton = ({
   id,
   type,
   name,
+  className = "text-sm px-2 py-1.5",
 }: {
   id: string;
   name: string;
   type: "user" | "expert" | "job" | "material";
+  className?: string;
 }) => {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <IconWrapper onClick={() => setOpen(true)}>
+      <IconWrapper onClick={() => setOpen(true)} className={className}>
         <ShareIcon />
       </IconWrapper>
       <ShareModal
