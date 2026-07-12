@@ -6,9 +6,9 @@ const JobInfoWrapper = ({ jobId }: { jobId: string }) => {
   return (
     <div className="pt-6">
       <Container>
-        <div className="w-full flex gap-10">
+        <div className="w-full flex flex-wrap gap-10">
           <JobMainInfo />
-          <div className="w-full">
+          <div className="max-w-119.25 w-full">
             <JobMilestoneInfo />
           </div>
         </div>

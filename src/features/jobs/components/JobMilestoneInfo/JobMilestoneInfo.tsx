@@ -1,7 +1,7 @@
 "use client";
 
-import ArrowBack from "@/components/atoms/icons/ArrowBack";
 import MilestoneCard from "../MilestoneCard/MilestoneCard";
+import PaginationControls from "@/components/atoms/PaginationControls/PaginationControls";
 
 import { useMilestoneActions } from "../../hooks/useMilestoneActions";
 
@@ -16,7 +16,7 @@ const JobMilestoneInfo = () => {
   } = useMilestoneActions();
 
   return (
-    <div className="max-w-119.25 w-full border-[0.94px] border-[#F1F2F9] pt-8 pb-6 px-5 bg-[#F6F7F9] rounded-[11.33px] space-y-6">
+    <div className="w-full min-w-72.5 border-[0.94px] border-[#F1F2F9] pt-8 pb-6 px-5 bg-[#F6F7F9] rounded-[11.33px] space-y-6">
       {paginatedMilestones?.map((milestone, index) => {
         const milestoneNumber = (page - 1) * ITEMS_PER_PAGE + index + 1;
         return (
@@ -41,22 +41,12 @@ const JobMilestoneInfo = () => {
             {page}
           </p>
         </div>
-        <div className="flex items-center gap-4 text-[#707471]">
-          <button
-            disabled={page === 1}
-            onClick={() => setPage((prev) => prev - 1)}
-            className="disabled:opacity-45 cursor-pointer"
-          >
-            <ArrowBack />
-          </button>
-          <button
-            disabled={page === totalPages}
-            onClick={() => setPage((prev) => prev + 1)}
-            className="rotate-180 disabled:opacity-45 cursor-pointer"
-          >
-            <ArrowBack />
-          </button>
-        </div>
+        <PaginationControls
+          disableNext={page === totalPages}
+          disablePrev={page === 1}
+          prev={() => setPage((prev) => prev - 1)}
+          next={() => setPage((prev) => prev + 1)}
+        />
       </div>
     </div>
   );
