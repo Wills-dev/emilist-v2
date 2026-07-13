@@ -1,5 +1,3 @@
-import ProfileAvatar from "@/components/atoms/ProfileAvatar/ProfileAvatar";
-import Rating from "../Rating/Rating";
 import ShareButton from "../ShareButton/ShareButton";
 import LikeButton from "../LikeButton/LikeButton";
 import UserRatingCard from "../UserRatingCard/UserRatingCard";

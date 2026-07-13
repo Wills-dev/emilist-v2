@@ -8,26 +8,29 @@ import { AnimatePresence, motion } from "framer-motion";
 import FilterIcon from "@/components/atoms/icons/FilterIcon";
 import Select from "@/components/atoms/Select/Select";
 import PlusIcon from "@/components/atoms/icons/PlusIcon";
-
-import { routes } from "@/lib/helpers/routes";
-import { sortOptions } from "@/lib/constants/filter";
 import BackButton from "@/components/atoms/BackButton/BackButton";
 
-const MarketplaceJobActionBtns = ({
+import { sortOptions } from "@/lib/constants/filter";
+
+const MarketplaceActionBtns = ({
   onClose,
   onOpen,
   onReset,
   hasFilter,
   tab,
+  actionTitle,
+  actionLink,
 }: {
   onOpen: () => void;
   onClose: () => void;
   onReset: () => void;
   hasFilter: boolean;
   tab: string;
+  actionTitle: string;
+  actionLink: string;
 }) => {
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div className="flex items-center justify-between gap-4 flex-wrap">
       <div className="flex items-center gap-2">
         {tab === "" ? (
           <Select options={sortOptions} variant="secondary" fontSize="14px" />
@@ -43,11 +46,11 @@ const MarketplaceJobActionBtns = ({
         </button>
       </div>
       <Link
-        href={routes?.joinExpert}
+        href={actionLink}
         className="flex items-center font-exo font-semibold text-[#6667FF] max-sm:text-sm gap-2 max-xl:hidden"
       >
         <PlusIcon />
-        <span>Offer a service</span>
+        <span>{actionTitle}</span>
       </Link>
       <AnimatePresence mode="wait">
         {hasFilter ? (
@@ -65,11 +68,11 @@ const MarketplaceJobActionBtns = ({
           </motion.button>
         ) : (
           <Link
-            href={routes?.joinExpert}
+            href={actionLink}
             className="flex items-center font-exo font-semibold text-[#6667FF] max-sm:text-sm gap-2 xl:hidden"
           >
             <PlusIcon />
-            <span>Offer a service</span>
+            <span>{actionTitle}</span>
           </Link>
         )}
       </AnimatePresence>
@@ -77,4 +80,4 @@ const MarketplaceJobActionBtns = ({
   );
 };
 
-export default MarketplaceJobActionBtns;
+export default MarketplaceActionBtns;
