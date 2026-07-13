@@ -9,11 +9,10 @@ const FlagActionBtn = ({
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-1 underline font-medium text-[#474C48] cursor-pointer max-sm:text-sm"
+      className="flex items-center gap-1 underline font-medium text-[#474C48] cursor-pointer sm:text-[20px]"
     >
       <svg
-        width="20"
-        height="20"
+        className="w-[1em] h-[1em]"
         viewBox="0 0 20 20"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +25,7 @@ const FlagActionBtn = ({
           strokeLinejoin="round"
         />
       </svg>
-      <span>{actionTitle}</span>
+      <span className="sm:text-base text-sm">{actionTitle}</span>
     </button>
   );
 };

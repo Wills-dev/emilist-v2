@@ -16,7 +16,10 @@ const JobMilestoneInfo = () => {
   } = useMilestoneActions();
 
   return (
-    <div className="w-full min-w-72.5 border-[0.94px] border-[#F1F2F9] pt-8 pb-6 px-5 bg-[#F6F7F9] rounded-[11.33px] space-y-6">
+    <div
+      id="milestone"
+      className="w-full min-w-72.5 border-[0.94px] border-[#F1F2F9] pt-8 pb-6 sm:px-5 px-2 bg-[#F6F7F9] rounded-[11.33px] space-y-6"
+    >
       {paginatedMilestones?.map((milestone, index) => {
         const milestoneNumber = (page - 1) * ITEMS_PER_PAGE + index + 1;
         return (
