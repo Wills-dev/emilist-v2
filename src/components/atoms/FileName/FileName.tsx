@@ -20,11 +20,11 @@ const FileName = ({ fileName }: { fileName: string }) => {
   const icon = getFileIcon(fileName);
 
   return (
-    <div className="flex items-center gap-1 bg-white px-2 py-px rounded-[32px]">
+    <button className="flex items-center gap-1 bg-white px-2 py-px rounded-[32px] hover:shadow transition-all duration-300 cursor-pointer">
       {icon && <Image src={icon} alt="" width={18.13} height={18.13} />}
 
       <span className="text-sm text-[#737774]">{fileName}</span>
-    </div>
+    </button>
   );
 };
 

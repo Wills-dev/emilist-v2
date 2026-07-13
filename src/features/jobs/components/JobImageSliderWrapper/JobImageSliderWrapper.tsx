@@ -6,7 +6,7 @@ import PaginationControls from "@/components/atoms/PaginationControls/Pagination
 const JobImageSliderWrapper = () => {
   return (
     <div className="space-y-4 pb-4 border-b border-[#ECECEC]">
-      <div className="max-w-168.75 w-full sm:h-81.25 h-60 rounded-[16px] p-2 bg-[#EDEEF0]">
+      <div className="max-w-168.75 w-full sm:h-81.25 h-40 rounded-[16px] sm:p-2 p-1 bg-[#EDEEF0]">
         <Image
           src={"/assets/images/default-job-image.svg"}
           alt="job"
@@ -24,7 +24,7 @@ const JobImageSliderWrapper = () => {
         />
         <p className="text-[#707471] italic text-xs">1 of 7</p>
       </div>
-      <div className="flex items-center overflow-x-auto w-full">
+      <div className="flex items-center overflow-x-auto w-full gap-2 pb-1 no-scrollbar">
         <FileName fileName="chairs.jpg" />
         <FileName fileName="chairs.jpg" />
         <FileName fileName="table_1.docx" />

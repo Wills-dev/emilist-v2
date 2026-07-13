@@ -2,24 +2,25 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 
+import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import Container from "@/components/atoms/Container/Container";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
-import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/MarketplaceFilterBtns";
 import MarketplaceFilter from "@/components/molecules/MarketplaceFilter/MarketplaceFilter";
-import SearchBar from "@/components/molecules/SearchBar/SearchBar";
-import SavedFilterBtn from "@/components/atoms/SavedFilterBtn/SavedFilterBtn";
-import JobCard from "../JobCard/JobCard";
-import MarketplaceActionBtns from "@/components/molecules/MarketplaceActionBtns/MarketplaceActionBtns";
-
 import { marketplaceTabs } from "@/lib/constants";
-import { useFilters } from "@/lib/hooks/useFilters";
 import { expertServices } from "@/features/experts/constants";
 import { countriesAndStates } from "@/lib/constants/countries";
+import SearchBar from "@/components/molecules/SearchBar/SearchBar";
+import SavedFilterBtn from "@/components/atoms/SavedFilterBtn/SavedFilterBtn";
+import MarketplaceActionBtns from "@/components/molecules/MarketplaceActionBtns/MarketplaceActionBtns";
+import MaterialCard from "../MaterialCard/MaterialCard";
+import CartRecord from "../CartRecord/CartRecord";
+
+import { useFilters } from "@/lib/hooks/useFilters";
 import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
 import { routes } from "@/lib/helpers/routes";
 
-const MarketplaceJobWrapper = () => {
+const MarketplaceMaterialWrapper = () => {
   const { handleSubmit, setSearch } = useGeneralSearch();
   const {
     tab,
@@ -37,10 +38,11 @@ const MarketplaceJobWrapper = () => {
   return (
     <div>
       <MarketplaceBanner
-        bgText="verified job offers around"
-        endText="your location, in minutes"
-        src="/assets/images/jobs.svg"
+        bgText="verified merchants &"
+        endText="materials for your projects"
+        src="/assets/images/materials.svg"
         type="jobs"
+        className="bg-[#1A201B]"
       />
       <Container>
         <div className="sm:pt-10 pt-5">
@@ -63,7 +65,6 @@ const MarketplaceJobWrapper = () => {
                   locations={countriesAndStates}
                   showLocation
                   showPrice
-                  showNoticePeriod
                   showLevel
                   showRating
                   clearFilter={clearFilter}
@@ -81,16 +82,19 @@ const MarketplaceJobWrapper = () => {
                     on Emilist
                   </p>
                 </div>
-                <div className="w-full flex items-center justify-between sm:gap-10 gap-4">
+                <div className="w-full flex sm:items-center justify-between sm:gap-10 gap-2 max-sm:flex-col">
                   <div className="flex-1 w-full py-2.5">
                     <SearchBar
                       setSearch={setSearch}
                       onSubmit={handleSubmit}
-                      placeholder="Search for jobs, experts or materials..."
+                      placeholder="Search for jobs, xexperts or materials..."
                       variant="secondary"
                     />
                   </div>
-                  <SavedFilterBtn />
+                  <div className="flex items-center sm:gap-4 gap-2">
+                    <SavedFilterBtn />
+                    <CartRecord count={0} />
+                  </div>
                 </div>
               </div>
               <div className="space-y-4">
@@ -100,8 +104,8 @@ const MarketplaceJobWrapper = () => {
                   onReset={resetFilters}
                   hasFilter={hasFilters}
                   tab={tab}
-                  actionLink={routes?.joinExpert}
-                  actionTitle="Offer a service"
+                  actionLink={routes?.postMaterial}
+                  actionTitle="Post materials"
                 />
                 <AnimatePresence mode="wait">
                   {tab === "" ? (
@@ -112,14 +116,36 @@ const MarketplaceJobWrapper = () => {
                       transition={{ duration: 0.5, ease: "easeOut" }}
                       className="flex flex-wrap gap-6 xl:max-h-screen xl:overflow-y-auto no-scrollbar"
                     >
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
+                      <MaterialCard
+                        id="1"
+                        productName="Dangote Cement"
+                        price={1000}
+                        unit="bag"
+                        location="Alapere, Ketu"
+                        createdAt="2026-05-19T14:32:10.123Z"
+                        isLiked={true}
+                        currency="NGN"
+                        imgUrl="/assets/dummyImages/dummy-image.svg"
+                        profileImg=""
+                        fullName="Kalu & Sons Store"
+                        rating={3}
+                        noOfReviews={31}
+                      />
+                      <MaterialCard
+                        id="1"
+                        productName="Dangote Cement"
+                        price={1000}
+                        unit="bag"
+                        location="Alapere, Ketu"
+                        createdAt="2026-05-19T14:32:10.123Z"
+                        isLiked={true}
+                        currency="NGN"
+                        imgUrl="/assets/dummyImages/dummy-image.svg"
+                        profileImg=""
+                        fullName="Kalu & Sons Store"
+                        rating={3}
+                        noOfReviews={31}
+                      />
                     </motion.div>
                   ) : (
                     <motion.div
@@ -157,4 +183,4 @@ const MarketplaceJobWrapper = () => {
   );
 };
 
-export default MarketplaceJobWrapper;
+export default MarketplaceMaterialWrapper;

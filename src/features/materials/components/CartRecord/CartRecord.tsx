@@ -1,0 +1,19 @@
+import CartIcon from "@/components/atoms/icons/CartIcon";
+
+const CartRecord = ({ count }: { count: number }) => {
+  return (
+    <div className="bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] py-2 pl-2 pr-3 rounded-full flex items-center gap-3 sm:h-[42.5px] h-[26.8px]">
+      <div className="flex items-center gap-2">
+        <div className="sm:w-[26.5px] sm:h-[26.5px] w-[20.5px] h-[20.5px] rounded-full bg-[#25C269] text-[#F0FDF5] flex items-center justify-center sm:text-base text-xs">
+          <CartIcon />
+        </div>
+        <span className="max-sm:text-xs font-semibold text-white">Cart</span>
+      </div>
+      <span className="bg-[#F0FFE6] py-0.2.5 px-1 rounded-full text-[#FF5D7A] text-sm font-semibold">
+        {count}
+      </span>
+    </div>
+  );
+};
+
+export default CartRecord;

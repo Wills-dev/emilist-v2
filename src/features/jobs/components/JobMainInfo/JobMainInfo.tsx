@@ -15,6 +15,8 @@ import MilestoneIcon from "@/components/atoms/icons/MilestoneIcon";
 import ShareButton from "@/components/molecules/ShareButton/ShareButton";
 import LikeButton from "@/components/molecules/LikeButton/LikeButton";
 import JobImageSliderWrapper from "../JobImageSliderWrapper/JobImageSliderWrapper";
+import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
+import Button from "@/components/atoms/Button/Button";
 
 const JobMainInfo = () => {
   const handleToggle = () => {};
@@ -25,7 +27,7 @@ const JobMainInfo = () => {
         <BackButton />
         <FlagActionBtn onClick={() => {}} actionTitle="Flag Job" />
       </div>
-      <div className="bg-[#F9F9F9] border-[0.94px] border-[#F1F2F9] pt-8 sm:px-11 px-5  pb-6 rounded-[11.33px] space-y-8">
+      <div className="bg-[#F9F9F9] border-[0.94px] border-[#F1F2F9] pt-8 md:px-11 sm:px-5 px-2  pb-6 rounded-[11.33px] space-y-8">
         <JobCategory category="Carpentry" variant="secondary" />
         <div className="space-y-6">
           <div className="space-y-4">
@@ -59,6 +61,7 @@ const JobMainInfo = () => {
                   <InfoItem value={"3 weeks"} icon={<ClockIcon />} />
                   <InfoItem value={`10 applicants`} icon={<UserIcon />} />
                   <InfoItem value={`Intermediate`} icon={<LevelIcon />} />
+                  <div className="flex items-center"></div>
                   <InfoItem value={`3 milestones`} icon={<MilestoneIcon />} />
                 </div>
               </div>
@@ -67,7 +70,7 @@ const JobMainInfo = () => {
                   id={"2"}
                   type={"job"}
                   name={"Home Furniture Upgrade"}
-                  className="py-[9.86px] px-[13.14px] text-2xl"
+                  className="sm:py-[9.86px] py-2 sm:px-[13.14px] px-3 sm:text-2xl text-sm"
                 />
                 <LikeButton
                   isLiked={true}
@@ -79,8 +82,39 @@ const JobMainInfo = () => {
           </div>
           <div className="space-y-6">
             <JobImageSliderWrapper />
+            <div className="flex items-end justify-between gap-4 flex-wrap">
+              <UserRatingCard
+                imgUrl={""}
+                fullName={"Executive Palace Hotel"}
+                rating={4}
+                noOfReviews={51}
+              />
+              <div className="flex items-center text-xs gap-1">
+                <p className="w-fit text-[#707471] ">Urgency:</p>
+                <p className="font-semibold text-[#18A154] text-sm font-exo">
+                  Immediately
+                </p>
+              </div>
+            </div>
+            <div className="bg-white rounded-[8px] p-4 space-y-4 text-[#5E625F] text-sm">
+              <p>
+                Remake old chairs, cabinets, beds & doors for a residential
+                family building in Gbagada Phase 1 on the Lagos Mainland axis.
+              </p>
+
+              <p>
+                We appreciate experienced furniture makers who are committed to
+                crafting long lasting furniture pieces and pride themselves on
+                meeting deadlines efficiently. Apply if you’re a fit for this
+                role.
+              </p>
+              <p>We’re looking forward to working with you.</p>
+            </div>
           </div>
         </div>
+        <Button variant="primary" className="w-full h-11">
+          Apply
+        </Button>
       </div>
     </div>
   );
