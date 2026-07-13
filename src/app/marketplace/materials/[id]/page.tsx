@@ -1,27 +1,27 @@
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
-import JobInfoWrapper from "@/features/jobs/components/JobInfoWrapper/JobInfoWrapper";
+import MaterialInfoWrapper from "@/features/materials/components/MaterialInfoWrapper/MaterialInfoWrapper";
 
 import { use } from "react";
 
-const GeneralJobInfoPage = ({
+const GeneralMaterialInfoPage = ({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) => {
   const { id } = use(params);
-
   return (
     <MainLayout variant="secondary">
       <MarketplaceBanner
-        bgText="verified job offers around"
-        endText="your location, in minutes"
-        src="/assets/images/jobs.svg"
+        bgText="verified merchants &"
+        endText="materials for your projects"
+        src="/assets/images/materials.svg"
         type="jobs"
+        className="bg-[#1A201B]"
       />
-      <JobInfoWrapper jobId={id} />
+      <MaterialInfoWrapper materialId={id} />
     </MainLayout>
   );
 };
 
-export default GeneralJobInfoPage;
+export default GeneralMaterialInfoPage;
