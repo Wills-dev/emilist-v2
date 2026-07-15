@@ -12,6 +12,8 @@ export const routes = {
     materials: "/marketplace/materials",
     materialInfo: (materialId: string) =>
       `/marketplace/materials/${materialId}`,
+    materialInfoReviews: (materialId: string) =>
+      `/marketplace/materials/${materialId}/reviews`,
   },
   profile: (userId: string) => `/profile/${userId}`,
   login: "/auth/login",

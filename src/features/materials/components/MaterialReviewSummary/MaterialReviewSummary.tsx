@@ -5,7 +5,7 @@ import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
 import ReviewBreakdown from "@/components/molecules/ReviewBreakdown/ReviewBreakdown";
 import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
 
-const MaterialReviewSummary = () => {
+const MaterialReviewSummary = ({ reviewLink }: { reviewLink: string }) => {
   const { handleSubmit, setSearch } = useGeneralSearch();
 
   const reviewBreakdown = {
@@ -25,7 +25,8 @@ const MaterialReviewSummary = () => {
         variant="small"
         onSubmit={handleSubmit}
         setSearch={setSearch}
-        link="/"
+        link={reviewLink}
+        limit={3}
       />
     </div>
   );

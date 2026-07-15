@@ -9,7 +9,7 @@ const UserRatingCard = ({
 }: {
   fullName: string;
   rating: number;
-  noOfReviews: number;
+  noOfReviews?: number;
   imgUrl?: string;
 }) => {
   return (
@@ -21,7 +21,11 @@ const UserRatingCard = ({
         </p>
         <div className="flex items-center gap-[6.88px]">
           <Rating rating={rating} />{" "}
-          <span className="block text-[9.45px] font-exo">({noOfReviews})</span>
+          {noOfReviews && (
+            <span className="block text-[9.45px] font-exo">
+              ({noOfReviews})
+            </span>
+          )}
         </div>
       </div>
     </div>

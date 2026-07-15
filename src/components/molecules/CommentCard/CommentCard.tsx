@@ -43,7 +43,7 @@ const CommentCard = ({
         >
           <Link
             href={routes?.profile(userId)}
-            className="sm:text-xl font-exo font-semibold truncate"
+            className="sm:text-xl font-exo font-semibold truncate hover:text-[#25C269] hover:underline transition-all duration-300"
           >
             {fullName}
           </Link>
