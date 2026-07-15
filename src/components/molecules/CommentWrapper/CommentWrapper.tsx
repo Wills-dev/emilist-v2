@@ -6,6 +6,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import PlusIcon from "@/components/atoms/icons/PlusIcon";
 import CommentCard from "../CommentCard/CommentCard";
 import SeeAllBtn from "@/components/atoms/SeeAllBtn/SeeAllBtn";
+import PaginationPanel from "../PaginationPanel/PaginationPanel";
 
 const CommentWrapper = ({
   variant,
@@ -13,12 +14,14 @@ const CommentWrapper = ({
   totalComments,
   onSubmit,
   setSearch,
+  limit,
 }: {
   variant: "small" | "large";
   link?: string;
   totalComments: number;
   onSubmit: () => void;
   setSearch: (search: string) => void;
+  limit: number;
 }) => {
   const variants = {
     small: {
@@ -65,7 +68,7 @@ const CommentWrapper = ({
         </div>
       </div>
       <div className="">
-        {reviewComments?.map((review) => (
+        {reviewComments?.slice(0, limit)?.map((review) => (
           <CommentCard
             key={review.id}
             date={review?.date}
@@ -78,6 +81,14 @@ const CommentWrapper = ({
             imgUrl={review?.profilePicture || ""}
           />
         ))}
+        {limit >= 10 && totalComments > limit && (
+          <PaginationPanel
+            totalPages={2}
+            page={1}
+            onNext={() => {}}
+            onPrev={() => {}}
+          />
+        )}
       </div>
     </div>
   );

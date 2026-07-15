@@ -3,6 +3,7 @@ import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import MaterialInfoWrapper from "@/features/materials/components/MaterialInfoWrapper/MaterialInfoWrapper";
 import OtherSellersMaterials from "@/features/materials/components/OtherSellersMaterials/OtherSellersMaterials";
 import SimilarMaterials from "@/features/materials/components/SimilarMaterials/SimilarMaterials";
+import { routes } from "@/lib/helpers/routes";
 
 import { use } from "react";
 
@@ -21,7 +22,10 @@ const GeneralMaterialInfoPage = ({
         type="jobs"
         className="bg-[#1A201B]"
       />
-      <MaterialInfoWrapper materialId={id} />
+      <MaterialInfoWrapper
+        materialId={id}
+        reviewLink={routes?.marketplace?.materialInfoReviews(id)}
+      />
       <OtherSellersMaterials />
       <SimilarMaterials />
     </MainLayout>
