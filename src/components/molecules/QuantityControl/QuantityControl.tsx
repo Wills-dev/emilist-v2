@@ -14,7 +14,7 @@ const QuantityControl = ({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center sm:gap-4 gap-2">
       <CounterButton
         onClick={addToCount}
         icon={<MinusIcon />}

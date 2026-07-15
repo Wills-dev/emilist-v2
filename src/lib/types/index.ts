@@ -24,7 +24,7 @@ export interface ButtonProps {
 export interface SearchBarProps {
   setSearch: (search: string) => void;
   placeholder?: string;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "tertiary";
   onSubmit: () => void;
   onVoiceCommand?: () => void;
   showVoiceIcon?: boolean;

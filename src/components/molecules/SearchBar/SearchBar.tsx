@@ -18,20 +18,26 @@ const SearchBar = ({
   const [value, setValue] = useState("");
 
   const baseStyle =
-    "rounded-full w-full border flex items-center justify-between font-exo";
+    "rounded-full w-full flex items-center justify-between font-exo";
 
   const inputBaseStyle = "outline-none bg-inherit flex-1 w-full h-full";
 
   const variants = {
     primary: {
-      base: "bg-white max-w-228.5 md:pl-8 pl-4 md:pr-6 pr-3 sm:py-5 py-3 border-[#F1F2F9] focus-within:border-[#25C269]  sm:gap-3 gap-2",
+      base: "bg-white max-w-228.5 md:pl-8 pl-4 md:pr-6 pr-3 sm:py-5 py-3 border-[#F1F2F9] focus-within:border-[#25C269]  sm:gap-3 gap-2 border",
       icon: "text-[#25C269] sm:text-xl text-lg cursor-pointer",
       input: "placeholder:text-[#737774] placeholder:font-medium",
       button:
         "sm:text-xl text-lg text-[#737774] hover:text-[#25C269] cursor-pointer",
     },
     secondary: {
-      base: "max-w-228.5 md:pl-3 pl-2 md:pr-4 pr-3 py-2.5 border-[#F1F2F9] sm:gap-3 gap-2 text-sm bg-[#F6F7F9]",
+      base: "max-w-228.5 md:pl-3 pl-2 md:pr-4 pr-3 py-2.5 border-[#F1F2F9] sm:gap-3 gap-2 text-sm bg-[#F6F7F9] border",
+      icon: "text-[#737774]",
+      input: "outline-none ",
+      button: "text-[#737774]",
+    },
+    tertiary: {
+      base: "max-w-248.75 md:pl-4 pl-2 md:pr-3 pr-2 py-2.5 sm:gap-3 gap-2 text-sm bg-white",
       icon: "text-[#737774]",
       input: "outline-none ",
       button: "text-[#737774]",
