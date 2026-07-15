@@ -4,11 +4,11 @@ import MaterialReviewSummary from "../MaterialReviewSummary/MaterialReviewSummar
 
 const MaterialInfoWrapper = ({ materialId }: { materialId: string }) => {
   return (
-    <div className="pt-6 space-y-10">
+    <div className="pt-6 space-y-10 pb-15">
       <Container>
-        <div className="w-full flex justify-between flex-wrap gap-10">
-          <div className="max-[791px] w-full">
-            <MaterialMainInfo />
+        <div className="w-full flex justify-between flex-wrap gap-6">
+          <div className="max-w-197.75 w-full">
+            <MaterialMainInfo materialId={materialId} />
           </div>
           <div className="max-w-96.75 w-full">
             <MaterialReviewSummary />

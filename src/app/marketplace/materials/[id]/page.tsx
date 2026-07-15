@@ -1,6 +1,8 @@
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import MaterialInfoWrapper from "@/features/materials/components/MaterialInfoWrapper/MaterialInfoWrapper";
+import OtherSellersMaterials from "@/features/materials/components/OtherSellersMaterials/OtherSellersMaterials";
+import SimilarMaterials from "@/features/materials/components/SimilarMaterials/SimilarMaterials";
 
 import { use } from "react";
 
@@ -20,6 +22,8 @@ const GeneralMaterialInfoPage = ({
         className="bg-[#1A201B]"
       />
       <MaterialInfoWrapper materialId={id} />
+      <OtherSellersMaterials />
+      <SimilarMaterials />
     </MainLayout>
   );
 };

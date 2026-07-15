@@ -14,9 +14,10 @@ import LevelIcon from "@/components/atoms/icons/LevelIcon";
 import MilestoneIcon from "@/components/atoms/icons/MilestoneIcon";
 import ShareButton from "@/components/molecules/ShareButton/ShareButton";
 import LikeButton from "@/components/molecules/LikeButton/LikeButton";
-import JobImageSliderWrapper from "../JobImageSliderWrapper/JobImageSliderWrapper";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 import Button from "@/components/atoms/Button/Button";
+import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
+import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 
 const JobMainInfo = () => {
   const handleToggle = () => {};
@@ -36,12 +37,7 @@ const JobMainInfo = () => {
                 <DatedPosted date="2026-05-19T14:32:10.123Z" />
                 <div className="flex items-center gap-2.5 flex-wrap">
                   <ItemName title="Home Furniture Upgrade" />
-                  <div className="flex items-center gap-1 rounded-[32px] bg-white py-px px-2">
-                    <p className="text-[#737774] text-sm italic">Job ID:</p>
-                    <p className="text-sm text-[#474C48] font-semibold">
-                      12345
-                    </p>
-                  </div>
+                  <IdentifierBadge label="Job ID" value="12345" />
                 </div>
               </div>
               <PriceWrapper
@@ -81,7 +77,7 @@ const JobMainInfo = () => {
             </div>
           </div>
           <div className="space-y-6">
-            <JobImageSliderWrapper />
+            <ImageSliderWrapper />
             <div className="flex items-end justify-between gap-4 flex-wrap">
               <UserRatingCard
                 imgUrl={""}

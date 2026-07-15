@@ -70,3 +70,56 @@ export const initialMilestones: Milestone[] = [
     isExpanded: true,
   },
 ];
+
+export const reviewComments = [
+  {
+    id: "1",
+    userId: "usr_001",
+    fullName: "John Doe",
+    profilePicture: "https://randomuser.me/api/portraits/men/32.jpg",
+    rating: 5,
+    comment:
+      "Excellent service! The entire process was smooth and the team was very responsive. I'll definitely use this again.",
+    date: "2026-07-12T09:18:43.512Z",
+  },
+  {
+    id: "2",
+    userId: "usr_002",
+    fullName: "Amaka Okafor",
+    profilePicture: null,
+    rating: 4,
+    comment:
+      "Very professional and delivered exactly what I needed. There were a few minor delays, but overall it was a great experience.",
+    date: "2026-07-10T14:27:11.901Z",
+  },
+  {
+    id: "3",
+    userId: "usr_003",
+    fullName: "Michael Johnson",
+    profilePicture: "https://randomuser.me/api/portraits/men/45.jpg",
+    rating: 5,
+    comment:
+      "Highly recommend! Great communication, quality work, and everything was completed ahead of schedule.",
+    date: "2026-07-08T18:42:55.327Z",
+  },
+  {
+    id: "4",
+    userId: "usr_004",
+    fullName: "Grace Williams",
+    profilePicture: null,
+    rating: 3,
+    comment:
+      "The service was okay. It met my expectations, but I think there's room for improvement in response time.",
+    date: "2026-07-05T11:06:29.145Z",
+  },
+  {
+    id: "5",
+    userId: "usr_005",
+    fullName: "Sophia Brown",
+    profilePicture: "https://randomuser.me/api/portraits/women/68.jpg",
+    rating: 4,
+    comment:
+      "Really happy with the experience. The interface was easy to use, and the support team was helpful whenever I had questions.",
+    date: "2026-07-02T16:51:08.784Z",
+  },
+];

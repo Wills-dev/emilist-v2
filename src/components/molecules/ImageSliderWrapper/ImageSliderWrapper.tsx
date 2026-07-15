@@ -3,10 +3,10 @@ import Image from "next/image";
 import FileName from "@/components/atoms/FileName/FileName";
 import PaginationControls from "@/components/atoms/PaginationControls/PaginationControls";
 
-const JobImageSliderWrapper = () => {
+const ImageSliderWrapper = () => {
   return (
-    <div className="space-y-4 pb-4 border-b border-[#ECECEC]">
-      <div className="max-w-168.75 w-full sm:h-81.25 h-40 rounded-[16px] sm:p-2 p-1 bg-[#EDEEF0]">
+    <div className="space-y-4 pb-4 border-b border-[#ECECEC] max-w-168.75">
+      <div className="w-full sm:h-81.25 h-40 rounded-[16px] sm:p-2 p-1 bg-[#EDEEF0]">
         <Image
           src={"/assets/images/default-job-image.svg"}
           alt="job"
@@ -34,4 +34,4 @@ const JobImageSliderWrapper = () => {
   );
 };
 
-export default JobImageSliderWrapper;
+export default ImageSliderWrapper;
