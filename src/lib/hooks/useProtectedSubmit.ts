@@ -36,7 +36,7 @@ export function useProtectedSubmit(
       return;
     }
 
-    if (flowType !== "register-expert" && !currentUser.profileComplete) {
+    if (flowType !== "register-expert" && !currentUser.isProfileComplete) {
       setPendingFlow(
         flowType,
         formData as Record<string, unknown>,

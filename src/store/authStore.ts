@@ -27,7 +27,7 @@ export interface User {
   country?: string;
   bio?: string;
   image?: string;
-  profileComplete: boolean;
+  isProfileComplete: boolean;
   emailVerified: boolean;
   role: "user";
 }

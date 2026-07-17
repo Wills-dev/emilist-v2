@@ -19,7 +19,7 @@ export const useGetCurrentUser = () => {
 
   useEffect(() => {
     if (query.data) {
-      setCurrentUser(query.data);
+      setCurrentUser(query?.data?.userData);
     }
     if (query.isError) {
       clearCurrentUser();
