@@ -12,12 +12,14 @@ const SelectWrapper = ({
   onChange,
   placeholder = "",
   options,
+  variant,
 }: {
   title: string;
   name: string;
   value: string;
   placeholder?: string;
   options: selectOption[] | string[];
+  variant?: "primary" | "secondary" | "tertiary";
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }) => {
   return (
@@ -30,6 +32,7 @@ const SelectWrapper = ({
         onChange={onChange}
         options={options}
         placeholder={placeholder}
+        variant={variant}
       />
     </div>
   );

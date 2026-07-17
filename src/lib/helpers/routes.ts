@@ -4,6 +4,8 @@ export const routes = {
   congrats: "/become-expert/congratulations",
   postJob: "/post-job",
   postMaterial: "/post-material",
+  cart: "/cart",
+  postMaterialCongrats: "/post-material/congratulations",
   marketplace: {
     jobs: "/marketplace/jobs",
     jobInfo: (jobId: string) => `/marketplace/jobs/${jobId}`,
