@@ -13,9 +13,9 @@ export const postMaterial = async (payload: PostMaterialPayload) => {
     formData.append("brand", payload.brand);
     formData.append("description", payload.description);
     formData.append("availableQuantity", String(payload.availableQuantity));
-    formData.append("quantityMetric", payload.quantityMetric);
+    formData.append("quantityMetric", payload.quantityMetric.toLowerCase());
     formData.append("price", String(payload.price));
-    formData.append("priceMetric", payload.priceMetric);
+    formData.append("priceMetric", payload.priceMetric.toLowerCase());
     formData.append("currency", payload.currency);
     formData.append("merchantName", payload.merchantName);
     formData.append("storeName", "keez");
@@ -28,7 +28,7 @@ export const postMaterial = async (payload: PostMaterialPayload) => {
 
     if (payload.images && payload.images.length > 0) {
       payload.images.forEach((image) => {
-        formData.append("images", image);
+        formData.append("files", image);
       });
     }
 
