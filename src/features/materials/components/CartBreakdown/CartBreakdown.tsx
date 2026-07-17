@@ -8,6 +8,7 @@ import Truck2 from "@/components/atoms/icons/Truck2";
 import ShieldIcon from "@/components/atoms/icons/ShieldIcon";
 
 import { routes } from "@/lib/helpers/routes";
+import CartBag from "@/components/atoms/icons/CartBag";
 
 const CartBreakdown = () => {
   return (
@@ -16,11 +17,14 @@ const CartBreakdown = () => {
         <BackButton />
         <div className="w-full flex justify-between flex-wrap gap-6">
           <div className="max-w-197.75 w-full">
-            <CartProductWrapper />
+            <CartProductWrapper icon={<CartBag />} title="Cart" />
           </div>
           <div className="max-w-96.75 w-full space-y-8">
             <PromoCode />
-            <OrderSummary href={routes?.cart} />
+            <OrderSummary
+              href={routes?.checkout}
+              actionTitle="Proceed to Checkout"
+            />
             <Shipping
               title="FRee shipping"
               icon={<Truck2 />}
