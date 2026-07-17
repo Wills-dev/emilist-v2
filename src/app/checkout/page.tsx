@@ -1,8 +1,8 @@
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
-import CartBreakdown from "@/features/materials/components/CartBreakdown/CartBreakdown";
+import CheckoutWrapper from "@/features/materials/components/CheckoutWrapper/CheckoutWrapper";
 
-const CartPage = () => {
+const CheckoutPage = () => {
   return (
     <MainLayout variant="secondary">
       <MarketplaceBanner
@@ -12,9 +12,9 @@ const CartPage = () => {
         type="jobs"
         className="bg-[#1A201B]"
       />
-      <CartBreakdown />
+      <CheckoutWrapper />
     </MainLayout>
   );
 };
 
-export default CartPage;
+export default CheckoutPage;

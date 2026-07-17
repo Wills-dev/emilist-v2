@@ -6,12 +6,16 @@ import CardIcon from "@/components/atoms/icons/CardIcon";
 const OrderSummary = ({
   href,
   handlePayment,
+  actionTitle,
+  variant,
 }: {
   href?: string;
+  actionTitle: string;
   handlePayment?: () => void;
+  variant?: "primary" | "secondary";
 }) => {
   return (
-    <FilterSectionWrapper>
+    <FilterSectionWrapper variant={variant}>
       <FilterTitle title="ORDER SUMMARY" />
       <div className="space-y-6">
         <div className="space-y-4">
@@ -44,7 +48,7 @@ const OrderSummary = ({
           <span>
             <CardIcon />
           </span>
-          <span>Proceed to Checkout</span>
+          <span>{actionTitle}</span>
         </Button>
       </div>
     </FilterSectionWrapper>
