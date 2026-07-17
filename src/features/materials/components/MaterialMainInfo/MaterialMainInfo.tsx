@@ -14,7 +14,7 @@ import ShareButton from "@/components/molecules/ShareButton/ShareButton";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 import OtherMaterialInfo from "../OtherMaterialInfo/OtherMaterialInfo";
 import Button from "@/components/atoms/Button/Button";
-import ImageSliderWrapper from "@/features/jobs/components/ImageSliderWrapper/ImageSliderWrapper";
+import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 
 const MaterialMainInfo = ({ materialId }: { materialId: string }) => {
   return (
