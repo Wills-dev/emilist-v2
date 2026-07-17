@@ -5,6 +5,7 @@ export const routes = {
   postJob: "/post-job",
   postMaterial: "/post-material",
   cart: "/cart",
+  checkout: "/checkout",
   postMaterialCongrats: "/post-material/congratulations",
   marketplace: {
     jobs: "/marketplace/jobs",

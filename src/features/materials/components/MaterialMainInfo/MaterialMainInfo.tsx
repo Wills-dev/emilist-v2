@@ -6,7 +6,7 @@ import FlagActionBtn from "@/components/atoms/FlagActionBtn/FlagActionBtn";
 import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import ItemName from "@/components/atoms/ItemName/ItemName";
-import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
+
 import LikeButton from "@/components/molecules/LikeButton/LikeButton";
 import PriceWrapper from "@/components/molecules/PriceWrapper/PriceWrapper";
 import QuantityControl from "@/components/molecules/QuantityControl/QuantityControl";
@@ -14,6 +14,7 @@ import ShareButton from "@/components/molecules/ShareButton/ShareButton";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 import OtherMaterialInfo from "../OtherMaterialInfo/OtherMaterialInfo";
 import Button from "@/components/atoms/Button/Button";
+import ImageSliderWrapper from "@/features/jobs/components/ImageSliderWrapper/ImageSliderWrapper";
 
 const MaterialMainInfo = ({ materialId }: { materialId: string }) => {
   return (

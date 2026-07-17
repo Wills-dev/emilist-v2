@@ -61,13 +61,6 @@ const PostMaterialForm = () => {
 
   const payload = getPayload();
 
-  console.log("payload", payload);
-
-  console.log(
-    "isMaterialFormComplete(payload)",
-    isMaterialFormComplete(payload),
-  );
-
   return (
     <div className="">
       <div className="h-20 w-full" />
