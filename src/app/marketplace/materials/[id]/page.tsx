@@ -1,7 +1,6 @@
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import MaterialInfoWrapper from "@/features/materials/components/MaterialInfoWrapper/MaterialInfoWrapper";
-import OtherSellersMaterials from "@/features/materials/components/OtherSellersMaterials/OtherSellersMaterials";
 import SimilarMaterials from "@/features/materials/components/SimilarMaterials/SimilarMaterials";
 import { routes } from "@/lib/helpers/routes";
 
@@ -26,7 +25,7 @@ const GeneralMaterialInfoPage = ({
         materialId={id}
         reviewLink={routes?.marketplace?.materialInfoReviews(id)}
       />
-      <OtherSellersMaterials />
+
       <SimilarMaterials />
     </MainLayout>
   );

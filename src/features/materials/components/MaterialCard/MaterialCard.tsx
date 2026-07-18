@@ -39,7 +39,7 @@ const MaterialCard = ({
   const toggleLike = () => {};
 
   return (
-    <div className="max-w-[375.5px] w-full min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
+    <div className="max-w-[375.5px]  w-full sm:min-w-[375.5px] min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
       <div className="space-y-4">
         <div className="p-2.5 bg-white rounded-[12px]">
           <ItemImage src={imgUrl} alt={productName} />

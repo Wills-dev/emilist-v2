@@ -80,6 +80,7 @@ const JobMainInfo = () => {
             <ImageSliderWrapper />
             <div className="flex items-end justify-between gap-4 flex-wrap">
               <UserRatingCard
+                id={""}
                 imgUrl={""}
                 fullName={"Executive Palace Hotel"}
                 rating={4}
