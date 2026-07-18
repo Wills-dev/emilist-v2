@@ -11,6 +11,11 @@ import Instagram from "@/components/atoms/icons/Instagram";
 
 import { routes } from "../helpers/routes";
 import FacebookIcon from "@/components/atoms/icons/FacebookIcon";
+import OverviewIcon from "@/components/atoms/icons/OverviewIcon";
+import MarketplaceIcon from "@/components/atoms/icons/MarketplaceIcon";
+import JobsIcon from "@/components/atoms/icons/JobsIcon";
+import PaymentIcon from "@/components/atoms/icons/PaymentIcon";
+import ReportIcon from "@/components/atoms/icons/ReportIcon";
 
 export const navbarLinks = [
   {
@@ -223,4 +228,32 @@ export const marketplaceTabs = [
   { label: "Find jobs", link: routes?.marketplace?.jobs },
   { label: "Hire experts", link: routes?.marketplace?.experts },
   { label: "Explore materials", link: routes?.marketplace?.materials },
+];
+
+export const dashboardMainLinks = [
+  {
+    label: "Overview",
+    href: routes?.dashboard,
+    icon: <OverviewIcon />,
+  },
+  {
+    label: "Marketplace",
+    href: routes?.dashboardLinks?.marketplace,
+    icon: <MarketplaceIcon />,
+  },
+  {
+    label: "Jobs",
+    href: routes?.dashboardLinks?.jobs,
+    icon: <JobsIcon />,
+  },
+  {
+    label: "Payments",
+    href: routes?.dashboardLinks?.payments,
+    icon: <PaymentIcon />,
+  },
+  {
+    label: "Reports",
+    href: routes?.dashboardLinks?.reports,
+    icon: <ReportIcon />,
+  },
 ];

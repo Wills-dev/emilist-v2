@@ -4,7 +4,8 @@ import { routes } from "./lib/helpers/routes";
 const PROTECTED_PATHS = ["/dashboard"];
 
 export function proxy(req: NextRequest) {
-  const token = req.cookies.get("emilist_token")?.value;
+  const token = req.cookies.get("emilistToken")?.value;
+
   const isProtected = PROTECTED_PATHS.some((p) =>
     req.nextUrl.pathname.startsWith(p),
   );

@@ -24,6 +24,14 @@ export const routes = {
   verifyEmail: "/auth/verify-email",
 
   dashboard: "/dashboard/overview",
+  dashboardLinks: {
+    marketplace: "/dashboard/marketplace",
+    payments: "/dashboard/payments",
+    jobs: "/dashboard/jobs",
+    reports: "/dashboard/reports",
+    messages: "/dashboard/messages",
+    support: "/dashboard/support",
+  },
   enterprise: {
     bookService: "/enterprise/book-service",
     bookMaintenance: "/enterprise/book-maintenance",
