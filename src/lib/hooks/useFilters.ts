@@ -18,10 +18,12 @@ export interface FilterState {
   rating: string | null;
   level: string | null;
   noticePeriod: string | null;
-
+  brand: string | null;
   priceRange: PriceRange;
   minPrice: string | null;
   maxPrice: string | null;
+  sortBy: string | null;
+  sortOrder: string | null;
 }
 
 const initialFilters: FilterState = {
@@ -31,14 +33,20 @@ const initialFilters: FilterState = {
   rating: null,
   level: null,
   noticePeriod: null,
-
+  brand: null,
   priceRange: null,
   minPrice: null,
   maxPrice: null,
+  sortBy: null,
+  sortOrder: null,
 };
 
 export const useFilters = () => {
   const [tab, setTab] = useState("");
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState<string | null>(null);
+
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
   const setFilter = <K extends keyof FilterState>(
@@ -115,6 +123,19 @@ export const useFilters = () => {
     });
   }, [filters]);
 
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+  };
+
+  const handleClear = () => {
+    setSearch("");
+    setSubmittedQuery(null);
+  };
+
+  const handleSearch = async () => {
+    setSubmittedQuery(search);
+  };
+
   return {
     tab,
     setTab,
@@ -126,5 +147,11 @@ export const useFilters = () => {
     setPriceRange,
     toggleCategory,
     isCategorySelected,
+    handleSearch,
+    handleClear,
+    handleSearchChange,
+    status,
+    setStatus,
+    submittedQuery,
   };
 };

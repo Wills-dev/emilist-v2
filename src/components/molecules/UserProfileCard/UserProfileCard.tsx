@@ -26,6 +26,7 @@ const UserProfileCard = ({
   return (
     <div className="flex items-center justify-between gap-2 pl-2">
       <UserRatingCard
+        id={id}
         imgUrl={imgUrl}
         fullName={fullName}
         rating={rating}

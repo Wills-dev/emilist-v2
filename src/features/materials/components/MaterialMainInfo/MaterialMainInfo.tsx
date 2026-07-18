@@ -6,7 +6,6 @@ import FlagActionBtn from "@/components/atoms/FlagActionBtn/FlagActionBtn";
 import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import ItemName from "@/components/atoms/ItemName/ItemName";
-
 import LikeButton from "@/components/molecules/LikeButton/LikeButton";
 import PriceWrapper from "@/components/molecules/PriceWrapper/PriceWrapper";
 import QuantityControl from "@/components/molecules/QuantityControl/QuantityControl";
@@ -16,7 +15,19 @@ import OtherMaterialInfo from "../OtherMaterialInfo/OtherMaterialInfo";
 import Button from "@/components/atoms/Button/Button";
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 
-const MaterialMainInfo = ({ materialId }: { materialId: string }) => {
+import { ProductReviewResponse } from "../../types";
+
+const MaterialMainInfo = ({
+  material,
+}: {
+  material: ProductReviewResponse;
+}) => {
+  const { product, averageRating, liked, numberOfRatings } = material;
+  const location = product.deliveryLocations[0];
+  const locationText = [location?.lga, location?.state]
+    .filter(Boolean)
+    .join(", ");
+
   return (
     <div className="flex-1 w-full">
       {" "}
@@ -29,20 +40,20 @@ const MaterialMainInfo = ({ materialId }: { materialId: string }) => {
           <div className="space-y-4">
             <div className="flex items-end justify-between border-b border-[#ECECEC] pb-4">
               <div className="space-y-2">
-                <DatedPosted date="2026-05-19T14:32:10.123Z" />
+                <DatedPosted date={product.createdAt} />
                 <div className="flex items-center flex-wrap gap-4">
-                  <ItemName title="Dangote Cement" />
-                  <IdentifierBadge label="Listing ID" value="1234567890" />
+                  <ItemName title={product.name} />
+                  <IdentifierBadge label="Listing ID" value={product._id} />
                 </div>
               </div>
               <div className="gap-2.5 flex flex-col items-end">
                 <PriceWrapper
-                  price={4000}
-                  currency="NGN"
+                  price={product.price}
+                  currency={product.currency}
                   title="starts from"
-                  unit="bag"
+                  unit={product.priceMetric}
                 />
-                <QuantityControl id={materialId} quantity={10} />
+                <QuantityControl id={product._id} quantity={0} />
               </div>
             </div>
             <div className="flex items-start justify-between gap-4 flex-wrap pb-4 border-b border-[#ECECEC]">
@@ -50,20 +61,20 @@ const MaterialMainInfo = ({ materialId }: { materialId: string }) => {
                 <div className="flex items-center gap-6 flex-wrap">
                   <InfoItem
                     label="Location:"
-                    value={"Gbagada Phase 1, Lagos"}
+                    value={locationText || "Not specified"}
                     className="text-[#6667FF]"
                     variant="sm"
                   />
                   <InfoItem
                     label="Brand:"
-                    value={"Dangote"}
+                    value={product.brand}
                     className=""
                     variant="sm"
                     labelClass="text-[#707471]"
                   />
                   <InfoItem
                     label="Category:"
-                    value={"Building Materials"}
+                    value={product.category.name}
                     className=""
                     variant="sm"
                     labelClass="text-[#707471]"
@@ -72,13 +83,13 @@ const MaterialMainInfo = ({ materialId }: { materialId: string }) => {
               </div>
               <div className="flex items-center gap-3.25">
                 <ShareButton
-                  id={"2"}
-                  type={"job"}
-                  name={"Home Furniture Upgrade"}
+                  id={product._id}
+                  type={"material"}
+                  name={product.name}
                   className="sm:py-[9.86px] py-2 sm:px-[13.14px] px-3 sm:text-2xl text-sm"
                 />
                 <LikeButton
-                  isLiked={false}
+                  isLiked={liked}
                   onToggleLike={() => {}}
                   className="sm:py-[9.86px] py-2 sm:px-[13.14px] px-3 sm:text-2xl text-sm"
                 />
@@ -86,14 +97,23 @@ const MaterialMainInfo = ({ materialId }: { materialId: string }) => {
             </div>
           </div>
           <div className="space-y-6">
-            <ImageSliderWrapper />
-            <UserRatingCard
-              imgUrl={""}
-              fullName={"Arthur Phillips"}
-              rating={4}
-              noOfReviews={51}
+            <ImageSliderWrapper
+              images={product.images}
+              productName={product.name}
             />
-            <OtherMaterialInfo />
+            <UserRatingCard
+              id={product.userId._id}
+              fullName={product.merchantName || product.storeName}
+              rating={averageRating}
+              noOfReviews={numberOfRatings}
+            />
+            <OtherMaterialInfo
+              description={product.description}
+              availableQuantity={product.availableQuantity}
+              storeName={product?.storeName}
+              quantityMetric={product.quantityMetric}
+              subCategory={product?.subCategory}
+            />
           </div>
         </div>
         <Button variant="primary" className="w-full h-11">

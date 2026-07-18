@@ -1,10 +1,26 @@
 "use client";
 
+import InfoItem from "@/components/atoms/InfoItem/InfoItem";
+import { numberWithCommas } from "@/lib/helpers/formatNumbers";
 import { useState } from "react";
 
-const OtherMaterialInfo = () => {
+const OtherMaterialInfo = ({
+  description,
+  subCategory,
+  storeName,
+  availableQuantity,
+  quantityMetric,
+}: {
+  description: string;
+  availableQuantity: number;
+  subCategory: string;
+  storeName: string;
+  quantityMetric: string;
+}) => {
   const [tab, setTab] = useState("description");
   const tabOptions = ["description", "specifications"];
+
+  const quantity = availableQuantity && numberWithCommas(availableQuantity);
 
   return (
     <div className="py-4 sm:px-4 px-2 space-y-4 rounded-[8px] bg-white">
@@ -21,19 +37,33 @@ const OtherMaterialInfo = () => {
         ))}
       </div>
       <div className="space-y-4 text-[#5E625F] text-sm">
-        <p>
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-          sint. Velit officia consequat duis enimtest sit aliqua dolor do amet
-          sint. Velit off. Amet minim mollit non deserunt ullamco est sit aliqua
-          dolor do amet sint. Velit officia consequat duis enimtest sit aliqua
-          dolor do amet sint. Velit off.Amet minim mollit non deserunt ullamco
-          est sit aliqua dolor do amet sint. Velit officia consequat duis
-          enimtest sit aliqua dolor do amet sint.{" "}
-        </p>
-        <p>
-          Remake old chairs, cabinets, beds & doors for a residential family
-          building in Gbagada Phase 1 on the Lagos Mainland axis.
-        </p>
+        {tab === "description" ? (
+          <p>{description || "No description provided."}</p>
+        ) : (
+          <div className="space-y-2">
+            <InfoItem
+              label="Store name"
+              value={storeName || "N/A"}
+              className=""
+              variant="sm"
+              labelClass="text-[#707471]"
+            />
+            <InfoItem
+              label="Sub category:"
+              value={subCategory}
+              className=""
+              variant="sm"
+              labelClass="text-[#707471]"
+            />
+            <InfoItem
+              label="Available Qty:"
+              value={`${quantity.toString()} ${quantityMetric}`}
+              className=""
+              variant="sm"
+              labelClass="text-[#707471]"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

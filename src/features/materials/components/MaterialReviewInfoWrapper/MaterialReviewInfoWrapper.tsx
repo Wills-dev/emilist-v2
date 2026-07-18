@@ -42,6 +42,7 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
                 <FilterSectionWrapper>
                   <FilterTitle title="Merchant profile" />
                   <UserRatingCard
+                    id={""}
                     imgUrl={""}
                     fullName={"Arthur Phillips"}
                     rating={4}
