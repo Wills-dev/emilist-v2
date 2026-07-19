@@ -143,3 +143,14 @@ export const addMaterialReview = async (payload: AddMaterialReviewPayload) => {
     throw error;
   }
 };
+
+export const compareMaterial = async (materialId: string) => {
+  try {
+    const { data } = await axiosInstance.patch(
+      `/material/compare-product/${materialId}`,
+    );
+    return data?.data;
+  } catch (error) {
+    throw error;
+  }
+};

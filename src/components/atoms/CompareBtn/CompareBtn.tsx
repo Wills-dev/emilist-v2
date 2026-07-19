@@ -1,6 +1,21 @@
-const CompareBtn = () => {
+const CompareBtn = ({
+  onClick,
+  disabled = false,
+  loading = false,
+  label = "Compare prices",
+}: {
+  onClick?: () => void;
+  disabled?: boolean;
+  loading?: boolean;
+  label?: string;
+}) => {
   return (
-    <button className="flex items-center gap-1 text-[#18A154] font-medium underline text-xs">
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled || loading}
+      className="flex items-center gap-1 text-[#18A154] font-medium underline text-xs cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+    >
       <span>
         <svg
           width="14"
@@ -32,7 +47,7 @@ const CompareBtn = () => {
           />
         </svg>
       </span>
-      <span>Compare prices</span>
+      <span>{loading ? "Adding..." : label}</span>
       <span>
         <svg
           className="w-[1em] h-[1em]"

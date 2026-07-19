@@ -1,3 +1,5 @@
+"use client";
+
 import DatedPosted from "@/components/atoms/DatedPosted/DatedPosted";
 import ItemImage from "@/components/atoms/ItemImage/ItemImage";
 import ItemName from "@/components/atoms/ItemName/ItemName";
@@ -6,6 +8,7 @@ import QuantityControl from "@/components/molecules/QuantityControl/QuantityCont
 import UserProfileCard from "@/components/molecules/UserProfileCard/UserProfileCard";
 import MaterialCardActions from "../MaterialCardActions/MaterialCardActions";
 import DotInfoItem from "@/components/atoms/DotInfoItem/DotInfoItem";
+import { useStore } from "@/store/authStore";
 
 const MaterialCard = ({
   productName,
@@ -21,6 +24,7 @@ const MaterialCard = ({
   fullName,
   rating,
   noOfReviews,
+  sellerId,
 }: {
   productName: string;
   imgUrl: string;
@@ -35,8 +39,11 @@ const MaterialCard = ({
   fullName: string;
   rating: number;
   noOfReviews: number;
+  sellerId?: string;
 }) => {
   const toggleLike = () => {};
+  const currentUser = useStore((state) => state.currentUser);
+  const isSeller = Boolean(sellerId && currentUser?._id === sellerId);
 
   return (
     <div className="max-w-[375.5px]  w-full sm:min-w-[375.5px] min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
@@ -67,7 +74,7 @@ const MaterialCard = ({
           />
           <DatedPosted date={createdAt} />
         </div>
-        <MaterialCardActions materialId={id} />
+        <MaterialCardActions materialId={id} isSeller={isSeller} />
       </div>
     </div>
   );

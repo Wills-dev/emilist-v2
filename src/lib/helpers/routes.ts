@@ -28,6 +28,7 @@ export const routes = {
     marketplace: "/dashboard/marketplace",
     payments: "/dashboard/payments",
     jobs: "/dashboard/jobs",
+    materialsCompare: "/dashboard/materials/compare",
     reports: "/dashboard/reports",
     messages: "/dashboard/messages",
     support: "/dashboard/support",
