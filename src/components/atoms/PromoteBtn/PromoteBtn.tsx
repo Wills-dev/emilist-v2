@@ -20,7 +20,7 @@ const PromoteBtn = () => {
           <path d="M4.66667 3.5V8.16667V3.5Z" fill="currentColor" />
         </svg>
       </span>
-      <span>Compare prices</span>
+      <span>Promote</span>
     </button>
   );
 };
