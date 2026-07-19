@@ -14,10 +14,12 @@ import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard
 import OtherMaterialInfo from "../OtherMaterialInfo/OtherMaterialInfo";
 import Button from "@/components/atoms/Button/Button";
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
-
-import { ProductReviewResponse } from "../../types";
 import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
 import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
+
+import { ProductReviewResponse } from "../../types";
+import { useCompareMaterial } from "../../hooks/useCompareMaterial";
+import { useStore } from "@/store/authStore";
 
 const MaterialMainInfo = ({
   material,
@@ -29,6 +31,13 @@ const MaterialMainInfo = ({
   const locationText = [location?.lga, location?.state]
     .filter(Boolean)
     .join(", ");
+  const currentUser = useStore((state) => state.currentUser);
+  const { handleCompare, isComparing } = useCompareMaterial();
+  const isMaterialOwner = Boolean(
+    currentUser?._id &&
+    product.userId?._id &&
+    currentUser._id === product.userId._id,
+  );
 
   return (
     <div className="flex-1 w-full">
@@ -83,8 +92,11 @@ const MaterialMainInfo = ({
                   />
                 </div>
                 <div className="flex items-center gap-6 flex-wrap">
-                  <CompareBtn />
-                  <PromoteBtn />
+                  <CompareBtn
+                    onClick={() => handleCompare(product._id)}
+                    loading={isComparing}
+                  />
+                  {isMaterialOwner && <PromoteBtn />}
                 </div>
               </div>
               <div className="flex items-center gap-3.25">
@@ -122,9 +134,11 @@ const MaterialMainInfo = ({
             />
           </div>
         </div>
-        <Button variant="primary" className="w-full h-11">
-          Add to Cart
-        </Button>
+        {!isMaterialOwner && (
+          <Button variant="primary" className="w-full h-11">
+            Add to Cart
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { AnimatePresence } from "framer-motion";
 
 import Container from "@/components/atoms/Container/Container";
@@ -11,11 +9,10 @@ import ServiceSectionAction from "@/components/molecules/ServiceSectionActions/S
 import SectionWrapper from "@/components/molecules/SectionWrapper/SectionWrapper";
 import ExpertCard from "@/features/experts/components/ExpertCard/ExpertCard";
 import HomeMaterialSection from "@/features/materials/components/HomeMaterialSection/HomeMaterialSection";
+import { useServiceSection } from "./useServiceSection";
 
 const ServiceSection = () => {
-  const [currentService, setCurrentService] = useState<
-    "jobs" | "materials" | "experts"
-  >("jobs");
+  const { currentService, handleServiceChange } = useServiceSection();
 
   return (
     <div className="md:py-20 py-10 space-y-6 bg-[#FBFFF8]">
@@ -24,7 +21,7 @@ const ServiceSection = () => {
           <SectionTitle title="Explore the best offers from the marketplace today" />
           <ServiceSectionAction
             currentService={currentService}
-            setCurrentService={setCurrentService}
+            setCurrentService={handleServiceChange}
           />
         </div>
       </Container>

@@ -31,6 +31,7 @@ const HomeMaterialSection = () => {
               fullName={material?.seller?.name}
               rating={material?.averageRating}
               noOfReviews={material?.reviewCount}
+              sellerId={material?.seller?._id ?? material?.seller?.id}
             />
           ))}
     </SectionWrapper>
