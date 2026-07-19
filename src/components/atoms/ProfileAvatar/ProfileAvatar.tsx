@@ -12,7 +12,7 @@ const ProfileAvatar = ({
 
   const variants = {
     small: "w-10 h-10",
-    large: "sm:w-20.25 sm:h-20-25 w-10 h-10",
+    large: "sm:w-20.25 sm:h-20.25 w-10 h-10",
   };
 
   const styles = variants[variant];

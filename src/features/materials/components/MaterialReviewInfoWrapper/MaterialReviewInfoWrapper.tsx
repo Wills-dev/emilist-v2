@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import Container from "@/components/atoms/Container/Container";
 import FilterSectionWrapper from "@/components/atoms/FilterSectionWrapper/FilterSectionWrapper";
@@ -10,17 +12,31 @@ import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
 import ReviewBreakdown from "@/components/molecules/ReviewBreakdown/ReviewBreakdown";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
+import { useGetMaterialReviews } from "../../hooks/useGetMaterialReviews";
+import { useGetMaterialInfo } from "../../hooks/useGetMaterialInfo";
+import MaterialReviewInfoSkeleton from "./MaterialReviewInfoSkeleton";
+import MaterialReviewModal from "../MaterialReviewModal/MaterialReviewModal";
+import { useStore } from "@/store/authStore";
 
 const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const { handleSubmit, setSearch } = useGeneralSearch();
+  const currentUser = useStore((state) => state.currentUser);
+  const { data: material } = useGetMaterialInfo(materialId);
+  const { data, isLoading, currentPage, next, prev } = useGetMaterialReviews({
+    materialId,
+    limit: 10,
+  });
 
-  const reviewBreakdown = {
-    one: 0,
-    two: 33,
-    three: 10,
-    four: 4,
-    five: 13,
-  };
+  if (isLoading) {
+    return (
+      <div className="pt-6 pb-15">
+        <Container>
+          <MaterialReviewInfoSkeleton />
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-6 pb-15">
@@ -34,8 +50,8 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
             <div className="flex items-center justify-between gap-6 flex-wrap">
               <div className="max-w-197.75 w-full min-w-72.5">
                 <ReviewBreakdown
-                  totalReviews={51}
-                  reviewBreakdown={reviewBreakdown}
+                  totalReviews={data?.numberOfRatings ?? 0}
+                  reviewBreakdown={data?.ratingDistribution}
                 />
               </div>
               <div className="max-w-96.75 w-full min-w-72.5 space-y-6">
@@ -51,19 +67,37 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
                 <FilterSectionWrapper>
                   <FilterTitle title="55,000  Items sold" />
                 </FilterSectionWrapper>
-                <RatingSummary title="Merchant Rating" rating={4.3} />
+                <RatingSummary
+                  title="Merchant Rating"
+                  rating={data?.averageRating ?? 0}
+                />
               </div>
             </div>
           </div>
           <CommentWrapper
-            totalComments={100}
+            totalComments={data?.numberOfRatings ?? 0}
             variant="large"
             onSubmit={handleSubmit}
             setSearch={setSearch}
-            limit={10}
+            reviews={data?.reviews ?? []}
+            pagination={{
+              page: data?.pagination?.page ?? currentPage,
+              hasMore: data?.pagination?.hasMore ?? false,
+              onNext: next,
+              onPrev: prev,
+            }}
+            onAddComment={() => setIsReviewModalOpen(true)}
+            canAddComment={
+              material?.product?.userId?._id !== currentUser?._id
+            }
           />
         </div>
       </Container>
+      <MaterialReviewModal
+        productId={materialId}
+        open={isReviewModalOpen}
+        onClose={setIsReviewModalOpen}
+      />
     </div>
   );
 };

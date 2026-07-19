@@ -25,6 +25,12 @@ export interface PostMaterialPayload {
 
 export type PostMaterialField = keyof PostMaterialPayload;
 
+export interface AddMaterialReviewPayload {
+  comment: string;
+  productId: string;
+  rating: number;
+}
+
 export interface ProductReviewResponse {
   averageRating: number;
   isCompared: boolean;
@@ -33,6 +39,18 @@ export interface ProductReviewResponse {
   product: Product;
   ratingDistribution: RatingDistribution;
   reviewsData: Review[];
+}
+
+export interface MaterialReviewsResponse {
+  averageRating?: number;
+  numberOfRatings?: number;
+  ratingDistribution?: RatingDistribution;
+  reviews?: Review[];
+  pagination?: {
+    page?: number;
+    limit?: number;
+    hasMore?: boolean;
+  };
 }
 
 export interface Product {

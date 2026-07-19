@@ -1,5 +1,10 @@
 import { axiosInstance } from "@/lib/axiosInstance";
-import { PostMaterialPayload, ProductReviewResponse } from "../types";
+import {
+  AddMaterialReviewPayload,
+  MaterialReviewsResponse,
+  PostMaterialPayload,
+  ProductReviewResponse,
+} from "../types";
 
 export const postMaterial = async (payload: PostMaterialPayload) => {
   try {
@@ -102,6 +107,38 @@ export const getMaterialInfo = async (
     const url = `/material/fetch-product/${id}`;
     const { data } = await axiosInstance.get(url);
     return data?.data as ProductReviewResponse;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getMaterialReviews = async ({
+  materialId,
+  page,
+  limit,
+  sortBy = "mostRelevant",
+}: {
+  materialId: string;
+  page: number;
+  limit: number;
+  sortBy?: string;
+}): Promise<MaterialReviewsResponse | undefined> => {
+  try {
+    const url = `/material/fetch-product-reviews/${materialId}`;
+    const { data } = await axiosInstance.get(url, {
+      params: { page, limit, sortBy },
+    });
+
+    return data?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addMaterialReview = async (payload: AddMaterialReviewPayload) => {
+  try {
+    const { data } = await axiosInstance.post("/material/add-review", payload);
+    return data?.data;
   } catch (error) {
     throw error;
   }

@@ -16,6 +16,8 @@ import Button from "@/components/atoms/Button/Button";
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 
 import { ProductReviewResponse } from "../../types";
+import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
+import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
 
 const MaterialMainInfo = ({
   material,
@@ -57,7 +59,7 @@ const MaterialMainInfo = ({
               </div>
             </div>
             <div className="flex items-start justify-between gap-4 flex-wrap pb-4 border-b border-[#ECECEC]">
-              <div className="border border-[#F1F2F9] bg-white p-4 max-sm:py-2 max-sm:px-3 max-w-106.25 w-full rounded-[8px]">
+              <div className="border border-[#F1F2F9] bg-white p-4 max-sm:py-2 max-sm:px-3 max-w-106.25 w-full rounded-[8px] space-y-6">
                 <div className="flex items-center gap-6 flex-wrap">
                   <InfoItem
                     label="Location:"
@@ -79,6 +81,10 @@ const MaterialMainInfo = ({
                     variant="sm"
                     labelClass="text-[#707471]"
                   />
+                </div>
+                <div className="flex items-center gap-6 flex-wrap">
+                  <CompareBtn />
+                  <PromoteBtn />
                 </div>
               </div>
               <div className="flex items-center gap-3.25">

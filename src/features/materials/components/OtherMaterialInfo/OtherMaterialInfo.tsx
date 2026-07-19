@@ -2,6 +2,7 @@
 
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import { numberWithCommas } from "@/lib/helpers/formatNumbers";
+import { pluralizeQuantityMetric } from "@/lib/helpers/pluralizeQuantityMetric";
 import { useState } from "react";
 
 const OtherMaterialInfo = ({
@@ -20,7 +21,11 @@ const OtherMaterialInfo = ({
   const [tab, setTab] = useState("description");
   const tabOptions = ["description", "specifications"];
 
-  const quantity = availableQuantity && numberWithCommas(availableQuantity);
+  const quantity = numberWithCommas(availableQuantity);
+  const formattedQuantityMetric = pluralizeQuantityMetric(
+    availableQuantity,
+    quantityMetric,
+  );
 
   return (
     <div className="py-4 sm:px-4 px-2 space-y-4 rounded-[8px] bg-white">
@@ -57,7 +62,7 @@ const OtherMaterialInfo = ({
             />
             <InfoItem
               label="Available Qty:"
-              value={`${quantity.toString()} ${quantityMetric}`}
+              value={`${quantity} ${formattedQuantityMetric}`}
               className=""
               variant="sm"
               labelClass="text-[#707471]"
