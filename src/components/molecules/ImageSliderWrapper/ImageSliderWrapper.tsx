@@ -63,6 +63,7 @@ const ImageSliderWrapper = ({
             key={image}
             fileName={`Image ${index + 1}`}
             onClick={() => setActiveImage(index)}
+            active={index === activeImage}
           />
         ))}
       </div>

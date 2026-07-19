@@ -19,9 +19,11 @@ const getFileIcon = (fileName: string) => {
 const FileName = ({
   fileName,
   onClick,
+  active = false,
 }: {
   fileName: string;
   onClick?: () => void;
+  active?: boolean;
 }) => {
   const icon = getFileIcon(fileName);
 
@@ -29,11 +31,13 @@ const FileName = ({
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-1 bg-white px-2 py-px rounded-[32px] hover:shadow transition-all duration-300 cursor-pointer"
+      className={`flex items-center gap-1 px-2 py-px rounded-[32px] hover:shadow transition-all duration-300 cursor-pointer ${active ? "bg-[#F0FDF5] text-[#18A154]" : "bg-white"}`}
     >
       {icon && <Image src={icon} alt="" width={18.13} height={18.13} />}
 
-      <span className="text-sm text-[#737774]">{fileName}</span>
+      <span className={`text-sm ${active ? "text-[#18A154]" : "text-[#737774]"}`}>
+        {fileName}
+      </span>
     </button>
   );
 };

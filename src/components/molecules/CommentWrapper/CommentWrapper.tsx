@@ -1,27 +1,39 @@
 import clsx from "clsx";
 
-import { reviewComments } from "@/lib/constants/dummy";
+import { Review } from "@/lib/types/review";
 
 import SearchBar from "../SearchBar/SearchBar";
 import PlusIcon from "@/components/atoms/icons/PlusIcon";
 import CommentCard from "../CommentCard/CommentCard";
 import SeeAllBtn from "@/components/atoms/SeeAllBtn/SeeAllBtn";
 import PaginationPanel from "../PaginationPanel/PaginationPanel";
+import EmptyState from "../EmptyState/EmptyState";
 
 const CommentWrapper = ({
   variant,
   link,
-  totalComments,
+  totalComments = 0,
   onSubmit,
   setSearch,
-  limit,
+  reviews = [],
+  pagination,
+  onAddComment,
+  canAddComment = true,
 }: {
   variant: "small" | "large";
   link?: string;
-  totalComments: number;
+  totalComments?: number;
   onSubmit: () => void;
   setSearch: (search: string) => void;
-  limit: number;
+  reviews?: Review[];
+  pagination?: {
+    page: number;
+    hasMore?: boolean;
+    onNext: () => void;
+    onPrev: () => void;
+  };
+  onAddComment?: () => void;
+  canAddComment?: boolean;
 }) => {
   const variants = {
     small: {
@@ -52,10 +64,11 @@ const CommentWrapper = ({
             placeholder="Search Comments"
             variant="tertiary"
           />
-          {!link && (
+          {!link && canAddComment && (
             <button
               type="button"
-              className="flex items-center gap-2 text-[#6667FF]"
+              onClick={onAddComment}
+              className="flex items-center gap-2 text-[#6667FF] cursor-pointer"
             >
               <span>
                 <PlusIcon />
@@ -68,26 +81,40 @@ const CommentWrapper = ({
         </div>
       </div>
       <div className="">
-        {reviewComments?.slice(0, limit)?.map((review) => (
-          <CommentCard
-            key={review.id}
-            date={review?.date}
-            fullName={review?.fullName}
-            rating={review?.rating}
-            userId={review?.userId}
-            id={review?.id}
-            comment={review?.comment}
-            variant="small"
-            imgUrl={review?.profilePicture || ""}
+        {reviews.length === 0 ? (
+          <EmptyState
+            title="No reviews yet"
+            description="Be the first to share your experience with this material."
+            className="min-h-48 bg-white"
           />
-        ))}
-        {limit >= 10 && totalComments > limit && (
-          <PaginationPanel
-            totalPages={2}
-            page={1}
-            onNext={() => {}}
-            onPrev={() => {}}
-          />
+        ) : (
+          <>
+            {reviews.map((review) => (
+              <CommentCard
+                key={review?._id ?? `${review?.createdAt}-${review?.comment}`}
+                date={review?.createdAt ?? ""}
+                fullName={
+                  [review?.user?.firstName, review?.user?.lastName]
+                    .filter(Boolean)
+                    .join(" ") || "Anonymous"
+                }
+                rating={review?.rating ?? 0}
+                userId={review?.user?._id ?? ""}
+                id={review?._id ?? ""}
+                comment={review?.comment ?? ""}
+                variant={variant}
+                imgUrl={review?.user?.displayImage}
+              />
+            ))}
+            {pagination && (pagination.page > 1 || pagination.hasMore) && (
+              <PaginationPanel
+                page={pagination.page}
+                hasMore={pagination.hasMore}
+                onNext={pagination.onNext}
+                onPrev={pagination.onPrev}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

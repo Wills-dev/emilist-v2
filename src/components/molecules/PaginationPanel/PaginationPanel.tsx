@@ -3,11 +3,13 @@ import PaginationControls from "@/components/atoms/PaginationControls/Pagination
 const PaginationPanel = ({
   page,
   totalPages,
+  hasMore = false,
   onPrev,
   onNext,
 }: {
   page: number;
-  totalPages: number;
+  totalPages?: number;
+  hasMore?: boolean;
   onPrev: () => void;
   onNext: () => void;
 }) => {
@@ -20,8 +22,8 @@ const PaginationPanel = ({
         </p>
       </div>
       <PaginationControls
-        disableNext={page === totalPages}
-        disablePrev={page === 1}
+        disableNext={totalPages ? page >= totalPages : !hasMore}
+        disablePrev={page <= 1}
         prev={onPrev}
         next={onNext}
       />

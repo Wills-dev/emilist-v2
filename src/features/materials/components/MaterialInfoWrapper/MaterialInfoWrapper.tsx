@@ -7,6 +7,7 @@ import { useGetMaterialInfo } from "../../hooks/useGetMaterialInfo";
 import OtherSellersMaterials from "../OtherSellersMaterials/OtherSellersMaterials";
 import MaterialInfoSkeleton from "./MaterialInfoSkeleton";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
+import { useGetMaterialReviews } from "../../hooks/useGetMaterialReviews";
 
 const MaterialInfoWrapper = ({
   materialId,
@@ -16,14 +17,16 @@ const MaterialInfoWrapper = ({
   reviewLink: string;
 }) => {
   const { data, isLoading } = useGetMaterialInfo(materialId);
-
-  console.log("data", data);
+  const { data: reviews, isLoading: isFetching } = useGetMaterialReviews({
+    materialId,
+    limit: 3,
+  });
 
   return (
     <>
       <div className="pt-6 pb-15">
         <Container>
-          {isLoading ? (
+          {isLoading || isFetching ? (
             <MaterialInfoSkeleton />
           ) : !data ? (
             <EmptyState
@@ -36,7 +39,10 @@ const MaterialInfoWrapper = ({
                 <MaterialMainInfo material={data} />
               </div>
               <div className="max-w-96.75 w-full">
-                <MaterialReviewSummary reviewLink={reviewLink} />
+                <MaterialReviewSummary
+                  reviewLink={reviewLink}
+                  reviews={reviews}
+                />
               </div>
             </div>
           )}

@@ -8,12 +8,12 @@ const ReviewBreakdown = ({
 }: {
   totalReviews: number;
   titleClassName?: string;
-  reviewBreakdown: {
-    one: number;
-    two: number;
-    three: number;
-    four: number;
-    five: number;
+  reviewBreakdown?: {
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
   };
 }) => {
   return (
@@ -31,27 +31,27 @@ const ReviewBreakdown = ({
       <div className="space-y-6">
         <ReviewCard
           totalReviews={totalReviews}
-          rating={reviewBreakdown?.five}
+          rating={reviewBreakdown?.[5] || 0}
           starNumber={5}
         />
         <ReviewCard
           totalReviews={totalReviews}
-          rating={reviewBreakdown?.four}
+          rating={reviewBreakdown?.[4] || 0}
           starNumber={4}
         />
         <ReviewCard
           totalReviews={totalReviews}
-          rating={reviewBreakdown?.three}
+          rating={reviewBreakdown?.[3] || 0}
           starNumber={3}
         />
         <ReviewCard
           totalReviews={totalReviews}
-          rating={reviewBreakdown?.two}
+          rating={reviewBreakdown?.[2] || 0}
           starNumber={2}
         />
         <ReviewCard
           totalReviews={totalReviews}
-          rating={reviewBreakdown?.one}
+          rating={reviewBreakdown?.[1] || 0}
           starNumber={1}
         />
       </div>
