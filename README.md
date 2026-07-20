@@ -9,6 +9,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Authenticated material reviews with modal-based login protection
 - Material creation flows with image uploads and validation
 - Cart retrieval and management: quantities, item removal, discount codes, and server-calculated order summaries
+- Dashboard material marketplace with responsive filters and management actions
 - Client-side data fetching, caching, loading skeletons, empty states, and pagination
 - Token-aware authentication and profile-completion modal flows
 - Dashboard, cart, checkout, enterprise booking, and marketing pages
@@ -98,6 +99,10 @@ Keep domain-specific API clients, hooks, types, and feature UI together under `s
 ### Shared UI stays generic
 
 Place reusable UI in `src/components`. Shared components should receive data and callbacks through props rather than importing feature-specific API code.
+
+### One component per folder
+
+Give each component its own folder and implementation file (for example, `MaterialCard/MaterialCard.tsx`). Keep component-specific tests and supporting files in that same folder so they are easy to find and maintain.
 
 ### Hooks separate behaviour from presentation
 

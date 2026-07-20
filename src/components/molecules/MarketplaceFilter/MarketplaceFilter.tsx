@@ -8,7 +8,7 @@ import MarketplaceNoticePeriodFilter from "../MarketplaceNoticePeriodFilter/Mark
 import MarketplaceExpertLevelFilter from "../MarketplaceExpertLevelFilter/MarketplaceExpertLevelFilter";
 import MarketplaceRatingFilter from "../MarketplaceRatingFilter/MarketplaceRatingFilter";
 
-interface MarketplaceFilterProps {
+export interface MarketplaceFilterProps {
   showCategory?: boolean;
   showPrice?: boolean;
   categories?: { label: string; value: string }[];
@@ -25,6 +25,7 @@ interface MarketplaceFilterProps {
   showNoticePeriod?: boolean;
   showLevel?: boolean;
   showRating?: boolean;
+  variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
 }
 
@@ -43,6 +44,7 @@ const MarketplaceFilter = ({
   clearFilter,
   showLevel,
   showRating,
+  variant,
 }: MarketplaceFilterProps) => {
   const showCat = categories !== undefined && showCategory;
   const showLoc = locations !== undefined && showLocation;
@@ -58,6 +60,7 @@ const MarketplaceFilter = ({
           isCategorySelected={isCategorySelected}
           categories={categories || []}
           clearFilter={clearFilter}
+          variant={variant}
         />
       )}
       {showPrices && (
@@ -66,6 +69,7 @@ const MarketplaceFilter = ({
           setFilter={setFilter}
           setPriceRange={setPriceRange}
           clearFilter={clearFilter}
+          variant={variant}
         />
       )}
       {showLoc && (
@@ -74,6 +78,7 @@ const MarketplaceFilter = ({
           setFilter={setFilter}
           options={locations || []}
           clearFilter={clearFilter}
+          variant={variant}
         />
       )}
       {showNoticePeriod && (
@@ -81,6 +86,7 @@ const MarketplaceFilter = ({
           filters={filters}
           setFilter={setFilter}
           clearFilter={clearFilter}
+          variant={variant}
         />
       )}
       {showLevel && (
@@ -88,6 +94,7 @@ const MarketplaceFilter = ({
           filters={filters}
           setFilter={setFilter}
           clearFilter={clearFilter}
+          variant={variant}
         />
       )}
       {showRating && (
@@ -95,6 +102,7 @@ const MarketplaceFilter = ({
           filters={filters}
           setFilter={setFilter}
           clearFilter={clearFilter}
+          variant={variant}
         />
       )}
     </div>

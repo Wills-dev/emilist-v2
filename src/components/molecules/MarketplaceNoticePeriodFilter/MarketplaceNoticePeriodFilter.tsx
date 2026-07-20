@@ -13,18 +13,20 @@ const MarketplaceNoticePeriodFilter = ({
   filters,
   setFilter,
   clearFilter,
+  variant,
 }: {
   filters: FilterState;
   setFilter: <K extends keyof FilterState>(
     key: K,
     value: FilterState[K],
   ) => void;
+  variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <FilterSectionWrapper>
+    <FilterSectionWrapper variant={variant}>
       <div className="flex items-center justify-between gap-2.5">
         <FilterTitle title="NOTICE PERIOD" />
         <button
@@ -53,6 +55,7 @@ const MarketplaceNoticePeriodFilter = ({
           value={"All"}
           onClick={() => clearFilter("noticePeriod")}
           variant={!filters.noticePeriod ? "secondary" : "primary"}
+          parentVariant={variant}
         />
         <div className="flex items-center gap-2.5 flex-wrap w-full">
           {noticePeriodOptions?.map((period) => (
@@ -63,6 +66,7 @@ const MarketplaceNoticePeriodFilter = ({
               variant={
                 filters.noticePeriod === period.value ? "secondary" : "primary"
               }
+              parentVariant={variant}
             />
           ))}
         </div>

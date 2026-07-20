@@ -230,6 +230,12 @@ export const marketplaceTabs = [
   { label: "Explore materials", link: routes?.marketplace?.materials },
 ];
 
+export const dashbaordMarketplaceTabs = [
+  { label: "Find jobs", link: routes?.dashboardLinks.jobs },
+  { label: "Hire experts", link: routes?.dashboardLinks?.experts },
+  { label: "Explore materials", link: routes?.dashboardLinks?.materials },
+];
+
 export const dashboardMainLinks = [
   {
     label: "Overview",

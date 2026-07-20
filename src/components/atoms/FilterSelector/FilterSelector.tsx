@@ -6,12 +6,14 @@ const FilterSelector = ({
   value,
   onClick,
   variant = "primary",
+  parentVariant,
   showClose,
   showStar,
 }: {
   value: number | string;
   onClick: () => void;
   variant?: "primary" | "secondary";
+  parentVariant?: "primary" | "secondary" | "tertiary";
   showClose?: boolean;
   showStar?: boolean;
 }) => {
@@ -20,7 +22,10 @@ const FilterSelector = ({
     secondary: "bg-[#F0FDF5] text-[#18A154]",
   };
 
-  const styles = variants[variant];
+  const styles =
+    variant === "primary" && parentVariant === "tertiary"
+      ? "bg-[#F9F9F9]"
+      : variants[variant];
 
   return (
     <button

@@ -16,20 +16,25 @@ const MaterialCardActions = ({
 }) => {
   return (
     <div className="flex items-center w-full gap-2.5">
-      <Button
-        variant="default"
-        className="w-full flex-1 h-8 text-xs"
-        href={routes?.marketplace.materialInfo(materialId)}
-      >
-        View More
-      </Button>
+      <div className="flex-1 w-full">
+        <Button
+          variant="default"
+          className="w-full h-8 text-xs"
+          href={routes?.marketplace.materialInfo(materialId)}
+        >
+          View More
+        </Button>
+      </div>
+
       {!isSeller && (
-        <MaterialAddToCartButton
-          variant="secondary"
-          className="w-full flex-1 h-8 text-xs"
-          onClick={onAddToCart}
-          isLoading={isAddingToCart}
-        />
+        <div className="flex-1 w-full">
+          <MaterialAddToCartButton
+            variant="secondary"
+            className="w-full flex-1 h-8 text-xs"
+            onClick={onAddToCart}
+            isLoading={isAddingToCart}
+          />
+        </div>
       )}
     </div>
   );

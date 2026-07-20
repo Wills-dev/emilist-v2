@@ -1,0 +1,55 @@
+import Link from "next/link";
+
+import LikeIcon from "@/components/atoms/icons/LikeIcon";
+import ShopBag from "@/components/atoms/icons/ShopBag";
+import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
+import SearchBar from "@/components/molecules/SearchBar/SearchBar";
+import { dashbaordMarketplaceTabs } from "@/lib/constants";
+import { routes } from "@/lib/helpers/routes";
+
+const DashboardMaterialsHeader = ({
+  onSearchSubmit,
+  setSearch,
+}: {
+  onSearchSubmit: () => void;
+  setSearch: (search: string) => void;
+}) => {
+  return (
+    <div className="space-y-6 sm:pb-6 pb-4 border-b border-[#F1F2F9]">
+      <h6 className="font-exo font-semibold sm:text-2xl text-lg tracking-[0%] leading-10">
+        Welcome to the marketplace
+      </h6>
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div className="min-w-72.5">
+          <MarketplaceTab tabContent={dashbaordMarketplaceTabs} />
+        </div>
+        <div className="max-w-86.25 w-full min-w-72.5 flex items-center gap-2.5 flex-wrap">
+          <div className="max-w-64.25 w-full">
+            <SearchBar
+              setSearch={setSearch}
+              onSubmit={onSearchSubmit}
+              placeholder="Search materials..."
+              variant="secondary"
+            />
+          </div>
+          <div className="flex items-center gap-2.5">
+            <Link
+              href={routes?.dashboardLinks?.savedMaterials}
+              className="bg-[#F6F7F9] rounded-full h-8.5 w-8.5 flex justify-center items-center text-[#737774]"
+            >
+              <LikeIcon />
+            </Link>
+            <Link
+              href={routes?.dashboardLinks?.dashboardCart}
+              className="bg-[#F6F7F9] rounded-full h-8.5 w-8.5 flex justify-center items-center text-[#737774]"
+            >
+              <ShopBag />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DashboardMaterialsHeader;
