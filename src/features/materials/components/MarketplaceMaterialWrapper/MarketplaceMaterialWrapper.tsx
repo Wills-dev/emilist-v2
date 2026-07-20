@@ -65,7 +65,6 @@ const MarketplaceMaterialWrapper = () => {
                   locations={countriesAndStates}
                   showLocation
                   showPrice
-                  showLevel
                   showRating
                   clearFilter={clearFilter}
                 />
@@ -129,8 +128,6 @@ const MarketplaceMaterialWrapper = () => {
                         locations={countriesAndStates}
                         showLocation
                         showPrice
-                        showNoticePeriod
-                        showLevel
                         showRating
                         clearFilter={clearFilter}
                       />

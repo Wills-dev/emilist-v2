@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { FilterState } from "@/lib/hooks/useFilters";
 
@@ -27,7 +28,7 @@ const MarketplaceCategory = ({
   variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const selectedCategoryLength = filters.categories.length > 0;
 
@@ -44,6 +45,8 @@ const MarketplaceCategory = ({
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
+          aria-expanded={isOpen}
+          aria-label="Toggle category filters"
           className={`transition-all duration-300 ${isOpen ? "rotate-180" : ""}`}
         >
           <svg
@@ -62,39 +65,51 @@ const MarketplaceCategory = ({
           </svg>
         </button>
       </div>
-      <div className="space-y-3 w-full">
-        <FilterSelector
-          value={"All"}
-          onClick={() => clearFilter("categories")}
-          variant={!selectedCategoryLength ? "secondary" : "primary"}
-          parentVariant={variant}
-        />
-        {selectedCategoryLength && (
-          <div className="flex items-center gap-2.5 flex-wrap w-full">
-            {filters.categories?.map((category) => (
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-3 w-full">
               <FilterSelector
-                key={category}
-                value={category}
-                onClick={() => toggleCategory(category)}
-                variant="secondary"
+                value={"All"}
+                onClick={() => clearFilter("categories")}
+                variant={!selectedCategoryLength ? "secondary" : "primary"}
                 parentVariant={variant}
-                showClose
               />
-            ))}
-          </div>
+              {selectedCategoryLength && (
+                <div className="flex items-center gap-2.5 flex-wrap w-full">
+                  {filters.categories?.map((category) => (
+                    <FilterSelector
+                      key={category}
+                      value={category}
+                      onClick={() => toggleCategory(category)}
+                      variant="secondary"
+                      parentVariant={variant}
+                      showClose
+                    />
+                  ))}
+                </div>
+              )}
+              <div className="flex items-center gap-2.5 flex-wrap">
+                {availableCategories?.slice(0, 10).map((item) => (
+                  <FilterSelector
+                    key={item.label}
+                    value={item.value}
+                    onClick={() => toggleCategory(item.value)}
+                    variant="primary"
+                    parentVariant={variant}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
         )}
-        <div className="flex items-center gap-2.5 flex-wrap">
-          {availableCategories?.slice(0, 10).map((item) => (
-            <FilterSelector
-              key={item.label}
-              value={item.value}
-              onClick={() => toggleCategory(item.value)}
-              variant="primary"
-              parentVariant={variant}
-            />
-          ))}
-        </div>
-      </div>
+      </AnimatePresence>
     </FilterSectionWrapper>
   );
 };

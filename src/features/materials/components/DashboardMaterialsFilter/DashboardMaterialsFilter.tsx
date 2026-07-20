@@ -23,8 +23,6 @@ const DashboardMaterialsFilter = (props: DashboardMaterialsFilterProps) => {
       locations={countriesAndStates}
       showLocation
       showPrice
-      showNoticePeriod
-      showLevel
       showRating
       variant="tertiary"
     />

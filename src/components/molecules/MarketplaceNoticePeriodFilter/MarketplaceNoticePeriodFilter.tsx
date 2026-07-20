@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { FilterState } from "@/lib/hooks/useFilters";
 
@@ -23,7 +24,7 @@ const MarketplaceNoticePeriodFilter = ({
   variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <FilterSectionWrapper variant={variant}>
@@ -32,6 +33,8 @@ const MarketplaceNoticePeriodFilter = ({
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
+          aria-expanded={isOpen}
+          aria-label="Toggle notice period filters"
           className={`transition-all duration-300 ${isOpen ? "rotate-180" : ""}`}
         >
           <svg
@@ -50,27 +53,41 @@ const MarketplaceNoticePeriodFilter = ({
           </svg>
         </button>
       </div>
-      <div className="space-y-3 w-full">
-        <FilterSelector
-          value={"All"}
-          onClick={() => clearFilter("noticePeriod")}
-          variant={!filters.noticePeriod ? "secondary" : "primary"}
-          parentVariant={variant}
-        />
-        <div className="flex items-center gap-2.5 flex-wrap w-full">
-          {noticePeriodOptions?.map((period) => (
-            <FilterSelector
-              key={period?.value}
-              value={period.label}
-              onClick={() => setFilter("noticePeriod", period.value)}
-              variant={
-                filters.noticePeriod === period.value ? "secondary" : "primary"
-              }
-              parentVariant={variant}
-            />
-          ))}
-        </div>
-      </div>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-3 w-full">
+              <FilterSelector
+                value={"All"}
+                onClick={() => clearFilter("noticePeriod")}
+                variant={!filters.noticePeriod ? "secondary" : "primary"}
+                parentVariant={variant}
+              />
+              <div className="flex items-center gap-2.5 flex-wrap w-full">
+                {noticePeriodOptions?.map((period) => (
+                  <FilterSelector
+                    key={period?.value}
+                    value={period.label}
+                    onClick={() => setFilter("noticePeriod", period.value)}
+                    variant={
+                      filters.noticePeriod === period.value
+                        ? "secondary"
+                        : "primary"
+                    }
+                    parentVariant={variant}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </FilterSectionWrapper>
   );
 };
