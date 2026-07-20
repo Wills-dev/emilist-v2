@@ -1,7 +1,7 @@
 import FilterSectionWrapper from "@/components/atoms/FilterSectionWrapper/FilterSectionWrapper";
 import FilterSelector from "@/components/atoms/FilterSelector/FilterSelector";
 import FilterTitle from "@/components/atoms/FilterTilte/FilterTilte";
-import Select from "@/components/atoms/Select/Select";
+import SearchableSelect from "@/components/atoms/SearchableSelect/SearchableSelect";
 
 import { FilterState } from "@/lib/hooks/useFilters";
 import { selectOption } from "@/lib/types";
@@ -28,13 +28,12 @@ const MarketplaceLocationFilter = ({
       <div className="flex items-center justify-between gap-2.5">
         <FilterTitle title="Location" />
         <div className="max-w-23.5 w-full">
-          <Select
-            id=""
-            name=""
+          <SearchableSelect
             value={filters.location || ""}
-            onChange={(e) => setFilter("location", e.target.value)}
+            onValueChange={(value) => setFilter("location", value)}
             options={options}
             placeholder="Lagos"
+            searchPlaceholder="Search locations..."
           />
         </div>
       </div>
