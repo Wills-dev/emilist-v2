@@ -6,7 +6,7 @@ const MarketplaceTab = ({
   tabContent: { label: string; link: string }[];
 }) => {
   return (
-    <div className="w-full flex items-center justify-between gap-2 bg-[#F6F7F9] p-0.5 rounded-[16px]">
+    <div className="w-full flex items-center justify-between sm:gap-2 bg-[#F6F7F9] p-0.5 rounded-[16px]">
       {tabContent?.map((item) => (
         <Tab key={item.label} label={item.label} link={item.link} />
       ))}

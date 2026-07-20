@@ -14,6 +14,7 @@ const MarketplaceCategory = ({
   categories,
   toggleCategory,
   clearFilter,
+  variant,
 }: {
   filters: FilterState;
   setFilter: <K extends keyof FilterState>(
@@ -23,6 +24,7 @@ const MarketplaceCategory = ({
   toggleCategory: (category: string) => void;
   categories: { label: string; value: string }[];
   isCategorySelected: (category: string) => boolean;
+  variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +38,7 @@ const MarketplaceCategory = ({
   }, [categories, filters.categories]);
 
   return (
-    <FilterSectionWrapper>
+    <FilterSectionWrapper variant={variant}>
       <div className="flex items-center justify-between gap-2.5">
         <FilterTitle title="JOB Category" />
         <button
@@ -65,6 +67,7 @@ const MarketplaceCategory = ({
           value={"All"}
           onClick={() => clearFilter("categories")}
           variant={!selectedCategoryLength ? "secondary" : "primary"}
+          parentVariant={variant}
         />
         {selectedCategoryLength && (
           <div className="flex items-center gap-2.5 flex-wrap w-full">
@@ -74,6 +77,7 @@ const MarketplaceCategory = ({
                 value={category}
                 onClick={() => toggleCategory(category)}
                 variant="secondary"
+                parentVariant={variant}
                 showClose
               />
             ))}
@@ -86,6 +90,7 @@ const MarketplaceCategory = ({
               value={item.value}
               onClick={() => toggleCategory(item.value)}
               variant="primary"
+              parentVariant={variant}
             />
           ))}
         </div>

@@ -8,16 +8,18 @@ import FilterIcon from "@/components/atoms/icons/FilterIcon";
 const MarketplaceFilterBtns = ({
   onReset,
   hasFilter,
+  variant = "primary",
 }: {
   onReset: () => void;
   hasFilter: boolean;
+  variant?: "primary" | "secondary" | "tertiary";
 }) => {
   return (
     <div className="flex justify-between items-center gap-10 max-xl:hidden">
       <div className="flex items-center gap-4">
         <button
           type="button"
-          className="flex items-center cursor-pointer gap-2 bg-[#F6F7F9] hover:shadow transition-all duration-300 sm:h-8.5 h-7.5 px-3 rounded-[24px] text-[#5D6771] text-sm"
+          className={`flex items-center cursor-pointer gap-2 ${variant === "tertiary" ? "bg-[#F9F9F9]" : "bg-[#F6F7F9]"} hover:shadow transition-all duration-300 sm:h-8.5 h-7.5 px-3 rounded-[24px] text-[#5D6771] text-sm`}
         >
           <FilterIcon />
           <span className={` ${hasFilter ? "" : "sm:block hidden"}`}>

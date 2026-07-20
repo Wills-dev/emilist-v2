@@ -11,7 +11,7 @@ import { routes } from "@/lib/helpers/routes";
 
 const DashboardSidebar = () => {
   return (
-    <aside className="fixed bg-white max-w-78 w-full h-screen pt-20 max-lg:hidden">
+    <aside className="fixed bg-white max-w-78 w-full min-w-78 h-screen pt-20 max-lg:hidden">
       <div className="py-10 px-4 h-full flex flex-col justify-between gap-10">
         <div className="space-y-4">
           {dashboardMainLinks?.map((link) => (

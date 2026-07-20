@@ -7,18 +7,18 @@ import Container from "@/components/atoms/Container/Container";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
 import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/MarketplaceFilterBtns";
 import MarketplaceFilter from "@/components/molecules/MarketplaceFilter/MarketplaceFilter";
-import { marketplaceTabs } from "@/lib/constants";
-import { expertServices } from "@/features/experts/constants";
-import { countriesAndStates } from "@/lib/constants/countries";
 import SearchBar from "@/components/molecules/SearchBar/SearchBar";
 import SavedFilterBtn from "@/components/atoms/SavedFilterBtn/SavedFilterBtn";
 import MarketplaceActionBtns from "@/components/molecules/MarketplaceActionBtns/MarketplaceActionBtns";
-import MaterialCard from "../MaterialCard/MaterialCard";
 import CartRecord from "../CartRecord/CartRecord";
+import MarketplaceMaterialCardWrap from "../MarketplaceMaterialCardWrap/MarketplaceMaterialCardWrap";
 
 import { useFilters } from "@/lib/hooks/useFilters";
 import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
 import { routes } from "@/lib/helpers/routes";
+import { marketplaceTabs } from "@/lib/constants";
+import { expertServices } from "@/features/experts/constants";
+import { countriesAndStates } from "@/lib/constants/countries";
 
 const MarketplaceMaterialWrapper = () => {
   const { handleSubmit, setSearch } = useGeneralSearch();
@@ -109,44 +109,7 @@ const MarketplaceMaterialWrapper = () => {
                 />
                 <AnimatePresence mode="wait">
                   {tab === "" ? (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.5, ease: "easeOut" }}
-                      className="flex flex-wrap gap-6 xl:max-h-screen xl:overflow-y-auto no-scrollbar"
-                    >
-                      <MaterialCard
-                        id="1"
-                        productName="Dangote Cement"
-                        price={1000}
-                        unit="bag"
-                        location="Alapere, Ketu"
-                        createdAt="2026-05-19T14:32:10.123Z"
-                        isLiked={true}
-                        currency="NGN"
-                        imgUrl="/assets/dummyImages/dummy-image.svg"
-                        profileImg=""
-                        fullName="Kalu & Sons Store"
-                        rating={3}
-                        noOfReviews={31}
-                      />
-                      <MaterialCard
-                        id="1"
-                        productName="Dangote Cement"
-                        price={1000}
-                        unit="bag"
-                        location="Alapere, Ketu"
-                        createdAt="2026-05-19T14:32:10.123Z"
-                        isLiked={true}
-                        currency="NGN"
-                        imgUrl="/assets/dummyImages/dummy-image.svg"
-                        profileImg=""
-                        fullName="Kalu & Sons Store"
-                        rating={3}
-                        noOfReviews={31}
-                      />
-                    </motion.div>
+                    <MarketplaceMaterialCardWrap />
                   ) : (
                     <motion.div
                       initial={{ opacity: 0 }}

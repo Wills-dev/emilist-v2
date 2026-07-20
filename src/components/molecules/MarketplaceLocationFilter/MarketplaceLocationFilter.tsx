@@ -11,6 +11,7 @@ const MarketplaceLocationFilter = ({
   setFilter,
   options,
   clearFilter,
+  variant,
 }: {
   filters: FilterState;
   setFilter: <K extends keyof FilterState>(
@@ -18,10 +19,11 @@ const MarketplaceLocationFilter = ({
     value: FilterState[K],
   ) => void;
   options: selectOption[] | string[];
+  variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
 }) => {
   return (
-    <FilterSectionWrapper>
+    <FilterSectionWrapper variant={variant}>
       {" "}
       <div className="flex items-center justify-between gap-2.5">
         <FilterTitle title="Location" />
@@ -41,12 +43,14 @@ const MarketplaceLocationFilter = ({
           value={"All"}
           onClick={() => clearFilter("location")}
           variant={!filters.location ? "secondary" : "primary"}
+          parentVariant={variant}
         />
         {filters?.location && (
           <FilterSelector
             value={filters.location}
             onClick={() => setFilter("location", "")}
             variant="secondary"
+            parentVariant={variant}
           />
         )}
       </div>
