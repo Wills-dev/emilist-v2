@@ -60,8 +60,10 @@ interface AuthFlowSlice {
 
 interface UserSlice {
   currentUser: User | null;
+  isAuthInitialized: boolean;
   setCurrentUser: (user: User) => void;
   clearCurrentUser: () => void;
+  setIsAuthInitialized: (isInitialized: boolean) => void;
 }
 
 type StoreState = AuthFlowSlice & UserSlice;
@@ -70,8 +72,11 @@ export const useStore = create<StoreState>()(
   persist(
     (set) => ({
       currentUser: null,
+      isAuthInitialized: false,
       setCurrentUser: (user) => set({ currentUser: user }),
       clearCurrentUser: () => set({ currentUser: null }),
+      setIsAuthInitialized: (isInitialized) =>
+        set({ isAuthInitialized: isInitialized }),
 
       pendingFlow: null,
       pendingFormData: null,

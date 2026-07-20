@@ -12,14 +12,16 @@ import QuantityControl from "@/components/molecules/QuantityControl/QuantityCont
 import ShareButton from "@/components/molecules/ShareButton/ShareButton";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 import OtherMaterialInfo from "../OtherMaterialInfo/OtherMaterialInfo";
-import Button from "@/components/atoms/Button/Button";
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
 import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
 
 import { ProductReviewResponse } from "../../types";
 import { useCompareMaterial } from "../../hooks/useCompareMaterial";
+import { useAddToCart } from "../../hooks/useAddToCart";
 import { useStore } from "@/store/authStore";
+import { useQuantity } from "@/lib/hooks/useQuantity";
+import MaterialAddToCartButton from "../MaterialAddToCartButton/MaterialAddToCartButton";
 
 const MaterialMainInfo = ({
   material,
@@ -33,6 +35,11 @@ const MaterialMainInfo = ({
     .join(", ");
   const currentUser = useStore((state) => state.currentUser);
   const { handleCompare, isComparing } = useCompareMaterial();
+  const { handleAddToCart, isAddingToCart } = useAddToCart();
+  const { quantity, increment, decrement } = useQuantity({
+    initialQuantity: product.availableQuantity > 0 ? 1 : 0,
+    max: product.availableQuantity,
+  });
   const isMaterialOwner = Boolean(
     currentUser?._id &&
     product.userId?._id &&
@@ -64,7 +71,11 @@ const MaterialMainInfo = ({
                   title="starts from"
                   unit={product.priceMetric}
                 />
-                <QuantityControl id={product._id} quantity={0} />
+                <QuantityControl
+                  quantity={quantity}
+                  onIncrement={increment}
+                  onDecrement={decrement}
+                />
               </div>
             </div>
             <div className="flex items-start justify-between gap-4 flex-wrap pb-4 border-b border-[#ECECEC]">
@@ -135,9 +146,12 @@ const MaterialMainInfo = ({
           </div>
         </div>
         {!isMaterialOwner && (
-          <Button variant="primary" className="w-full h-11">
-            Add to Cart
-          </Button>
+          <MaterialAddToCartButton
+            className="w-full h-11"
+            onClick={() => handleAddToCart(product._id, quantity)}
+            isLoading={isAddingToCart}
+            disabled={quantity < 1}
+          />
         )}
       </div>
     </div>

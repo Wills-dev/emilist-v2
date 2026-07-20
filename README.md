@@ -8,8 +8,9 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Material browsing, detail pages, image galleries, availability, and reviews
 - Authenticated material reviews with modal-based login protection
 - Material creation flows with image uploads and validation
+- Cart retrieval and management: quantities, item removal, discount codes, and server-calculated order summaries
 - Client-side data fetching, caching, loading skeletons, empty states, and pagination
-- Authentication and profile-completion modal flows
+- Token-aware authentication and profile-completion modal flows
 - Dashboard, cart, checkout, enterprise booking, and marketing pages
 - Reusable Atomic Design UI primitives: atoms, molecules, organisms, and templates
 

@@ -31,6 +31,51 @@ export interface AddMaterialReviewPayload {
   rating: number;
 }
 
+export interface AddToCartPayload {
+  productId: string;
+  quantity: number;
+}
+
+export interface ApplyDiscountCodePayload {
+  code: string;
+}
+
+export interface CartProduct {
+  _id: string;
+  name: string;
+  brand?: string;
+  category?: string | { name?: string };
+  currency?: string;
+  images?: ProductImage[];
+  merchantName?: string;
+  price?: number;
+  quantityMetric?: string;
+}
+
+export interface CartItem {
+  _id: string;
+  lineTotal: number;
+  price: number;
+  productId: CartProduct | string;
+  quantity: number;
+}
+
+export interface CartOrderSummary {
+  subtotalAmount: number;
+  discountAmount: number;
+  taxAmount: number;
+  shippingAmount: number;
+  totalAmount: number;
+}
+
+export interface Cart {
+  _id: string;
+  cartQuantity?: number;
+  orderSummary?: CartOrderSummary;
+  products?: CartItem[];
+  totalAmount?: number;
+}
+
 export interface ProductReviewResponse {
   averageRating: number;
   isCompared: boolean;

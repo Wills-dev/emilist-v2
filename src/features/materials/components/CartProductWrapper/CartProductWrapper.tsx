@@ -1,16 +1,33 @@
+"use client";
+
 import { X } from "lucide-react";
 
 import CartCard from "../CartCard/CartCard";
+import { CartItem } from "../../types";
+import { useCartItemActions } from "../../hooks/useCartItemActions";
+import { getCartProductId } from "../../helpers/cart";
 
 const CartProductWrapper = ({
   variant = "primary",
   icon,
   title,
+  items,
+  productCount,
 }: {
   title: string;
   icon: React.ReactElement;
   variant?: "primary" | "secondary";
+  items: CartItem[];
+  productCount: number;
 }) => {
+  const itemLabel = `${productCount} ${productCount === 1 ? "item" : "items"}`;
+  const {
+    handleIncreaseQuantity,
+    handleReduceQuantity,
+    handleRemoveFromCart,
+    isCartItemUpdating,
+  } = useCartItemActions();
+
   return (
     <div className="w-full flex-1 space-y-5">
       <div className="flex items-center gap-4">
@@ -56,11 +73,13 @@ const CartProductWrapper = ({
                   />
                 </svg>
 
-                <p className="text-sm font-exo font-semibold">3 items</p>
+                <p className="text-sm font-exo font-semibold">{itemLabel}</p>
               </div>
               <button
                 type="button"
-                className="text-[#FF5D7A] text-sm flex items-center gap-1 bg-[#F9F9F9] py-0.5  px-3 rounded-full"
+                disabled
+                title="Clearing cart items will be available soon"
+                className="text-[#FF5D7A]/50 text-sm flex items-center gap-1 bg-[#F9F9F9] py-0.5 px-3 rounded-full cursor-not-allowed"
               >
                 Clear <X className="w-[1em] h-[1em]" />
               </button>
@@ -68,9 +87,21 @@ const CartProductWrapper = ({
           </div>
         )}
         <div className="px-5 pb-5 space-y-3.5">
-          <CartCard variant={variant} />
-          <CartCard variant={variant} />
-          <CartCard variant={variant} />
+          {items.map((item) => {
+            const productId = getCartProductId(item);
+
+            return (
+              <CartCard
+                key={item._id}
+                item={item}
+                variant={variant}
+                isUpdating={isCartItemUpdating(productId)}
+                onIncreaseQuantity={handleIncreaseQuantity}
+                onReduceQuantity={handleReduceQuantity}
+                onRemoveFromCart={handleRemoveFromCart}
+              />
+            );
+          })}
         </div>
       </div>
       {variant === "primary" && (

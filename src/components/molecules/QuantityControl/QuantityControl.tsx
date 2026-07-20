@@ -3,28 +3,28 @@ import MinusIcon from "@/components/atoms/icons/MinusIcon";
 import PlusIcon from "@/components/atoms/icons/PlusIcon";
 
 const QuantityControl = ({
-  id,
   quantity,
+  onIncrement,
+  onDecrement,
+  disabled = false,
 }: {
-  id: string;
   quantity: number;
+  onIncrement?: () => void;
+  onDecrement?: () => void;
+  disabled?: boolean;
 }) => {
-  const addToCount = () => {
-    console.log("id", id);
-  };
-
   return (
     <div className="flex items-center sm:gap-4 gap-2">
       <CounterButton
-        onClick={addToCount}
+        onClick={onDecrement ?? (() => {})}
         icon={<MinusIcon />}
-        disabled={quantity < 1 ? true : false}
+        disabled={disabled || quantity <= 1 || !onDecrement}
       />
       <span className="block tracking-[-1.5%]">{quantity}</span>
       <CounterButton
-        onClick={addToCount}
+        onClick={onIncrement ?? (() => {})}
         icon={<PlusIcon />}
-        disabled={false}
+        disabled={disabled || !onIncrement}
       />
     </div>
   );
