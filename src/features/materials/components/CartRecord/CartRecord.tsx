@@ -1,10 +1,18 @@
+"use client";
+
 import Link from "next/link";
+import { memo } from "react";
 
 import CartIcon from "@/components/atoms/icons/CartIcon";
 
 import { routes } from "@/lib/helpers/routes";
+import { useGetCartItems } from "../../hooks/useGetCartItems";
+import { getCartItemCount } from "../../helpers/cart";
 
-const CartRecord = ({ count }: { count: number }) => {
+const CartRecord = () => {
+  const { cart } = useGetCartItems();
+  const count = getCartItemCount(cart);
+
   return (
     <Link
       href={routes?.cart}
@@ -23,4 +31,4 @@ const CartRecord = ({ count }: { count: number }) => {
   );
 };
 
-export default CartRecord;
+export default memo(CartRecord);

@@ -1,11 +1,44 @@
 "use client";
 
 import Image from "next/image";
+import { memo } from "react";
 
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import QuantityControl from "@/components/molecules/QuantityControl/QuantityControl";
+import { getCurrencySign } from "@/lib/helpers/currencySign";
+import { numberWithCommas } from "@/lib/helpers/formatNumbers";
+import { pluralizeQuantityMetric } from "@/lib/helpers/pluralizeQuantityMetric";
+import { CartItem } from "../../types";
+import {
+  getCartProduct,
+  getCartProductCategory,
+  getCartProductId,
+  getCartProductImage,
+} from "../../helpers/cart";
 
-const CartCard = ({ variant }: { variant: "primary" | "secondary" }) => {
+const CartCard = ({
+  item,
+  variant,
+  isUpdating,
+  onIncreaseQuantity,
+  onReduceQuantity,
+  onRemoveFromCart,
+}: {
+  item: CartItem;
+  variant: "primary" | "secondary";
+  isUpdating: boolean;
+  onIncreaseQuantity: (productId: string) => void;
+  onReduceQuantity: (productId: string, quantity: number) => void;
+  onRemoveFromCart: (productId: string) => void;
+}) => {
+  const product = getCartProduct(item);
+  const productId = getCartProductId(item);
+  const productImage = getCartProductImage(product?.images);
+  const currency = product?.currency ?? "NGN";
+  const quantityMetric = product?.quantityMetric
+    ? pluralizeQuantityMetric(item.quantity, product.quantityMetric)
+    : "items";
+
   return (
     <div className="py-3.5 border-b border-[#F1F2F9]">
       <div className="py-3.5 flex md:items-center max-md:flex-col gap-3.5">
@@ -13,8 +46,8 @@ const CartCard = ({ variant }: { variant: "primary" | "secondary" }) => {
           className={`bg-[#ECECF0] overflow-hidden ${variant === "primary" ? "sm:w-28 w-18 sm:h-28 h-18 rounded-[8.75px]" : "w-14 h-14 rounded-[4.38px]"}`}
         >
           <Image
-            src={"/assets/dummyImages/dummy-image.svg"}
-            alt="product"
+            src={productImage ?? "/assets/dummyImages/dummy-image.svg"}
+            alt={product?.name ?? "Cart item"}
             width={118}
             height={118}
             className="object-cover w-full h-full"
@@ -23,33 +56,55 @@ const CartCard = ({ variant }: { variant: "primary" | "secondary" }) => {
         <div className="flex-1 w-full space-y-3.5">
           <div className="flex justify-between flex-wrap gap-4">
             <div className="space-y-1">
-              <h6 className="font-exo font-semibold text-sm">Bags of Cement</h6>
+              <h6 className="font-exo font-semibold text-sm">
+                {product?.name ?? "Unavailable product"}
+              </h6>
               <div className="">
                 <div className="max-w-141.75 w-full flex flex-wrap gap-3.5">
                   <InfoItem
                     label="Brand:"
-                    value="Dangote"
+                    value={product?.brand ?? "—"}
                     variant="xs"
                     className="text-[#474C48] font-medium"
                     labelClass="text-[#707471] font-normal"
                   />
                   <InfoItem
                     label="Category:"
-                    value="Building Materials"
+                    value={getCartProductCategory(product?.category) ?? "—"}
                     variant="xs"
                     className="text-[#474C48] font-medium"
                     labelClass="text-[#707471] font-normal"
                   />
                 </div>
-                <p className="text-xs text-[#737774]">Arthur Phillips</p>
+                <p className="text-xs text-[#737774]">
+                  {product?.merchantName ?? `${item.quantity} ${quantityMetric}`}
+                </p>
               </div>
             </div>
-            <p className="text-sm font-medium"> ₦9,000</p>
+            <div className="space-y-1 text-right">
+              <p className="text-xs text-[#737774]">
+                {getCurrencySign(currency)}{numberWithCommas(item.price)}
+                {product?.quantityMetric ? `/${product.quantityMetric}` : ""}
+              </p>
+              <p className="text-sm font-medium">
+                Total: {getCurrencySign(currency)}{numberWithCommas(item.lineTotal)}
+              </p>
+            </div>
           </div>
           {variant === "primary" && (
             <div className="flex justify-between flex-wrap gap-4">
-              <QuantityControl id={"1"} quantity={1} />
-              <button className="flex items-center gap-1 px-[8.75px] text-[#FF5D7A] text-xs font-medium">
+              <QuantityControl
+                quantity={item.quantity}
+                onIncrement={() => onIncreaseQuantity(productId)}
+                onDecrement={() => onReduceQuantity(productId, item.quantity)}
+                disabled={isUpdating}
+              />
+              <button
+                type="button"
+                onClick={() => onRemoveFromCart(productId)}
+                disabled={isUpdating}
+                className="flex items-center gap-1 px-[8.75px] text-[#FF5D7A] text-xs font-medium disabled:text-[#FF5D7A]/50 disabled:cursor-not-allowed"
+              >
                 <span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -76,4 +131,4 @@ const CartCard = ({ variant }: { variant: "primary" | "secondary" }) => {
   );
 };
 
-export default CartCard;
+export default memo(CartCard);

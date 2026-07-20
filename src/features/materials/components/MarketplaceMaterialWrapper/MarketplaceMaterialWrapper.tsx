@@ -93,7 +93,7 @@ const MarketplaceMaterialWrapper = () => {
                   </div>
                   <div className="flex items-center sm:gap-4 gap-2">
                     <SavedFilterBtn />
-                    <CartRecord count={0} />
+                    <CartRecord />
                   </div>
                 </div>
               </div>

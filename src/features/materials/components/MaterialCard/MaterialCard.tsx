@@ -9,6 +9,8 @@ import UserProfileCard from "@/components/molecules/UserProfileCard/UserProfileC
 import MaterialCardActions from "../MaterialCardActions/MaterialCardActions";
 import DotInfoItem from "@/components/atoms/DotInfoItem/DotInfoItem";
 import { useStore } from "@/store/authStore";
+import { useAddToCart } from "../../hooks/useAddToCart";
+import { useQuantity } from "@/lib/hooks/useQuantity";
 
 const MaterialCard = ({
   productName,
@@ -44,6 +46,8 @@ const MaterialCard = ({
   const toggleLike = () => {};
   const currentUser = useStore((state) => state.currentUser);
   const isSeller = Boolean(sellerId && currentUser?._id === sellerId);
+  const { quantity, increment, decrement } = useQuantity();
+  const { handleAddToCart, isAddingToCart } = useAddToCart();
 
   return (
     <div className="max-w-[375.5px]  w-full sm:min-w-[375.5px] min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
@@ -57,7 +61,11 @@ const MaterialCard = ({
             <DotInfoItem desc={location} variant="purple" />
           </div>
           <div className="space-y-2.5 flex flex-col items-end">
-            <QuantityControl id={id} quantity={10} />
+            <QuantityControl
+              quantity={quantity}
+              onIncrement={increment}
+              onDecrement={decrement}
+            />
             <PriceWrapper price={price} currency={currency} unit={unit} />
           </div>
         </div>
@@ -74,7 +82,12 @@ const MaterialCard = ({
           />
           <DatedPosted date={createdAt} />
         </div>
-        <MaterialCardActions materialId={id} isSeller={isSeller} />
+        <MaterialCardActions
+          materialId={id}
+          isSeller={isSeller}
+          onAddToCart={() => handleAddToCart(id, quantity)}
+          isAddingToCart={isAddingToCart}
+        />
       </div>
     </div>
   );
