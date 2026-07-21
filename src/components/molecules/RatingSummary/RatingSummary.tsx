@@ -7,9 +7,11 @@ import StarIcon from "@/components/atoms/icons/StarIcon";
 const RatingSummary = ({
   title,
   rating,
+  variant = "primary",
 }: {
   title: string;
   rating: number;
+  variant?: "primary" | "secondary" | "tertiary";
 }) => {
   const activeRating = Math.round(rating);
 
@@ -21,7 +23,7 @@ const RatingSummary = ({
   };
 
   return (
-    <FilterSectionWrapper>
+    <FilterSectionWrapper variant={variant}>
       <FilterTitle title={title} />
       <div className="flex items-center gap-2.5 flex-wrap w-full">
         {ratings?.map((rate, index) => (

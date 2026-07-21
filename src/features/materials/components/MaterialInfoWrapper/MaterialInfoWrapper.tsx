@@ -8,14 +8,15 @@ import OtherSellersMaterials from "../OtherSellersMaterials/OtherSellersMaterial
 import MaterialInfoSkeleton from "./MaterialInfoSkeleton";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import { useGetMaterialReviews } from "../../hooks/useGetMaterialReviews";
+import { usePathname } from "next/navigation";
+import { routes } from "@/lib/helpers/routes";
 
-const MaterialInfoWrapper = ({
-  materialId,
-  reviewLink,
-}: {
-  materialId: string;
-  reviewLink: string;
-}) => {
+const MaterialInfoWrapper = ({ materialId }: { materialId: string }) => {
+  const pathname = usePathname();
+  const isDashboardMaterialPage = pathname.startsWith("/dashboard");
+  const reviewLink = isDashboardMaterialPage
+    ? routes.dashboardLinks.materialInfoReviews(materialId)
+    : routes.marketplace.materialInfoReviews(materialId);
   const { data, isLoading } = useGetMaterialInfo(materialId);
   const { data: reviews, isLoading: isFetching } = useGetMaterialReviews({
     materialId,
@@ -25,30 +26,47 @@ const MaterialInfoWrapper = ({
   return (
     <>
       <div className="pt-6 pb-15">
-        <Container>
+        <Container variant={isDashboardMaterialPage ? "small" : "center"}>
           {isLoading || isFetching ? (
-            <MaterialInfoSkeleton />
+            <MaterialInfoSkeleton
+              variant={isDashboardMaterialPage ? "dashboard" : "public"}
+            />
           ) : !data ? (
             <EmptyState
               title="Material not found"
               description="This material may have been removed or is no longer available."
             />
           ) : (
-            <div className="w-full flex justify-between flex-wrap gap-6">
-              <div className="max-w-197.75 w-full">
+            <div
+              className={`w-full flex justify-between flex-wrap ${isDashboardMaterialPage ? "gap-2" : "gap-6"}`}
+            >
+              <div
+                className={
+                  isDashboardMaterialPage
+                    ? "max-w-202 w-full"
+                    : "max-w-197.75 w-full"
+                }
+              >
                 <MaterialMainInfo material={data} />
               </div>
-              <div className="max-w-96.75 w-full">
+              <div
+                className={
+                  isDashboardMaterialPage
+                    ? "max-w-68 w-full"
+                    : "max-w-96.75 w-full"
+                }
+              >
                 <MaterialReviewSummary
                   reviewLink={reviewLink}
                   reviews={reviews}
+                  variant={isDashboardMaterialPage ? "tertiary" : "primary"}
                 />
               </div>
             </div>
           )}
         </Container>
       </div>
-      <OtherSellersMaterials />
+      <OtherSellersMaterials variant="dashboard" />
     </>
   );
 };

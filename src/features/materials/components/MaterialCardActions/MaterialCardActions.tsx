@@ -1,3 +1,7 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 import Button from "@/components/atoms/Button/Button";
 import MaterialAddToCartButton from "../MaterialAddToCartButton/MaterialAddToCartButton";
 
@@ -14,13 +18,18 @@ const MaterialCardActions = ({
   onAddToCart?: () => void;
   isAddingToCart?: boolean;
 }) => {
+  const pathname = usePathname();
+  const materialInfoLink = pathname.startsWith("/dashboard")
+    ? routes.dashboardLinks.materialInfo(materialId)
+    : routes.marketplace.materialInfo(materialId);
+
   return (
     <div className="flex items-center w-full gap-2.5">
       <div className="flex-1 w-full">
         <Button
           variant="default"
           className="w-full h-8 text-xs"
-          href={routes?.marketplace.materialInfo(materialId)}
+          href={materialInfoLink}
         >
           View More
         </Button>

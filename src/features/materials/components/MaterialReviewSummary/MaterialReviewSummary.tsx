@@ -9,9 +9,11 @@ import { MaterialReviewsResponse } from "../../types";
 const MaterialReviewSummary = ({
   reviewLink,
   reviews,
+  variant = "primary",
 }: {
   reviewLink: string;
   reviews?: MaterialReviewsResponse;
+  variant?: "primary" | "tertiary";
 }) => {
   const { handleSubmit, setSearch } = useGeneralSearch();
 
@@ -25,6 +27,7 @@ const MaterialReviewSummary = ({
         <RatingSummary
           title="Merchant Rating"
           rating={reviews?.averageRating ?? 0}
+          variant={variant}
         />
         <CommentWrapper
           totalComments={reviews?.numberOfRatings ?? 0}
@@ -33,6 +36,7 @@ const MaterialReviewSummary = ({
           setSearch={setSearch}
           link={reviewLink}
           reviews={reviews?.reviews ?? []}
+          sectionVariant={variant}
         />
       </div>
     </div>

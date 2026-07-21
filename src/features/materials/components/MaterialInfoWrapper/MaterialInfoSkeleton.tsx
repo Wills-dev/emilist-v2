@@ -1,13 +1,21 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const MaterialInfoSkeleton = () => {
+const MaterialInfoSkeleton = ({
+  variant = "public",
+}: {
+  variant?: "public" | "dashboard";
+}) => {
+  const isDashboard = variant === "dashboard";
+
   return (
     <div
       aria-busy="true"
       aria-label="Loading material details"
-      className="w-full flex justify-between flex-wrap gap-6"
+      className={`w-full flex justify-between flex-wrap ${isDashboard ? "gap-2" : "gap-6"}`}
     >
-      <div className="max-w-197.75 w-full space-y-4">
+      <div
+        className={`w-full space-y-4 ${isDashboard ? "max-w-202" : "max-w-197.75"}`}
+      >
         <div className="flex items-center justify-between">
           <Skeleton className="h-8 w-20" />
           <Skeleton className="h-8 w-24" />
@@ -63,8 +71,16 @@ const MaterialInfoSkeleton = () => {
         </div>
       </div>
 
-      <div className="max-w-96.75 w-full space-y-6">
-        <div className="space-y-4 rounded-[8px] bg-[#F9F9F9] p-5">
+      <div
+        className={`w-full space-y-6 ${isDashboard ? "max-w-68" : "max-w-96.75"}`}
+      >
+        <div
+          className={
+            isDashboard
+              ? "space-y-4 bg-white py-6 sm:px-3"
+              : "space-y-4 rounded-[8px] bg-[#F9F9F9] p-5"
+          }
+        >
           <Skeleton className="h-6 w-36" />
           <Skeleton className="h-16 w-full" />
           <div className="space-y-3">
@@ -74,11 +90,23 @@ const MaterialInfoSkeleton = () => {
             <Skeleton className="h-3 w-2/3" />
           </div>
         </div>
-        <div className="space-y-3 rounded-[8px] bg-[#F9F9F9] p-5">
+        <div
+          className={
+            isDashboard
+              ? "space-y-3 bg-white py-6 sm:px-3"
+              : "space-y-3 rounded-[8px] bg-[#F9F9F9] p-5"
+          }
+        >
           <Skeleton className="h-5 w-32" />
           <Skeleton className="h-10 w-24" />
         </div>
-        <div className="space-y-4 rounded-[8px] bg-[#F9F9F9] p-5">
+        <div
+          className={
+            isDashboard
+              ? "space-y-4 bg-white py-6 sm:px-3"
+              : "space-y-4 rounded-[8px] bg-[#F9F9F9] p-5"
+          }
+        >
           <Skeleton className="h-5 w-28" />
           <Skeleton className="h-16 w-full" />
           <Skeleton className="h-16 w-full" />

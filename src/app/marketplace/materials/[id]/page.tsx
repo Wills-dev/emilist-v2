@@ -2,7 +2,6 @@ import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/Marketpl
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import MaterialInfoWrapper from "@/features/materials/components/MaterialInfoWrapper/MaterialInfoWrapper";
 import SimilarMaterials from "@/features/materials/components/SimilarMaterials/SimilarMaterials";
-import { routes } from "@/lib/helpers/routes";
 
 import { use } from "react";
 
@@ -21,10 +20,7 @@ const GeneralMaterialInfoPage = ({
         type="jobs"
         className="bg-[#1A201B]"
       />
-      <MaterialInfoWrapper
-        materialId={id}
-        reviewLink={routes?.marketplace?.materialInfoReviews(id)}
-      />
+      <MaterialInfoWrapper materialId={id} />
 
       <SimilarMaterials />
     </MainLayout>

@@ -6,17 +6,30 @@ import SectionWrapper from "@/components/molecules/SectionWrapper/SectionWrapper
 import MaterialCard from "../MaterialCard/MaterialCard";
 import SeeAllBtn from "@/components/atoms/SeeAllBtn/SeeAllBtn";
 
-const SimilarMaterials = () => {
+const SimilarMaterials = ({
+  variant = "public",
+}: {
+  variant?: "public" | "dashboard";
+}) => {
+  const isDashboard = variant === "dashboard";
+  const containerVariant = isDashboard ? "small" : "center";
+  const sectionContainerVariant = isDashboard ? "small" : "left";
+  const dashboardPadding = isDashboard ? "" : "";
+
   return (
     <div className="md:py-20 py-10 space-y-6 bg-linear-to-b from-0% from-white to-100% to-[#FBFBFB]">
-      <Container>
+      <Container variant={containerVariant} className={dashboardPadding}>
         <div className="sm:space-y-6 space-y-4 flex items-center justify-between gap-4">
           <SectionTitle title="Explore similar products" />
           <SeeAllBtn link="" />
         </div>
       </Container>
       <div className="min-h-90.5">
-        <SectionWrapper className="no-scrollbar ">
+        <SectionWrapper
+          className="no-scrollbar "
+          containerVariant={sectionContainerVariant}
+          containerClassName={dashboardPadding}
+        >
           <MaterialCard
             id="1"
             productName="Dangote Cement"
