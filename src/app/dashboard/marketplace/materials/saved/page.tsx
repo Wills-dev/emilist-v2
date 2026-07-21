@@ -1,7 +1,12 @@
-import React from "react";
+import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
+import SavedMaterialWrapper from "@/features/materials/components/SavedMaterialWrapper/SavedMaterialWrapper";
 
 const page = () => {
-  return <div>page</div>;
+  return (
+    <DashboardLayout>
+      <SavedMaterialWrapper />
+    </DashboardLayout>
+  );
 };
 
 export default page;

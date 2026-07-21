@@ -12,7 +12,7 @@ import DashboardMaterialsHeader from "../DashboardMaterialsHeader/DashboardMater
 import { useFilters } from "@/lib/hooks/useFilters";
 import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
 
-const DashboardMaterialsWrapper = () => {
+const SavedMaterialWrapper = () => {
   const { handleSubmit, setSearch } = useGeneralSearch();
   const {
     tab,
@@ -44,6 +44,7 @@ const DashboardMaterialsWrapper = () => {
             <DashboardMaterialsHeader
               onSearchSubmit={handleSubmit}
               setSearch={setSearch}
+              title="Saved Materials"
             />
             <div className="space-y-4">
               <DashboardMaterialsActions
@@ -84,4 +85,4 @@ const DashboardMaterialsWrapper = () => {
   );
 };
 
-export default DashboardMaterialsWrapper;
+export default SavedMaterialWrapper;

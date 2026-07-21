@@ -12,12 +12,13 @@ import CommentWrapper from "@/components/molecules/CommentWrapper/CommentWrapper
 import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
 import ReviewBreakdown from "@/components/molecules/ReviewBreakdown/ReviewBreakdown";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
+import MaterialReviewInfoSkeleton from "./MaterialReviewInfoSkeleton";
+import MaterialReviewModal from "../MaterialReviewModal/MaterialReviewModal";
+
+import { useStore } from "@/store/authStore";
 import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
 import { useGetMaterialReviews } from "../../hooks/useGetMaterialReviews";
 import { useGetMaterialInfo } from "../../hooks/useGetMaterialInfo";
-import MaterialReviewInfoSkeleton from "./MaterialReviewInfoSkeleton";
-import MaterialReviewModal from "../MaterialReviewModal/MaterialReviewModal";
-import { useStore } from "@/store/authStore";
 
 const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
