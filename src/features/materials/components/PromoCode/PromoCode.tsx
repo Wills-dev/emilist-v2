@@ -6,16 +6,16 @@ import ClipIcon from "@/components/atoms/icons/ClipIcon";
 import { Loader2 } from "lucide-react";
 import { useApplyDiscountCode } from "../../hooks/useApplyDiscountCode";
 
-const PromoCode = () => {
-  const {
-    code,
-    handleApplyDiscount,
-    handleCodeChange,
-    isApplyingDiscount,
-  } = useApplyDiscountCode();
+const PromoCode = ({
+  variant,
+}: {
+  variant?: "primary" | "secondary" | "tertiary";
+}) => {
+  const { code, handleApplyDiscount, handleCodeChange, isApplyingDiscount } =
+    useApplyDiscountCode();
 
   return (
-    <FilterSectionWrapper>
+    <FilterSectionWrapper variant={variant}>
       <FilterTitle icon={<ClipIcon />} title="PROMO CODE" />
       <form
         onSubmit={handleApplyDiscount}
@@ -34,7 +34,11 @@ const PromoCode = () => {
         <button
           type="submit"
           disabled={isApplyingDiscount || !code.trim()}
-          aria-label={isApplyingDiscount ? "Applying discount code" : "Apply discount code"}
+          aria-label={
+            isApplyingDiscount
+              ? "Applying discount code"
+              : "Apply discount code"
+          }
           className="relative text-xs font-medium border border-[#F1F2F9] py-1.75 px-3.5 rounded-[6.75px] bg-white h-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         >
           <span className={isApplyingDiscount ? "invisible" : undefined}>

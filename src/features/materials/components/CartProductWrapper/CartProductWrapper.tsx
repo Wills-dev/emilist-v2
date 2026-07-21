@@ -38,7 +38,7 @@ const CartProductWrapper = ({
           {title}
         </h2>
       </div>
-      <div className="bg-linear-to-b from-0% fromWhite to-100% to-[#FBFBFB] border border-[#F1F2F9] rounded-[12.75px] space-y-5 ">
+      <div className="bg-linear-to-b from-0% from-white to-100% to-[#FBFBFB] border border-[#F1F2F9] rounded-[12.75px] space-y-5 ">
         {variant === "primary" && (
           <div className="py-6 px-5">
             <div className="flex items-center justify-between gap-4 pb-4 border-b border-[#F1F2F9]">

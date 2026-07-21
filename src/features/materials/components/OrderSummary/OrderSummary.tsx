@@ -18,7 +18,7 @@ const OrderSummary = ({
   href?: string;
   actionTitle: string;
   handlePayment?: () => void;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "tertiary";
   productCount?: number;
   orderSummary?: CartOrderSummary;
   currency?: string;
@@ -39,27 +39,45 @@ const OrderSummary = ({
         <div className="space-y-4">
           <div className="space-y-4">
             <div className="flex items-center justify-between gap-2">
-              <p className="text-xs">Subtotal ({productCount} {productCount === 1 ? "item" : "items"})</p>
-              <p className="text-sm">{currencySign}{numberWithCommas(summary.subtotalAmount)}</p>
+              <p className="text-xs">
+                Subtotal ({productCount} {productCount === 1 ? "item" : "items"}
+                )
+              </p>
+              <p className="text-sm">
+                {currencySign}
+                {numberWithCommas(summary.subtotalAmount)}
+              </p>
             </div>{" "}
             {summary.discountAmount > 0 && (
               <div className="flex items-center justify-between gap-2">
                 <p className="text-xs">Discount</p>
-                <p className="text-sm">-{currencySign}{numberWithCommas(summary.discountAmount)}</p>
+                <p className="text-sm">
+                  -{currencySign}
+                  {numberWithCommas(summary.discountAmount)}
+                </p>
               </div>
             )}
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs">Tax</p>
-              <p className="text-sm">{currencySign}{numberWithCommas(summary.taxAmount)}</p>
+              <p className="text-sm">
+                {currencySign}
+                {numberWithCommas(summary.taxAmount)}
+              </p>
             </div>
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs">Shipping</p>
-              <p className="text-sm">{currencySign}{numberWithCommas(summary.shippingAmount)}</p>
+              <p className="text-sm">
+                {currencySign}
+                {numberWithCommas(summary.shippingAmount)}
+              </p>
             </div>
           </div>
           <div className="pt-3.5 border-t border-[#ECECEC] flex items-center justify-between gap-2">
             <p className="text-sm font-medium">Total</p>
-            <p className="text-sm font-semibold">{currencySign}{numberWithCommas(summary.totalAmount)}</p>
+            <p className="text-sm font-semibold">
+              {currencySign}
+              {numberWithCommas(summary.totalAmount)}
+            </p>
           </div>
         </div>
         <Button

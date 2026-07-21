@@ -20,7 +20,7 @@ import {
   getCartProductCount,
 } from "../../helpers/cart";
 
-const CartBreakdown = () => {
+const CartBreakdown = ({ isDashboard }: { isDashboard?: boolean }) => {
   const { cart, isError, isLoading } = useGetCartItems();
   const items = cart?.products ?? [];
   const productCount = getCartProductCount(cart);
@@ -29,12 +29,16 @@ const CartBreakdown = () => {
 
   if (isLoading) {
     return (
-      <Container>
+      <Container variant={isDashboard ? "small" : "center"}>
         <div className="pt-6 pb-15 space-y-10">
           <Skeleton className="h-8.5 w-20 bg-gray-200" />
           <div className="flex flex-wrap gap-6">
-            <Skeleton className="h-125 max-w-197.75 min-w-72.5 flex-1 bg-gray-200" />
-            <Skeleton className="h-96.75 max-w-96.75 min-w-72.5 flex-1 bg-gray-200" />
+            <Skeleton
+              className={`h-125 min-w-72.5 flex-1 bg-gray-200 ${isDashboard ? "max-w-175" : "max-w-197.75"}`}
+            />
+            <Skeleton
+              className={`h-96.75 min-w-72.5 flex-1 bg-gray-200 ${isDashboard ? "max-w-95" : "max-w-96.75"}`}
+            />
           </div>
         </div>
       </Container>
@@ -43,9 +47,9 @@ const CartBreakdown = () => {
 
   if (isError || items.length === 0) {
     return (
-      <Container>
+      <Container variant={isDashboard ? "small" : "center"}>
         <div className="pt-6 pb-15 space-y-10">
-          <BackButton />
+          <BackButton isDashboard />
           <EmptyState
             title={isError ? "Unable to load your cart" : "Your cart is empty"}
             description={
@@ -60,11 +64,15 @@ const CartBreakdown = () => {
   }
 
   return (
-    <Container>
+    <Container variant={isDashboard ? "small" : "center"}>
       <div className="pt-6 pb-15 space-y-10">
-        <BackButton />
-        <div className="w-full flex justify-between flex-wrap gap-6">
-          <div className="max-w-197.75 w-full">
+        <BackButton isDashboard />
+        <div
+          className={`w-full flex justify-between flex-wrap ${isDashboard ? "gap4" : "gap-6"}`}
+        >
+          <div
+            className={` w-full ${isDashboard ? "max-w-175" : "max-w-197.75"}`}
+          >
             <CartProductWrapper
               icon={<CartBag />}
               title="Cart"
@@ -72,24 +80,29 @@ const CartBreakdown = () => {
               productCount={productCount}
             />
           </div>
-          <div className="max-w-96.75 w-full space-y-8">
-            <PromoCode />
+          <div
+            className={`w-full space-y-8 ${isDashboard ? "max-w-95" : "max-w-96.75"}`}
+          >
+            <PromoCode variant={isDashboard ? "tertiary" : "primary"} />
             <OrderSummary
               href={routes?.checkout}
               actionTitle="Proceed to Checkout"
               productCount={productCount}
               orderSummary={orderSummary}
               currency={currency}
+              variant={isDashboard ? "tertiary" : "primary"}
             />
             <Shipping
               title="FRee shipping"
               icon={<Truck2 />}
               desc="On orders over $200"
+              variant={isDashboard ? "tertiary" : "primary"}
             />
             <Shipping
               title="Secure packaging"
               icon={<ShieldIcon />}
               desc="Items safely packed & insured"
+              variant={isDashboard ? "tertiary" : "primary"}
             />
           </div>
         </div>

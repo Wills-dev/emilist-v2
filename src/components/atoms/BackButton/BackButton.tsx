@@ -2,7 +2,13 @@
 
 import { useRouter } from "next/navigation";
 
-export default function BackButton({ onClose }: { onClose?: () => void }) {
+export default function BackButton({
+  onClose,
+  isDashboard,
+}: {
+  onClose?: () => void;
+  isDashboard?: boolean;
+}) {
   const router = useRouter();
 
   const goBack = () => {
@@ -17,7 +23,7 @@ export default function BackButton({ onClose }: { onClose?: () => void }) {
     <button
       type="button"
       onClick={goBack}
-      className="cursor-pointer flex items-center gap-2 bg-[#F6F7F9] hover:shadow transition-all duration-300 h-8.5 px-2 rounded-[10px] text-[#737774] text-sm"
+      className={`cursor-pointer flex items-center gap-2 hover:shadow transition-all duration-300 h-8.5 px-2 rounded-[10px] text-[#737774] text-sm ${isDashboard ? "bg-white" : "bg-[#F6F7F9]"}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
