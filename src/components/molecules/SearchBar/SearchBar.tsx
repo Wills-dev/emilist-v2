@@ -37,7 +37,7 @@ const SearchBar = ({
       button: "text-[#737774]",
     },
     tertiary: {
-      base: "max-w-248.75 md:pl-4 pl-2 md:pr-3 pr-2 py-2.5 sm:gap-3 gap-2 text-sm bg-white",
+      base: "max-w-248.75 md:pl-4 pl-2 md:pr-3 pr-2 py-2.5 sm:gap-3 gap-2 text-sm bg-white border",
       icon: "text-[#737774]",
       input: "outline-none ",
       button: "text-[#737774]",

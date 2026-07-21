@@ -19,6 +19,7 @@ const CommentWrapper = ({
   pagination,
   onAddComment,
   canAddComment = true,
+  sectionVariant = "primary",
 }: {
   variant: "small" | "large";
   link?: string;
@@ -34,6 +35,7 @@ const CommentWrapper = ({
   };
   onAddComment?: () => void;
   canAddComment?: boolean;
+  sectionVariant?: "primary" | "tertiary";
 }) => {
   const variants = {
     small: {
@@ -49,7 +51,13 @@ const CommentWrapper = ({
   const styles = variants[variant];
 
   return (
-    <div className={clsx("bg-[#F6F7F9] space-y-6", styles.parent)}>
+    <div
+      className={clsx(
+        sectionVariant === "tertiary" ? "bg-white" : "bg-[#F6F7F9]",
+        "space-y-6",
+        styles.parent,
+      )}
+    >
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-4">
           <h6 className={clsx(styles.title, "font-semibold font-exo")}>
@@ -68,7 +76,7 @@ const CommentWrapper = ({
             <button
               type="button"
               onClick={onAddComment}
-              className="flex items-center gap-2 text-[#6667FF] cursor-pointer"
+              className="flex items-center gap-2 text-[#6667FF] cursor-pointer whitespace-nowrap"
             >
               <span>
                 <PlusIcon />

@@ -11,7 +11,7 @@ const FilterSectionWrapper = ({
     primary: "bg-[#F6F7F9] p-6 space-y-3.75 w-full",
     secondary:
       "border border-[#F1F2F9] pt-5 px-4 pb-4 bg-[#FCFCFC] rounded-[12.75px] space-y-5.25",
-    tertiary: "bg-white py-6 sm:px-4  space-y-3.75 w-full",
+    tertiary: "bg-white py-6 sm:px-3  space-y-3.75 w-full",
   };
 
   const styles = variants[variant];

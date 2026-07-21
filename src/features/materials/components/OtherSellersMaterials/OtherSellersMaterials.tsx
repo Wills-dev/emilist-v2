@@ -3,17 +3,27 @@
 import Container from "@/components/atoms/Container/Container";
 import GrayedLogo from "@/components/atoms/GrayedLogo/GrayedLogo";
 import SeeAllBtn from "@/components/atoms/SeeAllBtn/SeeAllBtn";
-import SectionWrapper from "@/components/molecules/SectionWrapper/SectionWrapper";
-import MaterialCard from "../MaterialCard/MaterialCard";
+import SellersMaterialCardWrap from "../SellersMaterialCardWrap/SellersMaterialCardWrap";
 
-const OtherSellersMaterials = () => {
+const OtherSellersMaterials = ({
+  variant = "public",
+}: {
+  variant?: "public" | "dashboard";
+}) => {
+  const isDashboard = variant === "dashboard";
+  const containerVariant = isDashboard ? "small" : "empty";
+  const sectionContainerVariant = isDashboard ? "empty" : "center";
+
   return (
-    <div className="bg-[#F4F7F5] relative overflow-hidden">
+    <Container
+      variant={containerVariant}
+      className="bg-[#F4F7F5] relative overflow-hidden"
+    >
       <GrayedLogo variant="secondary" />
       <div className=" backdrop-blur-md">
-        <Container>
+        <Container variant={sectionContainerVariant}>
           <div className="py-15">
-            <div className="flex max-md:flex-col gap-4">
+            <div className="flex max-lg:flex-col gap-4">
               <div className="pt-8 space-y-4 max-w-96.25 w-full min-w-72.5">
                 <div className="space-y-2">
                   <span className="text-[#18A154]">
@@ -43,43 +53,12 @@ const OtherSellersMaterials = () => {
                 </div>
                 <SeeAllBtn link="" />
               </div>
-              <SectionWrapper className="no-scrollbar ">
-                <MaterialCard
-                  id="1"
-                  productName="Dangote Cement"
-                  price={1000}
-                  unit="bag"
-                  location="Alapere, Ketu"
-                  createdAt="2026-05-19T14:32:10.123Z"
-                  isLiked={true}
-                  currency="NGN"
-                  imgUrl="/assets/dummyImages/dummy-image.svg"
-                  profileImg=""
-                  fullName="Kalu & Sons Store"
-                  rating={3}
-                  noOfReviews={31}
-                />
-                <MaterialCard
-                  id="1"
-                  productName="8mm Solid Blocks"
-                  price={1200}
-                  unit="bag"
-                  location="Sabo, Yaba"
-                  createdAt="2026-05-27T14:32:10.123Z"
-                  isLiked={false}
-                  currency="NGN"
-                  imgUrl="/assets/dummyImages/dummy-image.svg"
-                  profileImg=""
-                  fullName="Mohammed Block Factory"
-                  rating={4}
-                  noOfReviews={20}
-                />
-              </SectionWrapper>
+              <SellersMaterialCardWrap />
             </div>
           </div>
         </Container>
       </div>
-    </div>
+    </Container>
   );
 };
 

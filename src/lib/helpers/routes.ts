@@ -30,6 +30,10 @@ export const routes = {
     jobs: "/dashboard/marketplace/jobs",
     experts: "/dashboard/marketplace/experts",
     materials: "/dashboard/marketplace/materials",
+    materialInfo: (materialId: string) =>
+      `/dashboard/marketplace/materials/${materialId}`,
+    materialInfoReviews: (materialId: string) =>
+      `/dashboard/marketplace/materials/${materialId}/reviews`,
     savedMaterials: "/dashboard/marketplace/materials/saved",
     dashboardCart: "/dashboard/marketplace/cart",
     materialsCompare: "/dashboard/marketplace/materials/compare",

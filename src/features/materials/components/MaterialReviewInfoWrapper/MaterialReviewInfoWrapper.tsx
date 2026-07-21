@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import Container from "@/components/atoms/Container/Container";
@@ -20,6 +21,8 @@ import { useStore } from "@/store/authStore";
 
 const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const pathname = usePathname();
+  const isDashboardMaterialPage = pathname.startsWith("/dashboard");
   const { handleSubmit, setSearch } = useGeneralSearch();
   const currentUser = useStore((state) => state.currentUser);
   const { data: material } = useGetMaterialInfo(materialId);
@@ -31,8 +34,10 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
   if (isLoading) {
     return (
       <div className="pt-6 pb-15">
-        <Container>
-          <MaterialReviewInfoSkeleton />
+        <Container variant={isDashboardMaterialPage ? "small" : "center"}>
+          <MaterialReviewInfoSkeleton
+            variant={isDashboardMaterialPage ? "dashboard" : "public"}
+          />
         </Container>
       </div>
     );
@@ -40,22 +45,33 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
 
   return (
     <div className="pt-6 pb-15">
-      <Container>
+      <Container variant={isDashboardMaterialPage ? "small" : "center"}>
         <div className="space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between space-y-4">
               <BackButton />
               <FlagActionBtn onClick={() => {}} actionTitle="Flag merchant" />
             </div>
-            <div className="flex items-center justify-between gap-6 flex-wrap">
-              <div className="max-w-197.75 w-full min-w-72.5">
+            <div className="flex items-center justify-between  flex-wrap gap-4">
+              <div
+                className={
+                  isDashboardMaterialPage
+                    ? "max-w-160 w-full min-w-72.5"
+                    : "max-w-197.75 w-full min-w-72.5"
+                }
+              >
                 <ReviewBreakdown
                   totalReviews={data?.numberOfRatings ?? 0}
                   reviewBreakdown={data?.ratingDistribution}
+                  variant={isDashboardMaterialPage ? "tertiary" : "primary"}
                 />
               </div>
-              <div className="max-w-96.75 w-full min-w-72.5 space-y-6">
-                <FilterSectionWrapper>
+              <div
+                className={`w-full min-w-72.5 space-y-6 ${isDashboardMaterialPage ? "max-w-109.75" : "max-w-96.75"}`}
+              >
+                <FilterSectionWrapper
+                  variant={isDashboardMaterialPage ? "tertiary" : "primary"}
+                >
                   <FilterTitle title="Merchant profile" />
                   <UserRatingCard
                     id={""}
@@ -64,12 +80,15 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
                     rating={4}
                   />
                 </FilterSectionWrapper>
-                <FilterSectionWrapper>
+                <FilterSectionWrapper
+                  variant={isDashboardMaterialPage ? "tertiary" : "primary"}
+                >
                   <FilterTitle title="55,000  Items sold" />
                 </FilterSectionWrapper>
                 <RatingSummary
                   title="Merchant Rating"
                   rating={data?.averageRating ?? 0}
+                  variant={isDashboardMaterialPage ? "tertiary" : "primary"}
                 />
               </div>
             </div>
@@ -87,9 +106,8 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
               onPrev: prev,
             }}
             onAddComment={() => setIsReviewModalOpen(true)}
-            canAddComment={
-              material?.product?.userId?._id !== currentUser?._id
-            }
+            canAddComment={material?.product?.userId?._id !== currentUser?._id}
+            sectionVariant={isDashboardMaterialPage ? "tertiary" : "primary"}
           />
         </div>
       </Container>

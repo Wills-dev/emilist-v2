@@ -37,7 +37,7 @@ const CommentCard = ({
   return (
     <div className={clsx(`py-6  border-t border-[#D9D9D9]`, styles)}>
       <ProfileAvatar profileImage={imgUrl} variant={variant} />
-      <div className="sm:space-y-5 space-y-2">
+      <div className="sm:space-y-5 space-y-2 flex-1 w-full">
         <div
           className={` flex items-center gap-4 ${variant === "small" ? "justify-between" : ""}`}
         >
@@ -50,7 +50,7 @@ const CommentCard = ({
           <Rating rating={rating} />
         </div>
         <p className="text-sm leading-6">{comment}</p>
-        <div className="flex items-center justify-between gap-6">
+        <div className="flex items-center justify-between gap-6 w-full">
           <DatedPosted date={date} />
           <ReviewCommentActions variant={variant} id={id} />
         </div>

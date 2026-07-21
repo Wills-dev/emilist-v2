@@ -9,11 +9,13 @@ import Container from "@/components/atoms/Container/Container";
 const SectionWrapper = ({
   variant = "horizontal",
   containerVariant = "left",
+  containerClassName = "",
   className = "",
   children,
 }: {
   variant?: "horizontal" | "vertical";
-  containerVariant?: "center" | "left" | "right";
+  containerVariant?: "center" | "left" | "right" | "small";
+  containerClassName?: string;
   className?: string;
   children: React.ReactNode;
 }) => {
@@ -32,7 +34,7 @@ const SectionWrapper = ({
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="w-full"
     >
-      <Container variant={containerVariant}>
+      <Container variant={containerVariant} className={containerClassName}>
         <div className={clsx(className, styles)}>{children}</div>
       </Container>
     </motion.section>

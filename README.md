@@ -112,6 +112,10 @@ Put request state, form state, mutations, validation, and submit handlers in hoo
 
 Use TanStack Query for remote data. Include all request inputs in the query key, invalidate related keys after mutations, and render loading, empty, and error-safe states around query data.
 
+### Loading states
+
+Use the shared shadcn `Skeleton` for loading UI. Skeleton layouts should match the rendered page structure—including dashboard container widths, columns, spacing, and tertiary panels—to prevent layout shifts when data resolves. The shared primitive uses `bg-gray-200` as the loading surface.
+
 ### Styling
 
 Use Tailwind utilities and the theme tokens defined in `src/app/globals.css`. Prefer semantic theme utilities for shared typography and colors as they are introduced; avoid adding new repeated arbitrary color or font-size values.
