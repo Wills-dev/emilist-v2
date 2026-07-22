@@ -23,6 +23,8 @@ const Button = ({
     secondary:
       "bg-[#FBFFF8] hover:bg-green-100 text-[#25C269] font-semibold border-[#25C269]",
     default: "bg-[#FBFFF8] border-[#D9D9D9] hover:bg-gray-100 font-semibold",
+    danger:
+      "bg-[#FF5D7A] hover:bg-[#E84F6A] border-[#FF5D7A] text-white font-bold disabled:bg-[#FF5D7A]/30 disabled:border-[#FF5D7A]/30 disabled:cursor-not-allowed",
   };
 
   const styles = variants[variant];

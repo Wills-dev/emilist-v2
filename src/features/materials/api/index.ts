@@ -1,6 +1,7 @@
 import { axiosInstance } from "@/lib/axiosInstance";
 import {
   AddMaterialReviewPayload,
+  FlagMaterialPayload,
   MaterialReviewsResponse,
   PostMaterialPayload,
   ProductReviewResponse,
@@ -57,6 +58,7 @@ export const getMaterial = async ({
   status,
   sortBy,
   sortOrder,
+  userId,
 }: {
   page: number;
   limit: number;
@@ -68,6 +70,7 @@ export const getMaterial = async ({
   status?: string | null;
   sortBy?: string | null;
   sortOrder?: string | null;
+  userId?: string;
 }) => {
   try {
     const rawParams = {
@@ -81,6 +84,7 @@ export const getMaterial = async ({
       status,
       sortBy,
       sortOrder,
+      userId,
     };
 
     const params = Object.fromEntries(
@@ -102,10 +106,13 @@ export const getMaterial = async ({
 
 export const getMaterialInfo = async (
   id: string,
+  userId?: string,
 ): Promise<ProductReviewResponse> => {
   try {
     const url = `/material/fetch-product/${id}`;
-    const { data } = await axiosInstance.get(url);
+    const { data } = await axiosInstance.get(url, {
+      params: userId ? { userId } : undefined,
+    });
     return data?.data as ProductReviewResponse;
   } catch (error) {
     throw error;
@@ -148,6 +155,21 @@ export const compareMaterial = async (materialId: string) => {
   try {
     const { data } = await axiosInstance.patch(
       `/material/compare-product/${materialId}`,
+    );
+    return data?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const flagMaterial = async (
+  materialId: string,
+  payload: FlagMaterialPayload,
+) => {
+  try {
+    const { data } = await axiosInstance.post(
+      `/material/flag-product/${materialId}`,
+      payload,
     );
     return data?.data;
   } catch (error) {

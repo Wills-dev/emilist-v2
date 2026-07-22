@@ -22,6 +22,8 @@ import { useAddToCart } from "../../hooks/useAddToCart";
 import { useStore } from "@/store/authStore";
 import { useQuantity } from "@/lib/hooks/useQuantity";
 import MaterialAddToCartButton from "../MaterialAddToCartButton/MaterialAddToCartButton";
+import FlagListingModal from "@/components/molecules/FlagListingModal/FlagListingModal";
+import { useFlagMaterial } from "../../hooks/useFlagMaterial";
 
 const MaterialMainInfo = ({
   material,
@@ -36,6 +38,17 @@ const MaterialMainInfo = ({
   const currentUser = useStore((state) => state.currentUser);
   const { handleCompare, isComparing } = useCompareMaterial();
   const { handleAddToCart, isAddingToCart } = useAddToCart();
+  const {
+    reason,
+    setReason,
+    handleSubmit: handleFlagSubmit,
+    isFlagModalOpen,
+    openFlagModal,
+    handleFlagModalChange,
+    isPending: isFlagging,
+  } = useFlagMaterial({
+    materialId: product._id,
+  });
   const { quantity, increment, decrement } = useQuantity({
     initialQuantity: product.availableQuantity > 0 ? 1 : 0,
     max: product.availableQuantity,
@@ -51,7 +64,10 @@ const MaterialMainInfo = ({
       {" "}
       <div className="flex items-center justify-between space-y-4">
         <BackButton />
-        <FlagActionBtn onClick={() => {}} actionTitle="Flag listing" />
+        <FlagActionBtn
+          onClick={openFlagModal}
+          actionTitle="Flag listing"
+        />
       </div>
       <div className="bg-[#F9F9F9] border-[0.94px] border-[#F1F2F9] pt-8 md:px-11 sm:px-5 px-2  pb-6 rounded-[11.33px] space-y-8">
         <div className="space-y-6">
@@ -154,6 +170,14 @@ const MaterialMainInfo = ({
           />
         )}
       </div>
+      <FlagListingModal
+        open={isFlagModalOpen}
+        onClose={handleFlagModalChange}
+        reason={reason}
+        setReason={setReason}
+        onSubmit={handleFlagSubmit}
+        isSubmitting={isFlagging}
+      />
     </div>
   );
 };

@@ -15,6 +15,7 @@ interface ModalWrapperProps {
   onClose: (open: boolean) => void;
   titleClassName?: string;
   descClassName?: string;
+  headerClassName?: string;
 }
 
 const ModalWrapper = ({
@@ -26,11 +27,12 @@ const ModalWrapper = ({
   onClose,
   titleClassName,
   descClassName,
+  headerClassName,
 }: ModalWrapperProps) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className={`overflow-hidden ${className}`}>
-        <DialogHeader>
+        <DialogHeader className={headerClassName}>
           <DialogTitle
             className={`font-exo font font-bold sm:text-[24px] text-lg ${titleClassName}`}
           >
