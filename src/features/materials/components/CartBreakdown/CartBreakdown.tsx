@@ -3,7 +3,7 @@
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import Container from "@/components/atoms/Container/Container";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
-import { Skeleton } from "@/components/ui/skeleton";
+import CartBag from "@/components/atoms/icons/CartBag";
 import CartProductWrapper from "../CartProductWrapper/CartProductWrapper";
 import PromoCode from "../PromoCode/PromoCode";
 import OrderSummary from "../OrderSummary/OrderSummary";
@@ -12,7 +12,7 @@ import Truck2 from "@/components/atoms/icons/Truck2";
 import ShieldIcon from "@/components/atoms/icons/ShieldIcon";
 
 import { routes } from "@/lib/helpers/routes";
-import CartBag from "@/components/atoms/icons/CartBag";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useGetCartItems } from "../../hooks/useGetCartItems";
 import {
   getCartCurrency,

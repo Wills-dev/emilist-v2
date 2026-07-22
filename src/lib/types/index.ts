@@ -14,7 +14,7 @@ export interface ButtonProps {
   disabled?: boolean;
   loading?: boolean;
   href?: string;
-  variant: "primary" | "secondary" | "default";
+  variant: "primary" | "secondary" | "default" | "danger";
   type?: "button" | "submit" | "reset";
   children: React.ReactNode;
   onClick?: () => void;

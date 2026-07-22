@@ -1,8 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMaterial } from "../api";
 import { useFilters } from "@/lib/hooks/useFilters";
+import { useStore } from "@/store/authStore";
 
 export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
+  const currentUser = useStore((state) => state.currentUser);
+  const currentUserId = currentUser?._id;
   const {
     filters,
     setFilter,
@@ -44,6 +47,7 @@ export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
       maxPrice,
       sortBy,
       sortOrder,
+      currentUserId,
     ],
     queryFn: ({ pageParam = 1 }) =>
       getMaterial({
@@ -57,6 +61,7 @@ export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
         status,
         sortBy,
         sortOrder,
+        userId: currentUserId,
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -65,8 +70,6 @@ export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
-
-  console.log("data", data);
 
   const materials = data?.pages.flatMap((page) => page.data) ?? [];
 

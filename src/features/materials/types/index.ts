@@ -31,6 +31,10 @@ export interface AddMaterialReviewPayload {
   rating: number;
 }
 
+export interface FlagMaterialPayload {
+  reason: string;
+}
+
 export interface AddToCartPayload {
   productId: string;
   quantity: number;
@@ -123,6 +127,7 @@ export interface Product {
   subCategory: string;
   updatedAt: string;
   userId: ProductOwner;
+  isLiked: boolean;
   __v: number;
 }
 
