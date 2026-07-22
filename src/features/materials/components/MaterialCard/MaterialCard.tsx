@@ -11,6 +11,7 @@ import DotInfoItem from "@/components/atoms/DotInfoItem/DotInfoItem";
 import { useStore } from "@/store/authStore";
 import { useAddToCart } from "../../hooks/useAddToCart";
 import { useQuantity } from "@/lib/hooks/useQuantity";
+import { useToggleMaterialLike } from "../../hooks/useToggleMaterialLike";
 
 const MaterialCard = ({
   productName,
@@ -43,11 +44,18 @@ const MaterialCard = ({
   noOfReviews: number;
   sellerId?: string;
 }) => {
-  const toggleLike = () => {};
   const currentUser = useStore((state) => state.currentUser);
   const isSeller = Boolean(sellerId && currentUser?._id === sellerId);
   const { quantity, increment, decrement } = useQuantity();
   const { handleAddToCart, isAddingToCart } = useAddToCart();
+  const {
+    isLiked: isMaterialLiked,
+    handleToggleLike,
+    isUpdating: isUpdatingLike,
+  } = useToggleMaterialLike({
+    materialId: id,
+    initialIsLiked: isLiked,
+  });
 
   return (
     <div className="max-w-[375.5px]  w-full sm:min-w-[375.5px] min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
@@ -72,12 +80,13 @@ const MaterialCard = ({
         <div className="space-y-4">
           <UserProfileCard
             id={id}
-            isLiked={isLiked}
+            isLiked={isMaterialLiked}
             fullName={fullName}
             rating={rating}
             noOfReviews={noOfReviews}
             imgUrl={profileImg}
-            handleToggleLike={toggleLike}
+            handleToggleLike={handleToggleLike}
+            isLikeLoading={isUpdatingLike}
             type="material"
           />
           <DatedPosted date={createdAt} />

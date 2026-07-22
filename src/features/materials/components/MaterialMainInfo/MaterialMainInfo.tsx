@@ -24,13 +24,14 @@ import { useQuantity } from "@/lib/hooks/useQuantity";
 import MaterialAddToCartButton from "../MaterialAddToCartButton/MaterialAddToCartButton";
 import FlagListingModal from "@/components/molecules/FlagListingModal/FlagListingModal";
 import { useFlagMaterial } from "../../hooks/useFlagMaterial";
+import { useToggleMaterialLike } from "../../hooks/useToggleMaterialLike";
 
 const MaterialMainInfo = ({
   material,
 }: {
   material: ProductReviewResponse;
 }) => {
-  const { product, averageRating, liked, numberOfRatings } = material;
+  const { product, isLiked, averageRating, numberOfRatings } = material;
   const location = product.deliveryLocations[0];
   const locationText = [location?.lga, location?.state]
     .filter(Boolean)
@@ -38,6 +39,15 @@ const MaterialMainInfo = ({
   const currentUser = useStore((state) => state.currentUser);
   const { handleCompare, isComparing } = useCompareMaterial();
   const { handleAddToCart, isAddingToCart } = useAddToCart();
+  const {
+    isLiked: isMaterialLiked,
+    handleToggleLike,
+    isUpdating: isUpdatingLike,
+  } = useToggleMaterialLike({
+    materialId: product._id,
+    initialIsLiked: isLiked,
+  });
+
   const {
     reason,
     setReason,
@@ -64,10 +74,7 @@ const MaterialMainInfo = ({
       {" "}
       <div className="flex items-center justify-between space-y-4">
         <BackButton />
-        <FlagActionBtn
-          onClick={openFlagModal}
-          actionTitle="Flag listing"
-        />
+        <FlagActionBtn onClick={openFlagModal} actionTitle="Flag listing" />
       </div>
       <div className="bg-[#F9F9F9] border-[0.94px] border-[#F1F2F9] pt-8 md:px-11 sm:px-5 px-2  pb-6 rounded-[11.33px] space-y-8">
         <div className="space-y-6">
@@ -134,8 +141,9 @@ const MaterialMainInfo = ({
                   className="sm:py-[9.86px] py-2 sm:px-[13.14px] px-3 sm:text-2xl text-sm"
                 />
                 <LikeButton
-                  isLiked={liked}
-                  onToggleLike={() => {}}
+                  isLiked={isMaterialLiked}
+                  onToggleLike={handleToggleLike}
+                  isLoading={isUpdatingLike}
                   className="sm:py-[9.86px] py-2 sm:px-[13.14px] px-3 sm:text-2xl text-sm"
                 />
               </div>

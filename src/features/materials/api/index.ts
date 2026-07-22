@@ -176,3 +176,25 @@ export const flagMaterial = async (
     throw error;
   }
 };
+
+export const likeMaterial = async (materialId: string) => {
+  try {
+    const { data } = await axiosInstance.get(
+      `/material/like-product/${materialId}`,
+    );
+    return data?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const unlikeMaterial = async (materialId: string) => {
+  try {
+    const { data } = await axiosInstance.get(
+      `/material/unlike-product/${materialId}`,
+    );
+    return data?.data;
+  } catch (error) {
+    throw error;
+  }
+};
