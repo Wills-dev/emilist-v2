@@ -83,11 +83,11 @@ export interface Cart {
 export interface ProductReviewResponse {
   averageRating: number;
   isCompared: boolean;
-  liked: boolean;
   numberOfRatings: number;
   product: Product;
   ratingDistribution: RatingDistribution;
   reviewsData: Review[];
+  isLiked: boolean;
 }
 
 export interface MaterialReviewsResponse {
@@ -127,7 +127,6 @@ export interface Product {
   subCategory: string;
   updatedAt: string;
   userId: ProductOwner;
-  isLiked: boolean;
   __v: number;
 }
 

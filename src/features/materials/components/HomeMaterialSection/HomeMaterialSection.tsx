@@ -24,7 +24,7 @@ const HomeMaterialSection = () => {
               unit={material?.priceMetric}
               location="Alapere, Ketu"
               createdAt={material?.createdAt}
-              isLiked={true}
+              isLiked={material?.isLiked ?? false}
               currency={material?.currency}
               imgUrl={material?.image || "/assets/images/default-job-image.svg"}
               profileImg={material?.seller?.image}
