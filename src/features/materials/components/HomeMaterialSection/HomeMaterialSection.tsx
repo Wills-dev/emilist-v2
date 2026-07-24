@@ -20,18 +20,32 @@ const HomeMaterialSection = () => {
               key={material?.id}
               id={material?.id}
               productName={material?.name}
-              price={material?.finalPrice}
-              unit={material?.priceMetric}
-              location="Alapere, Ketu"
+              price={material?.price}
+              unit={material?.unit}
+              location={
+                [material.delivery?.city, material.delivery?.state]
+                  .filter(Boolean)
+                  .join(", ") || "Delivery location not specified"
+              }
               createdAt={material?.createdAt}
               isLiked={material?.isLiked ?? false}
               currency={material?.currency}
-              imgUrl={material?.image || "/assets/images/default-job-image.svg"}
-              profileImg={material?.seller?.image}
-              fullName={material?.seller?.name}
-              rating={material?.averageRating}
-              noOfReviews={material?.reviewCount}
-              sellerId={material?.seller?._id ?? material?.seller?.id}
+              imgUrl={
+                material.thumbnail ||
+                material.images?.[0]?.url ||
+                "/assets/images/default-job-image.svg"
+              }
+              profileImg={material.merchant.logo ?? undefined}
+              fullName={
+                material.merchant.businessName ||
+                material.merchant.displayName ||
+                "Merchant"
+              }
+              rating={material.merchant.rating ?? material.averageRating}
+              noOfReviews={
+                material.merchant.totalReviews ?? material.reviewCount
+              }
+              sellerId={material.merchant.id}
             />
           ))}
     </SectionWrapper>

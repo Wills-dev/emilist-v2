@@ -1,14 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
-const SavedFilterBtn = () => {
-  const [saved, setSaved] = useState(false);
+import { routes } from "@/lib/helpers/routes";
+import { useStore } from "@/store/authStore";
+
+const SavedFilterBtn = ({ saved = false }: { saved?: boolean }) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const currentUser = useStore((state) => state.currentUser);
+  const setPendingFlow = useStore((state) => state.setPendingFlow);
+  const savedMaterialsPath = pathname.startsWith("/dashboard")
+    ? routes.dashboardLinks.savedMaterials
+    : routes.marketplace.savedMaterials;
+
+  const handleClick = () => {
+    if (currentUser) {
+      router.push(savedMaterialsPath);
+      return;
+    }
+
+    setPendingFlow(null, {}, savedMaterialsPath, true);
+  };
 
   return (
     <button
       type="button"
-      onClick={() => setSaved((prev) => !prev)}
+      onClick={handleClick}
+      aria-label="View saved materials"
       className="sm:w-[42.5px] w-[26.8px] sm:h-[42.5px] h-[26.8px] rounded-full bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] border-[0.44px] border-[#F1F2F9] flex justify-center items-center cursor-pointer"
     >
       <span

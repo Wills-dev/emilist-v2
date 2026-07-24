@@ -9,18 +9,18 @@ export const sortOptions = [
   },
   {
     label: "Price: Low to High",
-    value: "price_asc",
+    value: "asc",
   },
   {
     label: "Price: High to Low",
-    value: "price_desc",
+    value: "desc",
   },
   {
     label: "Highest Rated",
-    value: "rating_desc",
+    value: "highest_rated",
   },
   {
     label: "Lowest Rated",
-    value: "rating_asc",
+    value: "lowest_rated",
   },
 ];

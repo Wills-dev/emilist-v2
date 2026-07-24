@@ -1,20 +1,24 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-
 import Container from "@/components/atoms/Container/Container";
 import MarketplaceMaterialCardWrap from "../MarketplaceMaterialCardWrap/MarketplaceMaterialCardWrap";
 import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/MarketplaceFilterBtns";
 import DashboardMaterialsActions from "../DashboardMaterialsActions/DashboardMaterialsActions";
 import DashboardMaterialsFilter from "../DashboardMaterialsFilter/DashboardMaterialsFilter";
 import DashboardMaterialsHeader from "../DashboardMaterialsHeader/DashboardMaterialsHeader";
+import MobileFilterModal from "@/components/molecules/MobileFilterModal/MobileFilterModal";
 
-import { useFilters } from "@/lib/hooks/useFilters";
-import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
+import { useGetSavedMaterials } from "../../hooks/useGetSavedMaterials";
 
 const SavedMaterialWrapper = () => {
-  const { handleSubmit, setSearch } = useGeneralSearch();
   const {
+    materials,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    submittedQuery,
     tab,
     setTab,
     filters,
@@ -25,7 +29,9 @@ const SavedMaterialWrapper = () => {
     setPriceRange,
     toggleCategory,
     isCategorySelected,
-  } = useFilters();
+    handleSearch,
+    handleSearchChange,
+  } = useGetSavedMaterials({ limit: 10 });
 
   const filterProps = {
     filters,
@@ -42,33 +48,32 @@ const SavedMaterialWrapper = () => {
         <div className="bg-white p-4 max-sm:px-2 w-full max-w-202 h-fit">
           <div className="space-y-8">
             <DashboardMaterialsHeader
-              onSearchSubmit={handleSubmit}
-              setSearch={setSearch}
+              onSearchSubmit={handleSearch}
+              setSearch={handleSearchChange}
               title="Saved Materials"
             />
             <div className="space-y-4">
               <DashboardMaterialsActions
-                hasFilters={hasFilters}
                 onCloseFilter={() => setTab("")}
                 onOpenFilter={() => setTab("filter")}
-                onResetFilters={resetFilters}
                 tab={tab}
+                sortBy={filters.sortBy}
+                onSortChange={(value) => setFilter("sortBy", value)}
               />
-              <AnimatePresence mode="wait">
-                {tab === "" ? (
-                  <MarketplaceMaterialCardWrap />
-                ) : (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="w-full xl:hidden"
-                  >
-                    <DashboardMaterialsFilter {...filterProps} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <MarketplaceMaterialCardWrap
+                materials={materials}
+                isLoading={isLoading}
+                isError={isError}
+                fetchNextPage={fetchNextPage}
+                hasNextPage={Boolean(hasNextPage)}
+                isFetchingNextPage={isFetchingNextPage}
+                emptyTitle="No saved materials yet"
+                emptyDescription={
+                  hasFilters || submittedQuery
+                    ? "Try changing your search or filters to find saved materials."
+                    : "Materials you save will appear here."
+                }
+              />
             </div>
           </div>
         </div>
@@ -81,6 +86,14 @@ const SavedMaterialWrapper = () => {
           <DashboardMaterialsFilter {...filterProps} />
         </div>
       </div>
+      <MobileFilterModal
+        open={tab === "filter"}
+        onClose={(open) => !open && setTab("")}
+        onReset={resetFilters}
+        hasFilters={hasFilters}
+      >
+        <DashboardMaterialsFilter {...filterProps} />
+      </MobileFilterModal>
     </Container>
   );
 };

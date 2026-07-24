@@ -7,7 +7,7 @@ interface UseInfiniteScrollTriggerParams {
   /** Whether the trigger should be active (e.g. hasNextPage && !isFetchingNextPage) */
   enabled: boolean;
   /** Pass the scroll container's ref for horizontal or contained scroll areas. Omit for normal page scroll. */
-  rootRef?: RefObject<HTMLElement>;
+  rootRef?: RefObject<HTMLElement | null>;
   /** How much of the sentinel must be visible before firing. Defaults to 1 (fully visible). */
   threshold?: number;
 }

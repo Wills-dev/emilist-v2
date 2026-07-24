@@ -3,15 +3,15 @@
 import Container from "@/components/atoms/Container/Container";
 import MaterialMainInfo from "../MaterialMainInfo/MaterialMainInfo";
 import MaterialReviewSummary from "../MaterialReviewSummary/MaterialReviewSummary";
-import OtherSellersMaterials from "../OtherSellersMaterials/OtherSellersMaterials";
-import MaterialInfoSkeleton from "./MaterialInfoSkeleton";
+import MaterialInfoSkeleton from "../MaterialInfoWrapper/MaterialInfoSkeleton";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
+import PublicSellersOtherMaterials from "../PublicSellersOtherMaterials/PublicSellersOtherMaterials";
 
-import { routes } from "@/lib/helpers/routes";
-import { useGetMaterialReviews } from "../../hooks/useGetMaterialReviews";
 import { useGetMaterialInfo } from "../../hooks/useGetMaterialInfo";
+import { useGetMaterialReviews } from "../../hooks/useGetMaterialReviews";
+import { routes } from "@/lib/helpers/routes";
 
-const MaterialInfoWrapper = ({ materialId }: { materialId: string }) => {
+const PublicMaterialInfoWrapper = ({ materialId }: { materialId: string }) => {
   const { data, isLoading } = useGetMaterialInfo(materialId);
   const { data: reviews, isLoading: isFetching } = useGetMaterialReviews({
     materialId,
@@ -21,35 +21,35 @@ const MaterialInfoWrapper = ({ materialId }: { materialId: string }) => {
   return (
     <>
       <div className="pt-6 pb-15">
-        <Container variant="small">
+        <Container variant="center">
           {isLoading || isFetching ? (
-            <MaterialInfoSkeleton variant="dashboard" />
+            <MaterialInfoSkeleton variant="public" />
           ) : !data ? (
             <EmptyState
               title="Material not found"
               description="This material may have been removed or is no longer available."
             />
           ) : (
-            <div className={`w-full flex justify-between flex-wrap gap-2`}>
-              <div className="max-w-182.25 w-full">
+            <div className="w-full flex justify-between flex-wrap  gap-6">
+              <div className="max-w-202 w-full">
                 <MaterialMainInfo material={data} />
               </div>
-              <div className="max-w-87.75 w-full">
+              <div className="max-w-96.75 w-full">
                 <MaterialReviewSummary
-                  reviewLink={routes.dashboardLinks.materialInfoReviews(
+                  reviewLink={routes.marketplace.materialInfoReviews(
                     materialId,
                   )}
                   reviews={reviews}
-                  variant="tertiary"
+                  variant="primary"
                 />
               </div>
             </div>
           )}
         </Container>
       </div>
-      <OtherSellersMaterials />
+      <PublicSellersOtherMaterials />
     </>
   );
 };
 
-export default MaterialInfoWrapper;
+export default PublicMaterialInfoWrapper;

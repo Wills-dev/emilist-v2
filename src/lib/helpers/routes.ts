@@ -13,6 +13,7 @@ export const routes = {
     experts: "/marketplace/experts",
     expertInfo: (expertId: string) => `/marketplace/experts/${expertId}`,
     materials: "/marketplace/materials",
+    savedMaterials: "/marketplace/materials/saved",
     materialInfo: (materialId: string) =>
       `/marketplace/materials/${materialId}`,
     materialInfoReviews: (materialId: string) =>

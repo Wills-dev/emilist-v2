@@ -3,6 +3,7 @@ import {
   AddMaterialReviewPayload,
   FlagMaterialPayload,
   MaterialReviewsResponse,
+  MaterialListResponse,
   PostMaterialPayload,
   ProductReviewResponse,
 } from "../types";
@@ -47,19 +48,7 @@ export const postMaterial = async (payload: PostMaterialPayload) => {
   }
 };
 
-export const getMaterial = async ({
-  page,
-  limit,
-  search,
-  category,
-  brand,
-  minPrice,
-  maxPrice,
-  status,
-  sortBy,
-  sortOrder,
-  userId,
-}: {
+export interface MaterialQueryParams {
   page: number;
   limit: number;
   search?: string | null;
@@ -71,9 +60,29 @@ export const getMaterial = async ({
   sortBy?: string | null;
   sortOrder?: string | null;
   userId?: string;
-}) => {
-  try {
-    const rawParams = {
+  location?: string | null;
+  rating?: string | null;
+  deliveryTime?: string | null;
+}
+
+const getMaterialQueryParams = ({
+  page,
+  limit,
+  search,
+  category,
+  brand,
+  minPrice,
+  maxPrice,
+  status,
+  sortBy,
+  sortOrder,
+  userId,
+  rating,
+  location,
+  deliveryTime,
+}: MaterialQueryParams) =>
+  Object.fromEntries(
+    Object.entries({
       page,
       limit,
       search,
@@ -85,23 +94,37 @@ export const getMaterial = async ({
       sortBy,
       sortOrder,
       userId,
-    };
+      merchantRating: rating,
+      location,
+      deliveryTime,
+    }).filter(
+      ([, value]) => value !== undefined && value !== null && value !== "",
+    ),
+  );
 
-    const params = Object.fromEntries(
-      Object.entries(rawParams).filter(
-        ([, value]) => value !== undefined && value !== null && value !== "",
-      ),
-    );
-
+export const getMaterial = async (
+  query: MaterialQueryParams,
+): Promise<MaterialListResponse> => {
+  try {
     const url = `/material/fetch-all-products`;
 
     const { data } = await axiosInstance.get(url, {
-      params,
+      params: getMaterialQueryParams(query),
     });
     return data?.data;
   } catch (error) {
     throw error;
   }
+};
+
+export const getLikedMaterials = async (
+  query: MaterialQueryParams,
+): Promise<MaterialListResponse> => {
+  const { data } = await axiosInstance.get("/material/fetch-liked-products", {
+    params: getMaterialQueryParams(query),
+  });
+
+  return data?.data;
 };
 
 export const getMaterialInfo = async (

@@ -7,6 +7,7 @@ import MarketplacePriceFilter from "../MarketplacePriceFilter/MarketplacePriceFi
 import MarketplaceNoticePeriodFilter from "../MarketplaceNoticePeriodFilter/MarketplaceNoticePeriodFilter";
 import MarketplaceExpertLevelFilter from "../MarketplaceExpertLevelFilter/MarketplaceExpertLevelFilter";
 import MarketplaceRatingFilter from "../MarketplaceRatingFilter/MarketplaceRatingFilter";
+import MarketplaceDeliveryTimeFilter from "../MarketplaceDeliveryTimeFilter/MarketplaceDeliveryTimeFilter";
 
 export interface MarketplaceFilterProps {
   showCategory?: boolean;
@@ -25,6 +26,7 @@ export interface MarketplaceFilterProps {
   showNoticePeriod?: boolean;
   showLevel?: boolean;
   showRating?: boolean;
+  showDeliveryTime?: boolean;
   variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
 }
@@ -44,6 +46,7 @@ const MarketplaceFilter = ({
   clearFilter,
   showLevel,
   showRating,
+  showDeliveryTime,
   variant,
 }: MarketplaceFilterProps) => {
   const showCat = categories !== undefined && showCategory;
@@ -91,6 +94,14 @@ const MarketplaceFilter = ({
       )}
       {showLevel && (
         <MarketplaceExpertLevelFilter
+          filters={filters}
+          setFilter={setFilter}
+          clearFilter={clearFilter}
+          variant={variant}
+        />
+      )}
+      {showDeliveryTime && (
+        <MarketplaceDeliveryTimeFilter
           filters={filters}
           setFilter={setFilter}
           clearFilter={clearFilter}
