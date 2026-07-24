@@ -24,6 +24,7 @@ const DashboardMaterialsFilter = (props: DashboardMaterialsFilterProps) => {
       showLocation
       showPrice
       showRating
+      showDeliveryTime
       variant="tertiary"
     />
   );

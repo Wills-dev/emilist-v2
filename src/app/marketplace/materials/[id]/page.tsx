@@ -1,7 +1,7 @@
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
-import MaterialInfoWrapper from "@/features/materials/components/MaterialInfoWrapper/MaterialInfoWrapper";
-import SimilarMaterials from "@/features/materials/components/SimilarMaterials/SimilarMaterials";
+import PublicMaterialInfoWrapper from "@/features/materials/components/PublicMaterialInfoWrapper/PublicMaterialInfoWrapper";
+import PublicSimilarMaterials from "@/features/materials/components/PublicSimilarMaterials/PublicSimilarMaterials";
 
 import { use } from "react";
 
@@ -20,9 +20,8 @@ const GeneralMaterialInfoPage = ({
         type="jobs"
         className="bg-[#1A201B]"
       />
-      <MaterialInfoWrapper materialId={id} />
-
-      <SimilarMaterials />
+      <PublicMaterialInfoWrapper materialId={id} />
+      <PublicSimilarMaterials />
     </MainLayout>
   );
 };

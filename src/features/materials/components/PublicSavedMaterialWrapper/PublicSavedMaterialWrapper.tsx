@@ -12,13 +12,13 @@ import CartRecord from "../CartRecord/CartRecord";
 import MarketplaceMaterialCardWrap from "../MarketplaceMaterialCardWrap/MarketplaceMaterialCardWrap";
 import MobileFilterModal from "@/components/molecules/MobileFilterModal/MobileFilterModal";
 
-import { useGetAllMaterials } from "../../hooks/useGetAllMaterials";
+import { useGetSavedMaterials } from "../../hooks/useGetSavedMaterials";
 import { routes } from "@/lib/helpers/routes";
 import { marketplaceTabs } from "@/lib/constants";
 import { expertServices } from "@/features/experts/constants";
 import { countriesAndStates } from "@/lib/constants/countries";
 
-const MarketplaceMaterialWrapper = () => {
+const PublicSavedMaterialWrapper = () => {
   const {
     materials,
     isLoading,
@@ -26,6 +26,7 @@ const MarketplaceMaterialWrapper = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    submittedQuery,
     tab,
     setTab,
     filters,
@@ -38,8 +39,7 @@ const MarketplaceMaterialWrapper = () => {
     isCategorySelected,
     handleSearch,
     handleSearchChange,
-  } = useGetAllMaterials({ limit: 10 });
-
+  } = useGetSavedMaterials({ limit: 10 });
   return (
     <div>
       <MarketplaceBanner
@@ -79,13 +79,11 @@ const MarketplaceMaterialWrapper = () => {
             <div className="max-w-197.75 w-full space-y-16">
               <div className="lg:space-y-8 space-y-4">
                 <div className="space-y-2">
-                  <h6 className="font-exo font-semibold sm:text-[32px] text-[20px] tracking-[0%] leading-10">
-                    Welcome to the marketplace
-                  </h6>
-                  <p className="text-[#5E625F] text-sm tracking-[-3%]">
-                    Explore all the latest verified job opportunities around you
-                    on Emilist
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <h6 className="font-exo font-semibold sm:text-[32px] text-[20px] tracking-[0%] leading-10">
+                      Saved Materials
+                    </h6>
+                  </div>
                 </div>
                 <div className="w-full flex sm:items-center justify-between sm:gap-10 gap-2 max-sm:flex-col">
                   <div className="flex-1 w-full py-2.5">
@@ -119,6 +117,12 @@ const MarketplaceMaterialWrapper = () => {
                   fetchNextPage={fetchNextPage}
                   hasNextPage={Boolean(hasNextPage)}
                   isFetchingNextPage={isFetchingNextPage}
+                  emptyTitle="No saved materials yet"
+                  emptyDescription={
+                    hasFilters || submittedQuery
+                      ? "Try changing your search or filters to find saved materials."
+                      : "Materials you save will appear here."
+                  }
                 />
               </div>
             </div>
@@ -151,4 +155,4 @@ const MarketplaceMaterialWrapper = () => {
   );
 };
 
-export default MarketplaceMaterialWrapper;
+export default PublicSavedMaterialWrapper;

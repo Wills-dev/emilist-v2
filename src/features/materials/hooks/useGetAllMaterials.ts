@@ -7,6 +7,8 @@ export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
   const currentUser = useStore((state) => state.currentUser);
   const currentUserId = currentUser?._id;
   const {
+    tab,
+    setTab,
     filters,
     setFilter,
     clearFilter,
@@ -23,7 +25,17 @@ export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
     submittedQuery,
   } = useFilters();
 
-  const { brand, categories, minPrice, maxPrice, sortBy, sortOrder } = filters;
+  const {
+    brand,
+    categories,
+    deliveryTime,
+    location,
+    maxPrice,
+    minPrice,
+    rating,
+    sortBy,
+    sortOrder,
+  } = filters;
 
   const {
     data,
@@ -45,6 +57,9 @@ export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
       brand,
       minPrice,
       maxPrice,
+      location,
+      rating,
+      deliveryTime,
       sortBy,
       sortOrder,
       currentUserId,
@@ -58,6 +73,9 @@ export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
         brand: brand,
         minPrice,
         maxPrice,
+        location,
+        rating,
+        deliveryTime,
         status,
         sortBy,
         sortOrder,
@@ -65,7 +83,9 @@ export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
-      return lastPage.meta.hasNextPage ? lastPage.meta.nextPage : undefined;
+      return lastPage.meta.hasNext && lastPage.meta.nextPage !== null
+        ? lastPage.meta.nextPage
+        : undefined;
     },
     staleTime: 5 * 60 * 1000,
     retry: 1,
@@ -74,6 +94,8 @@ export const useGetAllMaterials = ({ limit = 20 }: { limit?: number } = {}) => {
   const materials = data?.pages.flatMap((page) => page.data) ?? [];
 
   return {
+    tab,
+    setTab,
     materials,
     isPending,
     isLoading,

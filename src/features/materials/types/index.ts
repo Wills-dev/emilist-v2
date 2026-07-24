@@ -160,3 +160,65 @@ export interface ProductOwner {
   uniqueId: string;
   level: string;
 }
+
+/** A material returned by GET /material/fetch-all-products. */
+export interface MaterialListItem {
+  id: string;
+  name: string;
+  slug?: string;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+  brand: string;
+  description: string;
+  availableQuantity: number;
+  price: number;
+  currency: string;
+  createdAt: string;
+  updatedAt: string;
+  reviewCount: number;
+  stockStatus: string;
+  isAvailable: boolean;
+  thumbnail?: string | null;
+  images: Array<{
+    url: string;
+    order: number;
+  }>;
+  unit: string;
+  minimumOrder: number;
+  maximumOrder: number | null;
+  isFeatured: boolean;
+  totalUnitsSold: number;
+  averageRating: number;
+  isLiked?: boolean;
+  merchant: {
+    id: string;
+    businessName: string;
+    displayName: string;
+    logo: string | null;
+    rating: number;
+    totalReviews: number;
+    verified: boolean;
+    phone: string;
+    email: string;
+  };
+  delivery: {
+    state: string;
+    city: string;
+  } | null;
+}
+
+export interface MaterialListResponse {
+  data: MaterialListItem[];
+  meta: {
+    total: number;
+    currentPage: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrevious: boolean;
+    nextPage: number | null;
+    previousPage: number | null;
+  };
+}

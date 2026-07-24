@@ -1,20 +1,18 @@
-"use client";
-
-import Container from "@/components/atoms/Container/Container";
 import GrayedLogo from "@/components/atoms/GrayedLogo/GrayedLogo";
 import SeeAllBtn from "@/components/atoms/SeeAllBtn/SeeAllBtn";
 import SellersMaterialCardWrap from "../SellersMaterialCardWrap/SellersMaterialCardWrap";
+import Container from "@/components/atoms/Container/Container";
 
-const OtherSellersMaterials = () => {
+const PublicSellersOtherMaterials = () => {
   return (
     <Container
-      variant="small"
-      className="bg-[#F4F7F5] relative overflow-hidden"
+      variant="center"
+      className="bg-[#F4F7F5] relative overflow-hidden w-full"
     >
       <GrayedLogo variant="secondary" />
-      <div className=" backdrop-blur-md">
-        <div className="py-15">
-          <div className="flex max-lg:flex-col gap-4">
+      <div className=" backdrop-blur-md w-full">
+        <div className="py-15 w-full">
+          <div className="flex flex-wrap gap-4 w-full">
             <div className="pt-8 space-y-4 max-w-96.25 w-full min-w-72.5">
               <div className="space-y-2">
                 <span className="text-[#18A154]">
@@ -44,7 +42,9 @@ const OtherSellersMaterials = () => {
               </div>
               <SeeAllBtn link="" />
             </div>
-            <SellersMaterialCardWrap />
+            <div className="flex-1 w-full">
+              <SellersMaterialCardWrap />
+            </div>
           </div>
         </div>
       </div>
@@ -52,4 +52,4 @@ const OtherSellersMaterials = () => {
   );
 };
 
-export default OtherSellersMaterials;
+export default PublicSellersOtherMaterials;

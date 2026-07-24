@@ -2,9 +2,6 @@
 
 import Link from "next/link";
 
-import { X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
-
 import FilterIcon from "@/components/atoms/icons/FilterIcon";
 import Select from "@/components/atoms/Select/Select";
 import PlusIcon from "@/components/atoms/icons/PlusIcon";
@@ -15,25 +12,34 @@ import { sortOptions } from "@/lib/constants/filter";
 const MarketplaceActionBtns = ({
   onClose,
   onOpen,
-  onReset,
-  hasFilter,
   tab,
   actionTitle,
   actionLink,
+  sortBy,
+  onSortChange,
 }: {
   onOpen: () => void;
   onClose: () => void;
-  onReset: () => void;
-  hasFilter: boolean;
+  onReset?: () => void;
+  hasFilter?: boolean;
   tab: string;
   actionTitle: string;
   actionLink: string;
+  sortBy?: string | null;
+  onSortChange?: (value: string) => void;
 }) => {
   return (
     <div className="flex items-center justify-between gap-4 flex-wrap">
       <div className="flex items-center gap-2">
         {tab === "" ? (
-          <Select options={sortOptions} variant="secondary" fontSize="14px" />
+          <Select
+            options={sortOptions}
+            variant="secondary"
+            fontSize="14px"
+            value={sortBy ?? ""}
+            onChange={(event) => onSortChange?.(event.target.value)}
+            placeholder="Sort by"
+          />
         ) : (
           <BackButton onClose={onClose} />
         )}
@@ -52,30 +58,13 @@ const MarketplaceActionBtns = ({
         <PlusIcon />
         <span>{actionTitle}</span>
       </Link>
-      <AnimatePresence mode="wait">
-        {hasFilter ? (
-          <motion.button
-            type="button"
-            onClick={onReset}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="px-3 h-7 flex items-center cursor-pointer gap-1 bg-[#FFF1F2] text-[#FF5D7A] text-sm rounded-[24px] xl:hidden"
-          >
-            <X className="w-[1em] h-[1em]" />
-            <span>Reset filters</span>
-          </motion.button>
-        ) : (
-          <Link
-            href={actionLink}
-            className="flex items-center font-exo font-semibold text-[#6667FF] max-sm:text-sm gap-2 xl:hidden"
-          >
-            <PlusIcon />
-            <span>{actionTitle}</span>
-          </Link>
-        )}
-      </AnimatePresence>
+      <Link
+        href={actionLink}
+        className="flex items-center font-exo font-semibold text-[#6667FF] max-sm:text-sm gap-2 xl:hidden"
+      >
+        <PlusIcon />
+        <span>{actionTitle}</span>
+      </Link>
     </div>
   );
 };

@@ -32,6 +32,7 @@ export const useLogin = () => {
   const setOtpEmail = useStore((state) => state.setOtpEmail);
   const openModal = useStore((state) => state.openModal);
   const closeAllModals = useStore((state) => state.closeAllModals);
+  const clearPendingFlow = useStore((state) => state.clearPendingFlow);
 
   const queryRedirect = searchParams.get("redirect");
 
@@ -75,6 +76,10 @@ export const useLogin = () => {
         }
         // Profile complete or expert flow — close modals, form auto-submits via useEffect
         closeAllModals();
+        if (redirectPath) {
+          clearPendingFlow();
+          router.push(redirectPath);
+        }
         return;
       }
 

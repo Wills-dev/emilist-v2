@@ -12,10 +12,10 @@ const SellersMaterialCardWrap = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="w-full"
     >
-      <div className="flex items-center max-sm:flex-col gap-6">
+      <div className="flex items-center overflow-x-auto max-lg:flex-wrap gap-6 w-full no-scrollbar">
         <MaterialCard
           id="1"
-          productName="Dangote Cement"
+          productName="Dangote Cementtttt"
           price={1000}
           unit="bag"
           location="Alapere, Ketu"
