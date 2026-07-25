@@ -49,6 +49,7 @@ export const routes = {
       }`,
     savedMaterials: "/dashboard/marketplace/materials/saved",
     dashboardCart: "/dashboard/marketplace/cart",
+    dashboardCheckout: "/dashboard/marketplace/checkout",
     materialsCompare: "/dashboard/marketplace/materials/compare",
     reports: "/dashboard/reports",
     messages: "/dashboard/messages",

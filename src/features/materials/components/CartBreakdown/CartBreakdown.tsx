@@ -85,7 +85,11 @@ const CartBreakdown = ({ isDashboard }: { isDashboard?: boolean }) => {
           >
             <PromoCode variant={isDashboard ? "tertiary" : "primary"} />
             <OrderSummary
-              href={routes?.checkout}
+              href={
+                isDashboard
+                  ? routes.dashboardLinks.dashboardCheckout
+                  : routes.checkout
+              }
               actionTitle="Proceed to Checkout"
               productCount={productCount}
               orderSummary={orderSummary}
