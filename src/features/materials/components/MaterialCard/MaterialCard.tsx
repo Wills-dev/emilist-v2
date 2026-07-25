@@ -28,6 +28,7 @@ const MaterialCard = ({
   rating,
   noOfReviews,
   sellerId,
+  merchantDetail,
 }: {
   productName: string;
   imgUrl: string;
@@ -43,6 +44,7 @@ const MaterialCard = ({
   rating: number;
   noOfReviews: number;
   sellerId?: string;
+  merchantDetail?: string;
 }) => {
   const currentUser = useStore((state) => state.currentUser);
   const isSeller = Boolean(sellerId && currentUser?._id === sellerId);
@@ -79,7 +81,7 @@ const MaterialCard = ({
         </div>
         <div className="space-y-4">
           <UserProfileCard
-            id={id}
+            id={sellerId || id}
             isLiked={isMaterialLiked}
             fullName={fullName}
             rating={rating}
@@ -88,6 +90,7 @@ const MaterialCard = ({
             handleToggleLike={handleToggleLike}
             isLikeLoading={isUpdatingLike}
             type="material"
+            detail={merchantDetail}
           />
           <DatedPosted date={createdAt} />
         </div>

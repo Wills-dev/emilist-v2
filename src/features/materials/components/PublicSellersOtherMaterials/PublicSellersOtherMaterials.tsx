@@ -1,9 +1,23 @@
+"use client";
+
 import GrayedLogo from "@/components/atoms/GrayedLogo/GrayedLogo";
 import SeeAllBtn from "@/components/atoms/SeeAllBtn/SeeAllBtn";
 import SellersMaterialCardWrap from "../SellersMaterialCardWrap/SellersMaterialCardWrap";
 import Container from "@/components/atoms/Container/Container";
+import { useGetOtherSellerMaterials } from "../../hooks/useGetOtherSellerMaterials";
+import { routes } from "@/lib/helpers/routes";
 
-const PublicSellersOtherMaterials = () => {
+const PublicSellersOtherMaterials = ({
+  sellerId,
+  sellerName,
+}: {
+  sellerId?: string;
+  sellerName: string;
+}) => {
+  const { data, isLoading } = useGetOtherSellerMaterials({ sellerId });
+
+  if (!sellerId) return null;
+
   return (
     <Container
       variant="center"
@@ -33,17 +47,25 @@ const PublicSellersOtherMaterials = () => {
                   </svg>
                 </span>
                 <h6 className="font-bold font-exo sm:text-[30px] text-2xl leading-10 text-[#18A154]">
-                  Other products from Arthur Phillips
+                  Other products from {sellerName}
                 </h6>
                 <p className="text-[#333E49] text-sm leading-6">
                   Explore other bestsellers from this merchant and discover
                   other quality products you might need for your project.
                 </p>
               </div>
-              <SeeAllBtn link="" />
+              <SeeAllBtn
+                link={routes.marketplace.sellerMaterials(
+                  sellerId,
+                  sellerName,
+                )}
+              />
             </div>
             <div className="flex-1 w-full">
-              <SellersMaterialCardWrap />
+              <SellersMaterialCardWrap
+                materials={data?.products.slice(0, 2) ?? []}
+                isLoading={isLoading}
+              />
             </div>
           </div>
         </div>

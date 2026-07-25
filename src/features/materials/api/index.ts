@@ -4,6 +4,8 @@ import {
   FlagMaterialPayload,
   MaterialReviewsResponse,
   MaterialListResponse,
+  OtherSellerProductsResponse,
+  SimilarProductsResponse,
   PostMaterialPayload,
   ProductReviewResponse,
 } from "../types";
@@ -127,6 +129,48 @@ export const getLikedMaterials = async (
   return data?.data;
 };
 
+export const getOtherProductsByUser = async ({
+  userId,
+  page = 1,
+  limit = 2,
+}: {
+  userId: string;
+  page?: number;
+  limit?: number;
+}): Promise<OtherSellerProductsResponse> => {
+  const { data } = await axiosInstance.get(
+    `/material/fetch-other-products-by-user/${userId}`,
+    { params: { page, limit } },
+  );
+
+  return data?.data;
+};
+
+export const getSimilarProducts = async ({
+  productId,
+  page = 1,
+  limit = 10,
+  userId,
+}: {
+  productId: string;
+  page?: number;
+  limit?: number;
+  userId?: string;
+}): Promise<SimilarProductsResponse> => {
+  const { data } = await axiosInstance.get(
+    `/material/fetch-similar-products/${productId}`,
+    {
+      params: {
+        page,
+        limit,
+        ...(userId ? { userId } : {}),
+      },
+    },
+  );
+
+  return data?.data;
+};
+
 export const getMaterialInfo = async (
   id: string,
   userId?: string,
@@ -222,4 +266,20 @@ export const unlikeMaterial = async (materialId: string) => {
   } catch (error) {
     throw error;
   }
+};
+
+export const rateReviewHelpfulness = async ({
+  reviewId,
+  isHelpful,
+}: {
+  reviewId: string;
+  isHelpful: boolean;
+}) => {
+  const { data } = await axiosInstance.post(
+    `/material/review/${reviewId}/helpful`,
+    undefined,
+    { params: { isHelpful } },
+  );
+
+  return data?.data;
 };

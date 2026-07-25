@@ -10,12 +10,14 @@ const UserRatingCard = ({
   rating,
   noOfReviews,
   imgUrl,
+  detail,
 }: {
   id: string;
   fullName: string;
   rating: number;
   noOfReviews?: number;
   imgUrl?: string;
+  detail?: string;
 }) => {
   return (
     <div className="flex items-center gap-2">
@@ -27,6 +29,11 @@ const UserRatingCard = ({
         >
           {fullName}
         </Link>
+        {detail && (
+          <p className="max-w-44 truncate text-[11px] text-[#8A8D8B]">
+            {detail}
+          </p>
+        )}
         <div className="flex items-center gap-[6.88px]">
           <Rating rating={rating} />{" "}
           {noOfReviews && (

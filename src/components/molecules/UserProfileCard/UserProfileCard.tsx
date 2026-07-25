@@ -13,6 +13,7 @@ const UserProfileCard = ({
   type,
   handleToggleLike,
   isLikeLoading = false,
+  detail,
 }: {
   id: string;
   isLiked: boolean;
@@ -24,6 +25,7 @@ const UserProfileCard = ({
   type: "user" | "expert" | "job" | "material";
   handleToggleLike: () => void;
   isLikeLoading?: boolean;
+  detail?: string;
 }) => {
   return (
     <div className="flex items-center justify-between gap-2 pl-2">
@@ -33,6 +35,7 @@ const UserProfileCard = ({
         fullName={fullName}
         rating={rating}
         noOfReviews={noOfReviews}
+        detail={detail}
       />
       <div className="flex items-center gap-2">
         <ShareButton id={id} type={type} name={title || fullName} />
