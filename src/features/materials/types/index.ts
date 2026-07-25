@@ -222,3 +222,81 @@ export interface MaterialListResponse {
     previousPage: number | null;
   };
 }
+
+export interface OtherSellerProduct {
+  _id: string;
+  userId: ProductOwner & {
+    isPrimeMember?: boolean;
+  };
+  name: string;
+  category: string;
+  subCategory: string;
+  brand: string;
+  description: string;
+  images: Array<{
+    imageUrl: string;
+    isPrimary: boolean;
+    _id: string;
+  }>;
+  availableQuantity: number;
+  quantityMetric: string;
+  price: number;
+  currency: string;
+  priceMetric: string;
+  merchantName: string;
+  storeName: string;
+  deliveryLocations: Array<{
+    state: string;
+    lga: string;
+  }>;
+  isDiscounted: boolean;
+  status: "active" | "inactive";
+  reviews: Array<{
+    _id: string;
+    rating: number;
+  }>;
+  createdAt: string;
+  updatedAt: string;
+  discountedPrice?: number;
+  liked: boolean;
+  isCompared: boolean;
+}
+
+export interface OtherSellerProductsResponse {
+  products: OtherSellerProduct[];
+  currentPage: string;
+  totalPages: number;
+  limit: string;
+  totalProducts: number;
+}
+
+export interface SimilarProduct {
+  _id: string;
+  name: string;
+  images: Array<{
+    imageUrl: string;
+    isPrimary: boolean;
+    _id: string;
+  }>;
+  availableQuantity: number;
+  quantityMetric: string;
+  price: number;
+  currency: string;
+  priceMetric: string;
+  merchantName: string;
+  deliveryLocations: Array<{
+    state: string;
+    lga: string;
+  }>;
+  isDiscounted: boolean;
+  createdAt: string;
+  user: {
+    _id: string;
+  };
+  averageRating: number | null;
+  numberOfRatings: number;
+}
+
+export interface SimilarProductsResponse {
+  similarProducts: SimilarProduct[];
+}

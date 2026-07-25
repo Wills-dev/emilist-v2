@@ -21,7 +21,7 @@ const GeneralMaterialInfoPage = ({
         className="bg-[#1A201B]"
       />
       <PublicMaterialInfoWrapper materialId={id} />
-      <PublicSimilarMaterials />
+      <PublicSimilarMaterials productId={id} />
     </MainLayout>
   );
 };

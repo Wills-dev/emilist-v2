@@ -42,7 +42,12 @@ const PublicMaterialInfoWrapper = ({ materialId }: { materialId: string }) => {
           )}
         </Container>
       </div>
-      <PublicSellersOtherMaterials />
+      <PublicSellersOtherMaterials
+        sellerId={data?.product.userId?._id}
+        sellerName={
+          data?.product.merchantName || data?.product.storeName || "this seller"
+        }
+      />
     </>
   );
 };

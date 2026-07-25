@@ -18,6 +18,12 @@ export const routes = {
       `/marketplace/materials/${materialId}`,
     materialInfoReviews: (materialId: string) =>
       `/marketplace/materials/${materialId}/reviews`,
+    similarMaterials: (materialId: string) =>
+      `/marketplace/materials/similar/${materialId}`,
+    sellerMaterials: (sellerId: string, sellerName?: string) =>
+      `/marketplace/materials/seller/${sellerId}${
+        sellerName ? `?sellerName=${encodeURIComponent(sellerName)}` : ""
+      }`,
   },
   profile: (userId: string) => `/profile/${userId}`,
   login: "/auth/login",
@@ -35,6 +41,12 @@ export const routes = {
       `/dashboard/marketplace/materials/${materialId}`,
     materialInfoReviews: (materialId: string) =>
       `/dashboard/marketplace/materials/${materialId}/reviews`,
+    similarMaterials: (materialId: string) =>
+      `/dashboard/marketplace/materials/similar/${materialId}`,
+    sellerMaterials: (sellerId: string, sellerName?: string) =>
+      `/dashboard/marketplace/materials/seller/${sellerId}${
+        sellerName ? `?sellerName=${encodeURIComponent(sellerName)}` : ""
+      }`,
     savedMaterials: "/dashboard/marketplace/materials/saved",
     dashboardCart: "/dashboard/marketplace/cart",
     materialsCompare: "/dashboard/marketplace/materials/compare",

@@ -13,7 +13,7 @@ const DashboardMaterialInfoPage = ({
   return (
     <DashboardLayout>
       <MaterialInfoWrapper materialId={id} />
-      <SimilarMaterials />
+      <SimilarMaterials productId={id} />
     </DashboardLayout>
   );
 };
