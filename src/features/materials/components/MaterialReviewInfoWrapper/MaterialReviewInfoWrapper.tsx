@@ -16,7 +16,6 @@ import MaterialReviewInfoSkeleton from "./MaterialReviewInfoSkeleton";
 import MaterialReviewModal from "../MaterialReviewModal/MaterialReviewModal";
 
 import { useStore } from "@/store/authStore";
-import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
 import { useGetMaterialReviews } from "../../hooks/useGetMaterialReviews";
 import { useGetMaterialInfo } from "../../hooks/useGetMaterialInfo";
 
@@ -24,15 +23,21 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const pathname = usePathname();
   const isDashboardMaterialPage = pathname.startsWith("/dashboard");
-  const { handleSubmit, setSearch } = useGeneralSearch();
   const currentUser = useStore((state) => state.currentUser);
   const { data: material } = useGetMaterialInfo(materialId);
-  const { data, isLoading, currentPage, next, prev } = useGetMaterialReviews({
-    materialId,
-    limit: 10,
-  });
+  const {
+    data,
+    isLoading,
+    currentPage,
+    next,
+    prev,
+    handleSearch,
+    setSearch,
+    isFetching,
+    submittedQuery,
+  } = useGetMaterialReviews({ materialId, limit: 10 });
 
-  if (isLoading) {
+  if (isLoading && !submittedQuery) {
     return (
       <div className="pt-6 pb-15">
         <Container variant={isDashboardMaterialPage ? "small" : "center"}>
@@ -97,7 +102,7 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
           <CommentWrapper
             totalComments={data?.numberOfRatings ?? 0}
             variant="large"
-            onSubmit={handleSubmit}
+            onSubmit={handleSearch}
             setSearch={setSearch}
             reviews={data?.reviews ?? []}
             pagination={{
@@ -109,6 +114,7 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
             onAddComment={() => setIsReviewModalOpen(true)}
             canAddComment={material?.product?.userId?._id !== currentUser?._id}
             sectionVariant={isDashboardMaterialPage ? "tertiary" : "primary"}
+            isLoading={isFetching}
           />
         </div>
       </Container>

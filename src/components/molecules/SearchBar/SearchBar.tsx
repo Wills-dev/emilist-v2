@@ -48,13 +48,11 @@ const SearchBar = ({
 
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
-    if (value.trim() === "") {
-      return;
-    }
-    setSearch(value);
+    const query = value.trim();
+    setSearch(query);
 
     if (onSubmit !== undefined) {
-      onSubmit();
+      onSubmit(query);
     }
   };
 

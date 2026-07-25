@@ -51,6 +51,7 @@ const SavedMaterialWrapper = () => {
               onSearchSubmit={handleSearch}
               setSearch={handleSearchChange}
               title="Saved Materials"
+              saved
             />
             <div className="space-y-4">
               <DashboardMaterialsActions
@@ -67,7 +68,11 @@ const SavedMaterialWrapper = () => {
                 fetchNextPage={fetchNextPage}
                 hasNextPage={Boolean(hasNextPage)}
                 isFetchingNextPage={isFetchingNextPage}
-                emptyTitle="No saved materials yet"
+                emptyTitle={
+                  hasFilters || submittedQuery
+                    ? "No material found"
+                    : "No saved materials yet"
+                }
                 emptyDescription={
                   hasFilters || submittedQuery
                     ? "Try changing your search or filters to find saved materials."

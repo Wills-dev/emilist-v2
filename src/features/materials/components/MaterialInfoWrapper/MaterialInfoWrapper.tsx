@@ -8,21 +8,16 @@ import MaterialInfoSkeleton from "./MaterialInfoSkeleton";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 
 import { routes } from "@/lib/helpers/routes";
-import { useGetMaterialReviews } from "../../hooks/useGetMaterialReviews";
 import { useGetMaterialInfo } from "../../hooks/useGetMaterialInfo";
 
 const MaterialInfoWrapper = ({ materialId }: { materialId: string }) => {
   const { data, isLoading } = useGetMaterialInfo(materialId);
-  const { data: reviews, isLoading: isFetching } = useGetMaterialReviews({
-    materialId,
-    limit: 3,
-  });
 
   return (
     <>
       <div className="pt-6 pb-15">
         <Container variant="small">
-          {isLoading || isFetching ? (
+          {isLoading ? (
             <MaterialInfoSkeleton variant="dashboard" />
           ) : !data ? (
             <EmptyState
@@ -36,10 +31,10 @@ const MaterialInfoWrapper = ({ materialId }: { materialId: string }) => {
               </div>
               <div className="max-w-87.75 w-full">
                 <MaterialReviewSummary
+                  materialId={materialId}
                   reviewLink={routes.dashboardLinks.materialInfoReviews(
                     materialId,
                   )}
-                  reviews={reviews}
                   variant="tertiary"
                 />
               </div>

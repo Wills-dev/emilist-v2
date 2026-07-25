@@ -10,11 +10,13 @@ import { routes } from "@/lib/helpers/routes";
 const DashboardMaterialsHeader = ({
   onSearchSubmit,
   setSearch,
-  title = " Welcome to the marketplace",
+  title = "Welcome to the marketplace",
+  saved,
 }: {
-  onSearchSubmit: () => void;
+  onSearchSubmit: (query: string) => void;
   setSearch: (search: string) => void;
   title?: string;
+  saved?: boolean;
 }) => {
   return (
     <div className="space-y-6 sm:pb-6 pb-4 border-b border-[#F1F2F9]">
@@ -37,7 +39,7 @@ const DashboardMaterialsHeader = ({
           <div className="flex items-center gap-2.5">
             <Link
               href={routes?.dashboardLinks?.savedMaterials}
-              className="bg-[#F6F7F9] rounded-full h-8.5 w-8.5 flex justify-center items-center text-[#737774]"
+              className={`bg-[#F6F7F9] rounded-full h-8.5 w-8.5 flex justify-center items-center ${saved ? "text-[#FF5D7A]" : "text-[#737774]"}`}
             >
               <LikeIcon />
             </Link>

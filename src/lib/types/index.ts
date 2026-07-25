@@ -25,7 +25,7 @@ export interface SearchBarProps {
   setSearch: (search: string) => void;
   placeholder?: string;
   variant?: "primary" | "secondary" | "tertiary";
-  onSubmit: () => void;
+  onSubmit: (query: string) => void;
   onVoiceCommand?: () => void;
   showVoiceIcon?: boolean;
   onShowSearchOverlay?: () => void;
