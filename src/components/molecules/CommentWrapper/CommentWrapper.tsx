@@ -8,6 +8,7 @@ import CommentCard from "../CommentCard/CommentCard";
 import SeeAllBtn from "@/components/atoms/SeeAllBtn/SeeAllBtn";
 import PaginationPanel from "../PaginationPanel/PaginationPanel";
 import EmptyState from "../EmptyState/EmptyState";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CommentWrapper = ({
   variant,
@@ -20,11 +21,12 @@ const CommentWrapper = ({
   onAddComment,
   canAddComment = true,
   sectionVariant = "primary",
+  isLoading = false,
 }: {
   variant: "small" | "large";
   link?: string;
   totalComments?: number;
-  onSubmit: () => void;
+  onSubmit: (query: string) => void;
   setSearch: (search: string) => void;
   reviews?: Review[];
   pagination?: {
@@ -36,6 +38,7 @@ const CommentWrapper = ({
   onAddComment?: () => void;
   canAddComment?: boolean;
   sectionVariant?: "primary" | "tertiary";
+  isLoading?: boolean;
 }) => {
   const variants = {
     small: {
@@ -89,7 +92,26 @@ const CommentWrapper = ({
         </div>
       </div>
       <div className="">
-        {reviews.length === 0 ? (
+        {isLoading ? (
+          <div
+            className="space-y-5 border-t border-[#D9D9D9] py-6"
+            aria-live="polite"
+            aria-label="Loading comments"
+          >
+            {Array.from({ length: variant === "small" ? 2 : 3 }).map(
+              (_, index) => (
+                <div key={index} className="flex gap-4">
+                  <Skeleton className="size-10 shrink-0 rounded-full" />
+                  <div className="flex-1 space-y-3">
+                    <Skeleton className="h-4 w-2/5" />
+                    <Skeleton className="h-3 w-full" />
+                    <Skeleton className="h-3 w-3/4" />
+                  </div>
+                </div>
+              ),
+            )}
+          </div>
+        ) : reviews.length === 0 ? (
           <EmptyState
             title="No reviews yet"
             description="Be the first to share your experience with this material."

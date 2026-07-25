@@ -132,8 +132,10 @@ export const useFilters = () => {
     setSubmittedQuery(null);
   };
 
-  const handleSearch = async () => {
-    setSubmittedQuery(search);
+  const handleSearch = async (query = search) => {
+    const normalizedQuery = query.trim();
+    setSearch(normalizedQuery);
+    setSubmittedQuery(normalizedQuery || null);
   };
 
   return {

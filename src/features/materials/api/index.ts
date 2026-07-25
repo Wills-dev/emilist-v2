@@ -147,16 +147,18 @@ export const getMaterialReviews = async ({
   page,
   limit,
   sortBy = "mostRelevant",
+  search,
 }: {
   materialId: string;
   page: number;
   limit: number;
   sortBy?: string;
+  search?: string | null;
 }): Promise<MaterialReviewsResponse | undefined> => {
   try {
     const url = `/material/fetch-product-reviews/${materialId}`;
     const { data } = await axiosInstance.get(url, {
-      params: { page, limit, sortBy },
+      params: { page, limit, sortBy, search: search || undefined },
     });
 
     return data?.data;

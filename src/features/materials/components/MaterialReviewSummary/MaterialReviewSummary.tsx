@@ -3,19 +3,24 @@
 import CommentWrapper from "@/components/molecules/CommentWrapper/CommentWrapper";
 import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
 import ReviewBreakdown from "@/components/molecules/ReviewBreakdown/ReviewBreakdown";
-import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
-import { MaterialReviewsResponse } from "../../types";
+import { useGetMaterialReviews } from "../../hooks/useGetMaterialReviews";
 
 const MaterialReviewSummary = ({
+  materialId,
   reviewLink,
-  reviews,
   variant = "primary",
 }: {
+  materialId: string;
   reviewLink: string;
-  reviews?: MaterialReviewsResponse;
   variant?: "primary" | "tertiary";
 }) => {
-  const { handleSubmit, setSearch } = useGeneralSearch();
+  const {
+    data: reviews,
+    handleSearch,
+    setSearch,
+    submittedQuery,
+    isFetching,
+  } = useGetMaterialReviews({ materialId, limit: 3 });
 
   return (
     <div className="max-w-96.75 w-full">
@@ -30,13 +35,18 @@ const MaterialReviewSummary = ({
           variant={variant}
         />
         <CommentWrapper
-          totalComments={reviews?.numberOfRatings ?? 0}
+          totalComments={
+            submittedQuery
+              ? reviews?.reviews?.length ?? 0
+              : reviews?.numberOfRatings ?? 0
+          }
           variant="small"
-          onSubmit={handleSubmit}
+          onSubmit={handleSearch}
           setSearch={setSearch}
           link={reviewLink}
           reviews={reviews?.reviews ?? []}
           sectionVariant={variant}
+          isLoading={isFetching}
         />
       </div>
     </div>
