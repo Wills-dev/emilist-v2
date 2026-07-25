@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import LikeIcon from "@/components/atoms/icons/LikeIcon";
@@ -6,6 +8,8 @@ import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab
 import SearchBar from "@/components/molecules/SearchBar/SearchBar";
 import { dashbaordMarketplaceTabs } from "@/lib/constants";
 import { routes } from "@/lib/helpers/routes";
+import { useGetCartItems } from "../../hooks/useGetCartItems";
+import { getCartItemCount } from "../../helpers/cart";
 
 const DashboardMaterialsHeader = ({
   onSearchSubmit,
@@ -18,6 +22,9 @@ const DashboardMaterialsHeader = ({
   title?: string;
   saved?: boolean;
 }) => {
+  const { cart } = useGetCartItems();
+  const cartCount = getCartItemCount(cart);
+
   return (
     <div className="space-y-6 sm:pb-6 pb-4 border-b border-[#F1F2F9]">
       <h6 className="font-exo font-semibold sm:text-2xl text-lg tracking-[0%] leading-10">
@@ -45,9 +52,15 @@ const DashboardMaterialsHeader = ({
             </Link>
             <Link
               href={routes?.dashboardLinks?.dashboardCart}
-              className="bg-[#F6F7F9] rounded-full h-8.5 w-8.5 flex justify-center items-center text-[#737774]"
+              aria-label={`View cart with ${cartCount} item${cartCount === 1 ? "" : "s"}`}
+              className="relative bg-[#F6F7F9] rounded-full h-8.5 w-8.5 flex justify-center items-center text-[#737774]"
             >
               <ShopBag />
+              {cartCount > 0 && (
+                <span className="absolute -right-1.5 -top-1.5 flex min-w-4.5 h-4.5 items-center justify-center rounded-full bg-[#FF5D7A] px-1 text-[10px] font-semibold text-white">
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
             </Link>
           </div>
         </div>

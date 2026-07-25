@@ -15,7 +15,11 @@ import {
   getCartProductCount,
 } from "../../helpers/cart";
 
-const CheckoutWrapper = () => {
+const CheckoutWrapper = ({
+  isDashboard = false,
+}: {
+  isDashboard?: boolean;
+}) => {
   const { cart, isError, isLoading } = useGetCartItems();
   const items = cart?.products ?? [];
   const productCount = getCartProductCount(cart);
@@ -24,7 +28,7 @@ const CheckoutWrapper = () => {
 
   if (isLoading) {
     return (
-      <Container>
+      <Container variant={isDashboard ? "small" : "center"}>
         <div className="pt-6 pb-15 space-y-10">
           <Skeleton className="h-8.5 w-20 bg-gray-200" />
           <Skeleton className="h-125 w-full bg-gray-200" />
@@ -35,9 +39,9 @@ const CheckoutWrapper = () => {
 
   if (isError || items.length === 0) {
     return (
-      <Container>
+      <Container variant={isDashboard ? "small" : "center"}>
         <div className="pt-6 pb-15 space-y-10">
-          <BackButton />
+          <BackButton isDashboard={isDashboard} />
           <EmptyState
             title={isError ? "Unable to load your cart" : "Your cart is empty"}
             description={
@@ -52,11 +56,17 @@ const CheckoutWrapper = () => {
   }
 
   return (
-    <Container>
+    <Container variant={isDashboard ? "small" : "center"}>
       <div className="pt-6 pb-15 space-y-10">
-        <BackButton />
-        <div className="w-full flex justify-between flex-wrap gap-6">
-          <div className="max-w-197.75 w-full space-y-5.25">
+        <BackButton isDashboard={isDashboard} />
+        <div
+          className={`w-full flex justify-between flex-wrap ${isDashboard ? "gap4" : "gap-6"}`}
+        >
+          <div
+            className={`w-full space-y-5.25 ${
+              isDashboard ? "max-w-175" : "max-w-197.75"
+            }`}
+          >
             <CartProductWrapper
               icon={<WalletIcon />}
               title="Checkout"
@@ -73,8 +83,12 @@ const CheckoutWrapper = () => {
               currency={currency}
             />
           </div>
-          <div className="max-w-96.75 w-full space-y-8">
-            <SetAddress />
+          <div
+            className={`w-full space-y-8 ${
+              isDashboard ? "max-w-95" : "max-w-96.75"
+            }`}
+          >
+            <SetAddress variant="secondary" />
           </div>
         </div>
       </div>
