@@ -6,6 +6,7 @@ import CartCard from "../CartCard/CartCard";
 import { CartItem } from "../../types";
 import { useCartItemActions } from "../../hooks/useCartItemActions";
 import { getCartProductId } from "../../helpers/cart";
+import DashboardTitle from "@/components/atoms/DashboardTitle/DashboardTitle";
 
 const CartProductWrapper = ({
   variant = "primary",
@@ -30,14 +31,7 @@ const CartProductWrapper = ({
 
   return (
     <div className="w-full flex-1 space-y-5">
-      <div className="flex items-center gap-4">
-        <div className="shadow-[inset_0px_1.83px_5.89px_0px_#00000014] w-9.75 h-9.75 rounded-full bg-[#F6F7F9] minW-9.75 flex justify-center items-center text-xl">
-          {icon}
-        </div>
-        <h2 className="font-semibold font-exo sm:text-[32px] text-2xl">
-          {title}
-        </h2>
-      </div>
+      <DashboardTitle title={title} icon={icon} />
       <div className="bg-linear-to-b from-0% from-white to-100% to-[#FBFBFB] border border-[#F1F2F9] rounded-[12.75px] space-y-5 ">
         {variant === "primary" && (
           <div className="py-6 px-5">

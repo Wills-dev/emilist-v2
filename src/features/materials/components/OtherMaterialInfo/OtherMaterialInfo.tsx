@@ -4,6 +4,7 @@ import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import { numberWithCommas } from "@/lib/helpers/formatNumbers";
 import { pluralizeQuantityMetric } from "@/lib/helpers/pluralizeQuantityMetric";
 import { useState } from "react";
+import RichTextContent from "@/components/atoms/RichTextContent/RichTextContent";
 
 const OtherMaterialInfo = ({
   description,
@@ -43,7 +44,7 @@ const OtherMaterialInfo = ({
       </div>
       <div className="space-y-4 text-[#5E625F] text-sm">
         {tab === "description" ? (
-          <p>{description || "No description provided."}</p>
+          <RichTextContent value={description} />
         ) : (
           <div className="space-y-2">
             <InfoItem

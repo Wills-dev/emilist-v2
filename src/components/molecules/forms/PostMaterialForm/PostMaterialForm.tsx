@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useShallow } from "zustand/react/shallow";
 
 import Button from "@/components/atoms/Button/Button";
@@ -7,7 +9,7 @@ import FormTitleWrapper from "@/components/atoms/FormTitleWrapper/FormTitleWrapp
 import InputWrapper from "../../InputWrapper/InputWrapper";
 import SelectWrapper from "../../SelectWrapper/SelectWrapper";
 import Label from "@/components/atoms/Label/Label";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import RichTextArea from "@/components/molecules/RichTextArea/RichTextArea";
 import Select from "@/components/atoms/Select/Select";
 import Input from "@/components/atoms/Input/Input";
 import MultiImageInput from "../../MultiImageInput/MultiImageInput";
@@ -19,7 +21,6 @@ import { productCategories } from "@/features/materials/constants";
 import { usePostMaterial } from "@/features/materials/hooks/usePostMaterial";
 import { useMaterialStore } from "@/store/material/materialStore";
 import { isMaterialFormComplete } from "@/features/materials/helpers/validateMaterialForm";
-import Link from "next/link";
 import { routes } from "@/lib/helpers/routes";
 
 const PostMaterialForm = () => {
@@ -102,13 +103,12 @@ const PostMaterialForm = () => {
           />
           <div className="flex flex-col gap-2">
             <Label htmlFor="description" title="Describe your product" />
-            <Textarea
+            <RichTextArea
               id="description"
               name="description"
               value={description}
-              onChange={(e) => setField("description", e.target.value)}
+              onChange={(value) => setField("description", value)}
               placeholder="Be as detailed as possible"
-              className="h-35"
             />
           </div>
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">

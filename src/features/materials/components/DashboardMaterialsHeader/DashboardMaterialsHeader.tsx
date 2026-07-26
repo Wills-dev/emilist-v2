@@ -10,6 +10,7 @@ import { dashbaordMarketplaceTabs } from "@/lib/constants";
 import { routes } from "@/lib/helpers/routes";
 import { useGetCartItems } from "../../hooks/useGetCartItems";
 import { getCartItemCount } from "../../helpers/cart";
+import DashboardTitle from "@/components/atoms/DashboardTitle/DashboardTitle";
 
 const DashboardMaterialsHeader = ({
   onSearchSubmit,
@@ -27,9 +28,7 @@ const DashboardMaterialsHeader = ({
 
   return (
     <div className="space-y-6 sm:pb-6 pb-4 border-b border-[#F1F2F9]">
-      <h6 className="font-exo font-semibold sm:text-2xl text-lg tracking-[0%] leading-10">
-        {title}
-      </h6>
+      <DashboardTitle title={title} size="medium" />
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div className="min-w-72.5">
           <MarketplaceTab tabContent={dashbaordMarketplaceTabs} />
