@@ -12,6 +12,17 @@ const OrderCard = ({
 }) => {
   const orderId = "3354654654526";
   const orderNumber = "3354654654526";
+  const merchantId = "merchant-id";
+  const product = {
+    id: "product-id",
+    name: "Bags of Cement",
+    brand: "Dangote",
+    category: "Building Materials",
+    price: 9000,
+    currency: "NGN",
+    unit: "bag",
+    image: "/assets/images/material.svg",
+  };
 
   return (
     <div
@@ -44,6 +55,8 @@ const OrderCard = ({
                   orderId={orderId}
                   orderNumber={orderNumber}
                   trackingStatus={trackingStatus}
+                  product={product}
+                  merchantId={merchantId}
                 />
               </div>
             </div>
@@ -54,6 +67,8 @@ const OrderCard = ({
             orderId={orderId}
             orderNumber={orderNumber}
             trackingStatus={trackingStatus}
+            product={product}
+            merchantId={merchantId}
           />
         </div>
         <div className="lg:hidden">

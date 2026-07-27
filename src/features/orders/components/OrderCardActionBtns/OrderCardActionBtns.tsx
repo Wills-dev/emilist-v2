@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import ItemActionButton from "@/components/atoms/ItemActionButton/ItemActionButton";
 import CancelOrderModal from "../CancelOrderModal/CancelOrderModal";
 import { useCancelOrder } from "../../hooks/useCancelOrder";
@@ -10,16 +12,27 @@ import {
   OrderTrackingStatus,
   useTrackOrder,
 } from "../../hooks/useTrackOrder";
+import OrderAgainModal from "../OrderAgainModal/OrderAgainModal";
+import RateMerchantModal from "../RateMerchantModal/RateMerchantModal";
+import {
+  OrderAgainProduct,
+  useOrderAgain,
+} from "../../hooks/useOrderAgain";
 
 const OrderCardActionBtns = ({
   orderId,
   orderNumber,
   trackingStatus,
+  product,
+  merchantId,
 }: {
   orderId: string;
   orderNumber: string;
   trackingStatus: OrderTrackingStatus;
+  product: OrderAgainProduct;
+  merchantId: string;
 }) => {
+  const [isRateMerchantOpen, setIsRateMerchantOpen] = useState(false);
   const {
     reason,
     setReason,
@@ -45,6 +58,7 @@ const OrderCardActionBtns = ({
     openModal: openTrackModal,
     handleModalChange: handleTrackModalChange,
   } = useTrackOrder();
+  const orderAgain = useOrderAgain({ product });
   const isDelivered = trackingStatus === "delivered";
 
   return (
@@ -63,11 +77,14 @@ const OrderCardActionBtns = ({
             className="text-[#6667FF]"
           />
         )}
-        <ItemActionButton title="Rate Merchant" onClick={() => {}} />
+        <ItemActionButton
+          title="Rate Merchant"
+          onClick={() => setIsRateMerchantOpen(true)}
+        />
         {isDelivered && (
           <ItemActionButton
             title="Order Again"
-            onClick={() => {}}
+            onClick={orderAgain.openModal}
             className="text-[#6667FF]"
           />
         )}
@@ -102,6 +119,23 @@ const OrderCardActionBtns = ({
         onCancelOrder={openModal}
         onReturnItem={openReturnModal}
       />
+      <OrderAgainModal
+        product={product}
+        quantity={orderAgain.quantity}
+        open={orderAgain.isOpen}
+        onClose={orderAgain.handleModalChange}
+        onIncrement={orderAgain.increment}
+        onDecrement={orderAgain.decrement}
+        onPurchase={orderAgain.handlePurchase}
+        isSubmitting={orderAgain.isSubmitting}
+      />
+      {isRateMerchantOpen && (
+        <RateMerchantModal
+          merchantId={merchantId}
+          open={isRateMerchantOpen}
+          onClose={setIsRateMerchantOpen}
+        />
+      )}
     </>
   );
 };
