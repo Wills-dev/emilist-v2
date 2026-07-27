@@ -32,7 +32,7 @@ const ReturnItemModal = ({
   >
     <form className="space-y-7 pt-2" onSubmit={onSubmit}>
       <div className="space-y-5">
-        <p className="text-base text-[#667085]">
+        <p className="max-sm:text-sm text-[#667085]">
           Return this product back to the merchant
         </p>
         <Textarea

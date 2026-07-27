@@ -106,7 +106,7 @@ const TrackOrderModal = ({
       headerClassName="border-b border-[#ECECEC] pb-4"
     >
       <div className="space-y-7 pt-2">
-        <p className="max-w-3xl text-base leading-7 text-[#667085]">
+        <p className="max-w-3xl max-sm:text-sm leading-7 text-[#667085]">
           {statusMessages[status](normalizedOrderNumber)}
         </p>
 
