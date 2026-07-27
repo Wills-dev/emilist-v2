@@ -6,11 +6,12 @@ const ProfileAvatar = ({
   variant = "small",
 }: {
   profileImage?: string;
-  variant?: "small" | "large";
+  variant?: "very-small" | "small" | "large";
 }) => {
   const userAvatar = profileImage || "/assets/images/avatar.svg";
 
   const variants = {
+    "very-small": "w-8 h-8",
     small: "w-10 h-10",
     large: "sm:w-20.25 sm:h-20.25 w-10 h-10",
   };
@@ -18,7 +19,7 @@ const ProfileAvatar = ({
   const styles = variants[variant];
 
   return (
-    <div className={clsx(styles, "bg-white rounded-full overflow-hidden")}>
+    <div className={clsx(styles, "bg-white rounded-full overflow-hidden ")}>
       <Image
         src={userAvatar}
         alt="user avatar"
