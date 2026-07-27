@@ -7,6 +7,7 @@ const InfoItem = ({
   value,
   label,
   labelClass,
+  iconClass,
 }: {
   variant?: "xs" | "sm" | "base";
   className?: string;
@@ -14,13 +15,14 @@ const InfoItem = ({
   value: string;
   label?: string;
   labelClass?: string;
+  iconClass?: string;
 }) => {
   const variants = {
     xs: {
       parentStyle: "flex items-center gap-1 whitespace-nowrap",
       iconStyle: "text-xs",
-      valueStyle: "text-xs truncate tracking-[-3%]",
-      labelStyle: "text-xs tracking-[-3%]",
+      valueStyle: "sm:text-xs text-[10px] truncate tracking-[-3%]",
+      labelStyle: "sm:text-xs text-[10px] tracking-[-3%]",
     },
     sm: {
       parentStyle: "flex items-center gap-1 whitespace-nowrap",
@@ -40,7 +42,9 @@ const InfoItem = ({
 
   return (
     <div className={clsx(className, styles?.parentStyle)}>
-      {icon && <span className={clsx(styles?.iconStyle)}>{icon}</span>}
+      {icon && (
+        <span className={clsx(styles?.iconStyle, iconClass)}>{icon}</span>
+      )}
       <p className={clsx(styles?.labelStyle, labelClass)}>{label}</p>
       <p className={clsx(styles?.valueStyle)}>{value}</p>
     </div>

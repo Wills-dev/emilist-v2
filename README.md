@@ -10,6 +10,8 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Material creation flows with image uploads and validation
 - Cart retrieval and management: quantities, item removal, discount codes, and server-calculated order summaries
 - Dashboard material marketplace with responsive filters and management actions
+- Dashboard order management with responsive order cards, compact pagination, status-aware actions, and reusable cancellation, return, and tracking modals
+- Responsive order tracking for confirmed, out-for-delivery, and delivered states
 - Client-side data fetching, caching, loading skeletons, empty states, and pagination
 - Token-aware authentication and profile-completion modal flows
 - Dashboard, cart, checkout, enterprise booking, and marketing pages
@@ -24,6 +26,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Axios for API requests
 - Zustand for client-side/auth flow state
 - Radix UI, Lucide icons, Sonner, Framer Motion, and date-fns
+- Tiptap for document-style material description editing and rendering
 
 ## Project structure
 
@@ -40,7 +43,8 @@ src/
 │   ├── auth/
 │   ├── experts/
 │   ├── jobs/
-│   └── materials/
+│   ├── materials/
+│   └── orders/
 ├── lib/          # Shared helpers, hooks, constants, and API utilities
 └── store/        # Zustand stores and store types
 
