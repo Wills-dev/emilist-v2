@@ -23,6 +23,12 @@ export interface PostMaterialPayload {
   images?: File[];
 }
 
+export type UpdateMaterialPayload = Partial<
+  Omit<PostMaterialPayload, "images">
+> & {
+  images?: File[];
+};
+
 export type PostMaterialField = keyof PostMaterialPayload;
 
 export interface AddMaterialReviewPayload {

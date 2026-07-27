@@ -1,6 +1,6 @@
 "use client";
 
-import OrderActionBtn from "../OrderActionBtn/OrderActionBtn";
+import ItemActionButton from "@/components/atoms/ItemActionButton/ItemActionButton";
 import CancelOrderModal from "../CancelOrderModal/CancelOrderModal";
 import { useCancelOrder } from "../../hooks/useCancelOrder";
 import ReturnItemModal from "../ReturnItemModal/ReturnItemModal";
@@ -51,21 +51,21 @@ const OrderCardActionBtns = ({
     <>
       <div className="flex flex-wrap items-center gap-2">
         {!isDelivered && (
-          <OrderActionBtn title="Cancel Order" onClick={openModal} />
+          <ItemActionButton title="Cancel Order" onClick={openModal} />
         )}
         {isDelivered && (
-          <OrderActionBtn title="Return Item" onClick={openReturnModal} />
+          <ItemActionButton title="Return Item" onClick={openReturnModal} />
         )}
         {!isDelivered && (
-          <OrderActionBtn
+          <ItemActionButton
             title="Track Order"
             onClick={openTrackModal}
             className="text-[#6667FF]"
           />
         )}
-        <OrderActionBtn title="Rate Merchant" onClick={() => {}} />
+        <ItemActionButton title="Rate Merchant" onClick={() => {}} />
         {isDelivered && (
-          <OrderActionBtn
+          <ItemActionButton
             title="Order Again"
             onClick={() => {}}
             className="text-[#6667FF]"

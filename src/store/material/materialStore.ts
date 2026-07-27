@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { MaterialFormState } from "../types/material";
 import { PostMaterialPayload } from "@/features/materials/types";
+import { removeNumberCommas } from "@/lib/helpers/formatNumbers";
 
 const defaultState = {
   name: "",
@@ -69,9 +70,9 @@ export const useMaterialStore = create<MaterialFormState>()(
           subCategory: state.subCategory,
           brand: state.brand,
           description: state.description,
-          availableQuantity: Number(state.availableQuantity),
+          availableQuantity: Number(removeNumberCommas(state.availableQuantity)),
           quantityMetric: state.quantityMetric,
-          price: Number(state.price),
+          price: Number(removeNumberCommas(state.price)),
           priceMetric: state.priceMetric,
           currency: state.currency,
           merchantName: state.merchantName,

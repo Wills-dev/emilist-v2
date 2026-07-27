@@ -52,9 +52,12 @@ export const usePostMaterial = () => {
       if (error) return toast.error(error);
     }
 
+    const currentImages = useMaterialStore.getState().images;
+    const currentPreviews = useMaterialStore.getState().imagePreviews;
     const previews = files.map((file) => URL.createObjectURL(file));
 
-    setImages(files, previews);
+    setImages([...currentImages, ...files], [...currentPreviews, ...previews]);
+    e.target.value = "";
   };
 
   const { mutate, isPending } = useMutation({

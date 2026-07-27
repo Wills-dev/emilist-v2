@@ -22,6 +22,10 @@ import { usePostMaterial } from "@/features/materials/hooks/usePostMaterial";
 import { useMaterialStore } from "@/store/material/materialStore";
 import { isMaterialFormComplete } from "@/features/materials/helpers/validateMaterialForm";
 import { routes } from "@/lib/helpers/routes";
+import {
+  formatInputTextNumber,
+  formatInputTextNumberWithCommas,
+} from "@/lib/helpers/formatNumbers";
 
 const PostMaterialForm = () => {
   const { isPending, handleSubmit, handleImageChange } = usePostMaterial();
@@ -116,8 +120,14 @@ const PostMaterialForm = () => {
               title="Enter available product quantity"
               name="availableQuantity"
               value={availableQuantity}
-              onChange={(e) => setField("availableQuantity", e.target.value)}
-              placeholder="4,000"
+              onChange={(e) =>
+                setField(
+                  "availableQuantity",
+                  formatInputTextNumber(e.target.value),
+                )
+              }
+              inputMode="numeric"
+              placeholder="4000"
             />{" "}
             <SelectWrapper
               title="Select metric (bag, kg, ton)"
@@ -147,7 +157,13 @@ const PostMaterialForm = () => {
                     type="text"
                     name="price"
                     value={price}
-                    onChange={(e) => setField("price", e.target.value)}
+                    onChange={(e) =>
+                      setField(
+                        "price",
+                        formatInputTextNumberWithCommas(e.target.value),
+                      )
+                    }
+                    inputMode="decimal"
                     placeholder="9,000"
                   />
                 </div>

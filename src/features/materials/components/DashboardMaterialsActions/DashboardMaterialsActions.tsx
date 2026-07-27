@@ -3,6 +3,7 @@ import FilterIcon from "@/components/atoms/icons/FilterIcon";
 import MarketplaceActionTitle from "@/components/atoms/MarketplaceActionTitle/MarketplaceActionTitle";
 import Select from "@/components/atoms/Select/Select";
 import { sortOptions } from "@/lib/constants/filter";
+import { routes } from "@/lib/helpers/routes";
 
 const DashboardMaterialsActions = ({
   onCloseFilter,
@@ -43,8 +44,14 @@ const DashboardMaterialsActions = ({
         </button>
       </div>
       <div className="flex items-center gap-5">
-        <MarketplaceActionTitle title="Manage orders" link="" />
-        <MarketplaceActionTitle title="Manage listed items" link="" />
+        <MarketplaceActionTitle
+          title="Manage orders"
+          link={routes.dashboardLinks.orders}
+        />
+        <MarketplaceActionTitle
+          title="Manage listed items"
+          link={routes.dashboardLinks.listedMaterials}
+        />
         <MarketplaceActionTitle title="Post material" link="" />
       </div>
     </div>

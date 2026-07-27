@@ -50,6 +50,8 @@ export const routes = {
     savedMaterials: "/dashboard/marketplace/materials/saved",
     dashboardCart: "/dashboard/marketplace/cart",
     dashboardCheckout: "/dashboard/marketplace/checkout",
+    orders: "/dashboard/marketplace/orders",
+    listedMaterials: "/dashboard/marketplace/materials/listed",
     materialsCompare: "/dashboard/marketplace/materials/compare",
     reports: "/dashboard/reports",
     messages: "/dashboard/messages",
