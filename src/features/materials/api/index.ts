@@ -8,7 +8,62 @@ import {
   SimilarProductsResponse,
   PostMaterialPayload,
   ProductReviewResponse,
+  UpdateMaterialPayload,
 } from "../types";
+
+const appendMaterialFormData = (
+  formData: FormData,
+  payload: UpdateMaterialPayload,
+) => {
+  Object.entries(payload).forEach(([key, value]) => {
+    if (value === undefined || key === "images" || key === "deliveryLocations")
+      return;
+    formData.append(key, String(value));
+  });
+
+  payload.deliveryLocations?.forEach((location, index) => {
+    formData.append(`deliveryLocations[${index}][state]`, location.state);
+    formData.append(`deliveryLocations[${index}][lga]`, location.lga);
+  });
+  payload.images?.forEach((image) => formData.append("files", image));
+};
+
+export const updateMaterial = async ({
+  productId,
+  payload,
+}: {
+  productId: string;
+  payload: UpdateMaterialPayload;
+}) => {
+  const formData = new FormData();
+  appendMaterialFormData(formData, payload);
+  const { data } = await axiosInstance.patch(
+    `/material/update-product/${productId}`,
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } },
+  );
+  return data?.data;
+};
+
+export const deleteMaterialImage = async ({
+  productId,
+  imageId,
+}: {
+  productId: string;
+  imageId: string;
+}) => {
+  const { data } = await axiosInstance.delete(
+    `/material/delete-product/${productId}/image/${imageId}`,
+  );
+  return data?.data;
+};
+
+export const archiveMaterial = async (productId: string) => {
+  const { data } = await axiosInstance.delete(
+    `/material/delete-product/${productId}`,
+  );
+  return data?.data;
+};
 
 export const postMaterial = async (payload: PostMaterialPayload) => {
   try {

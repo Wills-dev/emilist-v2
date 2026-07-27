@@ -10,12 +10,14 @@ const InputWrapper = ({
   onChange,
   placeholder = "",
   type = "text",
+  inputMode,
 }: {
   type?: string;
   title: string;
   name: string;
   value: string;
   placeholder?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
@@ -28,6 +30,7 @@ const InputWrapper = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        inputMode={inputMode}
       />
     </div>
   );

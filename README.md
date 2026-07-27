@@ -8,6 +8,8 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Material browsing, detail pages, image galleries, availability, and reviews
 - Authenticated material reviews with modal-based login protection
 - Material creation flows with image uploads and validation
+- Dashboard listed-material management with responsive cards, pagination, loading and empty states
+- Material listing updates with rich descriptions, formatted numeric inputs, incremental image uploads, image removal, price-only editing, and archive confirmation
 - Cart retrieval and management: quantities, item removal, discount codes, and server-calculated order summaries
 - Dashboard material marketplace with responsive filters and management actions
 - Dashboard order management with responsive order cards, compact pagination, status-aware actions, and reusable cancellation, return, and tracking modals
@@ -111,6 +113,16 @@ Give each component its own folder and implementation file (for example, `Materi
 ### Hooks separate behaviour from presentation
 
 Put request state, form state, mutations, validation, and submit handlers in hooks. Components should primarily render the UI and connect inputs to a hook's returned values and handlers.
+
+The material editing flow follows this separation explicitly: modal composition, form fields, form state and payload normalization, image state, image presentation, and API mutations are maintained as focused modules.
+
+### Numeric form inputs
+
+Keep price and quantity fields as text inputs with numeric input modes so formatting remains controllable across browsers. Quantities accept digits only, while prices may display thousands separators. Always remove presentation commas and convert values to numbers before creating API payloads.
+
+### Material images
+
+New material images remain local until the create or update request is submitted. Removing a newly selected image only updates local state. Existing persisted images are removed through the material image deletion endpoint and should refresh the related material queries after a successful request.
 
 ### Data fetching
 

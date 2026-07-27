@@ -20,7 +20,7 @@ const QuantityControl = ({
         icon={<MinusIcon />}
         disabled={disabled || quantity <= 1 || !onDecrement}
       />
-      <span className="block tracking-[-1.5%]">{quantity}</span>
+      <span className="block tracking-[-1.5%] max-sm:text-xs">{quantity}</span>
       <CounterButton
         onClick={onIncrement ?? (() => {})}
         icon={<PlusIcon />}

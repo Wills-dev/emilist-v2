@@ -33,6 +33,10 @@ export const formatInputTextNumberWithCommas = (value: string) => {
   return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+/** Removes presentation commas before a numeric value is sent to the API. */
+export const removeNumberCommas = (value: string | number) =>
+  String(value).replace(/,/g, "");
+
 export const formatAmount = (amount: number) => {
   if (amount < 1000) {
     return amount.toString();
