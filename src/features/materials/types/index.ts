@@ -306,3 +306,38 @@ export interface SimilarProduct {
 export interface SimilarProductsResponse {
   similarProducts: SimilarProduct[];
 }
+
+export interface ComparedProduct {
+  _id: string;
+  userId: ProductOwner;
+  name: string;
+  category: string;
+  subCategory: string;
+  brand: string;
+  description: string;
+  images: Array<{
+    imageUrl: string;
+    isPrimary: boolean;
+    _id: string;
+  }>;
+  availableQuantity: number;
+  quantityMetric: string;
+  price: number;
+  currency: string;
+  priceMetric: string;
+  merchantName: string;
+  storeName: string;
+  deliveryLocations: DeliveryLocation[];
+  isDiscounted: boolean;
+  status: "active" | "inactive";
+  reviews: Array<{ _id: string; rating: number }>;
+  discountedPrice?: number;
+  totalReviews: number;
+  averageRating: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ComparedProductsResponse {
+  enhancedProducts: ComparedProduct[];
+}

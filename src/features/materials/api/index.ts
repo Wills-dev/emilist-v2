@@ -9,6 +9,7 @@ import {
   PostMaterialPayload,
   ProductReviewResponse,
   UpdateMaterialPayload,
+  ComparedProductsResponse,
 } from "../types";
 
 const appendMaterialFormData = (
@@ -180,6 +181,15 @@ export const getLikedMaterials = async (
   const { data } = await axiosInstance.get("/material/fetch-liked-products", {
     params: getMaterialQueryParams(query),
   });
+
+  return data?.data;
+};
+
+export const getComparedMaterials =
+  async (): Promise<ComparedProductsResponse> => {
+  const { data } = await axiosInstance.get(
+    "/material/fetch-compared-products",
+  );
 
   return data?.data;
 };
