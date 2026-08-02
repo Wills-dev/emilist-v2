@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Menu } from "lucide-react";
 import {
   Sheet,
@@ -10,82 +11,113 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import Logo from "@/components/atoms/Logo/Logo";
-import Container from "@/components/atoms/Container/Container";
 import DashboardNavCard from "@/components/atoms/DashboardNavCard/DashboardNavCard";
-import DownloadMobile from "@/components/atoms/DownloadMobile/DownloadMobile";
-import WarningIcon from "@/components/atoms/icons/WarningIcon";
+import Logo from "@/components/atoms/Logo/Logo";
+import BriefcaseIcon from "@/components/atoms/icons/BriefcaseIcon";
 import Logout from "@/components/atoms/icons/Logout";
-import UserIdentity from "../UserIdentity/UserIdentity";
-import JoinPro from "@/components/atoms/JoinPro/JoinPro";
-
-import { routes } from "@/lib/helpers/routes";
-import { dashboardMainLinks } from "@/lib/constants";
 import MessageIcon2 from "@/components/atoms/icons/MessageIcon2";
+import WarningIcon from "@/components/atoms/icons/WarningIcon";
+import JoinPro from "@/components/atoms/JoinPro/JoinPro";
+import UserIdentity from "../UserIdentity/UserIdentity";
+
+import { dashboardMainLinks } from "@/lib/constants";
+import { routes } from "@/lib/helpers/routes";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 
 const DashboardMobileNav = () => {
+  const [open, setOpen] = useState(false);
+  const { logout, isLoggingOut } = useLogout();
+  const closeDrawer = () => setOpen(false);
+  const handleLogout = () => {
+    if (isLoggingOut) return;
+    logout();
+    closeDrawer();
+  };
+
   return (
     <div className="lg:hidden">
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <button>
-            <Menu className="h-6 w-6" />
+          <button type="button" aria-label="Open dashboard menu">
+            <Menu className="size-6" />
           </button>
         </SheetTrigger>
 
-        <SheetContent side="left" className="max-w-75 w-full">
-          <SheetHeader>
-            <SheetTitle>
-              <Logo
-                className="max-w-30 w-full min-w-25"
-                height={20}
-                width={120}
-                href={routes?.dashboard}
-              />
-            </SheetTitle>
-            <SheetDescription></SheetDescription>
+        <SheetContent
+          side="left"
+          className="w-[min(307px,calc(100vw-56px))] max-w-none gap-0 border-0 p-0"
+        >
+          <div className="absolute left-4 top-5">
+            <Logo
+              href={routes.dashboard}
+              width={120}
+              height={28}
+              className="w-30"
+            />
+          </div>
+          <SheetHeader className="sr-only">
+            <SheetTitle>Dashboard menu</SheetTitle>
+            <SheetDescription>
+              Navigate your Emilist dashboard.
+            </SheetDescription>
           </SheetHeader>
-          <Container>
-            <div className="mt-8 flex flex-col justify-between gap-20">
-              {" "}
+
+          <div className="flex h-full flex-col px-4 pb-8 pt-20">
+            <nav aria-label="Dashboard navigation">
               <div className="space-y-4">
-                {dashboardMainLinks?.map((link) => (
+                {dashboardMainLinks.map((link) => (
                   <DashboardNavCard
-                    key={link?.label}
-                    href={link?.href}
+                    key={link.label}
+                    href={link.href}
                     label={link.label}
                     icon={link.icon}
+                    onClick={closeDrawer}
+                    className="w-full"
                   />
                 ))}
               </div>
-              <div className="space-y-4 pb-10">
-                <JoinPro />
-                <DownloadMobile />
-                <div className="py-2 space-y-2 w-full border-y border-[#D9D9D9]">
-                  <DashboardNavCard
-                    href={routes?.dashboardLinks?.messages}
-                    label="Messages"
-                    icon={<MessageIcon2 />}
-                    className="w-full"
-                  />
-                  <DashboardNavCard
-                    href={routes?.dashboardLinks?.support}
-                    label="Support"
-                    icon={<WarningIcon />}
-                    className="w-full"
-                  />
-                  <DashboardNavCard
-                    onClick={() => {}}
-                    label="Logout"
-                    icon={<Logout />}
-                    className="w-full"
-                    variant="sidebar"
-                  />
-                </div>
-                <UserIdentity />
+
+              <div className="my-4 border-t border-[#D9D9D9]" />
+
+              <div className="space-y-4">
+                <DashboardNavCard
+                  href={routes.joinExpert}
+                  label="Services"
+                  icon={<BriefcaseIcon className="size-[1em]" />}
+                  onClick={closeDrawer}
+                  className="w-full"
+                />
+                <DashboardNavCard
+                  href={routes.dashboardLinks.messages}
+                  label="Messages"
+                  icon={<MessageIcon2 />}
+                  onClick={closeDrawer}
+                  className="w-full"
+                />
+                <DashboardNavCard
+                  href={routes.dashboardLinks.support}
+                  label="Support"
+                  icon={<WarningIcon />}
+                  onClick={closeDrawer}
+                  className="w-full"
+                />
+                <DashboardNavCard
+                  onClick={handleLogout}
+                  label={isLoggingOut ? "Logging out..." : "Logout"}
+                  icon={<Logout />}
+                  className="w-full"
+                  variant="sidebar"
+                />
               </div>
+
+              <div className="my-4 border-t border-[#D9D9D9]" />
+              <JoinPro />
+            </nav>
+
+            <div className="mt-auto border-t border-[#D9D9D9] pt-7">
+              <UserIdentity />
             </div>
-          </Container>
+          </div>
         </SheetContent>
       </Sheet>
     </div>

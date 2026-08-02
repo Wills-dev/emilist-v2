@@ -3,10 +3,20 @@ import { useEffect, useSyncExternalStore } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { useStore } from "@/store/authStore";
-import { readCookie } from "@/lib/helpers/cookie";
+import {
+  AUTH_COOKIE_CHANGE_EVENT,
+  readCookie,
+} from "@/lib/helpers/cookie";
 import { getCurrentUser } from "../api";
+import { getUserFromResponse } from "../helpers/getUserFromResponse";
 
-const subscribeToCookie = () => () => {};
+const subscribeToCookie = (onStoreChange: () => void) => {
+  if (typeof window === "undefined") return () => {};
+
+  window.addEventListener(AUTH_COOKIE_CHANGE_EVENT, onStoreChange);
+  return () =>
+    window.removeEventListener(AUTH_COOKIE_CHANGE_EVENT, onStoreChange);
+};
 const getClientSnapshot = () => true;
 const getServerSnapshot = () => false;
 
@@ -43,7 +53,8 @@ export const useGetCurrentUser = () => {
     }
 
     if (query.isSuccess && query.data) {
-      setCurrentUser(query?.data?.userData);
+      const currentUser = getUserFromResponse(query.data);
+      if (currentUser) setCurrentUser(currentUser);
     }
     if (query.isError) {
       clearCurrentUser();

@@ -1,3 +1,7 @@
+"use client";
+
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+
 import { JobCompletionData } from "../../types";
 
 export const JOB_COMPLETION_SEGMENTS: Array<{
@@ -90,6 +94,8 @@ const PercentageCallout = ({
 };
 
 const JobCompletionChart = ({ data }: { data: JobCompletionData }) => {
+  const reduceMotion = useReducedMotion();
+  const chartKey = `${data.completed}-${data.pending}-${data.overdue}`;
   const chartSegments = JOB_COMPLETION_SEGMENTS.map((segment, index) => {
     const startAngle = JOB_COMPLETION_SEGMENTS.slice(0, index).reduce(
       (total, previousSegment) =>
@@ -113,22 +119,32 @@ const JobCompletionChart = ({ data }: { data: JobCompletionData }) => {
       aria-label={`Job completion: ${data.completed}% completed, ${data.pending}% pending, and ${data.overdue}% overdue`}
       className="mx-auto w-full max-w-80"
     >
-      {chartSegments.map((segment) => (
-        <g key={segment.key}>
-          <path
-            d={getDonutSegmentPath(segment.startAngle, segment.endAngle)}
-            fill={segment.color}
-          />
-          <PercentageCallout
-            value={data[segment.key]}
-            angle={segment.middleAngle}
-            color={segment.color}
-          />
-        </g>
-      ))}
+      <AnimatePresence initial={false} mode="sync">
+        <motion.g
+          key={chartKey}
+          initial={reduceMotion ? false : { opacity: 0, scale: 0.94, rotate: -5 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.03, rotate: 3 }}
+          transition={{ duration: reduceMotion ? 0 : 0.38, ease: "easeOut" }}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          {chartSegments.map((segment) => (
+            <g key={segment.key}>
+              <path
+                d={getDonutSegmentPath(segment.startAngle, segment.endAngle)}
+                fill={segment.color}
+              />
+              <PercentageCallout
+                value={data[segment.key]}
+                angle={segment.middleAngle}
+                color={segment.color}
+              />
+            </g>
+          ))}
+        </motion.g>
+      </AnimatePresence>
     </svg>
   );
 };
 
 export default JobCompletionChart;
-

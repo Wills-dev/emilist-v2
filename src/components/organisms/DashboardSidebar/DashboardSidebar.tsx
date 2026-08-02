@@ -8,8 +8,11 @@ import WarningIcon from "@/components/atoms/icons/WarningIcon";
 import UserIdentity from "@/components/molecules/UserIdentity/UserIdentity";
 import { dashboardMainLinks } from "@/lib/constants";
 import { routes } from "@/lib/helpers/routes";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 
 const DashboardSidebar = () => {
+  const { logout, isLoggingOut } = useLogout();
+
   return (
     <aside className="fixed bg-white max-w-78 w-full min-w-78 h-screen pt-20 max-lg:hidden">
       <div className="py-10 px-4 h-full flex flex-col justify-between gap-10">
@@ -39,8 +42,8 @@ const DashboardSidebar = () => {
               className="w-full"
             />
             <DashboardNavCard
-              onClick={() => {}}
-              label="Logout"
+              onClick={() => logout()}
+              label={isLoggingOut ? "Logging out..." : "Logout"}
               icon={<Logout />}
               className="w-full"
               variant="sidebar"

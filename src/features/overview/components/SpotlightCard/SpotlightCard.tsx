@@ -1,6 +1,14 @@
 import { Megaphone } from "lucide-react";
-import ProfileAvatar from "@/components/atoms/ProfileAvatar/ProfileAvatar";
-import Rating from "@/components/molecules/Rating/Rating";
+import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
+
+const spotlightUser = {
+  id: "richard-cole-e",
+  fullName: "Richard Cole E.",
+  detail: "Furniture Maker",
+  rating: 4,
+  noOfReviews: 380,
+  imgUrl: "/assets/images/profile-view2.svg",
+};
 
 const SpotlightCard = () => (
   <section className="bg-white">
@@ -11,19 +19,16 @@ const SpotlightCard = () => (
         Service Provider of the Week
       </span>
     </h2>
-    <div className="flex items-center gap-4 p-6">
-      <ProfileAvatar
-        profileImage="/assets/images/profile-view2.svg"
-        variant="large"
+    <div className="p-6">
+      <UserRatingCard
+        id={spotlightUser.id}
+        fullName={spotlightUser.fullName}
+        detail={spotlightUser.detail}
+        rating={spotlightUser.rating}
+        noOfReviews={spotlightUser.noOfReviews}
+        imgUrl={spotlightUser.imgUrl}
+        avatarVariant="large"
       />
-      <div className="min-w-0">
-        <p className="font-exo font-semibold">Richard Cole E.</p>
-        <p className="text-sm text-[#737774]">Furniture Maker</p>
-        <div className="mt-2 flex items-center">
-          <Rating rating={4} />
-          <span className="ml-2 text-xs text-[#8A8D8B]">(380 reviews)</span>
-        </div>
-      </div>
     </div>
   </section>
 );

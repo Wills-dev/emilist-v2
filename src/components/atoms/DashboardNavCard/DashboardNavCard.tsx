@@ -76,6 +76,7 @@ const DashboardNavCard = ({
           ) : (
             <Link
               href={href}
+              onClick={onClick}
               className={clsx(
                 styles.base,
                 isActive ? styles.active : styles?.inactive,
