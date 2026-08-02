@@ -1,4 +1,4 @@
-const PromoteBtn = () => {
+const PromoteBtn = ({ label = "Promote" }: { label?: string }) => {
   return (
     <button className="flex items-center gap-1 text-[#FF9933] font-medium underline text-xs">
       <span>
@@ -20,7 +20,7 @@ const PromoteBtn = () => {
           <path d="M4.66667 3.5V8.16667V3.5Z" fill="currentColor" />
         </svg>
       </span>
-      <span>Promote</span>
+      <span>{label}</span>
     </button>
   );
 };

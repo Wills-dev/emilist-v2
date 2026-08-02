@@ -44,10 +44,16 @@ const MarketplaceMaterialCardWrap = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial="hidden"
+      animate="visible"
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.08 },
+        },
+      }}
       className="flex flex-wrap gap-6 xl:max-h-screen xl:overflow-y-auto no-scrollbar"
     >
       {isLoading
@@ -62,8 +68,16 @@ const MarketplaceMaterialCardWrap = ({
               "Delivery location not specified";
 
             return (
-              <MaterialCard
+              <motion.div
                 key={material.id}
+                variants={{
+                  hidden: { opacity: 0, y: 18, scale: 0.985 },
+                  visible: { opacity: 1, y: 0, scale: 1 },
+                }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                layout
+              >
+                <MaterialCard
                 id={material.id}
                 productName={material.name}
                 price={material.price}
@@ -87,8 +101,9 @@ const MarketplaceMaterialCardWrap = ({
                 noOfReviews={
                   material.merchant.totalReviews ?? material.reviewCount
                 }
-                sellerId={material.merchant.id}
-              />
+                  sellerId={material.merchant.id}
+                />
+              </motion.div>
             );
           })}
 

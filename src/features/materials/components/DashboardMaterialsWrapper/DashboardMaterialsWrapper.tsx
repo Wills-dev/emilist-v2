@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 import Container from "@/components/atoms/Container/Container";
 import MarketplaceMaterialCardWrap from "../MarketplaceMaterialCardWrap/MarketplaceMaterialCardWrap";
 import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/MarketplaceFilterBtns";
@@ -43,8 +45,18 @@ const DashboardMaterialsWrapper = () => {
 
   return (
     <Container variant="small">
-      <div className="flex justify-between flex-wrap gap-2 pt-4 pb-20">
-        <div className="bg-white p-4 max-sm:px-2 w-full max-w-202 h-fit">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className="flex flex-wrap justify-between gap-2 pb-20 pt-4"
+      >
+        <motion.div
+          initial={{ opacity: 0, x: -12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.08, ease: "easeOut" }}
+          className="h-fit w-full max-w-202 bg-white p-4 max-sm:px-2"
+        >
           <div className="space-y-8">
             <DashboardMaterialsHeader
               onSearchSubmit={handleSearch}
@@ -68,16 +80,21 @@ const DashboardMaterialsWrapper = () => {
               />
             </div>
           </div>
-        </div>
-        <div className="max-w-68 w-full max-xl:hidden space-y-6">
+        </motion.div>
+        <motion.aside
+          initial={{ opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.16, ease: "easeOut" }}
+          className="w-full max-w-68 space-y-6 max-xl:hidden"
+        >
           <MarketplaceFilterBtns
             onReset={resetFilters}
             hasFilter={hasFilters}
             variant="tertiary"
           />
           <DashboardMaterialsFilter {...filterProps} />
-        </div>
-      </div>
+        </motion.aside>
+      </motion.div>
       <MobileFilterModal
         open={tab === "filter"}
         onClose={(open) => !open && setTab("")}

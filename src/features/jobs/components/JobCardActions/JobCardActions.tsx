@@ -2,7 +2,13 @@ import Button from "@/components/atoms/Button/Button";
 
 import { routes } from "@/lib/helpers/routes";
 
-const JobCardActions = ({ jobId }: { jobId: string }) => {
+const JobCardActions = ({
+  jobId,
+  detailsHref,
+}: {
+  jobId: string;
+  detailsHref?: string;
+}) => {
   return (
     <div className="flex items-center w-full gap-2.5">
       <div className="flex-1 w-full">
@@ -10,7 +16,7 @@ const JobCardActions = ({ jobId }: { jobId: string }) => {
         <Button
           variant="default"
           className="w-full h-8 text-xs"
-          href={routes?.marketplace.jobInfo(jobId)}
+          href={detailsHref ?? routes.marketplace.jobInfo(jobId)}
         >
           View More
         </Button>

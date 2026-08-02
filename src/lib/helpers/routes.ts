@@ -32,9 +32,16 @@ export const routes = {
 
   dashboard: "/dashboard/overview",
   dashboardLinks: {
-    marketplace: "/dashboard/marketplace",
+    marketplace: "/dashboard/marketplace/jobs",
     payments: "/dashboard/payments",
-    jobs: "/dashboard/marketplace/jobs",
+    jobs: "/dashboard/jobs",
+    marketplaceJobs: "/dashboard/marketplace/jobs",
+    marketplaceJobInfo: (jobId: string) =>
+      `/dashboard/marketplace/jobs/${jobId}`,
+    marketplaceJobReviews: (jobId: string) =>
+      `/dashboard/marketplace/jobs/${jobId}/reviews`,
+    savedJobs: "/dashboard/marketplace/jobs/saved",
+    compareJobs: "/dashboard/marketplace/jobs/compare",
     experts: "/dashboard/marketplace/experts",
     materials: "/dashboard/marketplace/materials",
     materialInfo: (materialId: string) =>

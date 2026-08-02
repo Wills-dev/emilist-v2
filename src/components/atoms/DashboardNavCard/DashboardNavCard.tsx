@@ -7,6 +7,7 @@ import { useActivePath } from "@/lib/hooks/useActivePath";
 
 const DashboardNavCard = ({
   href,
+  activePath,
   icon,
   label,
   aRef = false,
@@ -15,6 +16,7 @@ const DashboardNavCard = ({
   className = "",
 }: {
   href?: string;
+  activePath?: string;
   label: string;
   icon: React.ReactElement;
   aRef?: boolean;
@@ -22,7 +24,7 @@ const DashboardNavCard = ({
   variant?: "default" | "sidebar" | "header";
   onClick?: () => void;
 }) => {
-  const isActive = useActivePath(href || "");
+  const isActive = useActivePath(activePath || href || "");
 
   const variants = {
     default: {

@@ -12,6 +12,7 @@ const UserRatingCard = ({
   imgUrl,
   detail,
   avatarVariant = "small",
+  reviewsHref,
 }: {
   id: string;
   fullName: string;
@@ -20,6 +21,7 @@ const UserRatingCard = ({
   imgUrl?: string;
   detail?: string;
   avatarVariant?: "very-small" | "small" | "large";
+  reviewsHref?: string;
 }) => {
   return (
     <div className="flex items-center gap-2">
@@ -38,11 +40,19 @@ const UserRatingCard = ({
         )}
         <div className="flex items-center gap-[6.88px]">
           <Rating rating={rating} />{" "}
-          {noOfReviews && (
-            <span className="block text-[9.45px] font-exo">
-              ({noOfReviews})
-            </span>
-          )}
+          {noOfReviews &&
+            (reviewsHref ? (
+              <Link
+                href={reviewsHref}
+                className="block text-[9.45px] font-exo underline hover:text-[#25C269]"
+              >
+                ({noOfReviews} reviews)
+              </Link>
+            ) : (
+              <span className="block text-[9.45px] font-exo">
+                ({noOfReviews})
+              </span>
+            ))}
         </div>
       </div>
     </div>

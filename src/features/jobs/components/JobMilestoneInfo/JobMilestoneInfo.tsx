@@ -5,7 +5,11 @@ import PaginationPanel from "@/components/molecules/PaginationPanel/PaginationPa
 
 import { useMilestoneActions } from "../../hooks/useMilestoneActions";
 
-const JobMilestoneInfo = () => {
+const JobMilestoneInfo = ({
+  variant = "public",
+}: {
+  variant?: "public" | "dashboard";
+}) => {
   const {
     toggleCollapse,
     setPage,
@@ -18,7 +22,11 @@ const JobMilestoneInfo = () => {
   return (
     <div
       id="milestone"
-      className="w-full min-w-72.5 border-[0.94px] border-[#F1F2F9] pt-8 pb-6 sm:px-5 px-2 bg-[#F6F7F9] rounded-[11.33px] space-y-6"
+      className={`w-full min-w-72.5 rounded-[11.33px] border-[0.94px] space-y-6 ${
+        variant === "dashboard"
+          ? "max-w-87.75 border-[#ECECEC] bg-[#F9F9F9] py-6 px-2 sm:px-3"
+          : "border-[#F1F2F9] bg-[#F6F7F9] pt-8 pb-6 px-2 sm:px-5"
+      }`}
     >
       {paginatedMilestones?.map((milestone, index) => {
         const milestoneNumber = (page - 1) * ITEMS_PER_PAGE + index + 1;

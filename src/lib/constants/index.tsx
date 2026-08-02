@@ -231,7 +231,7 @@ export const marketplaceTabs = [
 ];
 
 export const dashbaordMarketplaceTabs = [
-  { label: "Find jobs", link: routes?.dashboardLinks.jobs },
+  { label: "Find jobs", link: routes?.dashboardLinks.marketplaceJobs },
   { label: "Hire experts", link: routes?.dashboardLinks?.experts },
   { label: "Explore materials", link: routes?.dashboardLinks?.materials },
 ];
@@ -245,6 +245,7 @@ export const dashboardMainLinks = [
   {
     label: "Marketplace",
     href: routes?.dashboardLinks?.marketplace,
+    activePath: "/dashboard/marketplace",
     icon: <MarketplaceIcon />,
   },
   {
