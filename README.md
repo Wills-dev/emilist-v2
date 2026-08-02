@@ -16,6 +16,9 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Responsive order tracking for confirmed, out-for-delivery, and delivered states
 - Client-side data fetching, caching, loading skeletons, empty states, and pagination
 - Token-aware authentication and profile-completion modal flows
+- Responsive dashboard overview with profile-aware states, persisted quick actions, referral sharing, and job-completion insights
+- Filterable weekly, monthly, and yearly job-completion doughnut reports with accessible percentage callouts
+- Smart mobile-app download route with iOS and Android store detection
 - Dashboard, cart, checkout, enterprise booking, and marketing pages
 - Reusable Atomic Design UI primitives: atoms, molecules, organisms, and templates
 
@@ -46,6 +49,7 @@ src/
 │   ├── experts/
 │   ├── jobs/
 │   ├── materials/
+│   ├── overview/
 │   └── orders/
 ├── lib/          # Shared helpers, hooks, constants, and API utilities
 └── store/        # Zustand stores and store types
@@ -128,6 +132,16 @@ New material images remain local until the create or update request is submitted
 
 Use TanStack Query for remote data. Include all request inputs in the query key, invalidate related keys after mutations, and render loading, empty, and error-safe states around query data.
 
+### Dashboard overview
+
+The overview feature lives in `src/features/overview` and contains the dashboard metrics, profile-aware welcome state, configurable quick actions, referral panel, and job-completion insight report. Quick-action preferences are persisted per user through `src/store/dashboardPreferencesStore.ts`.
+
+The temporary typed insight fixture is defined in `src/features/overview/constants/insightReportTestData.ts`. It provides week, month, and year values that each total 100 and can be replaced with API data using the same `InsightReportData` shape.
+
+### Mobile app downloads
+
+Use `/download` as the public smart-download URL and QR-code destination. On iPhone and iPad it redirects to the Emilist App Store listing; on Android it redirects to Google Play. Desktop and unrecognized devices receive a page with both store choices. Store URLs are maintained in `src/lib/constants/appDownload.ts`.
+
 ### Loading states
 
 Use the shared shadcn `Skeleton` for loading UI. Skeleton layouts should match the rendered page structure—including dashboard container widths, columns, spacing, and tertiary panels—to prevent layout shifts when data resolves. The shared primitive uses `bg-gray-200` as the loading surface.
@@ -149,7 +163,7 @@ Use Tailwind utilities and the theme tokens defined in `src/app/globals.css`. Pr
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `NEXT_PUBLIC_BACKEND_BASE_URL` | Yes | Base URL used by the Axios API client. |
-| `NEXT_PUBLIC_WEB_URL` | Recommended | Public application URL used when composing share links. |
+| `NEXT_PUBLIC_WEB_URL` | Recommended | Public application URL used when composing referral and QR-code download links. |
 | `NEXT_PUBLIC_COOKIE_DOMAIN` | Optional | Cookie domain for multi-subdomain production deployments. |
 
 ## License

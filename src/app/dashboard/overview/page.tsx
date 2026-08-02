@@ -1,9 +1,10 @@
 import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
+import OverviewWrapper from "@/features/overview/components/OverviewWrapper/OverviewWrapper";
 
 const OverviewPage = () => {
   return (
     <DashboardLayout>
-      <div className=""></div>
+      <OverviewWrapper />
     </DashboardLayout>
   );
 };

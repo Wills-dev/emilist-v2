@@ -1,9 +1,11 @@
 const Checkbox = ({
   value,
   onChange,
+  ariaLabel,
 }: {
   value: boolean;
   onChange: (e: boolean) => void;
+  ariaLabel?: string;
 }) => {
   return (
     <label className="cursor-pointer">
@@ -12,6 +14,7 @@ const Checkbox = ({
         className="peer sr-only"
         checked={value}
         onChange={(e) => onChange(e.target.checked)}
+        aria-label={ariaLabel}
       />
 
       <div className="flex h-5 w-5 items-center justify-center rounded border border-[#474C48] peer-checked:border-[#25C269] peer-checked:bg-[#25C269]">

@@ -1,6 +1,10 @@
 import Container from "@/components/atoms/Container/Container";
 import DownloadBtn from "@/components/atoms/DownloadBtn/DownloadBtn";
 import ArrowUp from "@/components/atoms/icons/ArrowUp";
+import {
+  APP_STORE_URL,
+  PLAY_STORE_URL,
+} from "@/lib/constants/appDownload";
 import Image from "next/image";
 
 const AppSection = () => {
@@ -42,15 +46,15 @@ const AppSection = () => {
                 </h6>
                 <div className="flex items-center max-sm:justify-center sm:gap-4 gap-2">
                   <DownloadBtn
-                    href="http://"
-                    alt="app store"
+                    href={APP_STORE_URL}
+                    alt="Download Emilist from the App Store"
                     imgUrl="/assets/images/appStore.svg"
                     width={28}
                     height={28}
                   />
                   <DownloadBtn
-                    href="http://"
-                    alt="app store"
+                    href={PLAY_STORE_URL}
+                    alt="Download Emilist from Google Play"
                     imgUrl="/assets/images/google-play.svg"
                     width={28}
                     height={28}
