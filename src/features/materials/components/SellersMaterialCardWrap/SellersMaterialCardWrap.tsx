@@ -6,6 +6,7 @@ import MaterialCard from "../MaterialCard/MaterialCard";
 import MaterialCardSkeleton from "../MaterialCard/MaterialCardSkeleton";
 import { OtherSellerProduct, SimilarProduct } from "../../types";
 import { useInfiniteScrollTrigger } from "@/lib/hooks/useInfiniteScrollTrigger";
+import { routes } from "@/lib/helpers/routes";
 
 const SellersMaterialCardWrap = ({
   materials,
@@ -105,6 +106,7 @@ const SellersMaterialCardWrap = ({
               sellerId={
                 "user" in material ? material.user._id : material.userId._id
               }
+              reviewsHref={routes.marketplace.materialInfoReviews(material._id)}
               merchantDetail={merchantDetail}
             />
             );

@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 
 import Dot from "@/components/atoms/Dot/Dot";
 import ExpertProfileForm from "@/components/molecules/forms/ExpertProfileForm/ExpertProfileForm";
@@ -10,20 +11,61 @@ import ExpertiseForm from "@/components/molecules/forms/ExpertiseForm/ExpertiseF
 import { expertTabs } from "../../constants";
 import { useExpertTabs } from "../../hooks/useExpertTabs";
 import FormTitleWrapper from "@/components/atoms/FormTitleWrapper/FormTitleWrapper";
+import { useExpertStore } from "@/store/expert/expertStore";
+import { useStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
+import { routes } from "@/lib/helpers/routes";
 
-const ExpertFormWrapper = () => {
-  const { tab, switchTab } = useExpertTabs();
+const ExpertFormWrapper = ({ dashboard = false }: { dashboard?: boolean }) => {
+  const { tab, switchTab } = useExpertTabs({ skipProfile: dashboard });
+  const setTab = useExpertStore((state) => state.setTab);
+  const setProfile = useExpertStore((state) => state.setProfile);
+  const currentUser = useStore((state) => state.currentUser);
+  const isAuthInitialized = useStore((state) => state.isAuthInitialized);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!dashboard) return;
+
+    if (isAuthInitialized && !currentUser?.isProfileComplete) {
+      router.replace(routes.completeProfile);
+      return;
+    }
+
+    setTab("business-profile");
+    if (!currentUser?.isProfileComplete) return;
+
+    setProfile({
+      firstName: currentUser.firstName ?? "",
+      lastName: currentUser.lastName ?? "",
+      countryCode: currentUser.countryCode ?? "+234",
+      mobile: currentUser.mobile ?? "",
+      languages: currentUser.languages ?? [],
+      houseAddress: currentUser.houseAddress ?? "",
+      state: currentUser.state ?? "",
+      city: currentUser.city ?? "",
+      country: currentUser.country ?? "",
+      bio: currentUser.bio ?? "",
+      image: null,
+    });
+  }, [currentUser, dashboard, isAuthInitialized, router, setProfile, setTab]);
+
+  const activeTab = dashboard && tab === "profile" ? "business-profile" : tab;
 
   const currentTab = expertTabs.find((item) => {
-    return item.id === tab;
+    return item.id === activeTab;
   });
 
   return (
-    <div className="pt-10 pb-16 sm:px-16 px-6 w-full">
+    <div className={`w-full pb-16 pt-10 sm:px-16 px-6 ${dashboard ? "mx-auto max-w-202" : ""}`}>
       <div className="max-w-170.25 w-full space-y-12">
         <div className="space-y-4 w-full border-b border-[#E5E5E5] sm:pb-4 pb-2">
           <FormTitleWrapper
-            title={currentTab?.title || ""}
+            title={
+              dashboard && activeTab === "business-profile"
+                ? "Offer a service"
+                : currentTab?.title || ""
+            }
             iconUrl={currentTab?.iconUrl}
           />
 
@@ -32,7 +74,7 @@ const ExpertFormWrapper = () => {
               {currentTab?.desc}
             </p>
             <div className="w-fit flex items-center gap-1.5 h-7.5 bg-[#F4F7F5] p-2.25 rounded-[9px]">
-              {expertTabs.map((item, i) => (
+              {(dashboard ? expertTabs.slice(1) : expertTabs).map((item, i) => (
                 <button
                   key={i}
                   type="button"
@@ -41,7 +83,7 @@ const ExpertFormWrapper = () => {
                 >
                   <Dot
                     className="w-3 h-3"
-                    variant={item.id === tab ? "primary" : "default"}
+                    variant={item.id === activeTab ? "primary" : "default"}
                   />
                 </button>
               ))}
@@ -49,9 +91,13 @@ const ExpertFormWrapper = () => {
           </div>
         </div>
         <AnimatePresence mode="wait">
-          {tab === "profile" && <ExpertProfileForm />}
-          {tab === "business-profile" && <ExpertBusinessForm />}
-          {tab === "experiences" && <ExpertiseForm />}
+          {!dashboard && activeTab === "profile" && <ExpertProfileForm />}
+          {activeTab === "business-profile" && (
+            <ExpertBusinessForm dashboard={dashboard} />
+          )}
+          {activeTab === "experiences" && (
+            <ExpertiseForm dashboard={dashboard} />
+          )}
         </AnimatePresence>
       </div>
     </div>

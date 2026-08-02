@@ -3,7 +3,7 @@ import { ChangeEvent } from "react";
 import Input from "@/components/atoms/Input/Input";
 import Label from "@/components/atoms/Label/Label";
 import MultiSelect from "@/components/atoms/MultiSelect/MultiSelect";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import RichTextArea from "@/components/molecules/RichTextArea/RichTextArea";
 import PopOver from "@/components/atoms/PopOver/PopOver";
 import QuestionBtn from "@/components/atoms/QuestionBtn/QuestionBtn";
 import InputWrapper from "../InputWrapper/InputWrapper";
@@ -133,13 +133,13 @@ const ProfileSetup = ({
       </div>
       <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
         <Label htmlFor="bio" title="Bio" />
-        <Textarea
+        <RichTextArea
           id="bio"
           name="bio"
           value={form.bio}
-          onChange={(e) => handleChange("bio", e.target.value)}
+          onChange={(value) => handleChange("bio", value)}
           placeholder="Write a short description about yourself and what you do"
-          className="h-35"
+          ariaLabel="Bio"
         />
       </div>
       <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">

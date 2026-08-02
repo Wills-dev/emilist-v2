@@ -7,7 +7,7 @@ import SelectWrapper from "@/components/molecules/SelectWrapper/SelectWrapper";
 import MultiSelect from "@/components/atoms/MultiSelect/MultiSelect";
 import Select from "@/components/atoms/Select/Select";
 import Input from "@/components/atoms/Input/Input";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import RichTextArea from "@/components/molecules/RichTextArea/RichTextArea";
 import PopOver from "@/components/atoms/PopOver/PopOver";
 import QuestionBtn from "@/components/atoms/QuestionBtn/QuestionBtn";
 import MultiImageInput from "@/components/molecules/MultiImageInput/MultiImageInput";
@@ -18,6 +18,10 @@ import { currencies } from "@/lib/constants/currencies";
 import { rateUnits } from "@/lib/constants/rateUnits";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useBusinessProfileState } from "../../hooks/useBusinessProfileState";
+import {
+  formatInputTextNumber,
+  formatInputTextNumberWithCommas,
+} from "@/lib/helpers/formatNumbers";
 
 const BusinessSetup = () => {
   const {
@@ -67,7 +71,13 @@ const BusinessSetup = () => {
           title="Number of employees"
           name="numberOfEmployee"
           value={business.numberOfEmployee}
-          onChange={(e) => updateBusiness("numberOfEmployee", e.target.value)}
+          onChange={(e) =>
+            updateBusiness(
+              "numberOfEmployee",
+              formatInputTextNumber(e.target.value),
+            )
+          }
+          inputMode="numeric"
           placeholder="20"
         />
       </div>
@@ -139,7 +149,13 @@ const BusinessSetup = () => {
               id="startingPrice"
               name="startingPrice"
               value={business.startingPrice}
-              onChange={(e) => updateBusiness("startingPrice", e.target.value)}
+              onChange={(e) =>
+                updateBusiness(
+                  "startingPrice",
+                  formatInputTextNumberWithCommas(e.target.value),
+                )
+              }
+              inputMode="decimal"
               placeholder="25,000"
             />
           </div>
@@ -172,7 +188,7 @@ const BusinessSetup = () => {
           </div>
         </div>
       </div>
-      <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
+      <div className="col-span-2 flex flex-col gap-2">
         <div className="flex justify-between items-center gap-4">
           <Label
             htmlFor="businessDescription"
@@ -188,18 +204,16 @@ const BusinessSetup = () => {
             </PopOver>
           </TooltipProvider>
         </div>
-        <Textarea
+        <RichTextArea
           id="businessDescription"
           name="businessDescription"
           value={business.businessDescription}
-          onChange={(e) =>
-            updateBusiness("businessDescription", e.target.value)
-          }
+          onChange={(value) => updateBusiness("businessDescription", value)}
           placeholder="Write a brief business description"
-          className="h-35"
+          ariaLabel="Business description"
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
+      <div className="col-span-2 flex flex-col gap-2">
         <div className="flex items-center justify-between gap-4">
           <Label htmlFor="images" title="Add Images" />
           <p className="text-sm text-[#737774]">add up to 5</p>

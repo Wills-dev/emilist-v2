@@ -1,7 +1,10 @@
-import React from "react";
+import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
+import DashboardExpertsWrapper from "@/features/experts/components/DashboardExpertsWrapper/DashboardExpertsWrapper";
 
-const page = () => {
-  return <div>page</div>;
-};
+const DashboardExpertsPage = () => (
+  <DashboardLayout>
+    <DashboardExpertsWrapper />
+  </DashboardLayout>
+);
 
-export default page;
+export default DashboardExpertsPage;

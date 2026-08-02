@@ -82,7 +82,7 @@ const DashboardMobileNav = () => {
 
               <div className="space-y-4">
                 <DashboardNavCard
-                  href={routes.joinExpert}
+                  href={routes.dashboardLinks.offerService}
                   label="Services"
                   icon={<BriefcaseIcon className="size-[1em]" />}
                   onClick={closeDrawer}

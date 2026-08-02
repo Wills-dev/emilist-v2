@@ -3,7 +3,9 @@ import { useExpertStore } from "@/store/expert/expertStore";
 import { validateBusinessProfile } from "@/features/experts/helpers/validateBusinessProfile";
 import { validateProfileForm } from "@/features/auth/helpers/validateProfileForm";
 
-export const useExpertTabs = () => {
+export const useExpertTabs = ({
+  skipProfile = false,
+}: { skipProfile?: boolean } = {}) => {
   const router = useRouter();
 
   const tab = useExpertStore((s) => s.tab);
@@ -14,11 +16,16 @@ export const useExpertTabs = () => {
   const businessImages = useExpertStore((s) => s.businessImages);
 
   const switchTab = (next: "business-profile" | "profile" | "experiences") => {
-    if (next === "business-profile" && !validateProfileForm(profile)) return;
+    if (
+      next === "business-profile" &&
+      !skipProfile &&
+      !validateProfileForm(profile)
+    )
+      return;
 
     if (
       next === "experiences" &&
-      (!validateProfileForm(profile) ||
+      ((!skipProfile && !validateProfileForm(profile)) ||
         !validateBusinessProfile(business, businessImages))
     )
       return;

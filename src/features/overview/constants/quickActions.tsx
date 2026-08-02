@@ -31,7 +31,7 @@ export const quickActions: QuickAction[] = [
   {
     id: "offer-service",
     label: "Offer a service",
-    href: routes.joinExpert,
+    href: routes.dashboardLinks.offerService,
     icon: <HandCoins />,
   },
   {

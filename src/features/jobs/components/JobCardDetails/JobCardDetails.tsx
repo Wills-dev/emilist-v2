@@ -28,6 +28,7 @@ const JobCardDetails = ({
   profileImgUrl,
   date,
   compareHref,
+  reviewsHref,
 }: {
   title: string;
   currency: string;
@@ -44,6 +45,7 @@ const JobCardDetails = ({
   profileImgUrl?: string;
   date: string;
   compareHref?: string;
+  reviewsHref?: string;
 }) => {
   const { handleToggleLike } = useToggleLike();
 
@@ -92,6 +94,7 @@ const JobCardDetails = ({
           imgUrl={profileImgUrl}
           handleToggleLike={toggleLike}
           type="job"
+          reviewsHref={reviewsHref}
         />
         <div className="flex items-center justify-between gap-3">
           <DatedPosted date={date} />

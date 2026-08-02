@@ -77,6 +77,7 @@ const DashboardJobCardWrap = ({ query, filters, savedOnly = false }: { query: st
             {...job}
             detailsHref={routes.dashboardLinks.marketplaceJobInfo(job.id ?? "")}
             compareHref={routes.dashboardLinks.compareJobs}
+            reviewsHref={routes.dashboardLinks.marketplaceJobReviews(job.id ?? "")}
           />
         </motion.div>
       ))}

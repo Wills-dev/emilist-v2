@@ -11,7 +11,9 @@ import MarketplaceDeliveryTimeFilter from "../MarketplaceDeliveryTimeFilter/Mark
 
 export interface MarketplaceFilterProps {
   showCategory?: boolean;
+  categoryTitle?: string;
   showPrice?: boolean;
+  priceTitle?: string;
   categories?: { label: string; value: string }[];
   filters: FilterState;
   setFilter: <K extends keyof FilterState>(
@@ -33,6 +35,7 @@ export interface MarketplaceFilterProps {
 
 const MarketplaceFilter = ({
   showCategory,
+  categoryTitle,
   categories,
   filters,
   setFilter,
@@ -42,6 +45,7 @@ const MarketplaceFilter = ({
   showLocation,
   locations,
   showPrice,
+  priceTitle,
   showNoticePeriod,
   clearFilter,
   showLevel,
@@ -58,12 +62,12 @@ const MarketplaceFilter = ({
       {showCat && (
         <MarketplaceCategory
           filters={filters}
-          setFilter={setFilter}
           toggleCategory={toggleCategory}
           isCategorySelected={isCategorySelected}
           categories={categories || []}
           clearFilter={clearFilter}
           variant={variant}
+          title={categoryTitle}
         />
       )}
       {showPrices && (
@@ -73,6 +77,7 @@ const MarketplaceFilter = ({
           setPriceRange={setPriceRange}
           clearFilter={clearFilter}
           variant={variant}
+          title={priceTitle}
         />
       )}
       {showLoc && (

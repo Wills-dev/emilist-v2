@@ -24,6 +24,7 @@ export interface JobCardProps {
   date?: string;
   detailsHref?: string;
   compareHref?: string;
+  reviewsHref?: string;
 }
 
 const JobCard = ({
@@ -44,6 +45,7 @@ const JobCard = ({
   date = defaultJob.date ?? jobInfoFixture.createdAt,
   detailsHref,
   compareHref,
+  reviewsHref,
 }: JobCardProps) => {
   return (
     <div className="max-w-[375.5px] w-full sm:min-w-[375.5px] min-w-75 p-4 bg-[#F9F9F9] rounded-[8px] space-y-8">
@@ -67,6 +69,7 @@ const JobCard = ({
         profileImgUrl={profileImgUrl}
         date={date}
         compareHref={compareHref}
+        reviewsHref={reviewsHref}
       />
       <JobCardActions jobId={id} detailsHref={detailsHref} />
     </div>

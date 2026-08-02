@@ -13,6 +13,7 @@ interface RichTextAreaProps {
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  ariaLabel?: string;
 }
 
 const RichTextArea = ({
@@ -22,6 +23,7 @@ const RichTextArea = ({
   onChange,
   placeholder,
   className = "",
+  ariaLabel = "Material description",
 }: RichTextAreaProps) => {
   const editor = useEditor({
     extensions: createRichTextExtensions(placeholder),
@@ -30,7 +32,7 @@ const RichTextArea = ({
     editorProps: {
       attributes: {
         id: id ?? "",
-        "aria-label": "Material description",
+        "aria-label": ariaLabel,
         class:
           "min-h-35 px-3 py-2 text-base outline-none [&_h2]:font-exo [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:font-exo [&_h3]:text-base [&_h3]:font-semibold [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-1 [&_p]:min-h-5",
       },

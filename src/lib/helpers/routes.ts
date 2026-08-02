@@ -43,6 +43,13 @@ export const routes = {
     savedJobs: "/dashboard/marketplace/jobs/saved",
     compareJobs: "/dashboard/marketplace/jobs/compare",
     experts: "/dashboard/marketplace/experts",
+    savedExperts: "/dashboard/marketplace/experts/saved",
+    marketplaceExpertInfo: (expertId: string) =>
+      `/dashboard/marketplace/experts/${expertId}`,
+    marketplaceExpertReviews: (expertId: string) =>
+      `/dashboard/marketplace/experts/${expertId}/reviews`,
+    compareExperts: "/dashboard/marketplace/experts/compare",
+    offerService: "/dashboard/offer-service",
     materials: "/dashboard/marketplace/materials",
     materialInfo: (materialId: string) =>
       `/dashboard/marketplace/materials/${materialId}`,

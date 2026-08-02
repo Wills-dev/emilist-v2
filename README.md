@@ -15,6 +15,10 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Responsive dashboard jobs marketplace with search, sorting, job-specific filters, saved jobs, animated cards, and infinite-scroll loading
 - Dashboard job details with galleries, milestones, employer reviews, compare and promotion actions, and mobile milestone navigation
 - Swipeable job comparison with reusable comparison cards and downloadable CSV reports
+- Responsive dashboard expert marketplace with service filters, saved experts, profile details, full review pages, and animated infinite-scroll listings
+- Swipeable expert comparison with reusable comparison cards and downloadable comparison reports
+- Dashboard-only service registration that reuses the expert business and verification forms while preserving the public registration flow
+- Linked review counts across job, expert, and material cards with routes to their corresponding full review pages
 - Dashboard order management with responsive order cards, compact pagination, status-aware actions, and reusable cancellation, return, and tracking modals
 - Responsive order tracking for confirmed, out-for-delivery, and delivered states
 - Client-side data fetching, caching, loading skeletons, empty states, and pagination
@@ -37,7 +41,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Axios for API requests
 - Zustand for client-side/auth flow state
 - Radix UI, Lucide icons, Sonner, Framer Motion, and date-fns
-- Tiptap for document-style material description editing and rendering
+- Tiptap for document-style material, business-description, and profile-bio editing and rendering
 
 ## Project structure
 
@@ -176,6 +180,27 @@ Dashboard job cards receive dashboard-specific detail and comparison links. Publ
 The marketplace and saved-job lists use an intersection observer to load additional cards as the user scrolls. There is no numbered pagination on these listing pages. The comparison page uses horizontal scrolling on narrow screens with swipe guidance and preserves a multi-column comparison view when space permits.
 
 Development fixtures for jobs, owner reviews, job information, and comparison records are kept in `src/features/jobs/constants/dummy.ts`. Components should not define dummy records inline. Reusable domain options that are not fixtures, such as job categories, belong in `src/features/jobs/constants/index.ts`, while data shapes belong in `src/features/jobs/types`.
+
+### Dashboard experts marketplace
+
+The authenticated expert marketplace lives under `/dashboard/marketplace/experts`. It reuses shared marketplace controls and expert cards while supplying dashboard-specific profile, review, saved, and comparison destinations.
+
+Dashboard expert routes include:
+
+| Route | Purpose |
+| --- | --- |
+| `/dashboard/marketplace/experts` | Browse, search, sort, filter, and progressively load experts. |
+| `/dashboard/marketplace/experts/saved` | View saved experts with the shared active saved-state control. |
+| `/dashboard/marketplace/experts/[id]` | View an expert's profile, gallery, business information, rating summary, and recent reviews. |
+| `/dashboard/marketplace/experts/[id]/reviews` | View and search an expert's complete review history. |
+| `/dashboard/marketplace/experts/compare` | Compare experts in a responsive horizontal comparison view. |
+| `/dashboard/offer-service` | Register a service without repeating profile completion. |
+
+Dashboard offer-service links—including marketplace actions, overview quick actions, and mobile navigation—use `/dashboard/offer-service`. The public `/become-expert` route remains a separate three-step flow. Dashboard registration hydrates the completed user profile into the submission payload and presents only service setup and expertise verification. Users whose profiles are incomplete are returned to profile completion.
+
+Business descriptions and profile bios reuse the same Tiptap rich-text editor as material descriptions. Render saved rich text through `RichTextContent` so supported headings, paragraphs, emphasis, and lists display correctly instead of exposing stored HTML.
+
+Expert fixtures and comparison data live in `src/features/experts/constants/dummy.ts`; UI components should not define demonstration records inline.
 
 ### Notifications
 

@@ -10,8 +10,8 @@ import MembershipWrap from "@/features/experts/components/MembershipWrap/Members
 import { useExpertTabs } from "@/features/experts/hooks/useExpertTabs";
 import { useCreateExpert } from "@/features/experts/hooks/useCreateExpert";
 
-const ExpertiseForm = () => {
-  const { switchTab } = useExpertTabs();
+const ExpertiseForm = ({ dashboard = false }: { dashboard?: boolean }) => {
+  const { switchTab } = useExpertTabs({ skipProfile: dashboard });
   const { handleSubmit, isPending } = useCreateExpert();
 
   return (

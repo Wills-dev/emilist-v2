@@ -13,6 +13,7 @@ const MarketplacePriceFilter = ({
   setPriceRange,
   clearFilter,
   variant,
+  title = "Price range",
 }: {
   filters: FilterState;
   setFilter: <K extends keyof FilterState>(
@@ -22,6 +23,7 @@ const MarketplacePriceFilter = ({
   setPriceRange: (range: PriceRange) => void;
   variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
+  title?: string;
 }) => {
   const noPriceSelected = !filters.minPrice && !filters.maxPrice;
 
@@ -33,7 +35,7 @@ const MarketplacePriceFilter = ({
   return (
     <FilterSectionWrapper variant={variant}>
       <div className="flex items-center justify-between gap-2.5">
-        <FilterTitle title="Price range" />
+        <FilterTitle title={title} />
         <div className="flex items-center gap-2">
           <div className="max-w-12 w-full">
             <Input

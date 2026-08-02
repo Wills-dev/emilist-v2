@@ -74,3 +74,39 @@ export interface NewExpertFormType {
   certificate?: (File | null | undefined)[] | [];
   business: BusinessPayloadType;
 }
+export interface DashboardExpertFixture {
+  id: string;
+  imgUrl: string;
+  businessName: string;
+  isVerified: boolean;
+  rating: number;
+  noOfReviews: number;
+  price: number;
+  period: string;
+  currency: string;
+  location: string;
+  state: string;
+  noOfCompletedJobs: number;
+  serviceType: string;
+  level: string;
+  isLiked: boolean;
+}
+
+export interface CompareExpertItem {
+  id: string;
+  name: string;
+  price: number;
+  currency: string;
+  period: string;
+  rating: number;
+  reviewCount: number;
+  credentials: string[];
+  about: string;
+  experience: string;
+  serviceCategory: string;
+  jobsCompleted: number;
+  noticePeriod: string;
+  location: string;
+  languages: string;
+  insurance: string;
+}

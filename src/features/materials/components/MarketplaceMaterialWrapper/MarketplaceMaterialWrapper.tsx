@@ -113,6 +113,7 @@ const MarketplaceMaterialWrapper = () => {
                   onSortChange={(value) => setFilter("sortBy", value)}
                 />
                 <MarketplaceMaterialCardWrap
+                  getReviewsHref={routes.marketplace.materialInfoReviews}
                   materials={materials}
                   isLoading={isLoading}
                   isError={isError}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import LikeIcon from "@/components/atoms/icons/LikeIcon";
+import MarketplaceSavedButton from "@/components/atoms/MarketplaceSavedButton/MarketplaceSavedButton";
 import ShopBag from "@/components/atoms/icons/ShopBag";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
 import SearchBar from "@/components/molecules/SearchBar/SearchBar";
@@ -43,12 +43,11 @@ const DashboardMaterialsHeader = ({
             />
           </div>
           <div className="flex items-center gap-2.5">
-            <Link
+            <MarketplaceSavedButton
               href={routes?.dashboardLinks?.savedMaterials}
-              className={`bg-[#F6F7F9] rounded-full h-8.5 w-8.5 flex justify-center items-center ${saved ? "text-[#FF5D7A]" : "text-[#737774]"}`}
-            >
-              <LikeIcon />
-            </Link>
+              label="View saved materials"
+              active={saved}
+            />
             <Link
               href={routes?.dashboardLinks?.dashboardCart}
               aria-label={`View cart with ${cartCount} item${cartCount === 1 ? "" : "s"}`}

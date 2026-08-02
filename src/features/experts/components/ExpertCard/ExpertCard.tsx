@@ -6,6 +6,8 @@ import PriceWrapper from "@/components/molecules/PriceWrapper/PriceWrapper";
 import Rating from "@/components/molecules/Rating/Rating";
 import ShareButton from "@/components/molecules/ShareButton/ShareButton";
 import ExpertCardActions from "../ExpertCardActions/ExpertCardActions";
+import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
+import Link from "next/link";
 
 const ExpertCard = ({
   id,
@@ -22,6 +24,9 @@ const ExpertCard = ({
   serviceType,
   level,
   isLiked,
+  profileHref,
+  compareHref,
+  reviewsHref,
 }: {
   id: string;
   imgUrl: string;
@@ -37,6 +42,9 @@ const ExpertCard = ({
   serviceType: string;
   level: string;
   isLiked: boolean;
+  profileHref?: string;
+  compareHref?: string;
+  reviewsHref?: string;
 }) => {
   const jobType = noOfCompletedJobs < 2 ? "job" : "jobs";
 
@@ -53,9 +61,18 @@ const ExpertCard = ({
             <ItemName title={busniessName} isVerified={isVerified} />
             <div className="flex items-center gap-[6.88px]">
               <Rating rating={rating} />{" "}
-              <span className="block text-[9.45px] font-exo">
-                ({noOfReviews} reviews)
-              </span>
+              {reviewsHref ? (
+                <Link
+                  href={reviewsHref}
+                  className="block text-[9.45px] font-exo underline underline-offset-2 transition-colors hover:text-[#009F4D]"
+                >
+                  ({noOfReviews} reviews)
+                </Link>
+              ) : (
+                <span className="block text-[9.45px] font-exo">
+                  ({noOfReviews} reviews)
+                </span>
+              )}
             </div>
           </div>
           <PriceWrapper price={price} currency={currency} unit={period} />
@@ -82,6 +99,7 @@ const ExpertCard = ({
                 />
                 <DotInfoItem desc={level} variant="secondary" />
               </div>
+              {compareHref && <CompareBtn href={compareHref} />}
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -89,7 +107,7 @@ const ExpertCard = ({
             <LikeButton isLiked={isLiked} onToggleLike={toggleLike} />
           </div>
         </div>
-        <ExpertCardActions expertId={id} />
+        <ExpertCardActions expertId={id} profileHref={profileHref} />
       </div>
     </div>
   );

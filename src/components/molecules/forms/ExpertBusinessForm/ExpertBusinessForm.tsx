@@ -7,9 +7,12 @@ import BusinessSetup from "@/features/experts/components/BusinessSetup/BusinessS
 
 import { useExpertTabs } from "@/features/experts/hooks/useExpertTabs";
 import { useBusinessProfileState } from "@/features/experts/hooks/useBusinessProfileState";
+import Link from "next/link";
+import { routes } from "@/lib/helpers/routes";
+import { ArrowLeft } from "lucide-react";
 
-const ExpertBusinessForm = () => {
-  const { switchTab } = useExpertTabs();
+const ExpertBusinessForm = ({ dashboard = false }: { dashboard?: boolean }) => {
+  const { switchTab } = useExpertTabs({ skipProfile: dashboard });
   const { isBusinessFormFilled } = useBusinessProfileState();
 
   return (
@@ -22,14 +25,16 @@ const ExpertBusinessForm = () => {
     >
       <BusinessSetup />
       <div className="flex max-sm:flex-col gap-2">
-        <Button
-          variant="secondary"
-          type="button"
-          onClick={() => switchTab("profile")}
-          className="w-full h-11"
-        >
-          Go Back
-        </Button>{" "}
+        {!dashboard && (
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() => switchTab("profile")}
+            className="w-full h-11"
+          >
+            Go Back
+          </Button>
+        )}
         <Button
           variant="primary"
           type="button"
@@ -40,6 +45,15 @@ const ExpertBusinessForm = () => {
           Proceed
         </Button>
       </div>
+      {dashboard && (
+        <Link
+          href={routes.dashboard}
+          className="mx-auto flex w-fit items-center gap-2 font-exo text-sm font-semibold text-[#18A154] transition-colors hover:text-green-700"
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          Back to Dashboard
+        </Link>
+      )}
     </motion.div>
   );
 };

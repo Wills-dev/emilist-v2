@@ -16,6 +16,7 @@ interface MarketplaceMaterialCardWrapProps {
   isFetchingNextPage?: boolean;
   emptyTitle?: string;
   emptyDescription?: string;
+  getReviewsHref?: (materialId: string) => string;
 }
 
 const MarketplaceMaterialCardWrap = ({
@@ -27,6 +28,7 @@ const MarketplaceMaterialCardWrap = ({
   isFetchingNextPage = false,
   emptyTitle = "No materials found",
   emptyDescription = "Try changing your search or filters.",
+  getReviewsHref,
 }: MarketplaceMaterialCardWrapProps) => {
   const sentinelRef = useInfiniteScrollTrigger({
     onIntersect: fetchNextPage,
@@ -102,6 +104,7 @@ const MarketplaceMaterialCardWrap = ({
                   material.merchant.totalReviews ?? material.reviewCount
                 }
                   sellerId={material.merchant.id}
+                  reviewsHref={getReviewsHref?.(material.id)}
                 />
               </motion.div>
             );
