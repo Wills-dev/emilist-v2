@@ -118,3 +118,8 @@ export const getCurrentUser = async () => {
     throw error;
   }
 };
+
+export const logout = async () => {
+  const { data } = await axiosInstance.get("/auth/log-out");
+  return data?.data;
+};

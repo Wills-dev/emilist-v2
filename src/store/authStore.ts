@@ -73,7 +73,11 @@ export const useStore = create<StoreState>()(
     (set) => ({
       currentUser: null,
       isAuthInitialized: false,
-      setCurrentUser: (user) => set({ currentUser: user }),
+      setCurrentUser: (user) =>
+        set({
+          currentUser: user,
+          isAuthInitialized: true,
+        }),
       clearCurrentUser: () => set({ currentUser: null }),
       setIsAuthInitialized: (isInitialized) =>
         set({ isAuthInitialized: isInitialized }),

@@ -31,6 +31,9 @@ export const useVerifyEmail = () => {
     );
 
   const setCurrentUser = useStore((state) => state.setCurrentUser);
+  const setIsAuthInitialized = useStore(
+    (state) => state.setIsAuthInitialized,
+  );
   const openModal = useStore((state) => state.openModal);
   const closeAllModals = useStore((state) => state.closeAllModals);
   const clearOtpEmail = useStore((state) => state.clearOtpEmail);
@@ -72,6 +75,7 @@ export const useVerifyEmail = () => {
       });
 
       setCurrentUser(data.user);
+      setIsAuthInitialized(true);
 
       queryClient.setQueryData(["currentUser"], data.user);
       clearOtpEmail();

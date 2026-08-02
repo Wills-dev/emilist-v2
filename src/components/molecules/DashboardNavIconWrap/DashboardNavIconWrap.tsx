@@ -1,11 +1,19 @@
+"use client";
+
+import { useState } from "react";
+
 import MessageIcon from "@/components/atoms/icons/MessageIcon";
 import NotificationIcon from "@/components/atoms/icons/NotificationIcon";
 import WarningIcon from "@/components/atoms/icons/WarningIcon";
 import NavIconWrapper from "@/components/atoms/NavIconWrapper/NavIconWrapper";
+import NotificationModal from "@/features/notifications/components/NotificationModal/NotificationModal";
+import { testNotifications } from "@/features/notifications/constants/testNotifications";
 
 const DashboardNavIconWrap = () => {
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+
   return (
-    <div className="flex items-center sm:gap-5 gap-3">
+    <div className="flex items-center gap-3 sm:gap-5">
       <NavIconWrapper>
         <svg
           width="24"
@@ -29,9 +37,14 @@ const DashboardNavIconWrap = () => {
       <NavIconWrapper>
         <WarningIcon />
       </NavIconWrapper>
-      <NavIconWrapper>
+      <NavIconWrapper onClick={() => setNotificationsOpen(true)}>
         <NotificationIcon />
       </NavIconWrapper>
+      <NotificationModal
+        open={notificationsOpen}
+        onClose={setNotificationsOpen}
+        initialNotifications={testNotifications}
+      />
     </div>
   );
 };

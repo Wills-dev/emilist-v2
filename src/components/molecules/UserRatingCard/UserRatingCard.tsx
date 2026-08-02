@@ -11,6 +11,7 @@ const UserRatingCard = ({
   noOfReviews,
   imgUrl,
   detail,
+  avatarVariant = "small",
 }: {
   id: string;
   fullName: string;
@@ -18,10 +19,11 @@ const UserRatingCard = ({
   noOfReviews?: number;
   imgUrl?: string;
   detail?: string;
+  avatarVariant?: "very-small" | "small" | "large";
 }) => {
   return (
     <div className="flex items-center gap-2">
-      <ProfileAvatar profileImage={imgUrl} />
+      <ProfileAvatar profileImage={imgUrl} variant={avatarVariant} />
       <div className="space-y-1">
         <Link
           href={routes?.profile(id)}
