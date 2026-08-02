@@ -23,6 +23,7 @@ import { useProtectedSubmit } from "@/lib/hooks/useProtectedSubmit";
 import { BusinessPayloadType, NewExpertFormType } from "../types";
 import { routes } from "@/lib/helpers/routes";
 import { useExpertTabs } from "./useExpertTabs";
+import { removeNumberCommas } from "@/lib/helpers/formatNumbers";
 
 export const useCreateExpert = () => {
   const router = useRouter();
@@ -138,7 +139,7 @@ export const useCreateExpert = () => {
       businessAddress,
       businessState,
       businessCountry,
-      startingPrice,
+      startingPrice: removeNumberCommas(startingPrice),
       currency,
       rateUnit,
       noticePeriod,

@@ -9,6 +9,7 @@ import DashboardMaterialsHeader from "../DashboardMaterialsHeader/DashboardMater
 import MobileFilterModal from "@/components/molecules/MobileFilterModal/MobileFilterModal";
 
 import { useGetSavedMaterials } from "../../hooks/useGetSavedMaterials";
+import { routes } from "@/lib/helpers/routes";
 
 const SavedMaterialWrapper = () => {
   const {
@@ -68,6 +69,7 @@ const SavedMaterialWrapper = () => {
                 fetchNextPage={fetchNextPage}
                 hasNextPage={Boolean(hasNextPage)}
                 isFetchingNextPage={isFetchingNextPage}
+                getReviewsHref={routes.dashboardLinks.materialInfoReviews}
                 emptyTitle={
                   hasFilters || submittedQuery
                     ? "No material found"

@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
-
 import DashboardTitle from "@/components/atoms/DashboardTitle/DashboardTitle";
 import LikeIcon from "@/components/atoms/icons/LikeIcon";
+import MarketplaceSavedButton from "@/components/atoms/MarketplaceSavedButton/MarketplaceSavedButton";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
 import SearchBar from "@/components/molecules/SearchBar/SearchBar";
 import { dashbaordMarketplaceTabs } from "@/lib/constants";
@@ -45,14 +44,11 @@ const DashboardJobsHeader = ({
           variant="secondary"
         />
       </div>
-      <Link
+      <MarketplaceSavedButton
         href={routes.dashboardLinks.savedJobs}
-        aria-label="View saved jobs"
-        aria-current={saved ? "page" : undefined}
-        className={`flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-full bg-[#F6F7F9] ${saved ? "text-[#FF5D7A]" : "text-[#737774]"}`}
-      >
-        <LikeIcon />
-      </Link>
+        label="View saved jobs"
+        active={saved}
+      />
     </div>
   </div>
 );

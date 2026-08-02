@@ -29,6 +29,7 @@ const MaterialCard = ({
   noOfReviews,
   sellerId,
   merchantDetail,
+  reviewsHref,
 }: {
   productName: string;
   imgUrl: string;
@@ -45,6 +46,7 @@ const MaterialCard = ({
   noOfReviews: number;
   sellerId?: string;
   merchantDetail?: string;
+  reviewsHref?: string;
 }) => {
   const currentUser = useStore((state) => state.currentUser);
   const isSeller = Boolean(sellerId && currentUser?._id === sellerId);
@@ -91,6 +93,7 @@ const MaterialCard = ({
             isLikeLoading={isUpdatingLike}
             type="material"
             detail={merchantDetail}
+            reviewsHref={reviewsHref}
           />
           <DatedPosted date={createdAt} />
         </div>

@@ -5,6 +5,7 @@ import MaterialCard from "../MaterialCard/MaterialCard";
 import MaterialCardSkeleton from "../MaterialCard/MaterialCardSkeleton";
 
 import { useGetAllMaterials } from "../../hooks/useGetAllMaterials";
+import { routes } from "@/lib/helpers/routes";
 
 const HomeMaterialSection = () => {
   const { materials, isLoading } = useGetAllMaterials({ limit: 10 });
@@ -46,6 +47,7 @@ const HomeMaterialSection = () => {
                 material.merchant.totalReviews ?? material.reviewCount
               }
               sellerId={material.merchant.id}
+              reviewsHref={routes.marketplace.materialInfoReviews(material.id)}
             />
           ))}
     </SectionWrapper>

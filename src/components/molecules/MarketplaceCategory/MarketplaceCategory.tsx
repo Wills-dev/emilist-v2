@@ -11,22 +11,19 @@ import FilterSectionWrapper from "@/components/atoms/FilterSectionWrapper/Filter
 
 const MarketplaceCategory = ({
   filters,
-  setFilter,
   categories,
   toggleCategory,
   clearFilter,
   variant,
+  title = "JOB Category",
 }: {
   filters: FilterState;
-  setFilter: <K extends keyof FilterState>(
-    key: K,
-    value: FilterState[K],
-  ) => void;
   toggleCategory: (category: string) => void;
   categories: { label: string; value: string }[];
   isCategorySelected: (category: string) => boolean;
   variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
+  title?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -41,7 +38,7 @@ const MarketplaceCategory = ({
   return (
     <FilterSectionWrapper variant={variant}>
       <div className="flex items-center justify-between gap-2.5">
-        <FilterTitle title="JOB Category" />
+        <FilterTitle title={title} />
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}

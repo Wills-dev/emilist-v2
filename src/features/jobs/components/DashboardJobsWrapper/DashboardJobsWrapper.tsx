@@ -86,7 +86,7 @@ const DashboardJobsWrapper = ({ saved = false }: { saved?: boolean }) => {
                 </div>
                 <div className="flex items-center gap-5">
                   <div className="max-sm:hidden">
-                    <MarketplaceActionTitle title="Offer a service" link={routes.joinExpert} />
+                    <MarketplaceActionTitle title="Offer a service" link={routes.dashboardLinks.offerService} />
                   </div>
                   <MarketplaceActionTitle title="Post a job" link={routes.postJob} />
                 </div>

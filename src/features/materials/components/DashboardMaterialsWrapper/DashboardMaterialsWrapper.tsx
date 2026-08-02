@@ -11,6 +11,7 @@ import DashboardMaterialsHeader from "../DashboardMaterialsHeader/DashboardMater
 import MobileFilterModal from "@/components/molecules/MobileFilterModal/MobileFilterModal";
 
 import { useGetAllMaterials } from "../../hooks/useGetAllMaterials";
+import { routes } from "@/lib/helpers/routes";
 
 const DashboardMaterialsWrapper = () => {
   const {
@@ -77,6 +78,7 @@ const DashboardMaterialsWrapper = () => {
                 fetchNextPage={fetchNextPage}
                 hasNextPage={Boolean(hasNextPage)}
                 isFetchingNextPage={isFetchingNextPage}
+                getReviewsHref={routes.dashboardLinks.materialInfoReviews}
               />
             </div>
           </div>
