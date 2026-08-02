@@ -8,6 +8,7 @@ import UserProfileCard from "@/components/molecules/UserProfileCard/UserProfileC
 import DatedPosted from "@/components/atoms/DatedPosted/DatedPosted";
 import ItemName from "@/components/atoms/ItemName/ItemName";
 import PriceWrapper from "@/components/molecules/PriceWrapper/PriceWrapper";
+import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
 
 import { useToggleLike } from "../../hooks/useToggleLike";
 
@@ -26,6 +27,7 @@ const JobCardDetails = ({
   noOfReviews,
   profileImgUrl,
   date,
+  compareHref,
 }: {
   title: string;
   currency: string;
@@ -41,6 +43,7 @@ const JobCardDetails = ({
   noOfReviews: number;
   profileImgUrl?: string;
   date: string;
+  compareHref?: string;
 }) => {
   const { handleToggleLike } = useToggleLike();
 
@@ -90,7 +93,10 @@ const JobCardDetails = ({
           handleToggleLike={toggleLike}
           type="job"
         />
-        <DatedPosted date={date} />
+        <div className="flex items-center justify-between gap-3">
+          <DatedPosted date={date} />
+          {compareHref && <CompareBtn href={compareHref} />}
+        </div>
       </div>
     </div>
   );

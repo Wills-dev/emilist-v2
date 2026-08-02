@@ -21,6 +21,7 @@ const DashboardSidebar = () => {
             <DashboardNavCard
               key={link?.label}
               href={link?.href}
+              activePath={link.activePath}
               label={link.label}
               icon={link.icon}
             />
