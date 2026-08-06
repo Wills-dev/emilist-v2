@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import Container from "@/components/atoms/Container/Container";
 import UserBiodata from "../UserBiodata/UserBiodata";
 import UserBioCard from "../UserBioCard/UserBioCard";
@@ -10,10 +12,10 @@ import BankDetailsTab from "../BankDetailsTab/BankDetailsTab";
 import SecurityTab from "../SecurityTab/SecurityTab";
 import NotificationsTab from "../NotificationsTab/NotificationsTab";
 import SubscriptionsTab from "../SubscriptionsTab/SubscriptionsTab";
+import ServicesTab from "../ServicesTab/ServicesTab";
 
 import { useUserProfileForm } from "../../hooks/useUserProfileForm";
 import { useProfileImageUpload } from "../../hooks/useProfileImageUpload";
-import { useState } from "react";
 import { userSettingsTabs } from "../../constants";
 import { useStore } from "@/store/authStore";
 import { AnimatePresence, motion } from "framer-motion";
@@ -138,6 +140,16 @@ const UserSettingsWrapper = () => {
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <BankDetailsTab form={bankDetails} />
+            </motion.div>
+          ) : activeTab === "services" ? (
+            <motion.div
+              key="services"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <ServicesTab />
             </motion.div>
           ) : activeTab === "security" ? (
             <motion.div
