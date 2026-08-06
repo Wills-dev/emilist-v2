@@ -24,6 +24,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Client-side data fetching, caching, loading skeletons, empty states, and pagination
 - Token-aware authentication with immediate login state, refresh-time session restoration, logout cleanup, and profile-completion modal flows
 - Responsive User Settings with editable biodata, rich-text bio, independent profile-photo upload, immediate auth-state synchronization, loading skeletons, and animated tab transitions
+- Responsive bank-details settings with searchable countries, password-confirmed saves, and support for multiple account drafts
 - Responsive dashboard overview with profile-aware states, persisted quick actions, referral sharing, and job-completion insights
 - Layout-matched overview loading skeletons and staggered card animations
 - Filterable, animated weekly, monthly, and yearly job-completion doughnut reports with accessible percentage callouts
@@ -155,9 +156,9 @@ User response normalization supports APIs that return the user directly or under
 
 ### User settings
 
-The authenticated user settings page is available at `/dashboard/settings`. Dashboard header avatars and the desktop and mobile sidebar identities link to this route. The settings navigation is tab-ready; User Details is implemented, while the remaining tabs have isolated placeholders for their forthcoming designs.
+The authenticated user settings page is available at `/dashboard/settings`. Dashboard header avatars and the desktop and mobile sidebar identities link to this route. User Details and Bank Details are implemented, while the remaining tabs have isolated placeholders for their forthcoming designs. Larger screens use pill-style navigation, while small screens use a compact dropdown to avoid horizontally overflowing tabs.
 
-User Details follows read-first editing: biodata and bio values render as content until Edit is selected. Desktop actions remain beside their section headings, while mobile Save and Cancel actions move below the editable fields. The profile summary uses the shared default avatar when no image exists and displays verification, rating, review, email, and unique-ID information without allowing long identifiers to break the layout.
+User Details follows read-first editing: biodata and bio values render as content until Edit is selected. Edit remains beside each section heading, while Save and Cancel appear after the complete input or textarea group on every screen size. On small screens, content is ordered as profile summary, biodata, then bio. The profile summary uses the shared default avatar when no image exists and displays verification, rating, review, email, and unique-ID information without allowing long identifiers to break the layout.
 
 Profile responsibilities are separated into focused hooks:
 
@@ -166,6 +167,12 @@ Profile responsibilities are separated into focused hooks:
 - `useSyncCurrentUser` synchronizes successful responses with Zustand and the TanStack Query `currentUser` cache.
 
 The settings route has a layout-matched `loading.tsx` fallback and continues showing the same skeleton while authentication restores `currentUser` after a refresh. Settings sections use staggered entrance animations, and tab content uses animated enter/exit transitions.
+
+Bank Details uses a two-column field grid on larger screens and a single column on small screens. Each account collects bank name, account number, account name, bank country, and the user's Emilist password for save authorization. Bank name remains a text input, account numbers accept digits only, and country selection uses the shared `SearchableSelect` with a constrained results panel.
+
+`useBankDetailsForm` owns the temporary multi-account form state. Passwords are maintained separately from bank-detail values and cleared after a save. The Add another bank action appears only after an existing account has been saved, and another account cannot be added while the current one is incomplete or unsaved. This state is currently client-side only and is structured for the future fetch, create, update, and delete bank-detail endpoints.
+
+No universal provider-neutral bank-account ownership lookup is integrated. Available services have regional constraints—for example, Paystack account resolution targets supported African markets, Plaid ownership products cover supported banking regions, and Stripe Financial Connections focuses on US bank accounts—so verification should be connected through the future backend based on the product's supported countries.
 
 ### Dashboard overview
 

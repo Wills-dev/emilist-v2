@@ -1,5 +1,6 @@
 import { MoreVertical } from "lucide-react";
 import { userSettingsTabs } from "../../constants";
+import Select from "@/components/atoms/Select/Select";
 
 interface UserSettingsTabsProps {
   activeTab: (typeof userSettingsTabs)[number]["id"];
@@ -7,8 +8,8 @@ interface UserSettingsTabsProps {
 }
 
 const UserSettingsTabs = ({ activeTab, onChange }: UserSettingsTabsProps) => (
-  <div className="flex items-center justify-between gap-4 py-6 px-6 border-b border-[#F1F2F9] max-sm:px-3">
-    <div className="no-scrollbar flex max-w-full items-center overflow-x-auto rounded-full bg-[#F7F7F7] p-1">
+  <div className="flex items-center justify-between gap-4 border-b border-[#F1F2F9] px-6 py-6 max-sm:px-3">
+    <div className="no-scrollbar flex max-w-full items-center overflow-x-auto rounded-full bg-[#F7F7F7] p-1 max-sm:hidden">
       {userSettingsTabs.map((tab) => (
         <button
           key={tab.id}
@@ -24,6 +25,23 @@ const UserSettingsTabs = ({ activeTab, onChange }: UserSettingsTabsProps) => (
           {tab.label}
         </button>
       ))}
+    </div>
+    <div className="max-w-46 min-w-0 flex-1 sm:hidden">
+      <Select
+        aria-label="Select user settings section"
+        value={activeTab}
+        onChange={(event) =>
+          onChange(
+            event.target.value as (typeof userSettingsTabs)[number]["id"],
+          )
+        }
+        options={userSettingsTabs.map((tab) => ({
+          label: tab.label,
+          value: tab.id,
+        }))}
+        variant="tertiary"
+        className="cursor-pointer px-2 font-exo font-medium text-[#303632]"
+      />
     </div>
     <button
       type="button"
