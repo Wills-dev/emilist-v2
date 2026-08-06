@@ -50,6 +50,7 @@ export const routes = {
       `/dashboard/marketplace/experts/${expertId}/reviews`,
     compareExperts: "/dashboard/marketplace/experts/compare",
     offerService: "/dashboard/offer-service",
+    settings: "/dashboard/settings",
     materials: "/dashboard/marketplace/materials",
     materialInfo: (materialId: string) =>
       `/dashboard/marketplace/materials/${materialId}`,

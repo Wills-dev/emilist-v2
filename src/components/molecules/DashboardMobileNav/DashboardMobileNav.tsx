@@ -116,7 +116,7 @@ const DashboardMobileNav = () => {
             </nav>
 
             <div className="mt-auto border-t border-[#D9D9D9] pt-7">
-              <UserIdentity />
+              <UserIdentity onClick={closeDrawer} />
             </div>
           </div>
         </SheetContent>

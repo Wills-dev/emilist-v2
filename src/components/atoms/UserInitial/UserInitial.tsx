@@ -1,8 +1,11 @@
 "use client";
 
 import { useStore } from "@/store/authStore";
+import Image from "next/image";
+import Link from "next/link";
+import { routes } from "@/lib/helpers/routes";
 
-const UserInitial = () => {
+const UserInitial = ({ onClick }: { onClick?: () => void }) => {
   const currentUser = useStore((state) => state.currentUser);
 
   const initials = `${currentUser?.firstName?.charAt(0) ?? ""}${
@@ -10,9 +13,18 @@ const UserInitial = () => {
   }`.toUpperCase();
 
   return (
-    <div className="md:h-12 h-10 md:w-12 w-10 rounded-full bg-[#6B7280] text-white justify-center items-center flex md:text-lg">
-      {initials || "E"}
-    </div>
+    <Link
+      href={routes.dashboardLinks.settings}
+      aria-label="Open user settings"
+      onClick={onClick}
+      className="relative flex md:h-12 h-10 md:w-12 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#6B7280] text-white md:text-lg"
+    >
+      {currentUser?.image ? (
+        <Image src={currentUser.image} alt="Profile" fill className="object-cover" />
+      ) : (
+        initials || "E"
+      )}
+    </Link>
   );
 };
 

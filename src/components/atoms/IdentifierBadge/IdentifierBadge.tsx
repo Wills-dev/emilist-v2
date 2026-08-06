@@ -6,9 +6,14 @@ import { Check, Copy } from "lucide-react";
 type IdentifierBadgeProps = {
   label?: string;
   value: string;
+  maxWidth?: string;
 };
 
-const IdentifierBadge = ({ label = "ID", value }: IdentifierBadgeProps) => {
+const IdentifierBadge = ({
+  label = "ID",
+  value,
+  maxWidth = "max-w-sm",
+}: IdentifierBadgeProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -25,7 +30,9 @@ const IdentifierBadge = ({ label = "ID", value }: IdentifierBadgeProps) => {
   };
 
   return (
-    <div className="inline-flex max-w-xs items-center gap-1 rounded-[32px] bg-white px-2 py-px">
+    <div
+      className={`inline-flex items-center gap-1 rounded-[32px] bg-white px-2 py-px ${maxWidth}`}
+    >
       <p className="shrink-0 text-sm italic text-[#737774]">{label}:</p>
 
       <p
