@@ -7,6 +7,9 @@ import UserProfileSummary from "../UserProfileSummary/UserProfileSummary";
 import UserSettingsTabs from "../UserSettingsTabs/UserSettingsTabs";
 import UserSettingsSkeleton from "../UserSettingsSkeleton/UserSettingsSkeleton";
 import BankDetailsTab from "../BankDetailsTab/BankDetailsTab";
+import SecurityTab from "../SecurityTab/SecurityTab";
+import NotificationsTab from "../NotificationsTab/NotificationsTab";
+import SubscriptionsTab from "../SubscriptionsTab/SubscriptionsTab";
 
 import { useUserProfileForm } from "../../hooks/useUserProfileForm";
 import { useProfileImageUpload } from "../../hooks/useProfileImageUpload";
@@ -69,8 +72,9 @@ const UserSettingsWrapper = () => {
               className="grid gap-4 xl:grid-cols-[1.05fr_1fr]"
             >
               <motion.div
-                variants={itemAnimation}
-                transition={{ duration: 0.35, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.05, ease: "easeOut" }}
                 className="order-1 bg-white p-3"
               >
                 <UserProfileSummary
@@ -86,8 +90,9 @@ const UserSettingsWrapper = () => {
               </motion.div>
 
               <motion.div
-                variants={itemAnimation}
-                transition={{ duration: 0.35, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" }}
                 className="order-2 xl:order-3 xl:col-span-2"
               >
                 <UserBiodata
@@ -105,8 +110,9 @@ const UserSettingsWrapper = () => {
               </motion.div>
 
               <motion.div
-                variants={itemAnimation}
-                transition={{ duration: 0.35, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.15, ease: "easeOut" }}
                 className="order-3 bg-white p-3 xl:order-2"
               >
                 <UserBioCard
@@ -132,6 +138,36 @@ const UserSettingsWrapper = () => {
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <BankDetailsTab form={bankDetails} />
+            </motion.div>
+          ) : activeTab === "security" ? (
+            <motion.div
+              key="security"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <SecurityTab />
+            </motion.div>
+          ) : activeTab === "notifications" ? (
+            <motion.div
+              key="notifications"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <NotificationsTab />
+            </motion.div>
+          ) : activeTab === "subscriptions" ? (
+            <motion.div
+              key="subscriptions"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <SubscriptionsTab />
             </motion.div>
           ) : (
             <motion.section

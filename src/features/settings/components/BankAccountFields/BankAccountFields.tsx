@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Trash2 } from "lucide-react";
 
 import Button from "@/components/atoms/Button/Button";
@@ -10,6 +9,7 @@ import SearchableSelect from "@/components/atoms/SearchableSelect/SearchableSele
 import { countriesAndStates } from "@/lib/constants/countries";
 import { formatInputTextNumber } from "@/lib/helpers/formatNumbers";
 import { BankDetailsFormValues } from "../../types/bank";
+import PasswordInput from "@/components/molecules/PasswordInput/PasswordInput";
 
 interface BankAccountFieldsProps {
   account: BankDetailsFormValues;
@@ -51,10 +51,6 @@ const BankAccountFields = ({
   onPasswordChange,
   onSave,
 }: BankAccountFieldsProps) => {
-  const [showPassword, setShowPassword] = useState<"password" | "text">(
-    "password",
-  );
-
   return (
     <section className="rounded-lg bg-white p-5 max-sm:p-4">
       <div className="mb-6 flex items-center justify-between border-b border-[#ECECEC] pb-4">
@@ -119,17 +115,10 @@ const BankAccountFields = ({
         {!isSaved && (
           <div className="col-span-2 max-sm:col-span-1">
             <Field label="Enter password">
-              <Input
-                type={showPassword}
+              <PasswordInput
                 value={password}
                 onChange={(event) =>
                   onPasswordChange(account.id, event.target.value)
-                }
-                showPassword={showPassword}
-                onTogglePassword={() =>
-                  setShowPassword((current) =>
-                    current === "password" ? "text" : "password",
-                  )
                 }
                 autoComplete="current-password"
                 placeholder="Enter your Emilist password"
