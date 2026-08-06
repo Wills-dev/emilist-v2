@@ -25,3 +25,8 @@ export const uploadUserProfileImage = async (image: File) => {
 
   return data;
 };
+
+export const deactivateUser = async () => {
+  const { data } = await axiosInstance.patch("/auth/deactivate-user");
+  return data;
+};

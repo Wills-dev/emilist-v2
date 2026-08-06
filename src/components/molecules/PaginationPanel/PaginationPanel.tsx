@@ -27,15 +27,7 @@ const PaginationPanel = ({
     if (page >= totalPages - 2) {
       return [1, "ellipsis", totalPages - 2, totalPages - 1, totalPages];
     }
-    return [
-      1,
-      "ellipsis",
-      page - 1,
-      page,
-      page + 1,
-      "ellipsis",
-      totalPages,
-    ];
+    return [1, "ellipsis", page - 1, page, page + 1, "ellipsis", totalPages];
   })();
 
   if (variant === "centered") {
