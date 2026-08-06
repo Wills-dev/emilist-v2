@@ -24,14 +24,15 @@ const UserBioCard = ({
   <section className="flex min-h-64 flex-col rounded-lg bg-[#F9F9F9] p-4">
     <div className="mb-4 flex items-center justify-between gap-2">
       <h2 className="font-exo font-medium text-[#474C48]">Bio</h2>
-      <SettingsEditActions
-        editing={editing}
-        loading={loading}
-        onEdit={onEdit}
-        onSave={onSave}
-        onCancel={onCancel}
-        className={editing ? "max-sm:hidden" : ""}
-      />
+      {!editing && (
+        <SettingsEditActions
+          editing={false}
+          loading={loading}
+          onEdit={onEdit}
+          onSave={onSave}
+          onCancel={onCancel}
+        />
+      )}
     </div>
     {editing ? (
       <RichTextArea
@@ -55,7 +56,7 @@ const UserBioCard = ({
         onEdit={onEdit}
         onSave={onSave}
         onCancel={onCancel}
-        className="mt-4 justify-end sm:hidden"
+        className="mt-4 justify-end"
       />
     )}
   </section>

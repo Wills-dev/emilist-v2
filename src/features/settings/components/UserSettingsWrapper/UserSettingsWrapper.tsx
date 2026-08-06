@@ -6,6 +6,7 @@ import UserBioCard from "../UserBioCard/UserBioCard";
 import UserProfileSummary from "../UserProfileSummary/UserProfileSummary";
 import UserSettingsTabs from "../UserSettingsTabs/UserSettingsTabs";
 import UserSettingsSkeleton from "../UserSettingsSkeleton/UserSettingsSkeleton";
+import BankDetailsTab from "../BankDetailsTab/BankDetailsTab";
 
 import { useUserProfileForm } from "../../hooks/useUserProfileForm";
 import { useProfileImageUpload } from "../../hooks/useProfileImageUpload";
@@ -13,6 +14,7 @@ import { useState } from "react";
 import { userSettingsTabs } from "../../constants";
 import { useStore } from "@/store/authStore";
 import { AnimatePresence, motion } from "framer-motion";
+import { useBankDetailsForm } from "../../hooks/useBankDetailsForm";
 
 const itemAnimation = {
   hidden: { opacity: 0, y: 16 },
@@ -22,6 +24,7 @@ const itemAnimation = {
 const UserSettingsWrapper = () => {
   const profile = useUserProfileForm();
   const imageUpload = useProfileImageUpload();
+  const bankDetails = useBankDetailsForm();
   const isAuthInitialized = useStore((state) => state.isAuthInitialized);
   const [activeTab, setActiveTab] =
     useState<(typeof userSettingsTabs)[number]["id"]>("user-details");
@@ -63,40 +66,29 @@ const UserSettingsWrapper = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="space-y-4"
+              className="grid gap-4 xl:grid-cols-[1.05fr_1fr]"
             >
               <motion.div
                 variants={itemAnimation}
                 transition={{ duration: 0.35, ease: "easeOut" }}
-                className="grid grid-cols-[1.05fr_1fr] gap-3 bg-white p-3 max-xl:grid-cols-1"
+                className="order-1 bg-white p-3"
               >
-              <UserProfileSummary
-                user={profile.currentUser}
-                displayName={profile.displayName}
-                photoFile={imageUpload.photoFile}
-                photoPreview={imageUpload.photoPreview}
-                isSaving={imageUpload.isSavingPhoto}
-                onPhotoChange={imageUpload.handlePhotoChange}
-                onSavePhoto={imageUpload.savePhoto}
-                onCancelPhoto={imageUpload.cancelPhoto}
-              />
-              <UserBioCard
-                value={profile.values.bio}
-                editing={profile.isBioEditing}
-                loading={profile.isSavingProfile}
-                onChange={(value) => profile.updateField("bio", value)}
-                onEdit={() => {
-                  profile.cancelDetails();
-                  profile.setIsBioEditing(true);
-                }}
-                onSave={profile.saveProfile}
-                onCancel={profile.cancelBio}
-              />
+                <UserProfileSummary
+                  user={profile.currentUser}
+                  displayName={profile.displayName}
+                  photoFile={imageUpload.photoFile}
+                  photoPreview={imageUpload.photoPreview}
+                  isSaving={imageUpload.isSavingPhoto}
+                  onPhotoChange={imageUpload.handlePhotoChange}
+                  onSavePhoto={imageUpload.savePhoto}
+                  onCancelPhoto={imageUpload.cancelPhoto}
+                />
               </motion.div>
 
               <motion.div
                 variants={itemAnimation}
                 transition={{ duration: 0.35, ease: "easeOut" }}
+                className="order-2 xl:order-3 xl:col-span-2"
               >
                 <UserBiodata
                   values={profile.values}
@@ -111,6 +103,35 @@ const UserSettingsWrapper = () => {
                   onCancel={profile.cancelDetails}
                 />
               </motion.div>
+
+              <motion.div
+                variants={itemAnimation}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                className="order-3 bg-white p-3 xl:order-2"
+              >
+                <UserBioCard
+                  value={profile.values.bio}
+                  editing={profile.isBioEditing}
+                  loading={profile.isSavingProfile}
+                  onChange={(value) => profile.updateField("bio", value)}
+                  onEdit={() => {
+                    profile.cancelDetails();
+                    profile.setIsBioEditing(true);
+                  }}
+                  onSave={profile.saveProfile}
+                  onCancel={profile.cancelBio}
+                />
+              </motion.div>
+            </motion.div>
+          ) : activeTab === "bank-details" ? (
+            <motion.div
+              key="bank-details"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <BankDetailsTab form={bankDetails} />
             </motion.div>
           ) : (
             <motion.section

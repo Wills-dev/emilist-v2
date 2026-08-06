@@ -56,10 +56,7 @@ const UserBiodata = ({
     <section className="rounded-lg bg-white p-5 max-sm:p-4">
       <div className="mb-8 flex items-center justify-between gap-4">
         <h2 className="font-exo font-medium text-[#474C48]">User Biodata</h2>
-        <SettingsEditActions
-          {...actionProps}
-          className={editing ? "max-sm:hidden" : ""}
-        />
+        {!editing && <SettingsEditActions {...actionProps} />}
       </div>
 
       <div className="grid grid-cols-2 gap-x-8 gap-y-7 max-md:grid-cols-1">
@@ -189,7 +186,7 @@ const UserBiodata = ({
       {editing && (
         <SettingsEditActions
           {...actionProps}
-          className="mt-8 justify-end sm:hidden"
+          className="mt-8 justify-end"
         />
       )}
     </section>

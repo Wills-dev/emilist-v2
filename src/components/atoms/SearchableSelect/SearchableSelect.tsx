@@ -16,12 +16,14 @@ const SearchableSelect = ({
   onValueChange,
   placeholder = "Select an option",
   searchPlaceholder = "Search options...",
+  size = "compact",
 }: {
   options: selectOption[] | string[];
   value: string;
   onValueChange: (value: string) => void;
   placeholder?: string;
   searchPlaceholder?: string;
+  size?: "compact" | "default";
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -59,7 +61,11 @@ const SearchableSelect = ({
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="flex h-7.5 w-full items-center justify-between gap-2 rounded-[10px] bg-[#F6F7F9] px-2 text-left text-xs text-[#737774] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#25C269]"
+          className={`flex w-full items-center justify-between gap-2 rounded-[10px] text-left text-[#737774] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#25C269] ${
+            size === "default"
+              ? "h-11 bg-[#ECECEC] px-3 text-base"
+              : "h-7.5 bg-[#F6F7F9] px-2 text-xs"
+          }`}
         >
           <span className="truncate">
             {selectedOption?.label ?? placeholder}

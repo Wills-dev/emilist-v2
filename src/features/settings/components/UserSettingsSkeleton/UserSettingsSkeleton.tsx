@@ -15,8 +15,8 @@ const UserSettingsSkeleton = () => (
         </div>
       </section>
 
-      <section className="grid grid-cols-[1.05fr_1fr] gap-3 bg-white p-3 max-xl:grid-cols-1">
-        <div className="min-h-64 space-y-5 rounded-lg bg-[#F9F9F9] p-4">
+      <div className="grid gap-4 xl:grid-cols-[1.05fr_1fr]">
+        <section className="order-1 min-h-64 space-y-5 rounded-lg bg-[#F9F9F9] p-4">
           <div className="flex items-start justify-between gap-4">
             <Skeleton className="size-36 shrink-0 rounded-full max-sm:size-28" />
             <div className="flex gap-2">
@@ -32,18 +32,17 @@ const UserSettingsSkeleton = () => (
             <Skeleton className="h-6 w-44 rounded-full" />
             <Skeleton className="h-6 w-40 rounded-full" />
           </div>
-        </div>
+        </section>
 
-        <div className="min-h-64 rounded-lg bg-[#F9F9F9] p-4">
+        <section className="order-3 min-h-64 rounded-lg bg-[#F9F9F9] p-4 xl:order-2">
           <div className="mb-4 flex items-center justify-between">
             <Skeleton className="h-6 w-12" />
             <Skeleton className="h-9 w-16" />
           </div>
           <Skeleton className="h-44 w-full bg-gray-200" />
-        </div>
-      </section>
+        </section>
 
-      <section className="rounded-lg bg-white p-5 max-sm:p-4">
+      <section className="order-2 rounded-lg bg-white p-5 max-sm:p-4 xl:order-3 xl:col-span-2">
         <div className="mb-8 flex items-center justify-between">
           <Skeleton className="h-6 w-28" />
           <Skeleton className="h-9 w-16" />
@@ -57,6 +56,7 @@ const UserSettingsSkeleton = () => (
           ))}
         </div>
       </section>
+      </div>
     </main>
   </Container>
 );
