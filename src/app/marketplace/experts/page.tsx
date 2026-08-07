@@ -1,7 +1,12 @@
-import React from "react";
+import MainLayout from "@/components/templates/MainLayout/MainLayout";
+import MarketplaceExpertWrapper from "@/features/experts/components/MarketplaceExpertWrapper/MarketplaceExpertWrapper";
 
-const page = () => {
-  return <div>page</div>;
+const MarketplaceExpertPage = () => {
+  return (
+    <MainLayout variant="secondary">
+      <MarketplaceExpertWrapper />
+    </MainLayout>
+  );
 };
 
-export default page;
+export default MarketplaceExpertPage;

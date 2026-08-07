@@ -15,12 +15,16 @@ const DashboardExpertCardWrap = ({
   query,
   filters,
   savedOnly = false,
+  publicLinks = false,
+  batchSize = BATCH_SIZE,
 }: {
   query: string | null;
   filters: FilterState;
   savedOnly?: boolean;
+  publicLinks?: boolean;
+  batchSize?: number;
 }) => {
-  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+  const [visibleCount, setVisibleCount] = useState(batchSize);
   const experts = useMemo(() => {
     const search = query?.toLowerCase();
     return dashboardExperts
@@ -68,8 +72,8 @@ const DashboardExpertCardWrap = ({
   const hasMore = visibleCount < experts.length;
   const loadMore = useCallback(
     () =>
-      setVisibleCount((count) => Math.min(count + BATCH_SIZE, experts.length)),
-    [experts.length],
+      setVisibleCount((count) => Math.min(count + batchSize, experts.length)),
+    [batchSize, experts.length],
   );
   const sentinelRef = useInfiniteScrollTrigger({
     onIntersect: loadMore,
@@ -112,9 +116,19 @@ const DashboardExpertCardWrap = ({
             serviceType={expert.serviceType}
             level={expert.level}
             isLiked={expert.isLiked}
-            profileHref={routes.dashboardLinks.marketplaceExpertInfo(expert.id)}
-            compareHref={routes.dashboardLinks.compareExperts}
-            reviewsHref={routes.dashboardLinks.marketplaceExpertReviews(expert.id)}
+            profileHref={
+              publicLinks
+                ? routes.marketplace.expertInfo(expert.id)
+                : routes.dashboardLinks.marketplaceExpertInfo(expert.id)
+            }
+            compareHref={
+              publicLinks ? undefined : routes.dashboardLinks.compareExperts
+            }
+            reviewsHref={
+              publicLinks
+                ? undefined
+                : routes.dashboardLinks.marketplaceExpertReviews(expert.id)
+            }
           />
         </motion.div>
       ))}

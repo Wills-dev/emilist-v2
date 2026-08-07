@@ -24,7 +24,7 @@ import ShareButton from "@/components/molecules/ShareButton/ShareButton";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 import RichTextContent from "@/components/atoms/RichTextContent/RichTextContent";
 import JobCategory from "@/features/jobs/components/JobCategory/JobCategory";
-import { dashbaordMarketplaceTabs } from "@/lib/constants";
+import { dashbaordMarketplaceTabs, marketplaceTabs } from "@/lib/constants";
 import { routes } from "@/lib/helpers/routes";
 import {
   dashboardExpertProfile,
@@ -32,13 +32,19 @@ import {
 } from "../../constants/dummy";
 import ExpertReviewSummary from "../ExpertReviewSummary/ExpertReviewSummary";
 
-const DashboardExpertInfoWrapper = ({ expertId }: { expertId: string }) => {
+const DashboardExpertInfoWrapper = ({
+  expertId,
+  publicPage = false,
+}: {
+  expertId: string;
+  publicPage?: boolean;
+}) => {
   const expert =
     dashboardExperts.find((item) => item.id === expertId) ??
     dashboardExperts[0];
 
   return (
-    <Container variant="small">
+    <Container variant={publicPage ? "center" : "small"}>
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -46,14 +52,16 @@ const DashboardExpertInfoWrapper = ({ expertId }: { expertId: string }) => {
         className="space-y-4 pb-20 pt-4"
       >
         <div className="lg:hidden">
-          <MarketplaceTab tabContent={dashbaordMarketplaceTabs} />
+          <MarketplaceTab
+            tabContent={publicPage ? marketplaceTabs : dashbaordMarketplaceTabs}
+          />
         </div>
         <div className="flex w-full flex-wrap justify-between gap-2">
           <motion.main
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.08, ease: "easeOut" }}
-            className="w-full max-w-182.25"
+            className={publicPage ? "w-full max-w-202" : "w-full max-w-182.25"}
           >
             <div className="flex items-center justify-between pb-4">
               <BackButton />
@@ -126,7 +134,13 @@ const DashboardExpertInfoWrapper = ({ expertId }: { expertId: string }) => {
                   fullName={expert.businessName}
                   rating={expert.rating}
                   noOfReviews={expert.noOfReviews}
-                  reviewsHref={routes.dashboardLinks.marketplaceExpertReviews(expert.id)}
+                  reviewsHref={
+                    publicPage
+                      ? routes.marketplace.expertInfoReviews(expert.id)
+                      : routes.dashboardLinks.marketplaceExpertReviews(
+                          expert.id,
+                        )
+                  }
                 />
                 <div className="rounded-lg bg-white p-4 text-sm leading-6 text-[#5E625F]">
                   <RichTextContent
@@ -145,9 +159,9 @@ const DashboardExpertInfoWrapper = ({ expertId }: { expertId: string }) => {
             initial={{ opacity: 0, x: 12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.16, ease: "easeOut" }}
-            className="w-full max-w-87.75"
+            className={publicPage ? "w-full max-w-96.75" : "w-full max-w-87.75"}
           >
-            <ExpertReviewSummary expertId={expert.id} />
+            <ExpertReviewSummary expertId={expert.id} publicPage={publicPage} />
           </motion.aside>
         </div>
       </motion.div>

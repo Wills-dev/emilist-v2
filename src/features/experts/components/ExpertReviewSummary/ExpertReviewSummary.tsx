@@ -11,7 +11,13 @@ import {
 } from "../../constants/dummy";
 import { routes } from "@/lib/helpers/routes";
 
-const ExpertReviewSummary = ({ expertId }: { expertId: string }) => {
+const ExpertReviewSummary = ({
+  expertId,
+  publicPage = false,
+}: {
+  expertId: string;
+  publicPage?: boolean;
+}) => {
   const [, setSearch] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const reviews = useMemo(() => {
@@ -25,7 +31,7 @@ const ExpertReviewSummary = ({ expertId }: { expertId: string }) => {
   }, [submittedQuery]);
 
   return (
-    <div id="expert-reviews" className="w-full max-w-87.75 space-y-6">
+    <div id="expert-reviews" className="w-full space-y-6">
       <ReviewBreakdown
         totalReviews={dashboardExpertReviewSummary.totalReviews}
         reviewBreakdown={dashboardExpertReviewSummary.ratingDistribution}
@@ -34,7 +40,7 @@ const ExpertReviewSummary = ({ expertId }: { expertId: string }) => {
       <RatingSummary
         title="Expert Rating"
         rating={dashboardExpertReviewSummary.averageRating}
-        variant="tertiary"
+        variant={publicPage ? "primary" : "tertiary"}
       />
       <CommentWrapper
         totalComments={
@@ -45,9 +51,13 @@ const ExpertReviewSummary = ({ expertId }: { expertId: string }) => {
         variant="small"
         onSubmit={setSubmittedQuery}
         setSearch={setSearch}
-        link={routes.dashboardLinks.marketplaceExpertReviews(expertId)}
+        link={
+          publicPage
+            ? routes.marketplace.expertInfoReviews(expertId)
+            : routes.dashboardLinks.marketplaceExpertReviews(expertId)
+        }
         reviews={reviews}
-        sectionVariant="tertiary"
+        sectionVariant={publicPage ? "primary" : "tertiary"}
       />
     </div>
   );

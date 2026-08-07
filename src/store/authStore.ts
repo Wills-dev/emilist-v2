@@ -49,6 +49,7 @@ interface AuthFlowSlice {
   isModalFlow: boolean;
   otpCountDown: number;
   openModal: (modal: ModalType) => void;
+  startPasswordReset: () => void;
   closeAllModals: () => void;
   setPendingFlow: (
     flow: FlowType,
@@ -99,6 +100,12 @@ export const useStore = create<StoreState>()(
       otpCountDown: 0,
 
       openModal: (modal) => set({ activeModal: modal }),
+      startPasswordReset: () =>
+        set({
+          activeModal: "forgot-password",
+          otpEmail: null,
+          otpCountDown: 0,
+        }),
       closeAllModals: () => set({ activeModal: null }),
       setIsModalFlow: (isModal) => set({ isModalFlow: isModal }),
 
