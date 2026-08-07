@@ -30,6 +30,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Responsive dashboard overview with profile-aware states, persisted quick actions, referral sharing, and job-completion insights
 - Layout-matched overview loading skeletons and staggered card animations
 - Filterable, animated weekly, monthly, and yearly job-completion doughnut reports with accessible percentage callouts
+- Responsive dashboard Reports with Jobs, Finance, Trade, and Insights views, interactive doughnut charts, CSV exports, and target management
 - Responsive dashboard messaging with searchable conversations, local sending, attachment controls, an emoji picker, and populated and empty states
 - Responsive notification modal with populated and empty states, sorting, action links, and clear-all handling
 - Responsive dashboard drawer with grouped navigation, Pro plan access, user identity, and active-route styling
@@ -71,6 +72,7 @@ src/
 │   ├── notifications/
 │   ├── overview/
 │   ├── orders/
+│   ├── reports/
 │   ├── settings/
 │   └── support/
 ├── lib/          # Shared helpers, hooks, constants, and API utilities
@@ -246,6 +248,16 @@ The authenticated messaging page is available at `/dashboard/messages`. The desk
 Typed temporary conversations live in `src/features/messages/constants/dummyMessages.ts` until the messaging endpoint is available. `messageThreads` renders the populated inbox and active conversation, while `emptyMessageThreads` can be passed to `MessagesWrapper` to test the supplied `Message-emptystate.svg` state. The `useMessages` hook owns search, conversation selection, unread clearing, responsive panel state, and locally sent messages so endpoint integration can replace the data source without restructuring the UI.
 
 On small screens, selecting a conversation slides the chat in from the right, while returning to the inbox reverses the transition. Desktop retains both panels side by side. The composer uses separate document and image inputs: the file control accepts common document, spreadsheet, presentation, text, and archive formats, while the image control accepts `image/*` only. The shared `EmojiPicker` provides grouped emoji selection and closes on outside click or Escape. The chat body uses the `GrayedLogo` message variant as a low-opacity blurred watermark.
+
+### Dashboard reports
+
+The authenticated Reports page is available at `/dashboard/reports`. It provides Jobs and Applications, Earnings and Expenses, Orders and Sales, and Insights and Targets views. Report search, type tabs, month and year selectors, per-card period filters, and CSV exports are composed from focused feature components rather than a single route-level implementation.
+
+The generic `DonutChart` molecule accepts arbitrary labelled segments, centre content, colors, and display values. Segment proportions come directly from their numeric values, animate without modifying their SVG dash lengths, and expose accessible mouse-hover and keyboard-focus tooltips. The Jobs centre value represents the sum of active, pending, completed, and overdue jobs. Applications can switch between Applicants and My Applications datasets, while Finance cards can convert totals and legend values between NGN, USD, EUR, and CAD using temporary development rates.
+
+Every populated report card has a functional period dropdown. Changing the period updates its date range, chart dataset, centre value, and legend values. Insights use yearly filters, while the other report groups use 7-day, 30-day, and 90-day periods. Report fixtures live in `src/features/reports/constants/dummyReports.ts` and filtering helpers live under `src/features/reports/utils` pending API integration.
+
+The shared targets modal supports both a blank Set Targets state and a prefilled Review Targets state for monthly or annual goals. Saving updates the local Targets card and displays confirmation feedback. `ReportsWrapper` accepts `hasData={false}` to render reusable Job Summary and Application Summary empty cards with the existing `InsightEmptyState` illustration.
 
 ### Notifications
 
