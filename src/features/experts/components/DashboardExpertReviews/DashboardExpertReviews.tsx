@@ -19,7 +19,13 @@ import {
   dashboardExperts,
 } from "../../constants/dummy";
 
-const DashboardExpertReviews = ({ expertId }: { expertId: string }) => {
+const DashboardExpertReviews = ({
+  expertId,
+  publicPage = false,
+}: {
+  expertId: string;
+  publicPage?: boolean;
+}) => {
   const expert =
     dashboardExperts.find((item) => item.id === expertId) ??
     dashboardExperts[0];
@@ -66,7 +72,7 @@ const DashboardExpertReviews = ({ expertId }: { expertId: string }) => {
   };
 
   return (
-    <Container variant="small">
+    <Container variant={publicPage ? "center" : "small"}>
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -78,15 +84,21 @@ const DashboardExpertReviews = ({ expertId }: { expertId: string }) => {
           <FlagActionBtn onClick={() => {}} actionTitle="Flag expert" />
         </div>
         <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="w-full min-w-72.5 max-w-160 bg-[#F9F9F9] p-6">
+          <div
+            className={`w-full min-w-72.5 bg-[#F9F9F9] p-6 ${publicPage ? "max-w-197.75" : "max-w-160"}`}
+          >
             <ReviewBreakdown
               totalReviews={dashboardExpertReviewSummary.totalReviews}
               reviewBreakdown={dashboardExpertReviewSummary.ratingDistribution}
-              variant="tertiary"
+              variant={publicPage ? "primary" : "tertiary"}
             />
           </div>
-          <div className="w-full min-w-72.5 max-w-109.75 space-y-3">
-            <FilterSectionWrapper variant="tertiary">
+          <div
+            className={`w-full min-w-72.5 space-y-3 ${publicPage ? "max-w-96.75" : "max-w-109.75"}`}
+          >
+            <FilterSectionWrapper
+              variant={publicPage ? "primary" : "tertiary"}
+            >
               <FilterTitle title="Expert profile" />
               <UserRatingCard
                 id={expert.id}
@@ -94,7 +106,9 @@ const DashboardExpertReviews = ({ expertId }: { expertId: string }) => {
                 rating={expert.rating}
               />
             </FilterSectionWrapper>
-            <FilterSectionWrapper variant="tertiary">
+            <FilterSectionWrapper
+              variant={publicPage ? "primary" : "tertiary"}
+            >
               <FilterTitle
                 title={`${expert.noOfCompletedJobs} jobs completed`}
               />
@@ -102,7 +116,7 @@ const DashboardExpertReviews = ({ expertId }: { expertId: string }) => {
             <RatingSummary
               title="Expert Rating"
               rating={dashboardExpertReviewSummary.averageRating}
-              variant="tertiary"
+              variant={publicPage ? "primary" : "tertiary"}
             />
           </div>
         </div>
@@ -117,7 +131,7 @@ const DashboardExpertReviews = ({ expertId }: { expertId: string }) => {
           setSearch={setQuery}
           reviews={visibleReviews}
           onAddComment={() => setIsModalOpen(true)}
-          sectionVariant="tertiary"
+          sectionVariant={publicPage ? "primary" : "tertiary"}
           pagination={{
             page: 1,
             hasMore: false,

@@ -14,9 +14,6 @@ import MainLayout from "@/components/templates/MainLayout/MainLayout";
 
 export default function Home() {
   const shouldReduceMotion = useReducedMotion();
-  const enterFromAbove = shouldReduceMotion
-    ? undefined
-    : { opacity: 0, y: -48, scale: 0.96, filter: "blur(10px)" };
   const visible = {
     opacity: 1,
     x: 0,
@@ -50,13 +47,7 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <motion.div
-        initial={enterFromAbove}
-        animate={visible}
-        transition={{ ...transition, duration: 0.95 }}
-      >
-        <HeroSection />
-      </motion.div>
+      <HeroSection />
       {sections.map((section) => (
         <motion.div
           key={section.key}

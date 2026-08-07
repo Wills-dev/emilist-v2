@@ -12,6 +12,8 @@ export const routes = {
     jobInfo: (jobId: string) => `/marketplace/jobs/${jobId}`,
     experts: "/marketplace/experts",
     expertInfo: (expertId: string) => `/marketplace/experts/${expertId}`,
+    expertInfoReviews: (expertId: string) =>
+      `/marketplace/experts/${expertId}/reviews`,
     materials: "/marketplace/materials",
     savedMaterials: "/marketplace/materials/saved",
     materialInfo: (materialId: string) =>
