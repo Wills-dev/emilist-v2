@@ -30,6 +30,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Responsive dashboard overview with profile-aware states, persisted quick actions, referral sharing, and job-completion insights
 - Layout-matched overview loading skeletons and staggered card animations
 - Filterable, animated weekly, monthly, and yearly job-completion doughnut reports with accessible percentage callouts
+- Responsive dashboard messaging with searchable conversations, local sending, attachment controls, an emoji picker, and populated and empty states
 - Responsive notification modal with populated and empty states, sorting, action links, and clear-all handling
 - Responsive dashboard drawer with grouped navigation, Pro plan access, user identity, and active-route styling
 - Responsive dashboard support page with direct contact actions, categorized FAQs, the supplied support artwork, and staggered animations
@@ -66,6 +67,7 @@ src/
 │   ├── experts/
 │   ├── jobs/
 │   ├── materials/
+│   ├── messages/
 │   ├── notifications/
 │   ├── overview/
 │   ├── orders/
@@ -236,6 +238,14 @@ Dashboard offer-service links—including marketplace actions, overview quick ac
 Business descriptions and profile bios reuse the same Tiptap rich-text editor as material descriptions. Render saved rich text through `RichTextContent` so supported headings, paragraphs, emphasis, and lists display correctly instead of exposing stored HTML.
 
 Expert fixtures and comparison data live in `src/features/experts/constants/dummy.ts`; UI components should not define demonstration records inline.
+
+### Dashboard messages
+
+The authenticated messaging page is available at `/dashboard/messages`. The desktop sidebar, mobile dashboard drawer, and dashboard header message icon all navigate to this route. The page follows the dashboard `Container` structure and separates inbox search, conversation rows, chat headers, message bubbles, the composer, the empty state, and state management into focused Atomic Design and feature modules.
+
+Typed temporary conversations live in `src/features/messages/constants/dummyMessages.ts` until the messaging endpoint is available. `messageThreads` renders the populated inbox and active conversation, while `emptyMessageThreads` can be passed to `MessagesWrapper` to test the supplied `Message-emptystate.svg` state. The `useMessages` hook owns search, conversation selection, unread clearing, responsive panel state, and locally sent messages so endpoint integration can replace the data source without restructuring the UI.
+
+On small screens, selecting a conversation slides the chat in from the right, while returning to the inbox reverses the transition. Desktop retains both panels side by side. The composer uses separate document and image inputs: the file control accepts common document, spreadsheet, presentation, text, and archive formats, while the image control accepts `image/*` only. The shared `EmojiPicker` provides grouped emoji selection and closes on outside click or Escape. The chat body uses the `GrayedLogo` message variant as a low-opacity blurred watermark.
 
 ### Notifications
 
