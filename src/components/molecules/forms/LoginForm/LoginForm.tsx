@@ -11,7 +11,7 @@ import { areAllFieldsFilled } from "@/lib/helpers/areAllFieldsFilled";
 import { useStore } from "@/store/authStore";
 import { useShallow } from "zustand/react/shallow";
 
-const LoginForm = () => {
+const LoginForm = ({ variant = "modal" }: { variant?: "modal" | "page" }) => {
   const {
     userInfo,
     handleChange,
@@ -23,16 +23,17 @@ const LoginForm = () => {
 
   const isFormFilled = areAllFieldsFilled(userInfo);
 
-  const { openModal, setIsModalFlow } = useStore(
+  const { openModal, setIsModalFlow, startPasswordReset } = useStore(
     useShallow((state) => ({
       openModal: state.openModal,
       setIsModalFlow: state.setIsModalFlow,
+      startPasswordReset: state.startPasswordReset,
     })),
   );
 
   const openForgotPasswordModal = () => {
     setIsModalFlow(true);
-    openModal("forgot-password");
+    startPasswordReset();
   };
 
   const openSignUpModal = () => {
@@ -68,6 +69,7 @@ const LoginForm = () => {
           />
           <div className="flex justify-end w-full">
             <button
+              type="button"
               onClick={openForgotPasswordModal}
               className="text-[#303632] font-semibold max-sm:text-sm hover:text-[#25C269] transition-all duration-300 cursor-pointer"
             >
@@ -77,17 +79,39 @@ const LoginForm = () => {
         </div>
       </div>
       <div className="space-y-8">
-        <Button
-          type="submit"
-          className="w-full h-11"
-          variant="primary"
-          loading={isLogging}
-          disabled={!isFormFilled}
-        >
-          Sign In
-        </Button>
-        <div className="w-full h-px bg-[#D9D9D9]" />
-        <GoogleAuth actionText="Sign In" />
+        {variant === "page" ? (
+          <>
+            <div className="h-px w-full bg-[#D9D9D9]" />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="order-2 sm:order-1">
+                <GoogleAuth actionText="Sign In" />
+              </div>
+              <Button
+                type="submit"
+                className="order-1 h-11 w-full sm:order-2"
+                variant="primary"
+                loading={isLogging}
+                disabled={!isFormFilled}
+              >
+                Sign In
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <Button
+              type="submit"
+              className="h-11 w-full"
+              variant="primary"
+              loading={isLogging}
+              disabled={!isFormFilled}
+            >
+              Sign In
+            </Button>
+            <div className="h-px w-full bg-[#D9D9D9]" />
+            <GoogleAuth actionText="Sign In" />
+          </>
+        )}
         <AuthPrompt
           onClick={openSignUpModal}
           text="Don’t have an EmiList account?"

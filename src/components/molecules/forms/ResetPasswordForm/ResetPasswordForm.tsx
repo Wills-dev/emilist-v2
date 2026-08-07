@@ -20,12 +20,12 @@ const ResetPasswordForm = () => {
     isNewPasswordFilled,
   } = useResetPassword();
 
-  const openModal = useStore((state) => state.openModal);
+  const startPasswordReset = useStore((state) => state.startPasswordReset);
   const setIsModalFlow = useStore((state) => state.setIsModalFlow);
 
   const openForgotPassword = () => {
     setIsModalFlow(true);
-    openModal("forgot-password");
+    startPasswordReset();
   };
 
   const showGuide = isNewPasswordFilled && isConfirmPasswordFilled;

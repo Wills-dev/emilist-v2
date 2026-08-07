@@ -14,6 +14,7 @@ const escapeHtml = (value: string) =>
   );
 
 export const printSubscriptionReceipt = (item: SubscriptionHistoryItem) => {
+  const logoUrl = new URL("/assets/images/logo.svg", window.location.origin).href;
   const iframe = document.createElement("iframe");
   iframe.setAttribute("title", `Receipt ${item.id}`);
   iframe.style.position = "fixed";
@@ -40,8 +41,7 @@ export const printSubscriptionReceipt = (item: SubscriptionHistoryItem) => {
           body { margin: 0; padding: 40px; color: #202521; font: 14px Arial, sans-serif; }
           .receipt { max-width: 680px; margin: 0 auto; border: 1px solid #ececec; border-radius: 16px; overflow: hidden; }
           .header { display: flex; justify-content: space-between; align-items: center; padding: 28px 32px; background: #f4f7f5; border-bottom: 1px solid #ececec; }
-          .brand { font-size: 28px; font-weight: 700; }
-          .brand span { color: #25c269; }
+          .brand-logo { display: block; width: 120px; height: auto; }
           h1 { margin: 0; font-size: 20px; }
           .body { padding: 28px 32px; }
           .amount { margin-bottom: 28px; padding: 22px; border-radius: 12px; background: #eafbf1; text-align: center; }
@@ -57,7 +57,7 @@ export const printSubscriptionReceipt = (item: SubscriptionHistoryItem) => {
       </head>
       <body>
         <main class="receipt">
-          <header class="header"><div class="brand"><span>●</span> emilist</div><h1>Subscription Receipt</h1></header>
+          <header class="header"><img class="brand-logo" src="${escapeHtml(logoUrl)}" alt="Emilist" /><h1>Subscription Receipt</h1></header>
           <section class="body">
             <div class="amount"><small>Amount paid</small><strong>₦${item.amount.toLocaleString()}</strong></div>
             ${fields.map(([label, value]) => `<div class="row"><span class="label">${escapeHtml(label)}</span><span class="value${label === "Payment status" ? " status" : ""}">${escapeHtml(value)}</span></div>`).join("")}

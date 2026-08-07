@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -9,6 +9,7 @@ import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { useStore } from "@/store/authStore";
 
 export const useRequestPasswordReset = () => {
+  const [hasRequestedOtp, setHasRequestedOtp] = useState(false);
   const otpEmail = useStore((state) => state.otpEmail);
 
   const setOtpEmail = useStore((state) => state.setOtpEmail);
@@ -16,7 +17,7 @@ export const useRequestPasswordReset = () => {
   const setOtpCountDown = useStore((state) => state.setOtpCountDown);
 
   useEffect(() => {
-    if (!otpCountDown) return;
+    if (!hasRequestedOtp || !otpCountDown) return;
 
     const interval = setInterval(() => {
       if (useStore.getState().otpCountDown! > 0) {
@@ -25,7 +26,7 @@ export const useRequestPasswordReset = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [otpCountDown, setOtpCountDown]);
+  }, [hasRequestedOtp, otpCountDown, setOtpCountDown]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: forgotPassword,
@@ -33,6 +34,7 @@ export const useRequestPasswordReset = () => {
       toast.success(`OTP sent successfully!`, {
         description: `otp has been sent to ${variable?.email}`,
       });
+      setHasRequestedOtp(true);
       setOtpCountDown(300);
     },
     onError: (error: ApiErrorResponse) => {
@@ -49,5 +51,12 @@ export const useRequestPasswordReset = () => {
     mutate({ email: otpEmail });
   };
 
-  return { handleSendOtp, isPending, otpEmail, setOtpEmail, otpCountDown };
+  return {
+    handleSendOtp,
+    isPending,
+    otpEmail,
+    setOtpEmail,
+    otpCountDown,
+    hasRequestedOtp,
+  };
 };

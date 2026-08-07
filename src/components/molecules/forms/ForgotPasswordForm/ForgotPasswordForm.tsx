@@ -11,8 +11,14 @@ import { useStore } from "@/store/authStore";
 const ForgotPasswordForm = () => {
   const { handleSendOtp: resendingOtp, isResending } = useResendOtp();
 
-  const { handleSendOtp, isPending, otpEmail, setOtpEmail, otpCountDown } =
-    useRequestPasswordReset();
+  const {
+    handleSendOtp,
+    isPending,
+    otpEmail,
+    setOtpEmail,
+    otpCountDown,
+    hasRequestedOtp,
+  } = useRequestPasswordReset();
 
   const {
     isSubmitting,
@@ -80,31 +86,34 @@ const ForgotPasswordForm = () => {
                 value={digit}
                 onChange={(e) => handleChange(i, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(i, e)}
-                className="outline-none max-w-10 w-10"
+                disabled={!hasRequestedOtp}
+                className="outline-none max-w-10 w-10 disabled:cursor-not-allowed"
                 placeholder="*"
               />
             ))}
           </div>
-          <div className="flex items-center gap-1">
-            <p className="text-[#333E49] text-sm">Didn’t receive it? </p>{" "}
-            {otpCountDown > 0 ? (
-              <>
-                <span className="text-[#333E49] text-sm">Resend code in</span>
-                <span className="text-sm text-[#6667FF] font-semibold">
-                  {formattedTime}mins
-                </span>
-              </>
-            ) : (
-              <button
-                onClick={resendingOtp}
-                disabled={isResending}
-                type="button"
-                className="text-sm text-[#6667FF] font-semibold cursor-pointer"
-              >
-                {isResending ? " Sending..." : " Resend code"}
-              </button>
-            )}
-          </div>
+          {hasRequestedOtp && (
+            <div className="flex items-center gap-1">
+              <p className="text-[#333E49] text-sm">Didn’t receive it? </p>{" "}
+              {otpCountDown > 0 ? (
+                <>
+                  <span className="text-[#333E49] text-sm">Resend code in</span>
+                  <span className="text-sm text-[#6667FF] font-semibold">
+                    {formattedTime}mins
+                  </span>
+                </>
+              ) : (
+                <button
+                  onClick={resendingOtp}
+                  disabled={isResending}
+                  type="button"
+                  className="text-sm text-[#6667FF] font-semibold cursor-pointer"
+                >
+                  {isResending ? " Sending..." : " Resend code"}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <div className="space-y-4">
@@ -114,7 +123,7 @@ const ForgotPasswordForm = () => {
           variant="primary"
           loading={isSubmitting}
           onClick={handleSubmit}
-          disabled={finalOtp.length !== 6}
+          disabled={!hasRequestedOtp || finalOtp.length !== 6}
         >
           Proceed
         </Button>
