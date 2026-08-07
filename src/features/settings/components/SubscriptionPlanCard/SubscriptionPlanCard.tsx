@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { Check, Star } from "lucide-react";
 import { toast } from "sonner";
 
 import Button from "@/components/atoms/Button/Button";
 import { SubscriptionPlan } from "../../types/subscription";
+import SettingsConfirmationModal from "../SettingsConfirmationModal/SettingsConfirmationModal";
 
 interface SubscriptionPlanCardProps {
   plan: SubscriptionPlan;
@@ -24,6 +26,19 @@ const SubscriptionPlanCard = ({
 }: SubscriptionPlanCardProps) => {
   const price =
     billingCycle === "monthly" ? plan.monthlyPrice : plan.yearlyPrice;
+  const [actionOpen, setActionOpen] = useState(false);
+  const isRenewal = plan.status === "active";
+  const actionTitle = isRenewal
+    ? summary
+      ? "Renew Plan"
+      : "Renew Subscription Plan"
+    : "Activate Plan";
+  const confirmAction = () => {
+    setActionOpen(false);
+    toast.info(
+      `${isRenewal ? "Plan renewal" : "Plan activation"} will be connected when its endpoint is available.`,
+    );
+  };
 
   const showConsole = () => {
     if (viewPlan === undefined) return;
@@ -75,17 +90,22 @@ const SubscriptionPlanCard = ({
               <Button
                 variant="primary"
                 className="h-8 px-3! py-2 text-xs"
-                onClick={() =>
-                  toast.info(
-                    "Subscription checkout will be connected when its endpoint is available.",
-                  )
-                }
+                onClick={() => setActionOpen(true)}
               >
                 {plan.status === "active" ? "Renew Plan" : "Activate"}
               </Button>
             </div>
           </div>
         </div>
+        {actionOpen && (
+          <SettingsConfirmationModal
+            open={actionOpen}
+            onClose={setActionOpen}
+            title={actionTitle}
+            message={`Do you want to ${isRenewal ? "renew" : "activate"} this ${plan.name} plan?`}
+            onConfirm={confirmAction}
+          />
+        )}
       </article>
     );
   }
@@ -107,11 +127,7 @@ const SubscriptionPlanCard = ({
           <Button
             variant="primary"
             className="mt-5 h-10 w-full py-2"
-            onClick={() =>
-              toast.info(
-                "Subscription checkout will be connected when its endpoint is available.",
-              )
-            }
+            onClick={() => setActionOpen(true)}
           >
             Choose {plan.name}
           </Button>
@@ -128,6 +144,15 @@ const SubscriptionPlanCard = ({
           ))}
         </ul>
       </div>
+      {actionOpen && (
+        <SettingsConfirmationModal
+          open={actionOpen}
+          onClose={setActionOpen}
+          title={actionTitle}
+          message={`Do you want to ${isRenewal ? "renew" : "activate"} this ${plan.name} plan?`}
+          onConfirm={confirmAction}
+        />
+      )}
     </article>
   );
 };

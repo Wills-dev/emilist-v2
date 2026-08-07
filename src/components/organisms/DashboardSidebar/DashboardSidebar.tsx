@@ -9,51 +9,68 @@ import UserIdentity from "@/components/molecules/UserIdentity/UserIdentity";
 import { dashboardMainLinks } from "@/lib/constants";
 import { routes } from "@/lib/helpers/routes";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import LogoutConfirmModal from "@/features/auth/components/LogoutConfirmModal/LogoutConfirmModal";
 
 const DashboardSidebar = () => {
-  const { logout, isLoggingOut } = useLogout();
+  const {
+    isConfirmationOpen,
+    setIsConfirmationOpen,
+    openLogoutConfirmation,
+    confirmLogout,
+    isLoggingOut,
+  } = useLogout();
 
   return (
-    <aside className="fixed bg-white max-w-78 w-full min-w-78 h-screen pt-20 max-lg:hidden">
-      <div className="py-10 px-4 h-full flex flex-col justify-between gap-10">
-        <div className="space-y-4">
-          {dashboardMainLinks?.map((link) => (
-            <DashboardNavCard
-              key={link?.label}
-              href={link?.href}
-              activePath={link.activePath}
-              label={link.label}
-              icon={link.icon}
-            />
-          ))}
-        </div>
-        <div className="space-y-4 pb-10">
-          <DownloadMobile />
-          <div className="py-2 space-y-2 w-full border-y border-[#D9D9D9]">
-            <DashboardNavCard
-              href={routes?.dashboardLinks?.messages}
-              label="Messages"
-              icon={<MessageIcon2 />}
-              className="w-full"
-            />
-            <DashboardNavCard
-              href={routes?.dashboardLinks?.support}
-              label="Support"
-              icon={<WarningIcon />}
-              className="w-full"
-            />
-            <DashboardNavCard
-              onClick={() => logout()}
-              label={isLoggingOut ? "Logging out..." : "Logout"}
-              icon={<Logout />}
-              className="w-full"
-              variant="sidebar"
-            />
+    <>
+      <aside className="fixed bg-white max-w-78 w-full min-w-78 h-screen pt-20 max-lg:hidden">
+        <div className="py-10 px-4 h-full flex flex-col justify-between gap-10">
+          <div className="space-y-4">
+            {dashboardMainLinks?.map((link) => (
+              <DashboardNavCard
+                key={link?.label}
+                href={link?.href}
+                activePath={link.activePath}
+                label={link.label}
+                icon={link.icon}
+              />
+            ))}
           </div>
-          <UserIdentity />
+          <div className="space-y-4 pb-10">
+            <DownloadMobile />
+            <div className="py-2 space-y-2 w-full border-y border-[#D9D9D9]">
+              <DashboardNavCard
+                href={routes?.dashboardLinks?.messages}
+                label="Messages"
+                icon={<MessageIcon2 />}
+                className="w-full"
+              />
+              <DashboardNavCard
+                href={routes?.dashboardLinks?.support}
+                label="Support"
+                icon={<WarningIcon />}
+                className="w-full"
+              />
+              <DashboardNavCard
+                onClick={openLogoutConfirmation}
+                label="Logout"
+                icon={<Logout />}
+                className="w-full"
+                variant="sidebar"
+              />
+            </div>
+            <UserIdentity />
+          </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+      {isConfirmationOpen && (
+        <LogoutConfirmModal
+          open={isConfirmationOpen}
+          onClose={setIsConfirmationOpen}
+          onConfirm={confirmLogout}
+          loading={isLoggingOut}
+        />
+      )}
+    </>
   );
 };
 

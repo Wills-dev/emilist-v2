@@ -8,6 +8,7 @@ import WarningIcon from "@/components/atoms/icons/WarningIcon";
 import NavIconWrapper from "@/components/atoms/NavIconWrapper/NavIconWrapper";
 import NotificationModal from "@/features/notifications/components/NotificationModal/NotificationModal";
 import { testNotifications } from "@/features/notifications/constants/testNotifications";
+import { routes } from "@/lib/helpers/routes";
 
 const DashboardNavIconWrap = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -31,7 +32,10 @@ const DashboardNavIconWrap = () => {
           />
         </svg>
       </NavIconWrapper>
-      <NavIconWrapper>
+      <NavIconWrapper
+        href={routes.dashboardLinks.messages}
+        ariaLabel="Open messages"
+      >
         <MessageIcon />
       </NavIconWrapper>
       <NavIconWrapper>

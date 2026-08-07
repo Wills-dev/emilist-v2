@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -9,6 +10,7 @@ import { useStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cart/cartStore";
 
 export const useLogout = () => {
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const router = useRouter();
   const queryClient = useQueryClient();
   const clearCurrentUser = useStore((state) => state.clearCurrentUser);
@@ -21,6 +23,7 @@ export const useLogout = () => {
   const clearCart = useCartStore((state) => state.clearCart);
 
   const clearSession = () => {
+    setIsConfirmationOpen(false);
     clearAllCookies();
     clearCurrentUser();
     clearPendingFlow();
@@ -42,8 +45,10 @@ export const useLogout = () => {
   });
 
   return {
-    logout: mutation.mutate,
+    isConfirmationOpen,
+    setIsConfirmationOpen,
+    openLogoutConfirmation: () => setIsConfirmationOpen(true),
+    confirmLogout: () => mutation.mutate(),
     isLoggingOut: mutation.isPending,
   };
 };
-

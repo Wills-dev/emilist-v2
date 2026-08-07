@@ -9,6 +9,7 @@ const FaqCard = ({
   answer,
   toggleFaq,
   openId,
+  variant = "default",
 }: {
   index: number;
   id: number;
@@ -16,17 +17,32 @@ const FaqCard = ({
   answer: string;
   openId: number | null;
   toggleFaq: (id: number) => void;
+  variant?: "default" | "compact";
 }) => {
   const isActive = openId === id;
+  const isCompact = variant === "compact";
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 * index }}
-      className={`sm:p-6 max-sm:py-3 max-sm:px-3 sm:rounded-2xl rounded-[8px] overflow-hidden ${isActive ? "bg-[#155231]" : "bg-linear-to-b from-0% from-[#FFFFFF] to-100% to-[#FBFBFB]"}`}
+      className={`overflow-hidden ${
+        isCompact
+          ? "rounded-2xl border border-[#E9EDF7] px-4 py-4"
+          : "rounded-[8px] px-3 py-3 sm:rounded-2xl sm:p-6"
+      } ${
+        isActive
+          ? "bg-[#155231]"
+          : "bg-linear-to-b from-0% from-[#FFFFFF] to-100% to-[#FBFBFB]"
+      }`}
     >
-      <div className="space-y-2.75" onClick={() => toggleFaq(id)}>
+      <button
+        type="button"
+        aria-expanded={isActive}
+        className="w-full space-y-2.75 text-left"
+        onClick={() => toggleFaq(id)}
+      >
         <div className="flex items-center justify-between">
           <div
             className={`${isActive ? "text-white" : "text-[#5E625F]"} sm:text-[24px] text-sm`}
@@ -48,11 +64,13 @@ const FaqCard = ({
           </motion.div>
         </div>
         <h3
-          className={`max-sm:text-sm font-exo font-medium leading-6 ${isActive ? "text-[#88EDB3]" : ""}`}
+          className={`font-exo font-medium leading-6 ${
+            isCompact ? "text-sm text-[#4D534F]" : "max-sm:text-sm"
+          } ${isActive ? "text-[#88EDB3]" : ""}`}
         >
           {question}
         </h3>
-      </div>
+      </button>
 
       <AnimatePresence>
         {isActive && (
