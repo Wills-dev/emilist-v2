@@ -2,6 +2,7 @@
 
 import { Eye, EyeOff } from "lucide-react";
 import { InputHTMLAttributes } from "react";
+import CalendarDatePicker from "@/components/molecules/CalendarDatePicker/CalendarDatePicker";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
@@ -15,6 +16,21 @@ const Input = ({
   icon,
   ...props
 }: InputProps) => {
+  if (props.type === "date") {
+    return (
+      <CalendarDatePicker
+        id={props.id}
+        name={props.name}
+        value={props.value}
+        required={props.required}
+        disabled={props.disabled}
+        min={props.min}
+        max={props.max}
+        onChange={props.onChange}
+      />
+    );
+  }
+
   const paddingX =
     icon !== undefined && showPassword !== undefined
       ? "px-9"

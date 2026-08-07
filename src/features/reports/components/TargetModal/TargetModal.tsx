@@ -5,6 +5,7 @@ import { FormEvent, useState } from "react";
 import Button from "@/components/atoms/Button/Button";
 import Input from "@/components/atoms/Input/Input";
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
+import OptionToggle from "@/components/molecules/OptionToggle/OptionToggle";
 
 import { ReportTargets, TargetDuration } from "../../types";
 
@@ -55,21 +56,16 @@ const TargetModal = ({
           <legend className="mb-3 text-sm text-[#555B57]">
             Target Duration
           </legend>
-          <div className="flex items-center gap-6">
-            {(["monthly", "annual"] as TargetDuration[]).map((duration) => (
-              <label key={duration} className="flex items-center gap-2 text-sm">
-                <input
-                  type="radio"
-                  name="target-duration"
-                  value={duration}
-                  checked={draft.duration === duration}
-                  onChange={() => updateField("duration", duration)}
-                  className="size-5 accent-[#25C269]"
-                />
-                <span className="capitalize">{duration}</span>
-              </label>
-            ))}
-          </div>
+          <OptionToggle<TargetDuration>
+            name="target-duration"
+            ariaLabel="Target duration"
+            value={draft.duration}
+            onChange={(duration) => updateField("duration", duration)}
+            options={[
+              { value: "monthly", label: "Monthly" },
+              { value: "annual", label: "Annual" },
+            ]}
+          />
         </fieldset>
 
         <div className="grid gap-5 sm:grid-cols-2">

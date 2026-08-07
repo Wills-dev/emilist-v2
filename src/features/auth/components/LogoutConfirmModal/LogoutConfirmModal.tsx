@@ -27,21 +27,21 @@ const LogoutConfirmModal = ({
     description="Sign out of your dashboard"
     showCloseButton={false}
     headerIcon={
-      <span className="mb-2 flex size-14 items-center justify-center rounded-full bg-[#FFF8E7]">
-        <span className="flex size-9 items-center justify-center rounded-full bg-[#FFF0C7] text-[#FF922E]">
-          <AlertTriangle className="size-6" strokeWidth={1.8} />
+      <span className="mb-1 flex size-12 items-center justify-center rounded-full bg-[#FFF8E7]">
+        <span className="flex size-8 items-center justify-center rounded-full bg-[#FFF0C7] text-[#FF922E]">
+          <AlertTriangle className="size-5" strokeWidth={1.8} />
         </span>
       </span>
     }
-    className="max-w-[444px]! rounded-2xl p-6 sm:p-7"
+    className="max-w-[400px]! rounded-2xl p-5 sm:p-6"
     headerClassName="gap-1 text-left"
-    titleClassName="text-[22px]! text-[#454A47]"
-    descClassName="text-base! text-[#667085]!"
+    titleClassName="text-xl! text-[#454A47]"
+    descClassName="text-sm! text-[#667085]!"
   >
-    <div className="mt-6 flex gap-3">
+    <div className="mt-5 flex gap-3">
       <Button
         variant="default"
-        className="h-12 flex-1 text-base"
+        className="h-11 flex-1 text-sm"
         disabled={loading}
         onClick={() => onClose(false)}
       >
@@ -49,7 +49,7 @@ const LogoutConfirmModal = ({
       </Button>
       <Button
         variant="primary"
-        className="h-12 flex-1 text-base"
+        className="h-11 flex-1 text-sm"
         loading={loading}
         onClick={onConfirm}
       >
