@@ -9,6 +9,7 @@ import {
 interface ModalWrapperProps {
   children: React.ReactNode;
   title: string;
+  headerIcon?: React.ReactNode;
   description?: string;
   className?: string;
   open: boolean;
@@ -16,11 +17,13 @@ interface ModalWrapperProps {
   titleClassName?: string;
   descClassName?: string;
   headerClassName?: string;
+  showCloseButton?: boolean;
 }
 
 const ModalWrapper = ({
   children,
   title,
+  headerIcon,
   description,
   className,
   open,
@@ -28,11 +31,16 @@ const ModalWrapper = ({
   titleClassName,
   descClassName,
   headerClassName,
+  showCloseButton = true,
 }: ModalWrapperProps) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className={`overflow-hidden ${className}`}>
+      <DialogContent
+        className={`overflow-hidden ${className}`}
+        showCloseButton={showCloseButton}
+      >
         <DialogHeader className={headerClassName}>
+          {headerIcon}
           <DialogTitle
             className={`font-exo font font-bold sm:text-[24px] text-lg ${titleClassName}`}
           >

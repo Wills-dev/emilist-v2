@@ -19,6 +19,7 @@ interface UserProfileSummaryProps {
   onPhotoChange: React.ChangeEventHandler<HTMLInputElement>;
   onSavePhoto: () => void;
   onCancelPhoto: () => void;
+  onRequestVerification: () => void;
 }
 
 const UserProfileSummary = ({
@@ -30,6 +31,7 @@ const UserProfileSummary = ({
   onPhotoChange,
   onSavePhoto,
   onCancelPhoto,
+  onRequestVerification,
 }: UserProfileSummaryProps) => {
   const inputId = "profile-photo-input";
   return (
@@ -84,7 +86,12 @@ const UserProfileSummary = ({
               Edit Display Photo
             </label>
           )}
-          <Button variant="default" className="h-8 px-3! text-xs">
+          <Button
+            variant="default"
+            className="h-8 px-3! text-xs"
+            onClick={onRequestVerification}
+            disabled={Boolean(user?.isVerified)}
+          >
             Request Verification
           </Button>
         </div>

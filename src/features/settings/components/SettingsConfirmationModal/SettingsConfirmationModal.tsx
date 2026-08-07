@@ -10,6 +10,8 @@ interface SettingsConfirmationModalProps {
   message: string;
   onConfirm: () => void;
   loading?: boolean;
+  confirmLabel?: string;
+  confirmVariant?: "primary" | "danger";
 }
 
 const SettingsConfirmationModal = ({
@@ -19,6 +21,8 @@ const SettingsConfirmationModal = ({
   message,
   onConfirm,
   loading = false,
+  confirmLabel = "Confirm",
+  confirmVariant = "primary",
 }: SettingsConfirmationModalProps) => (
   <ModalWrapper
     open={open}
@@ -38,12 +42,12 @@ const SettingsConfirmationModal = ({
         Cancel
       </Button>
       <Button
-        variant="primary"
+        variant={confirmVariant}
         className="h-11 flex-1"
         loading={loading}
         onClick={onConfirm}
       >
-        Confirm
+        {confirmLabel}
       </Button>
     </div>
   </ModalWrapper>

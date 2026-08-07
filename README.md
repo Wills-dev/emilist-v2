@@ -32,6 +32,9 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Filterable, animated weekly, monthly, and yearly job-completion doughnut reports with accessible percentage callouts
 - Responsive notification modal with populated and empty states, sorting, action links, and clear-all handling
 - Responsive dashboard drawer with grouped navigation, Pro plan access, user identity, and active-route styling
+- Responsive dashboard support page with direct contact actions, categorized FAQs, the supplied support artwork, and staggered animations
+- Reusable segmented tabs with desktop pill and mobile select presentations
+- Shared logout confirmation flow across desktop and mobile dashboard navigation
 - Smart mobile-app download route with iOS and Android store detection
 - Dashboard, cart, checkout, enterprise booking, and marketing pages
 - Reusable Atomic Design UI primitives: atoms, molecules, organisms, and templates
@@ -66,7 +69,8 @@ src/
 │   ├── notifications/
 │   ├── overview/
 │   ├── orders/
-│   └── settings/
+│   ├── settings/
+│   └── support/
 ├── lib/          # Shared helpers, hooks, constants, and API utilities
 └── store/        # Zustand stores and store types
 
@@ -154,13 +158,13 @@ Temporary or demonstration records must live in a clearly named `constants/dummy
 
 Successful login responses update `currentUser` and `isAuthInitialized` atomically in Zustand, allowing public navigation controls to switch immediately from Login/Sign Up to Dashboard. The login response is the source of truth for that browser session; `/auth/current-user` is used to restore the session when the application loads or the browser is refreshed with an existing token.
 
-User response normalization supports APIs that return the user directly or under `user` or `userData`. Logout calls `GET /auth/log-out`, clears application cookies, auth-flow state, cart state, modals, and the React Query cache, then returns the user to the home page. Local cleanup still runs if the server logout request fails.
+User response normalization supports APIs that return the user directly or under `user` or `userData`. Dashboard logout actions first open the shared confirmation modal on desktop and mobile. Confirming logout calls `GET /auth/log-out`, clears application cookies, auth-flow state, cart state, modals, and the React Query cache, then returns the user to the home page. Local cleanup still runs if the server logout request fails.
 
 ### User settings
 
-The authenticated user settings page is available at `/dashboard/settings`. Dashboard header avatars and the desktop and mobile sidebar identities link to this route. It includes User Details, Services, Bank Details, Security, Notifications, and Subscriptions. Larger screens use pill-style navigation, while small screens use a compact dropdown to avoid horizontally overflowing tabs.
+The authenticated user settings page is available at `/dashboard/settings`. Dashboard header avatars and the desktop and mobile sidebar identities link to this route. It includes User Details, Services, Bank Details, Security, Notifications, and Subscriptions. Larger screens use pill-style navigation, while small screens use a compact dropdown to avoid horizontally overflowing tabs. Both presentations come from the shared generic `SegmentedTabs`, which is also used by credential management and support FAQ categories.
 
-User Details follows read-first editing: biodata and bio values render as content until Edit is selected. Edit remains beside each section heading, while Save and Cancel appear after the complete input or textarea group on every screen size. On small screens, content is ordered as profile summary, biodata, then bio. The profile summary uses the shared default avatar when no image exists and displays verification, rating, review, email, and unique-ID information without allowing long identifiers to break the layout.
+User Details follows read-first editing: biodata and bio values render as content until Edit is selected. Edit remains beside each section heading, while Save and Cancel appear after the complete input or textarea group on every screen size. On small screens, content is ordered as profile summary, biodata, then bio. The profile summary uses the shared default avatar when no image exists and displays verification, rating, review, email, and unique-ID information without allowing long identifiers to break the layout. Unverified users can open the request-verification confirmation UI; its final submission remains ready for the verification endpoint when that backend route becomes available.
 
 Profile responsibilities are separated into focused hooks:
 
@@ -176,7 +180,7 @@ Bank Details uses a two-column field grid on larger screens and a single column 
 
 No universal provider-neutral bank-account ownership lookup is integrated. Available services have regional constraints—for example, Paystack account resolution targets supported African markets, Plaid ownership products cover supported banking regions, and Stripe Financial Connections focuses on US bank accounts—so verification should be connected through the future backend based on the product's supported countries.
 
-Services supports users with more than one expert business. The selector changes the active service without turning display values into inputs. Focused edit flows handle business details, description, display image, business photos, formatted currency pricing, and certificate, membership, and insurance arrays. Expert credentials reuse the collapsible form patterns from service registration, and mutations submit nested `FormData` to `PATCH /business/update-business/:id`. Until a business-list endpoint is available, typed expert fixtures live in `src/features/settings/constants/expertServices.ts`.
+Services supports users with more than one expert business. The selector changes the active service without turning display values into inputs. The tab is composed from focused profile, description, photo, and business-detail cards so editing responsibilities remain isolated and readable. These flows handle business details, description, display image, business photos, formatted currency pricing, and certificate, membership, and insurance arrays. Credential management uses the shared segmented control to switch between Certificates, Memberships, and Insurance, while retaining the collapsible form patterns from service registration. Mutations submit nested `FormData` to `PATCH /business/update-business/:id`. Until a business-list endpoint is available, typed expert fixtures live in `src/features/settings/constants/expertServices.ts`.
 
 Security provides password fields and a confirmed account-deactivation flow. Deactivation calls `PATCH /auth/deactivate-user`, then clears the local session and cached authenticated data. Notification preferences currently use local state and are ready to be replaced by notification-settings endpoints.
 
@@ -238,6 +242,12 @@ Expert fixtures and comparison data live in `src/features/experts/constants/dumm
 The dashboard notification bell opens the responsive notification modal from `src/features/notifications`. The modal supports latest/oldest sorting, action links, a scrollable populated state, and a clear action that reveals the `NotificationEmpty` state.
 
 Typed development fixtures live in `src/features/notifications/constants/testNotifications.ts`. The exported `testNotifications` collection opens the populated state with ten records, while `emptyNotifications` can be supplied to render the empty state directly. During manual testing, selecting **Clear Notifications** also transitions from populated to empty without changing code.
+
+### Dashboard support
+
+The authenticated support page is available at `/dashboard/support` and uses the same `Container` width, responsive grid proportions, and spacing as the dashboard overview. It combines direct email, telephone, and Instagram actions with the supplied `public/assets/images/support-img.svg` artwork. The image scales responsively but never exceeds its designed 616-pixel height.
+
+The FAQ panel reuses the shared `FaqCard` with its compact dashboard variant and `SegmentedTabs` for General, Jobs, Payments, and Others. Typed category data lives in `src/features/support/constants/supportFaqs.ts`. The page stacks on narrower screens, grows naturally on short laptop viewports instead of using a fixed viewport height, and uses staggered entrance animations with restrained hover feedback.
 
 ### Mobile app downloads
 

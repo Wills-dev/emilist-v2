@@ -20,6 +20,8 @@ import { userSettingsTabs } from "../../constants";
 import { useStore } from "@/store/authStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBankDetailsForm } from "../../hooks/useBankDetailsForm";
+import SettingsConfirmationModal from "../SettingsConfirmationModal/SettingsConfirmationModal";
+import { toast } from "sonner";
 
 const itemAnimation = {
   hidden: { opacity: 0, y: 16 },
@@ -33,6 +35,7 @@ const UserSettingsWrapper = () => {
   const isAuthInitialized = useStore((state) => state.isAuthInitialized);
   const [activeTab, setActiveTab] =
     useState<(typeof userSettingsTabs)[number]["id"]>("user-details");
+  const [verificationOpen, setVerificationOpen] = useState(false);
   const activeTabLabel =
     userSettingsTabs.find((tab) => tab.id === activeTab)?.label ?? "Settings";
 
@@ -88,6 +91,7 @@ const UserSettingsWrapper = () => {
                   onPhotoChange={imageUpload.handlePhotoChange}
                   onSavePhoto={imageUpload.savePhoto}
                   onCancelPhoto={imageUpload.cancelPhoto}
+                  onRequestVerification={() => setVerificationOpen(true)}
                 />
               </motion.div>
 
@@ -199,6 +203,20 @@ const UserSettingsWrapper = () => {
             </motion.section>
           )}
         </AnimatePresence>
+        {verificationOpen && (
+          <SettingsConfirmationModal
+            open={verificationOpen}
+            onClose={setVerificationOpen}
+            title="Request Verification"
+            message="Do you want to request a verification checkmark on your profile?"
+            onConfirm={() => {
+              setVerificationOpen(false);
+              toast.info(
+                "Verification requests will be connected when the endpoint is available.",
+              );
+            }}
+          />
+        )}
       </motion.div>
     </Container>
   );

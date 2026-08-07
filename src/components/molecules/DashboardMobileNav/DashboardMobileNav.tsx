@@ -23,15 +23,21 @@ import UserIdentity from "../UserIdentity/UserIdentity";
 import { dashboardMainLinks } from "@/lib/constants";
 import { routes } from "@/lib/helpers/routes";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import LogoutConfirmModal from "@/features/auth/components/LogoutConfirmModal/LogoutConfirmModal";
 
 const DashboardMobileNav = () => {
   const [open, setOpen] = useState(false);
-  const { logout, isLoggingOut } = useLogout();
+  const {
+    isConfirmationOpen,
+    setIsConfirmationOpen,
+    openLogoutConfirmation,
+    confirmLogout,
+    isLoggingOut,
+  } = useLogout();
   const closeDrawer = () => setOpen(false);
   const handleLogout = () => {
-    if (isLoggingOut) return;
-    logout();
     closeDrawer();
+    openLogoutConfirmation();
   };
 
   return (
@@ -104,7 +110,7 @@ const DashboardMobileNav = () => {
                 />
                 <DashboardNavCard
                   onClick={handleLogout}
-                  label={isLoggingOut ? "Logging out..." : "Logout"}
+                  label="Logout"
                   icon={<Logout />}
                   className="w-full"
                   variant="sidebar"
@@ -121,6 +127,14 @@ const DashboardMobileNav = () => {
           </div>
         </SheetContent>
       </Sheet>
+      {isConfirmationOpen && (
+        <LogoutConfirmModal
+          open={isConfirmationOpen}
+          onClose={setIsConfirmationOpen}
+          onConfirm={confirmLogout}
+          loading={isLoggingOut}
+        />
+      )}
     </div>
   );
 };
