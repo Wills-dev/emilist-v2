@@ -3,11 +3,11 @@
 import { AnimatePresence } from "framer-motion";
 
 import Container from "@/components/atoms/Container/Container";
-import JobCard from "@/features/jobs/components/JobCard/JobCard";
 import SectionTitle from "@/components/atoms/SectionTitle/SectionTitle";
 import ServiceSectionAction from "@/components/molecules/ServiceSectionActions/ServiceSectionAction";
 import SectionWrapper from "@/components/molecules/SectionWrapper/SectionWrapper";
 import ExpertCard from "@/features/experts/components/ExpertCard/ExpertCard";
+import HomeJobSection from "@/features/jobs/components/HomeJobSection/HomeJobSection";
 import HomeMaterialSection from "@/features/materials/components/HomeMaterialSection/HomeMaterialSection";
 import { useServiceSection } from "./useServiceSection";
 
@@ -47,14 +47,7 @@ const ServiceSection = () => {
               />
             </SectionWrapper>
           )}
-          {currentService === "jobs" && (
-            <SectionWrapper className="no-scrollbar ">
-              <JobCard />
-              <JobCard />
-              <JobCard />
-              <JobCard />
-            </SectionWrapper>
-          )}
+          {currentService === "jobs" && <HomeJobSection />}
           {currentService === "materials" && <HomeMaterialSection />}
         </AnimatePresence>
       </div>

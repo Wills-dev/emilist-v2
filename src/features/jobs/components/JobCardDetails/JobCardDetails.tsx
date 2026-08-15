@@ -21,6 +21,7 @@ const JobCardDetails = ({
   projectDuration,
   noOfpplicants,
   id,
+  posterId,
   isLiked,
   fullName,
   rating,
@@ -31,23 +32,24 @@ const JobCardDetails = ({
   reviewsHref,
 }: {
   title: string;
-  currency: string;
+  currency: string | null;
   description: string;
-  price: number;
+  price: number | null;
   location: string;
-  projectDuration: string;
+  projectDuration: string | null;
   noOfpplicants: number;
   id: string;
+  posterId?: string;
   isLiked: boolean;
   fullName: string;
   rating: number;
   noOfReviews: number;
   profileImgUrl?: string;
-  date: string;
+  date?: string | null;
   compareHref?: string;
   reviewsHref?: string;
 }) => {
-  const { handleToggleLike } = useToggleLike();
+  const { handleToggleLike, isUpdating } = useToggleLike();
 
   const toggleLike = () => {
     handleToggleLike(id);
@@ -63,7 +65,13 @@ const JobCardDetails = ({
               {description}
             </p>
           </div>
-          <PriceWrapper price={price} currency={currency} />
+          {price !== null && currency ? (
+            <PriceWrapper price={price} currency={currency} />
+          ) : (
+            <p className="whitespace-nowrap text-xs italic text-[#707471]">
+              Budget not specified
+            </p>
+          )}
         </div>
         <div className="py-3 border-y border-[#ECECEC] w-full">
           <div className="bg-[#EDEEF0] px-2 py-0.5 w-full">
@@ -73,7 +81,10 @@ const JobCardDetails = ({
                 className="max-w-27.5 text-[#6667FF]"
                 icon={<LocationIcon />}
               />
-              <InfoItem value={projectDuration} icon={<ClockIcon />} />
+              <InfoItem
+                value={projectDuration || "Timeline not specified"}
+                icon={<ClockIcon />}
+              />
               <div className="max-sm:hidden">
                 <InfoItem
                   value={`${noOfpplicants} applicants`}
@@ -87,17 +98,20 @@ const JobCardDetails = ({
       <div className="space-y-4">
         <UserProfileCard
           id={id}
+          profileId={posterId ?? ""}
+          shareId={id}
           isLiked={isLiked}
           fullName={fullName}
           rating={rating}
           noOfReviews={noOfReviews}
           imgUrl={profileImgUrl}
           handleToggleLike={toggleLike}
+          isLikeLoading={isUpdating}
           type="job"
           reviewsHref={reviewsHref}
         />
         <div className="flex items-center justify-between gap-3">
-          <DatedPosted date={date} />
+          {date ? <DatedPosted date={date} /> : <span />}
           {compareHref && <CompareBtn href={compareHref} />}
         </div>
       </div>

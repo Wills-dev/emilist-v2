@@ -29,7 +29,6 @@ const DonutChart = ({
   );
   const radius = 68;
   const circumference = 2 * Math.PI * radius;
-  let accumulatedValue = 0;
 
   return (
     <div
@@ -51,9 +50,11 @@ const DonutChart = ({
           strokeWidth="24"
         />
         {segments.map((segment, index) => {
+          const accumulatedValue = segments
+            .slice(0, index)
+            .reduce((sum, previousSegment) => sum + previousSegment.value, 0);
           const length = (segment.value / total) * circumference;
           const offset = (accumulatedValue / total) * circumference;
-          accumulatedValue += segment.value;
 
           return (
             <motion.circle

@@ -11,15 +11,19 @@ import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/
 import MobileFilterModal from "@/components/molecules/MobileFilterModal/MobileFilterModal";
 import { sortOptions } from "@/lib/constants/filter";
 import { routes } from "@/lib/helpers/routes";
-import { useFilters } from "@/lib/hooks/useFilters";
+import { POST_JOB_URGENCY_OPTIONS } from "../../constants/postJob";
+import { useJobsMarketplace } from "../../hooks/useJobsMarketplace";
 import DashboardJobCardWrap from "../DashboardJobCardWrap/DashboardJobCardWrap";
 import DashboardJobsFilter from "../DashboardJobsFilter/DashboardJobsFilter";
 import DashboardJobsHeader from "../DashboardJobsHeader/DashboardJobsHeader";
+import JobCardList from "../JobCardList/JobCardList";
 
 const DashboardJobsWrapper = ({ saved = false }: { saved?: boolean }) => {
   const {
     tab,
     setTab,
+    jobs,
+    query,
     filters,
     setFilter,
     clearFilter,
@@ -31,7 +35,7 @@ const DashboardJobsWrapper = ({ saved = false }: { saved?: boolean }) => {
     handleSearch,
     handleSearchChange,
     submittedQuery,
-  } = useFilters();
+  } = useJobsMarketplace({ limit: 10, enabled: !saved });
 
   const filterProps = {
     filters,
@@ -40,6 +44,12 @@ const DashboardJobsWrapper = ({ saved = false }: { saved?: boolean }) => {
     setPriceRange,
     toggleCategory,
     isCategorySelected,
+    ...(!saved
+      ? {
+          noticePeriodOptions: POST_JOB_URGENCY_OPTIONS,
+          noticePeriodTitle: "JOB URGENCY",
+        }
+      : {}),
   };
 
   return (
@@ -67,14 +77,18 @@ const DashboardJobsWrapper = ({ saved = false }: { saved?: boolean }) => {
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                   {saved && <BackButton />}
-                  <Select
-                    options={sortOptions}
-                    variant="secondary"
-                    fontSize="14px"
-                    value={filters.sortBy ?? ""}
-                    onChange={(event) => setFilter("sortBy", event.target.value)}
-                    placeholder="Sort by"
-                  />
+                  {saved && (
+                    <Select
+                      options={sortOptions}
+                      variant="secondary"
+                      fontSize="14px"
+                      value={filters.sortBy ?? ""}
+                      onChange={(event) =>
+                        setFilter("sortBy", event.target.value)
+                      }
+                      placeholder="Sort by"
+                    />
+                  )}
                   <button
                     type="button"
                     aria-label="Open job filters"
@@ -91,11 +105,29 @@ const DashboardJobsWrapper = ({ saved = false }: { saved?: boolean }) => {
                   <MarketplaceActionTitle title="Post a job" link={routes.postJob} />
                 </div>
               </div>
-              <DashboardJobCardWrap
-                query={submittedQuery}
-                filters={filters}
-                savedOnly={saved}
-              />
+              {saved ? (
+                <DashboardJobCardWrap
+                  query={submittedQuery}
+                  filters={filters}
+                  savedOnly
+                />
+              ) : (
+                <JobCardList
+                  jobs={jobs}
+                  isLoading={query.isPending}
+                  isError={query.isError}
+                  hasNextPage={query.hasNextPage}
+                  isFetchingNextPage={query.isFetchingNextPage}
+                  fetchNextPage={() => void query.fetchNextPage()}
+                  refetch={() => void query.refetch()}
+                  onResetFilters={resetFilters}
+                  getDetailsHref={routes.dashboardLinks.marketplaceJobInfo}
+                  getCompareHref={() => routes.dashboardLinks.compareJobs}
+                  getReviewsHref={
+                    routes.dashboardLinks.marketplaceJobReviews
+                  }
+                />
+              )}
             </div>
           </div>
         </motion.div>

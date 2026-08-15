@@ -26,6 +26,8 @@ export interface MarketplaceFilterProps {
   locations?: selectOption[] | string[];
   showLocation?: boolean;
   showNoticePeriod?: boolean;
+  noticePeriodOptions?: selectOption[];
+  noticePeriodTitle?: string;
   showLevel?: boolean;
   showRating?: boolean;
   showDeliveryTime?: boolean;
@@ -47,6 +49,8 @@ const MarketplaceFilter = ({
   showPrice,
   priceTitle,
   showNoticePeriod,
+  noticePeriodOptions,
+  noticePeriodTitle,
   clearFilter,
   showLevel,
   showRating,
@@ -95,6 +99,8 @@ const MarketplaceFilter = ({
           setFilter={setFilter}
           clearFilter={clearFilter}
           variant={variant}
+          options={noticePeriodOptions}
+          title={noticePeriodTitle}
         />
       )}
       {showLevel && (

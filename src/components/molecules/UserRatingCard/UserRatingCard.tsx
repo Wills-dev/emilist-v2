@@ -27,12 +27,18 @@ const UserRatingCard = ({
     <div className="flex items-center gap-2">
       <ProfileAvatar profileImage={imgUrl} variant={avatarVariant} />
       <div className="space-y-1">
-        <Link
-          href={routes?.profile(id)}
-          className="text-[#5E625F] text-sm font-exo font-semibold truncate hover:underline duration-300 transition-all"
-        >
-          {fullName}
-        </Link>
+        {id ? (
+          <Link
+            href={routes?.profile(id)}
+            className="text-[#5E625F] text-sm font-exo font-semibold truncate hover:underline duration-300 transition-all"
+          >
+            {fullName}
+          </Link>
+        ) : (
+          <span className="block truncate font-exo text-sm font-semibold text-[#5E625F]">
+            {fullName}
+          </span>
+        )}
         {detail && (
           <p className="max-w-44 truncate text-[11px] text-[#8A8D8B]">
             {detail}

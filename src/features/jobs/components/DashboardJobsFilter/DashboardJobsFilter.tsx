@@ -9,6 +9,8 @@ type DashboardJobsFilterProps = Pick<
   | "clearFilter"
   | "filters"
   | "isCategorySelected"
+  | "noticePeriodOptions"
+  | "noticePeriodTitle"
   | "setFilter"
   | "setPriceRange"
   | "toggleCategory"

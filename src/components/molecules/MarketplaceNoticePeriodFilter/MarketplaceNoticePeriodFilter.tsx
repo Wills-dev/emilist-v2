@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { FilterState } from "@/lib/hooks/useFilters";
+import { selectOption } from "@/lib/types";
 
 import FilterSectionWrapper from "@/components/atoms/FilterSectionWrapper/FilterSectionWrapper";
 import FilterTitle from "@/components/atoms/FilterTilte/FilterTilte";
@@ -15,6 +16,8 @@ const MarketplaceNoticePeriodFilter = ({
   setFilter,
   clearFilter,
   variant,
+  options = noticePeriodOptions,
+  title = "NOTICE PERIOD",
 }: {
   filters: FilterState;
   setFilter: <K extends keyof FilterState>(
@@ -23,13 +26,15 @@ const MarketplaceNoticePeriodFilter = ({
   ) => void;
   variant?: "primary" | "secondary" | "tertiary";
   clearFilter: (key: keyof FilterState) => void;
+  options?: selectOption[];
+  title?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
     <FilterSectionWrapper variant={variant}>
       <div className="flex items-center justify-between gap-2.5">
-        <FilterTitle title="NOTICE PERIOD" />
+        <FilterTitle title={title} />
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
@@ -70,7 +75,7 @@ const MarketplaceNoticePeriodFilter = ({
                 parentVariant={variant}
               />
               <div className="flex items-center gap-2.5 flex-wrap w-full">
-                {noticePeriodOptions?.map((period) => (
+                {options.map((period) => (
                   <FilterSelector
                     key={period?.value}
                     value={period.label}
