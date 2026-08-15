@@ -84,6 +84,7 @@ export const useLogin = () => {
         }
         // Profile complete or expert flow — close modals, form auto-submits via useEffect
         closeAllModals();
+        if (pendingFlow) return;
         if (redirectPath) {
           clearPendingFlow();
           router.push(redirectPath);

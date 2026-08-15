@@ -8,6 +8,7 @@ import { clearAllCookies } from "@/lib/helpers/cookie";
 import { routes } from "@/lib/helpers/routes";
 import { useStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cart/cartStore";
+import { usePostJobStore } from "@/store/job/postJobStore";
 
 export const useLogout = () => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
@@ -23,6 +24,9 @@ export const useLogout = () => {
   const clearCart = useCartStore((state) => state.clearCart);
 
   const clearSession = () => {
+    const jobState = usePostJobStore.getState();
+    jobState.previews.forEach((preview) => URL.revokeObjectURL(preview));
+    jobState.resetForm();
     setIsConfirmationOpen(false);
     clearAllCookies();
     clearCurrentUser();

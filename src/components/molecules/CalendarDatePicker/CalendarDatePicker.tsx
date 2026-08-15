@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import type { AriaAttributes } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 
 const weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
@@ -39,7 +40,11 @@ const CalendarDatePicker = ({
   disabled,
   min,
   max,
+  placeholder = "Select date",
   onChange,
+  "aria-label": ariaLabel,
+  "aria-describedby": ariaDescribedBy,
+  "aria-invalid": ariaInvalid,
 }: {
   value?: string | number | readonly string[];
   name?: string;
@@ -48,7 +53,11 @@ const CalendarDatePicker = ({
   disabled?: boolean;
   min?: string | number;
   max?: string | number;
+  placeholder?: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  "aria-label"?: string;
+  "aria-describedby"?: AriaAttributes["aria-describedby"];
+  "aria-invalid"?: AriaAttributes["aria-invalid"];
 }) => {
   const isControlled = typeof value === "string";
   const [internalValue, setInternalValue] = useState("");
@@ -62,6 +71,9 @@ const CalendarDatePicker = ({
   const maxYear = maxDate?.getFullYear() ?? currentYear + 100;
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState<"top" | "bottom">("bottom");
+  const [horizontalPlacement, setHorizontalPlacement] = useState<
+    "left" | "right"
+  >("left");
   const [viewDate, setViewDate] = useState(selectedDate ?? new Date());
   const triggerRef = useRef<HTMLButtonElement>(null);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
@@ -73,12 +85,16 @@ const CalendarDatePicker = ({
     const bounds = trigger.getBoundingClientRect();
     const availableAbove = bounds.top;
     const availableBelow = window.innerHeight - bounds.bottom;
-    const calendarHeight = 190;
+    const calendarHeight = 270;
+    const calendarWidth = Math.min(288, window.innerWidth - 32);
 
     setPlacement(
       availableBelow < calendarHeight && availableAbove > availableBelow
         ? "top"
         : "bottom",
+    );
+    setHorizontalPlacement(
+      bounds.left + calendarWidth > window.innerWidth - 16 ? "right" : "left",
     );
   }, []);
 
@@ -153,7 +169,6 @@ const CalendarDatePicker = ({
       <input
         ref={hiddenInputRef}
         type="hidden"
-        id={id}
         name={name}
         value={selectedValue}
         required={required}
@@ -163,7 +178,9 @@ const CalendarDatePicker = ({
       />
       <button
         ref={triggerRef}
+        id={id}
         type="button"
+        role="combobox"
         disabled={disabled}
         onClick={() => {
           updatePlacement();
@@ -171,6 +188,11 @@ const CalendarDatePicker = ({
         }}
         aria-haspopup="dialog"
         aria-expanded={open}
+        aria-controls={open && id ? `${id}-calendar-dialog` : undefined}
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid}
+        aria-required={required}
         className="flex h-11 w-full items-center justify-between rounded-[10px] bg-[#ECECEC] px-3 text-left text-sm text-[#737774] focus-visible:ring-2 focus-visible:ring-[#25C269]"
       >
         {selectedDate
@@ -179,14 +201,15 @@ const CalendarDatePicker = ({
               month: "short",
               year: "numeric",
             })
-          : "Select date"}
+          : placeholder}
         <CalendarDays className="size-4" />
       </button>
       {open && (
         <div
+          id={id ? `${id}-calendar-dialog` : undefined}
           role="dialog"
           aria-label="Choose date"
-          className={`absolute left-0 z-50 w-full max-w-52 rounded-lg bg-[#F3F3F3] p-1.5 shadow-xl ${placement === "top" ? "bottom-[calc(100%+8px)]" : "top-[calc(100%+8px)]"}`}
+          className={`absolute z-50 w-72 max-w-[calc(100vw-2rem)] rounded-lg bg-[#F3F3F3] p-2 shadow-xl ${horizontalPlacement === "right" ? "right-0" : "left-0"} ${placement === "top" ? "bottom-[calc(100%+8px)]" : "top-[calc(100%+8px)]"}`}
         >
           <div className="mb-2 flex items-center justify-between">
             <div className="flex min-w-0 items-center gap-1">
@@ -287,7 +310,7 @@ const CalendarDatePicker = ({
                   type="button"
                   disabled={isOutsideRange}
                   onClick={() => selectDate(date)}
-                  className={`h-5 border border-white/60 text-[10px] disabled:cursor-not-allowed disabled:bg-transparent disabled:text-[#B8B9B8] ${dateValue === selectedValue ? "bg-[#169BD5] text-white" : currentMonth ? "hover:bg-white" : "bg-white text-[#8A8D8B]"}`}
+                  className={`h-8 border border-white/60 text-xs disabled:cursor-not-allowed disabled:bg-transparent disabled:text-[#B8B9B8] ${dateValue === selectedValue ? "bg-[#169BD5] text-white" : currentMonth ? "hover:bg-white" : "bg-white text-[#8A8D8B]"}`}
                 >
                   {date.getDate()}
                 </button>

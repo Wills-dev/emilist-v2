@@ -8,6 +8,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Material browsing, detail pages, image galleries, availability, and reviews
 - Authenticated material reviews with modal-based login protection
 - Material creation flows with image uploads and validation
+- Responsive two-step public job creation with urgency-specific fields, milestone balancing, draft restoration, protected submission, and a completion route
 - Dashboard listed-material management with responsive cards, pagination, loading and empty states
 - Material listing updates with rich descriptions, formatted numeric inputs, incremental image uploads, image removal, price-only editing, and archive confirmation
 - Cart retrieval and management: quantities, item removal, discount codes, and server-calculated order summaries
@@ -16,6 +17,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Dashboard job details with galleries, milestones, employer reviews, compare and promotion actions, and mobile milestone navigation
 - Swipeable job comparison with reusable comparison cards and downloadable CSV reports
 - Responsive dashboard expert marketplace with service filters, saved experts, profile details, full review pages, and animated infinite-scroll listings
+- Responsive public expert marketplace with the dedicated expert banner, search, sorting, service filters, public profiles, rating summaries, and full review pages
 - Swipeable expert comparison with reusable comparison cards and downloadable comparison reports
 - Dashboard-only service registration that reuses the expert business and verification forms while preserving the public registration flow
 - Linked review counts across job, expert, and material cards with routes to their corresponding full review pages
@@ -39,6 +41,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Shared logout confirmation flow across desktop and mobile dashboard navigation
 - Smart mobile-app download route with iOS and Android store detection
 - Dashboard, cart, checkout, enterprise booking, and marketing pages
+- Accessible home-page section reveals that animate upward as content enters the viewport while keeping the hero immediately visible
 - Reusable Atomic Design UI primitives: atoms, molecules, organisms, and templates
 
 ## Tech stack
@@ -148,6 +151,40 @@ The material editing flow follows this separation explicitly: modal composition,
 
 Keep price and quantity fields as text inputs with numeric input modes so formatting remains controllable across browsers. Quantities accept digits only, while prices may display thousands separators. Always remove presentation commas and convert values to numbers before creating API payloads.
 
+### Public job creation
+
+The public job-creation flow is available at `/post-job`. It uses a responsive two-step form: job details first, followed by one to five milestones. Successful submissions navigate to `/post-job/congratulations`.
+
+The details step sends the conditional block required by the selected urgency:
+
+| Urgency | API value | Required conditional fields | Milestone budget source |
+| --- | --- | --- | --- |
+| Right now | `right_now` | `jobDuration`, `totalBudget` | `totalBudget` |
+| In future | `in_future` | `jobSchedule`, `estimatedBudget` | `estimatedBudget` |
+| Regularly | `regularly` | `jobFrequency`, `startDate`, `recurringBudget`; `endDate` is optional | One `recurringBudget` period |
+
+Shared fields include category, service, title, description, urgency, location, milestones, optional images, and either public-bidding fields or a direct-hire expert ID. Category and service options currently come from `src/features/jobs/constants/postJob.ts` and should be replaced by an authoritative taxonomy endpoint when one is available.
+
+Milestone allocation follows these invariants:
+
+- Every job has between one and five milestones.
+- A compact sticky guide remains visible while scrolling later milestones, showing the current milestone count and the budget and duration reserved for the final checkpoint.
+- Earlier milestone payments are editable; the final payment is read-only and automatically receives the unallocated budget balance.
+- Milestone amounts are calculated in currency minor units so the total exactly matches the selected job budget, including decimal values.
+- Milestone currency is derived from the job budget and cannot diverge from it.
+- For `right_now` jobs, earlier milestone durations are editable and the final duration receives the remaining project time. Duration comparisons use one day, seven-day weeks, and fixed 30-day months.
+- Jobs without a total project duration still require a positive duration for every milestone, but their milestone durations are not accumulated against the schedule.
+
+The form submits `multipart/form-data` to `POST /jobs/create-job`. Nested values such as `location`, `milestones`, budgets, schedules, and durations are JSON-encoded, while each selected file is appended with the `files` key. Image selection is limited to ten PNG or JPEG files of at most 5 MB each.
+
+Only serializable draft fields are persisted. Browser `File` objects and blob preview URLs stay in memory; after a refresh, the restored draft asks the user to re-upload previously selected images. Store restoration is explicitly delayed until the client mounts so saved steps and urgency branches cannot conflict with the server-rendered HTML. Logging out revokes preview URLs and clears both the in-memory and persisted job draft.
+
+Protected submissions resume once after authentication and profile completion. Direct creation accepts an expert Business `uniqueId` through `expertId`, omits bidding and experience-level fields, and creates a new direct-job invitation. The direct target is deliberately not persisted across sessions or unrelated jobs.
+
+`POST /jobs/create-job` does not attach an expert to an existing job. Hiring for an existing job requires a separate job-selection experience and an employer-side invitation or assignment endpoint that accepts both the existing job ID and the expert Business `uniqueId`. Existing expert-card actions should not be connected to the new-job route until that API contract is available.
+
+The current form requires a full location address. The payload supports latitude and longitude when a location provider supplies both values, but it does not fabricate coordinates when only an address is available.
+
 ### Material images
 
 New material images remain local until the create or update request is submitted. Removing a newly selected image only updates local state. Existing persisted images are removed through the material image deletion endpoint and should refresh the related material queries after a successful request.
@@ -162,7 +199,7 @@ Temporary or demonstration records must live in a clearly named `constants/dummy
 
 Successful login responses update `currentUser` and `isAuthInitialized` atomically in Zustand, allowing public navigation controls to switch immediately from Login/Sign Up to Dashboard. The login response is the source of truth for that browser session; `/auth/current-user` is used to restore the session when the application loads or the browser is refreshed with an existing token.
 
-User response normalization supports APIs that return the user directly or under `user` or `userData`. Dashboard logout actions first open the shared confirmation modal on desktop and mobile. Confirming logout calls `GET /auth/log-out`, clears application cookies, auth-flow state, cart state, modals, and the React Query cache, then returns the user to the home page. Local cleanup still runs if the server logout request fails.
+User response normalization supports APIs that return the user directly or under `user` or `userData`. Dashboard logout actions first open the shared confirmation modal on desktop and mobile. Confirming logout calls `GET /auth/log-out`, clears application cookies, auth-flow state, cart state, the post-job draft and image previews, modals, and the React Query cache, then returns the user to the home page. Local cleanup still runs if the server logout request fails.
 
 ### User settings
 
@@ -240,6 +277,20 @@ Dashboard offer-service links—including marketplace actions, overview quick ac
 Business descriptions and profile bios reuse the same Tiptap rich-text editor as material descriptions. Render saved rich text through `RichTextContent` so supported headings, paragraphs, emphasis, and lists display correctly instead of exposing stored HTML.
 
 Expert fixtures and comparison data live in `src/features/experts/constants/dummy.ts`; UI components should not define demonstration records inline.
+
+### Public experts marketplace
+
+The public expert marketplace is available under `/marketplace/experts`. It follows the same responsive structure as the public jobs and materials experiences, using the shared marketplace banner, tabs, search, sorting, filters, saved-filter action, expert cards, and mobile filter modal. The expert banner uses `public/assets/images/experts.svg` with the dark-green `#0F6B4B` to `#215342` gradient.
+
+Public expert routes include:
+
+| Route | Purpose |
+| --- | --- |
+| `/marketplace/experts` | Browse, search, sort, and filter verified experts. |
+| `/marketplace/experts/[id]` | View an expert's public profile, gallery, pricing, business information, rating summary, and recent reviews. |
+| `/marketplace/experts/[id]/reviews` | View, search, and add reviews from the public expert experience. |
+
+Public and dashboard expert profiles reuse the same profile and review components while receiving route-specific navigation and width constraints from their parent layouts. Shared review summaries use `w-full` so the public page can fill its wider review column without changing the narrower dashboard presentation.
 
 ### Dashboard messages
 
