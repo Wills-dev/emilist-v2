@@ -9,18 +9,25 @@ const OptionToggle = <T extends string>({
   onChange,
   name,
   ariaLabel,
+  disabled = false,
 }: {
   options: OptionToggleItem<T>[];
   value: T;
   onChange: (value: T) => void;
   name: string;
   ariaLabel: string;
+  disabled?: boolean;
 }) => (
-  <div role="radiogroup" aria-label={ariaLabel} className="flex flex-wrap gap-6">
+  <div
+    role="radiogroup"
+    aria-label={ariaLabel}
+    aria-disabled={disabled}
+    className={`flex flex-wrap gap-6 ${disabled ? "opacity-50" : ""}`}
+  >
     {options.map((option) => (
       <label
         key={option.value}
-        className="flex cursor-pointer items-center gap-2 text-sm text-[#303632]"
+        className={`flex items-center gap-2 text-sm text-[#303632] ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       >
         <input
           type="radio"
@@ -28,10 +35,11 @@ const OptionToggle = <T extends string>({
           value={option.value}
           checked={value === option.value}
           onChange={() => onChange(option.value)}
+          disabled={disabled}
           className="peer sr-only"
         />
         <span
-          className={`flex size-5 items-center justify-center rounded-full border-2 ${
+          className={`flex size-5 items-center justify-center rounded-full border-2 peer-focus-visible:ring-2 peer-focus-visible:ring-[#25C269] peer-focus-visible:ring-offset-2 ${
             value === option.value
               ? "border-[#25C269]"
               : "border-[#8A8D8B]"

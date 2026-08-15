@@ -3,6 +3,7 @@ export const routes = {
   joinExpert: "/become-expert",
   congrats: "/become-expert/congratulations",
   postJob: "/post-job",
+  postJobCongrats: "/post-job/congratulations",
   postMaterial: "/post-material",
   cart: "/cart",
   checkout: "/checkout",

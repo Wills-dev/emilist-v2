@@ -26,7 +26,11 @@ const Input = ({
         disabled={props.disabled}
         min={props.min}
         max={props.max}
+        placeholder={props.placeholder}
         onChange={props.onChange}
+        aria-label={props["aria-label"]}
+        aria-describedby={props["aria-describedby"]}
+        aria-invalid={props["aria-invalid"]}
       />
     );
   }
