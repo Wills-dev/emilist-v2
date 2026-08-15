@@ -9,21 +9,22 @@ import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/
 import MarketplaceFilter from "@/components/molecules/MarketplaceFilter/MarketplaceFilter";
 import SearchBar from "@/components/molecules/SearchBar/SearchBar";
 import SavedFilterBtn from "@/components/atoms/SavedFilterBtn/SavedFilterBtn";
-import JobCard from "../JobCard/JobCard";
+import JobCardList from "../JobCardList/JobCardList";
 import MarketplaceActionBtns from "@/components/molecules/MarketplaceActionBtns/MarketplaceActionBtns";
 
 import { marketplaceTabs } from "@/lib/constants";
-import { useFilters } from "@/lib/hooks/useFilters";
-import { expertServices } from "@/features/experts/constants";
+import { jobCategories } from "@/features/jobs/constants";
+import { POST_JOB_URGENCY_OPTIONS } from "@/features/jobs/constants/postJob";
 import { countriesAndStates } from "@/lib/constants/countries";
-import { useGeneralSearch } from "@/lib/hooks/useGeneralSearch";
 import { routes } from "@/lib/helpers/routes";
+import { useJobsMarketplace } from "../../hooks/useJobsMarketplace";
 
 const MarketplaceJobWrapper = () => {
-  const { handleSubmit, setSearch } = useGeneralSearch();
   const {
     tab,
     setTab,
+    jobs,
+    query,
     filters,
     setFilter,
     clearFilter,
@@ -32,7 +33,9 @@ const MarketplaceJobWrapper = () => {
     setPriceRange,
     toggleCategory,
     isCategorySelected,
-  } = useFilters();
+    handleSearch,
+    handleSearchChange,
+  } = useJobsMarketplace({ limit: 10 });
 
   return (
     <div>
@@ -59,11 +62,13 @@ const MarketplaceJobWrapper = () => {
                   toggleCategory={toggleCategory}
                   isCategorySelected={isCategorySelected}
                   setPriceRange={setPriceRange}
-                  categories={expertServices}
+                  categories={jobCategories}
                   locations={countriesAndStates}
                   showLocation
                   showPrice
                   showNoticePeriod
+                  noticePeriodOptions={POST_JOB_URGENCY_OPTIONS}
+                  noticePeriodTitle="JOB URGENCY"
                   showLevel
                   showRating
                   clearFilter={clearFilter}
@@ -84,13 +89,16 @@ const MarketplaceJobWrapper = () => {
                 <div className="w-full flex items-center justify-between sm:gap-10 gap-4">
                   <div className="flex-1 w-full py-2.5">
                     <SearchBar
-                      setSearch={setSearch}
-                      onSubmit={handleSubmit}
+                      setSearch={handleSearchChange}
+                      onSubmit={handleSearch}
                       placeholder="Search for jobs, experts or materials..."
                       variant="secondary"
                     />
                   </div>
-                  <SavedFilterBtn />
+                  <SavedFilterBtn
+                    href={routes.dashboardLinks.savedJobs}
+                    ariaLabel="View saved jobs"
+                  />
                 </div>
               </div>
               <div className="space-y-4">
@@ -110,16 +118,20 @@ const MarketplaceJobWrapper = () => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
-                      className="flex flex-wrap gap-6 xl:max-h-screen xl:overflow-y-auto no-scrollbar"
+                      className="w-full"
                     >
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
-                      <JobCard />
+                      <JobCardList
+                        jobs={jobs}
+                        isLoading={query.isPending}
+                        isError={query.isError}
+                        hasNextPage={query.hasNextPage}
+                        isFetchingNextPage={query.isFetchingNextPage}
+                        fetchNextPage={() => void query.fetchNextPage()}
+                        refetch={() => void query.refetch()}
+                        onResetFilters={resetFilters}
+                        getDetailsHref={routes.marketplace.jobInfo}
+                        className="no-scrollbar"
+                      />
                     </motion.div>
                   ) : (
                     <motion.div
@@ -136,11 +148,13 @@ const MarketplaceJobWrapper = () => {
                         toggleCategory={toggleCategory}
                         isCategorySelected={isCategorySelected}
                         setPriceRange={setPriceRange}
-                        categories={expertServices}
+                        categories={jobCategories}
                         locations={countriesAndStates}
                         showLocation
                         showPrice
                         showNoticePeriod
+                        noticePeriodOptions={POST_JOB_URGENCY_OPTIONS}
+                        noticePeriodTitle="JOB URGENCY"
                         showLevel
                         showRating
                         clearFilter={clearFilter}

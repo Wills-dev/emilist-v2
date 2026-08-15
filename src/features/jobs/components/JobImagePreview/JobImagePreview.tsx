@@ -7,6 +7,7 @@ import ImageIcon from "@/components/atoms/icons/ImageIcon";
 
 const ImagePreview = dynamic(
   () => import("@/components/atoms/ImagePreview/ImagePreview"),
+  { ssr: false },
 );
 
 import { defaultJobImage } from "../../constants";

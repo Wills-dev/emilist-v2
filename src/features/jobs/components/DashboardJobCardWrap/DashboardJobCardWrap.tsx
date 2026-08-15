@@ -75,6 +75,8 @@ const DashboardJobCardWrap = ({ query, filters, savedOnly = false }: { query: st
         >
           <JobCard
             {...job}
+            posterId={job.id}
+            currency="NGN"
             detailsHref={routes.dashboardLinks.marketplaceJobInfo(job.id ?? "")}
             compareHref={routes.dashboardLinks.compareJobs}
             reviewsHref={routes.dashboardLinks.marketplaceJobReviews(job.id ?? "")}

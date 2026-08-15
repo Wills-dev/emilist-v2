@@ -13,7 +13,9 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Material listing updates with rich descriptions, formatted numeric inputs, incremental image uploads, image removal, price-only editing, and archive confirmation
 - Cart retrieval and management: quantities, item removal, discount codes, and server-calculated order summaries
 - Dashboard material marketplace with responsive filters and management actions
-- Responsive dashboard jobs marketplace with search, sorting, job-specific filters, saved jobs, animated cards, and infinite-scroll loading
+- Paginated public and dashboard jobs marketplace with server-backed search, job-specific filters, personalized saved state, animated cards, and infinite-scroll loading
+- API-backed homepage job cards with loading, retry, empty, and personalized liked states
+- Full-viewport job image previews rendered through a portal with scroll locking and Escape-key dismissal
 - Dashboard job details with galleries, milestones, employer reviews, compare and promotion actions, and mobile milestone navigation
 - Swipeable job comparison with reusable comparison cards and downloadable CSV reports
 - Responsive dashboard expert marketplace with service filters, saved experts, profile details, full review pages, and animated infinite-scroll listings
@@ -193,6 +195,25 @@ New material images remain local until the create or update request is submitted
 
 Use TanStack Query for remote data. Include all request inputs in the query key, invalidate related keys after mutations, and render loading, empty, and error-safe states around query data.
 
+The home-page Jobs tab and the public and dashboard Find Jobs screens use `GET /jobs/fetch-all-jobs`. The home section requests the first four available records without marketplace filter state. The API client, wire DTOs, query-key factory, response mapper, query/controller hooks, and list presentation are kept in separate job-feature modules. The marketplace controller sends the submitted search text, selected categories and locations, unformatted budget limits, job urgency, lower-case experience level, minimum employer rating, and the authenticated viewer's `_id` when available. Multi-value filters are serialized as stable comma-separated values.
+
+The jobs-list responsibilities are intentionally layered:
+
+- `api/fetchAllJobs.ts` serializes supported query parameters, executes the request, validates the page envelope, and logs the complete response during development.
+- `helpers/jobList.ts` contains pure filter normalization and API-record-to-card mapping, including urgency-specific budgets, schedules, `jobFiles`, and missing-field fallbacks.
+- `hooks/useGetAllJobs.ts` owns the reusable TanStack infinite query and server pagination.
+- `hooks/useHomeJobs.ts` configures that query for the four-card homepage section without creating marketplace filter state.
+- `hooks/useJobsMarketplace.ts` combines marketplace search and filters, the authenticated viewer ID, paginated results, and duplicate removal.
+- `queries/jobKeys.ts` centralizes cache keys so different filters and viewers remain isolated while job mutations can invalidate the complete jobs query family.
+
+Pagination comes from `currentPage`, `totalPages`, and `totalJobs`; the next page is requested only while `currentPage < totalPages`. Changing any normalized filter creates a new query key and restarts the list at page one. Initial loading, retryable errors, no-results, next-page progress, and end-of-list states are rendered by the shared `JobCardList`. Job-like mutations require authentication and invalidate the complete `jobs` query family so the server-provided `liked` field is refreshed.
+
+The documented list response does not currently include budget, currency, timeline, media, or creation date. The mapper can consume the matching create-job fields when the API supplies them, but otherwise cards show explicit unavailable states instead of copying fixture values. In development, the complete response envelope is logged as `[fetchAllJobs] response` to make contract verification straightforward; production builds do not log it.
+
+The endpoint has no sort parameter, so sort controls are intentionally hidden on API-backed job lists rather than sorting only the pages already loaded. It also has no saved-only predicate. `/dashboard/marketplace/jobs/saved` remains on the existing local fixture until a paginated liked-jobs endpoint or server-side `liked=true` filter is available; filtering individual fetched pages by `liked` would produce incomplete results.
+
+Job image previews use the shared `ImagePreview` component. The preview is portalled directly into `document.body` so animated sections and horizontally scrolling card containers cannot clip its fixed backdrop. While open, it covers the complete viewport, prevents background scrolling, and closes from the backdrop or Escape key.
+
 Temporary or demonstration records must live in a clearly named `constants/dummy.ts` or dedicated test-data constants file within the owning feature. Keep fixtures, domain types, rendering components, and interaction hooks separate so API data can replace fixtures without restructuring the UI.
 
 ### Authentication lifecycle
@@ -245,7 +266,7 @@ Dashboard job routes include:
 
 | Route | Purpose |
 | --- | --- |
-| `/dashboard/marketplace/jobs` | Browse, search, sort, filter, and progressively load jobs. |
+| `/dashboard/marketplace/jobs` | Browse, search, filter, and progressively load jobs from the jobs API. |
 | `/dashboard/marketplace/jobs/saved` | View saved jobs with the active pink saved-state control. |
 | `/dashboard/marketplace/jobs/[id]` | View dashboard-specific job information, milestones, and actions. |
 | `/dashboard/marketplace/jobs/[id]/reviews` | View, search, and add reviews for the job owner. |
@@ -253,9 +274,9 @@ Dashboard job routes include:
 
 Dashboard job cards receive dashboard-specific detail and comparison links. Public cards retain their public routes. Marketplace navigation remains active throughout `/dashboard/marketplace/*`, while the separate dashboard Jobs navigation points to `/dashboard/jobs`.
 
-The marketplace and saved-job lists use an intersection observer to load additional cards as the user scrolls. There is no numbered pagination on these listing pages. The comparison page uses horizontal scrolling on narrow screens with swipe guidance and preserves a multi-column comparison view when space permits.
+The public and dashboard marketplace lists use an intersection observer to request the next server page as the user scrolls. There is no numbered pagination on these listing pages. The comparison page uses horizontal scrolling on narrow screens with swipe guidance and preserves a multi-column comparison view when space permits.
 
-Development fixtures for jobs, owner reviews, job information, and comparison records are kept in `src/features/jobs/constants/dummy.ts`. Components should not define dummy records inline. Reusable domain options that are not fixtures, such as job categories, belong in `src/features/jobs/constants/index.ts`, while data shapes belong in `src/features/jobs/types`.
+Development fixtures for the saved-jobs fallback, owner reviews, job information, and comparison records are kept in `src/features/jobs/constants/dummy.ts`. Real list IDs currently open the existing fixture-backed detail experience until a fetch-job-by-ID contract is integrated. Components should not define dummy records inline. Reusable domain options that are not fixtures, such as job categories, belong in `src/features/jobs/constants/index.ts`, while data shapes belong in `src/features/jobs/types`.
 
 ### Dashboard experts marketplace
 

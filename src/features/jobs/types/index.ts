@@ -48,3 +48,19 @@ export interface CompareJobItem {
   employerReviews: number;
   jobsPosted: number;
 }
+
+export type {
+  FetchAllJobsEnvelope,
+  FetchAllJobsItemDto,
+  FetchAllJobsListQuery,
+  FetchAllJobsPage,
+  FetchAllJobsQuery,
+  FetchAllJobsWireParams,
+  JobCardViewModel,
+  JobListDurationDto,
+  JobListLocationDto,
+  JobListMediaDto,
+  JobListMoneyDto,
+  JobListPosterDto,
+  JobListScheduleDto,
+} from "./listJobs";

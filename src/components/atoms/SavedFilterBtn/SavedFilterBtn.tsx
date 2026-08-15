@@ -5,7 +5,17 @@ import { usePathname, useRouter } from "next/navigation";
 import { routes } from "@/lib/helpers/routes";
 import { useStore } from "@/store/authStore";
 
-const SavedFilterBtn = ({ saved = false }: { saved?: boolean }) => {
+interface SavedFilterBtnProps {
+  saved?: boolean;
+  href?: string;
+  ariaLabel?: string;
+}
+
+const SavedFilterBtn = ({
+  saved = false,
+  href,
+  ariaLabel = "View saved materials",
+}: SavedFilterBtnProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const currentUser = useStore((state) => state.currentUser);
@@ -13,21 +23,22 @@ const SavedFilterBtn = ({ saved = false }: { saved?: boolean }) => {
   const savedMaterialsPath = pathname.startsWith("/dashboard")
     ? routes.dashboardLinks.savedMaterials
     : routes.marketplace.savedMaterials;
+  const destinationHref = href ?? savedMaterialsPath;
 
   const handleClick = () => {
     if (currentUser) {
-      router.push(savedMaterialsPath);
+      router.push(destinationHref);
       return;
     }
 
-    setPendingFlow(null, {}, savedMaterialsPath, true);
+    setPendingFlow(null, {}, destinationHref, true);
   };
 
   return (
     <button
       type="button"
       onClick={handleClick}
-      aria-label="View saved materials"
+      aria-label={ariaLabel}
       className="sm:w-[42.5px] w-[26.8px] sm:h-[42.5px] h-[26.8px] rounded-full bg-linear-to-b from-0% from-[#25C269] to-100% to-[#125C32] border-[0.44px] border-[#F1F2F9] flex justify-center items-center cursor-pointer"
     >
       <span

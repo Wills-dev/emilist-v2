@@ -2,47 +2,48 @@ import JobCardActions from "../JobCardActions/JobCardActions";
 import JobCardDetails from "../JobCardDetails/JobCardDetails";
 import JobCategory from "../JobCategory/JobCategory";
 import JobImagePreview from "../JobImagePreview/JobImagePreview";
-import { dashboardJobs, jobInfoFixture } from "../../constants/dummy";
-
-const defaultJob = dashboardJobs[0];
 
 export interface JobCardProps {
-  id?: string;
-  category?: string;
-  title?: string;
-  description?: string;
-  price?: number;
-  location?: string;
-  projectDuration?: string;
-  applicants?: number;
-  isLiked?: boolean;
-  fullName?: string;
-  rating?: number;
-  reviews?: number;
+  id: string;
+  posterId?: string;
+  category: string;
+  title: string;
+  description: string;
+  price: number | null;
+  currency: string | null;
+  location: string;
+  projectDuration: string | null;
+  applicants: number;
+  isLiked: boolean;
+  fullName: string;
+  rating: number;
+  reviews: number;
   profileImgUrl?: string;
   imageUrl?: string;
-  date?: string;
+  date?: string | null;
   detailsHref?: string;
   compareHref?: string;
   reviewsHref?: string;
 }
 
 const JobCard = ({
-  id = defaultJob.id,
-  category = defaultJob.category,
-  title = defaultJob.title,
-  description = defaultJob.description,
-  price = defaultJob.price,
-  location = defaultJob.location,
-  projectDuration = defaultJob.projectDuration,
-  applicants = defaultJob.applicants,
-  isLiked = defaultJob.isLiked,
-  fullName = defaultJob.fullName,
-  rating = defaultJob.rating,
-  reviews = defaultJob.reviews,
+  id,
+  posterId,
+  category,
+  title,
+  description,
+  price,
+  currency,
+  location,
+  projectDuration,
+  applicants,
+  isLiked,
+  fullName,
+  rating,
+  reviews,
   profileImgUrl,
   imageUrl,
-  date = defaultJob.date ?? jobInfoFixture.createdAt,
+  date,
   detailsHref,
   compareHref,
   reviewsHref,
@@ -55,13 +56,14 @@ const JobCard = ({
       </div>
       <JobCardDetails
         title={title}
-        currency="NGN"
+        currency={currency}
         price={price}
         description={description}
         location={location}
         projectDuration={projectDuration}
         noOfpplicants={applicants}
         id={id}
+        posterId={posterId}
         isLiked={isLiked}
         fullName={fullName}
         rating={rating}

@@ -31,7 +31,7 @@ const MarketplaceActionBtns = ({
   return (
     <div className="flex items-center justify-between gap-4 flex-wrap">
       <div className="flex items-center gap-2">
-        {tab === "" ? (
+        {tab === "" && onSortChange ? (
           <Select
             options={sortOptions}
             variant="secondary"
@@ -40,9 +40,9 @@ const MarketplaceActionBtns = ({
             onChange={(event) => onSortChange?.(event.target.value)}
             placeholder="Sort by"
           />
-        ) : (
+        ) : tab !== "" ? (
           <BackButton onClose={onClose} />
-        )}
+        ) : null}
         <button
           type="button"
           onClick={onOpen}
