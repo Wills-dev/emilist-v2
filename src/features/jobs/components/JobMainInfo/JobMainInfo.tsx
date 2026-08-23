@@ -23,6 +23,7 @@ import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
 import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
 import { routes } from "@/lib/helpers/routes";
 import type { JobDetailsViewModel } from "../../types";
+import { useToggleLike } from "../../hooks/useToggleLike";
 
 const JobMainInfo = ({
   jobId = "12345",
@@ -39,7 +40,10 @@ const JobMainInfo = ({
   showDashboardActions?: boolean;
   job: JobDetailsViewModel;
 }) => {
-  const handleToggle = () => {};
+  const { handleToggleLike, isLiked, isUpdating } = useToggleLike({
+    jobId: job.id,
+    initialIsLiked: job.isLiked,
+  });
 
   return (
     <div className="flex-1 w-full">
@@ -112,8 +116,9 @@ const JobMainInfo = ({
                   className="sm:py-[9.86px] py-2 sm:px-[13.14px] px-3 sm:text-2xl text-sm"
                 />
                 <LikeButton
-                  isLiked={job.isLiked}
-                  onToggleLike={handleToggle}
+                  isLiked={isLiked}
+                  onToggleLike={handleToggleLike}
+                  isLoading={isUpdating}
                   className="sm:py-[9.86px] py-2 sm:px-[13.14px] px-3 sm:text-2xl text-sm"
                 />
               </div>
