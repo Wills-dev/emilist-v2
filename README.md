@@ -222,7 +222,7 @@ Job likes use `POST /jobs/like-job/{jobId}` and `POST /jobs/unlike-job/{jobId}`.
 
 The documented list response does not currently include budget, currency, timeline, media, or creation date. The mapper can consume the matching create-job fields when the API supplies them, but otherwise cards show explicit unavailable states instead of copying fixture values. In development, the complete response envelope is logged as `[fetchAllJobs] response` to make contract verification straightforward; production builds do not log it.
 
-The endpoint has no sort parameter, so sort controls are intentionally hidden on API-backed job lists rather than sorting only the pages already loaded. It also has no saved-only predicate. `/dashboard/marketplace/jobs/saved` remains on the existing local fixture until a paginated liked-jobs endpoint or server-side `liked=true` filter is available; filtering individual fetched pages by `liked` would produce incomplete results.
+The all-jobs endpoint has no sort parameter, so sort controls are intentionally hidden on its API-backed lists rather than sorting only the pages already loaded. Saved jobs are fetched independently through `GET /jobs/fetch-liked-jobs`; the dashboard saved-jobs page maps those records through the shared job-card view model and applies its search, sorting, and filters to the returned collection. Because membership in this response is authoritative, every returned record is normalized to `isLiked: true` even when the API omits its `liked` field, ensuring the saved-state control renders consistently. Unliking a saved job removes it from the liked-jobs cache optimistically and restores it if the request fails.
 
 Job image previews use the shared `ImagePreview` component. The preview is portalled directly into `document.body` so animated sections and horizontally scrolling card containers cannot clip its fixed backdrop. While open, it covers the complete viewport, prevents background scrolling, and closes from the backdrop or Escape key.
 
@@ -288,7 +288,7 @@ Dashboard job cards receive dashboard-specific detail and comparison links. Publ
 
 The public and dashboard marketplace lists use an intersection observer to request the next server page as the user scrolls. There is no numbered pagination on these listing pages. The comparison page uses horizontal scrolling on narrow screens with swipe guidance and preserves a multi-column comparison view when space permits.
 
-Development fixtures for the saved-jobs fallback, owner reviews, and comparison records are kept in `src/features/jobs/constants/dummy.ts`. Public and dashboard job-information pages resolve real list IDs through the fetch-job-by-ID endpoint. Components should not define dummy records inline. Reusable domain options that are not fixtures, such as job categories, belong in `src/features/jobs/constants/index.ts`, while data shapes belong in `src/features/jobs/types`.
+Development fixtures for owner reviews and comparison records are kept in `src/features/jobs/constants/dummy.ts`. Public and dashboard job-information pages resolve real list IDs through the fetch-job-by-ID endpoint, while the saved-jobs page uses the liked-jobs endpoint. Components should not define dummy records inline. Reusable domain options that are not fixtures, such as job categories, belong in `src/features/jobs/constants/index.ts`, while data shapes belong in `src/features/jobs/types`.
 
 ### Dashboard experts marketplace
 

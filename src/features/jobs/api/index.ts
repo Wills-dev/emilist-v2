@@ -5,3 +5,4 @@ export {
   serializeFetchAllJobsQuery,
 } from "./fetchAllJobs";
 export { likeJob, unlikeJob } from "./jobLike";
+export { FETCH_LIKED_JOBS_ENDPOINT, fetchLikedJobs } from "./fetchLikedJobs";
