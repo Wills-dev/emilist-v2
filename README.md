@@ -16,7 +16,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Paginated public and dashboard jobs marketplace with server-backed search, job-specific filters, personalized saved state, animated cards, and infinite-scroll loading
 - API-backed homepage job cards with loading, retry, empty, and personalized liked states
 - Full-viewport job image previews rendered through a portal with scroll locking and Escape-key dismissal
-- Dashboard job details with galleries, milestones, employer reviews, compare and promotion actions, and mobile milestone navigation
+- API-backed public and dashboard job details with galleries, milestones, urgency-aware timelines, employer information, responsive loading skeletons, and dashboard actions
 - Swipeable job comparison with reusable comparison cards and downloadable CSV reports
 - Responsive dashboard expert marketplace with service filters, saved experts, profile details, full review pages, and animated infinite-scroll listings
 - Responsive public expert marketplace with the dedicated expert banner, search, sorting, service filters, public profiles, rating summaries, and full review pages
@@ -206,6 +206,16 @@ The jobs-list responsibilities are intentionally layered:
 - `hooks/useJobsMarketplace.ts` combines marketplace search and filters, the authenticated viewer ID, paginated results, and duplicate removal.
 - `queries/jobKeys.ts` centralizes cache keys so different filters and viewers remain isolated while job mutations can invalidate the complete jobs query family.
 
+Public and dashboard job-detail pages use `GET /jobs/fetch-job-by-id` with the job `id`, `reviewsPage`, and `reviewsLimit` query parameters. The API client validates the response envelope, `useGetJobById` owns TanStack Query caching and request cancellation, and `helpers/jobDetails.ts` maps the wire response into the view model consumed by the information and milestone components. Loading uses a responsive skeleton that follows the final page layout, while failed requests provide a retry action.
+
+The detail timeline follows the same urgency-specific contract as job creation:
+
+- `right_now` displays `jobDuration`, with singular and plural duration units handled for presentation.
+- `in_future` displays the `jobSchedule` start and end dates.
+- `regularly` displays `jobFrequency` together with its start date and optional end date.
+
+Milestone duration, amount, currency, and description values also come from the fetched job. The UI components remain request-agnostic and receive normalized job data through props.
+
 Pagination comes from `currentPage`, `totalPages`, and `totalJobs`; the next page is requested only while `currentPage < totalPages`. Changing any normalized filter creates a new query key and restarts the list at page one. Initial loading, retryable errors, no-results, next-page progress, and end-of-list states are rendered by the shared `JobCardList`. Job-like mutations require authentication and invalidate the complete `jobs` query family so the server-provided `liked` field is refreshed.
 
 The documented list response does not currently include budget, currency, timeline, media, or creation date. The mapper can consume the matching create-job fields when the API supplies them, but otherwise cards show explicit unavailable states instead of copying fixture values. In development, the complete response envelope is logged as `[fetchAllJobs] response` to make contract verification straightforward; production builds do not log it.
@@ -276,7 +286,7 @@ Dashboard job cards receive dashboard-specific detail and comparison links. Publ
 
 The public and dashboard marketplace lists use an intersection observer to request the next server page as the user scrolls. There is no numbered pagination on these listing pages. The comparison page uses horizontal scrolling on narrow screens with swipe guidance and preserves a multi-column comparison view when space permits.
 
-Development fixtures for the saved-jobs fallback, owner reviews, job information, and comparison records are kept in `src/features/jobs/constants/dummy.ts`. Real list IDs currently open the existing fixture-backed detail experience until a fetch-job-by-ID contract is integrated. Components should not define dummy records inline. Reusable domain options that are not fixtures, such as job categories, belong in `src/features/jobs/constants/index.ts`, while data shapes belong in `src/features/jobs/types`.
+Development fixtures for the saved-jobs fallback, owner reviews, and comparison records are kept in `src/features/jobs/constants/dummy.ts`. Public and dashboard job-information pages resolve real list IDs through the fetch-job-by-ID endpoint. Components should not define dummy records inline. Reusable domain options that are not fixtures, such as job categories, belong in `src/features/jobs/constants/index.ts`, while data shapes belong in `src/features/jobs/types`.
 
 ### Dashboard experts marketplace
 

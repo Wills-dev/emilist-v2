@@ -11,7 +11,6 @@ const MilestoneCard = ({
   milestoneNumber,
   id,
   isExpanded,
-  title,
   currency,
   duration,
   amount,
@@ -21,7 +20,6 @@ const MilestoneCard = ({
   milestoneNumber: number;
   id: string;
   isExpanded: boolean;
-  title: string;
   amount: number;
   details: string;
   duration: string;
@@ -68,11 +66,6 @@ const MilestoneCard = ({
             className="space-y-4 px-2"
           >
             <div className="pb-4 border-b border-[#ECECEC] space-y-4">
-              <div className="pb-4 border-b border-[#ECECEC]">
-                <h5 className="font-exo font-semibold max-sm:text-sm">
-                  {title}
-                </h5>
-              </div>
               <div className="bg-[#EDEEF0] py-2 px-4 rounded-[8px] w-full">
                 <div className="w-full flex justify-between items-center">
                   <InfoRow title="Duration:" value={duration} showDot />

@@ -3,6 +3,7 @@ export interface Milestone {
   title: string;
   duration: string;
   amount: number;
+  currency?: string;
   details: string;
   isExpanded: boolean;
 }
@@ -64,3 +65,11 @@ export type {
   JobListPosterDto,
   JobListScheduleDto,
 } from "./listJobs";
+export type {
+  FetchJobByIdData,
+  FetchJobByIdEnvelope,
+  FetchJobByIdQuery,
+  JobDetailsDto,
+  JobDetailsViewModel,
+  JobMilestoneDto,
+} from "./jobDetails";

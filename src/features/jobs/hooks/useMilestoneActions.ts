@@ -1,33 +1,33 @@
 import { useMemo, useState } from "react";
 import { Milestone } from "../types";
-import { initialMilestones } from "@/lib/constants/dummy";
 
 const ITEMS_PER_PAGE = 3;
 const MAX_MILESTONES = 5;
 
-export const useMilestoneActions = () => {
-  const [milestones, setMilestones] = useState<Milestone[]>(initialMilestones);
+export const useMilestoneActions = (initialMilestones: Milestone[]) => {
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(
+    () => new Set(initialMilestones.filter(({ isExpanded }) => isExpanded).map(({ id }) => id)),
+  );
 
   const [page, setPage] = useState(1);
 
-  const totalPages = Math.ceil(milestones.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(initialMilestones.length / ITEMS_PER_PAGE);
 
   const paginatedMilestones = useMemo(() => {
     const start = (page - 1) * ITEMS_PER_PAGE;
-    return milestones.slice(start, start + ITEMS_PER_PAGE);
-  }, [milestones, page]);
+    return initialMilestones.slice(start, start + ITEMS_PER_PAGE).map((milestone) => ({
+      ...milestone,
+      isExpanded: expandedIds.has(milestone.id),
+    }));
+  }, [expandedIds, initialMilestones, page]);
 
   const toggleCollapse = (id: string) => {
-    setMilestones((prev) =>
-      prev.map((milestone) =>
-        milestone.id === id
-          ? {
-              ...milestone,
-              isExpanded: !milestone.isExpanded,
-            }
-          : milestone,
-      ),
-    );
+    setExpandedIds((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   };
 
   return {

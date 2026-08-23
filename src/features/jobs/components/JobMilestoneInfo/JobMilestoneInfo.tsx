@@ -4,11 +4,14 @@ import MilestoneCard from "../MilestoneCard/MilestoneCard";
 import PaginationPanel from "@/components/molecules/PaginationPanel/PaginationPanel";
 
 import { useMilestoneActions } from "../../hooks/useMilestoneActions";
+import type { JobDetailsViewModel } from "../../types";
 
 const JobMilestoneInfo = ({
   variant = "public",
+  milestones,
 }: {
   variant?: "public" | "dashboard";
+  milestones: JobDetailsViewModel["milestones"];
 }) => {
   const {
     toggleCollapse,
@@ -17,7 +20,7 @@ const JobMilestoneInfo = ({
     ITEMS_PER_PAGE,
     paginatedMilestones,
     totalPages,
-  } = useMilestoneActions();
+  } = useMilestoneActions(milestones);
 
   return (
     <div
@@ -35,9 +38,8 @@ const JobMilestoneInfo = ({
             key={milestone?.id}
             id={milestone?.id}
             isExpanded={milestone?.isExpanded}
-            title={milestone?.title}
             amount={milestone?.amount}
-            currency="NGN"
+            currency={milestone.currency || "NGN"}
             details={milestone.details}
             milestoneNumber={milestoneNumber}
             duration={milestone?.duration}
@@ -45,12 +47,14 @@ const JobMilestoneInfo = ({
           />
         );
       })}
-      <PaginationPanel
-        totalPages={totalPages}
-        page={page}
-        onNext={() => setPage((prev) => prev + 1)}
-        onPrev={() => setPage((prev) => prev - 1)}
-      />
+      {totalPages > 1 && (
+        <PaginationPanel
+          totalPages={totalPages}
+          page={page}
+          onNext={() => setPage((prev) => prev + 1)}
+          onPrev={() => setPage((prev) => prev - 1)}
+        />
+      )}
     </div>
   );
 };

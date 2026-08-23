@@ -8,8 +8,27 @@ import { dashbaordMarketplaceTabs } from "@/lib/constants";
 import { routes } from "@/lib/helpers/routes";
 import JobMainInfo from "../JobMainInfo/JobMainInfo";
 import JobMilestoneInfo from "../JobMilestoneInfo/JobMilestoneInfo";
+import { useGetJobById } from "../../hooks/useGetJobById";
+import JobInfoSkeleton from "../JobInfoSkeleton/JobInfoSkeleton";
 
 const DashboardJobInfoWrapper = ({ jobId }: { jobId: string }) => {
+  const { data: job, isPending, isError, refetch } = useGetJobById(jobId);
+
+  if (isPending) {
+    return <JobInfoSkeleton variant="dashboard" />;
+  }
+
+  if (isError || !job) {
+    return (
+      <div className="space-y-4 py-20 text-center text-sm text-[#707471]">
+        <p>We could not load this job.</p>
+        <button type="button" onClick={() => void refetch()} className="font-semibold text-[#25C269] underline">
+          Try again
+        </button>
+      </div>
+    );
+  }
+
   return (
     <Container variant="small">
       <motion.div
@@ -31,6 +50,7 @@ const DashboardJobInfoWrapper = ({ jobId }: { jobId: string }) => {
           >
             <JobMainInfo
               jobId={jobId}
+              job={job}
               applyLabel="Apply Now"
               reviewsHref={routes.dashboardLinks.marketplaceJobReviews(jobId)}
               showMilestoneJump
@@ -43,7 +63,7 @@ const DashboardJobInfoWrapper = ({ jobId }: { jobId: string }) => {
             transition={{ duration: 0.4, delay: 0.16, ease: "easeOut" }}
             className="w-full xl:max-w-87.75"
           >
-            <JobMilestoneInfo variant="dashboard" />
+            <JobMilestoneInfo variant="dashboard" milestones={job.milestones} />
           </motion.aside>
         </div>
       </motion.div>
