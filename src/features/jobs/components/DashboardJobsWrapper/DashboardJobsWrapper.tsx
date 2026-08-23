@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 
 import Container from "@/components/atoms/Container/Container";
@@ -13,7 +14,9 @@ import { sortOptions } from "@/lib/constants/filter";
 import { routes } from "@/lib/helpers/routes";
 import { POST_JOB_URGENCY_OPTIONS } from "../../constants/postJob";
 import { useJobsMarketplace } from "../../hooks/useJobsMarketplace";
-import DashboardJobCardWrap from "../DashboardJobCardWrap/DashboardJobCardWrap";
+import { useGetLikedJobs } from "../../hooks/useGetLikedJobs";
+import { mapJobListItem } from "../../helpers/jobList";
+import { filterLikedJobs } from "../../helpers/likedJobs";
 import DashboardJobsFilter from "../DashboardJobsFilter/DashboardJobsFilter";
 import DashboardJobsHeader from "../DashboardJobsHeader/DashboardJobsHeader";
 import JobCardList from "../JobCardList/JobCardList";
@@ -36,6 +39,19 @@ const DashboardJobsWrapper = ({ saved = false }: { saved?: boolean }) => {
     handleSearchChange,
     submittedQuery,
   } = useJobsMarketplace({ limit: 10, enabled: !saved });
+  const likedQuery = useGetLikedJobs(saved);
+  const likedJobs = useMemo(
+    () =>
+      filterLikedJobs({
+        jobs: (likedQuery.data ?? []).map((job) => ({
+          ...mapJobListItem(job),
+          isLiked: true,
+        })),
+        filters,
+        search: submittedQuery,
+      }),
+    [filters, likedQuery.data, submittedQuery],
+  );
 
   const filterProps = {
     filters,
@@ -106,10 +122,18 @@ const DashboardJobsWrapper = ({ saved = false }: { saved?: boolean }) => {
                 </div>
               </div>
               {saved ? (
-                <DashboardJobCardWrap
-                  query={submittedQuery}
-                  filters={filters}
-                  savedOnly
+                <JobCardList
+                  jobs={likedJobs}
+                  isLoading={likedQuery.isPending}
+                  isError={likedQuery.isError}
+                  hasNextPage={false}
+                  isFetchingNextPage={false}
+                  fetchNextPage={() => {}}
+                  refetch={() => void likedQuery.refetch()}
+                  onResetFilters={resetFilters}
+                  getDetailsHref={routes.dashboardLinks.marketplaceJobInfo}
+                  getCompareHref={() => routes.dashboardLinks.compareJobs}
+                  getReviewsHref={routes.dashboardLinks.marketplaceJobReviews}
                 />
               ) : (
                 <JobCardList

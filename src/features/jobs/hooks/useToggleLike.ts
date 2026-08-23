@@ -11,6 +11,7 @@ import { useStore } from "@/store/authStore";
 import { jobKeys } from "../queries/jobKeys";
 import type { JobDetailsDto } from "../types/jobDetails";
 import type { FetchAllJobsPage } from "../types/listJobs";
+import type { FetchAllJobsItemDto } from "../types/listJobs";
 
 export const useToggleLike = ({
   jobId,
@@ -52,6 +53,15 @@ export const useToggleLike = ({
                 })),
               }
             : data,
+      );
+      queryClient.setQueryData<FetchAllJobsItemDto[]>(
+        jobKeys.liked(),
+        (jobs) =>
+          jobs
+            ? shouldLike
+              ? jobs
+              : jobs.filter((job) => job._id !== jobId)
+            : jobs,
       );
 
       return { previousJobQueries };

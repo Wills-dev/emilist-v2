@@ -7,4 +7,5 @@ export const jobKeys = {
     [...jobKeys.lists(), query] as const,
   details: () => [...jobKeys.all, "detail"] as const,
   detail: (jobId: string) => [...jobKeys.details(), jobId] as const,
+  liked: () => [...jobKeys.all, "liked"] as const,
 };
