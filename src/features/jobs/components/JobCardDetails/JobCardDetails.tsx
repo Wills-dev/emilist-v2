@@ -49,11 +49,8 @@ const JobCardDetails = ({
   compareHref?: string;
   reviewsHref?: string;
 }) => {
-  const { handleToggleLike, isUpdating } = useToggleLike();
-
-  const toggleLike = () => {
-    handleToggleLike(id);
-  };
+  const { handleToggleLike, isLiked: displayedIsLiked, isUpdating } =
+    useToggleLike({ jobId: id, initialIsLiked: isLiked });
 
   return (
     <div className="w-full space-y-4">
@@ -100,12 +97,12 @@ const JobCardDetails = ({
           id={id}
           profileId={posterId ?? ""}
           shareId={id}
-          isLiked={isLiked}
+          isLiked={displayedIsLiked}
           fullName={fullName}
           rating={rating}
           noOfReviews={noOfReviews}
           imgUrl={profileImgUrl}
-          handleToggleLike={toggleLike}
+          handleToggleLike={handleToggleLike}
           isLikeLoading={isUpdating}
           type="job"
           reviewsHref={reviewsHref}
