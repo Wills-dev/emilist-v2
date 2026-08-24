@@ -68,7 +68,7 @@ const JobCardList = ({
           transition: { staggerChildren: 0.08 },
         },
       }}
-      className={cn("flex flex-wrap gap-6", className)}
+      className={cn("flex max-md:justify-center flex-wrap gap-6", className)}
     >
       {isLoading && jobs.length === 0
         ? Array.from({ length: 4 }, (_, index) => (
@@ -83,6 +83,7 @@ const JobCardList = ({
               }}
               transition={{ duration: 0.35, ease: "easeOut" }}
               layout
+              className="max-w-[375.5px] w-full sm:min-w-[375.5px] min-w-75"
             >
               <JobCardItem
                 job={job}
