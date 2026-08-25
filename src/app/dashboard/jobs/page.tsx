@@ -1,5 +1,10 @@
-const page = () => {
-  return <div>page</div>;
-};
+import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
+import JobsDashboardWrapper from "@/features/jobs/components/JobsDashboardWrapper/JobsDashboardWrapper";
 
-export default page;
+const JobsPage = () => (
+  <DashboardLayout>
+    <JobsDashboardWrapper />
+  </DashboardLayout>
+);
+
+export default JobsPage;
