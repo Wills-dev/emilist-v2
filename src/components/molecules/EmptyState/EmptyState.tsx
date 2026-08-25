@@ -1,14 +1,12 @@
-import { Inbox } from "lucide-react";
-
 import Button from "@/components/atoms/Button/Button";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const EmptyState = ({
   title = "Nothing to show yet",
   description = "There is no data available right now.",
   actionLabel,
   onAction,
-  icon,
   className,
 }: {
   title?: string;
@@ -26,8 +24,14 @@ const EmptyState = ({
         className,
       )}
     >
-      <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-[#F0FDF5] text-[#18A154]">
-        {icon || <Inbox className="size-6" aria-hidden="true" />}
+      <div className="mb-4 flex w-36.5 h-36.5 items-center justify-center rounded-full bg-[#F0FDF5] text-[#18A154]">
+        <Image
+          src={"/assets/images/empty.svg"}
+          width={146}
+          height={146}
+          className=""
+          alt="empty state"
+        />
       </div>
       <h2 className="font-exo text-xl font-semibold text-[#333E49]">{title}</h2>
       <p className="mt-2 max-w-md text-sm leading-6 text-[#707471]">

@@ -127,7 +127,7 @@ const getBudget = (job: FetchAllJobsItemDto) => {
   };
 };
 
-const formatDuration = (job: FetchAllJobsItemDto) => {
+export const formatDuration = (job: FetchAllJobsItemDto) => {
   const duration = parseJsonObject<JobListDurationDto>(job.jobDuration);
   const amount = parsePositiveInteger(duration?.value ?? duration?.number);
   const unit = duration?.unit ?? duration?.period;
@@ -158,7 +158,7 @@ const formatDuration = (job: FetchAllJobsItemDto) => {
   return urgencyLabels[job.jobUrgency] ?? null;
 };
 
-const formatScheduleDate = (value: string) => {
+export const formatScheduleDate = (value: string) => {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
 
