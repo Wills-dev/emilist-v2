@@ -1,5 +1,6 @@
 "use client";
 
+import { routes } from "@/lib/helpers/routes";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -12,7 +13,7 @@ import CommentWrapper from "@/components/molecules/CommentWrapper/CommentWrapper
 import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
 import ReviewBreakdown from "@/components/molecules/ReviewBreakdown/ReviewBreakdown";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
-import MaterialReviewInfoSkeleton from "./MaterialReviewInfoSkeleton";
+import MaterialReviewInfoSkeleton from "./MaterialReviewInfoSkeleton/MaterialReviewInfoSkeleton";
 import MaterialReviewModal from "../MaterialReviewModal/MaterialReviewModal";
 
 import { useStore } from "@/store/authStore";
@@ -80,7 +81,20 @@ const MaterialReviewInfoWrapper = ({ materialId }: { materialId: string }) => {
                 >
                   <FilterTitle title="Merchant profile" />
                   <UserRatingCard
-                    id={""}
+                    id={material?.product.userId._id ?? ""}
+                    profileHref={
+                      material
+                        ? isDashboardMaterialPage
+                          ? routes.dashboardLinks.merchantProfile(
+                              material.product.userId._id,
+                              materialId,
+                            )
+                          : routes.profiles.merchant(
+                              material.product.userId._id,
+                              materialId,
+                            )
+                        : undefined
+                    }
                     imgUrl={""}
                     fullName={
                       material?.product.merchantName ||

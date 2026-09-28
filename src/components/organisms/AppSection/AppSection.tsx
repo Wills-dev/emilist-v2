@@ -1,6 +1,6 @@
 import Container from "@/components/atoms/Container/Container";
 import DownloadBtn from "@/components/atoms/DownloadBtn/DownloadBtn";
-import ArrowUp from "@/components/atoms/icons/ArrowUp";
+import ArrowUp from "@/components/atoms/icons/ArrowUp/ArrowUp";
 import {
   APP_STORE_URL,
   PLAY_STORE_URL,

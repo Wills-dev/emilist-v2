@@ -7,18 +7,18 @@ import DatedPosted from "@/components/atoms/DatedPosted/DatedPosted";
 import ItemName from "@/components/atoms/ItemName/ItemName";
 import PriceWrapper from "@/components/molecules/PriceWrapper/PriceWrapper";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
-import LocationIcon from "@/components/atoms/icons/LocationIcon";
-import ClockIcon from "@/components/atoms/icons/ClockIcon";
-import UserIcon from "@/components/atoms/icons/UserIcon";
-import LevelIcon from "@/components/atoms/icons/LevelIcon";
-import MilestoneIcon from "@/components/atoms/icons/MilestoneIcon";
+import LocationIcon from "@/components/atoms/icons/LocationIcon/LocationIcon";
+import ClockIcon from "@/components/atoms/icons/ClockIcon/ClockIcon";
+import UserIcon from "@/components/atoms/icons/UserIcon/UserIcon";
+import LevelIcon from "@/components/atoms/icons/LevelIcon/LevelIcon";
+import MilestoneIcon from "@/components/atoms/icons/MilestoneIcon/MilestoneIcon";
 import ShareButton from "@/components/molecules/ShareButton/ShareButton";
 import LikeButton from "@/components/molecules/LikeButton/LikeButton";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 import Button from "@/components/atoms/Button/Button";
 import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
-import ArrowRight from "@/components/atoms/icons/ArrowRight";
+import ArrowRight from "@/components/atoms/icons/ArrowRight/ArrowRight";
 import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
 import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
 import { routes } from "@/lib/helpers/routes";
@@ -78,18 +78,27 @@ const JobMainInfo = ({
                     icon={<LocationIcon />}
                   />{" "}
                   <InfoItem value={job.duration} icon={<ClockIcon />} />
-                  <InfoItem value={`${job.applicants} applicants`} icon={<UserIcon />} />
+                  <InfoItem
+                    value={`${job.applicants} applicants`}
+                    icon={<UserIcon />}
+                  />
                   <InfoItem value={job.level} icon={<LevelIcon />} />
                   <div className="flex items-center"></div>
                   <div className="flex items-center gap-1">
-                    <InfoItem value={`${job.milestones.length} milestones`} icon={<MilestoneIcon />} />
+                    <InfoItem
+                      value={`${job.milestones.length} milestones`}
+                      icon={<MilestoneIcon />}
+                    />
                     {showMilestoneJump && (
                       <button
                         type="button"
                         onClick={() =>
                           document
                             .getElementById("milestone")
-                            ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                            ?.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            })
                         }
                         className="flex items-center gap-1 text-[9px] font-medium leading-none text-[#6667FF] underline underline-offset-2 sm:hidden"
                       >
@@ -129,6 +138,11 @@ const JobMainInfo = ({
             <div className="flex items-end justify-between gap-4 flex-wrap">
               <UserRatingCard
                 id={job.ownerId}
+                profileHref={
+                  showDashboardActions
+                    ? routes.dashboardLinks.employerProfile(job.ownerId, job.id)
+                    : routes.profiles.employer(job.ownerId, job.id)
+                }
                 imgUrl={job.ownerImage}
                 fullName={job.ownerName}
                 rating={job.ownerRating}

@@ -14,9 +14,11 @@ import { routes } from "@/lib/helpers/routes";
 const ExpertReviewSummary = ({
   expertId,
   publicPage = false,
+  reviewsHref,
 }: {
   expertId: string;
   publicPage?: boolean;
+  reviewsHref?: string;
 }) => {
   const [, setSearch] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
@@ -52,9 +54,10 @@ const ExpertReviewSummary = ({
         onSubmit={setSubmittedQuery}
         setSearch={setSearch}
         link={
-          publicPage
+          reviewsHref ??
+          (publicPage
             ? routes.marketplace.expertInfoReviews(expertId)
-            : routes.dashboardLinks.marketplaceExpertReviews(expertId)
+            : routes.dashboardLinks.marketplaceExpertReviews(expertId))
         }
         reviews={reviews}
         sectionVariant={publicPage ? "primary" : "tertiary"}

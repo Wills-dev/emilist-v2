@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-import MessageIcon from "@/components/atoms/icons/MessageIcon";
-import NotificationIcon from "@/components/atoms/icons/NotificationIcon";
-import WarningIcon from "@/components/atoms/icons/WarningIcon";
+import MessageIcon from "@/components/atoms/icons/MessageIcon/MessageIcon";
+import NotificationIcon from "@/components/atoms/icons/NotificationIcon/NotificationIcon";
+import WarningIcon from "@/components/atoms/icons/WarningIcon/WarningIcon";
 import NavIconWrapper from "@/components/atoms/NavIconWrapper/NavIconWrapper";
 import NotificationModal from "@/features/notifications/components/NotificationModal/NotificationModal";
 import { testNotifications } from "@/features/notifications/constants/testNotifications";

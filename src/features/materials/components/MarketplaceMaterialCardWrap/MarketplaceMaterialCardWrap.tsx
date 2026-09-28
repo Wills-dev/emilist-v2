@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 import MaterialCard from "../MaterialCard/MaterialCard";
-import MaterialCardSkeleton from "../MaterialCard/MaterialCardSkeleton";
+import MaterialCardSkeleton from "../MaterialCard/MaterialCardSkeleton/MaterialCardSkeleton";
 import { useInfiniteScrollTrigger } from "@/lib/hooks/useInfiniteScrollTrigger";
 import { MaterialListItem } from "../../types";
 

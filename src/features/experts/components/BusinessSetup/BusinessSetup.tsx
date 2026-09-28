@@ -16,7 +16,7 @@ import { expertServices } from "../../constants";
 import { countriesAndStates } from "@/lib/constants/countries";
 import { currencies } from "@/lib/constants/currencies";
 import { rateUnits } from "@/lib/constants/rateUnits";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip/tooltip";
 import { useBusinessProfileState } from "../../hooks/useBusinessProfileState";
 import {
   formatInputTextNumber,

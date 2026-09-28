@@ -3,12 +3,12 @@ import { Inter, Exo } from "next/font/google";
 
 import "./globals.css";
 
-import QueryProvider from "@/components/QueryProvider";
-import AuthProvider from "@/components/AuthProvider";
+import QueryProvider from "@/components/QueryProvider/QueryProvider";
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 
-import { ModalManager } from "@/components/molecules/modals/ModalManager";
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { ModalManager } from "@/components/molecules/modals/ModalManager/ModalManager";
+import { Toaster } from "@/components/ui/sonner/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip/tooltip";
 
 const inter = Inter({
   variable: "--font-inter",

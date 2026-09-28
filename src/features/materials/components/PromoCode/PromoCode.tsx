@@ -2,7 +2,7 @@
 
 import FilterSectionWrapper from "@/components/atoms/FilterSectionWrapper/FilterSectionWrapper";
 import FilterTitle from "@/components/atoms/FilterTilte/FilterTilte";
-import ClipIcon from "@/components/atoms/icons/ClipIcon";
+import ClipIcon from "@/components/atoms/icons/ClipIcon/ClipIcon";
 import { Loader2 } from "lucide-react";
 import { useApplyDiscountCode } from "../../hooks/useApplyDiscountCode";
 

@@ -1,6 +1,6 @@
 import CounterButton from "@/components/atoms/CounterButton/CounterButton";
-import MinusIcon from "@/components/atoms/icons/MinusIcon";
-import PlusIcon from "@/components/atoms/icons/PlusIcon";
+import MinusIcon from "@/components/atoms/icons/MinusIcon/MinusIcon";
+import PlusIcon from "@/components/atoms/icons/PlusIcon/PlusIcon";
 
 const QuantityControl = ({
   quantity,

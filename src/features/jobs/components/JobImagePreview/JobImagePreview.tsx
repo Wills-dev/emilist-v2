@@ -3,7 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 
-import ImageIcon from "@/components/atoms/icons/ImageIcon";
+import ImageIcon from "@/components/atoms/icons/ImageIcon/ImageIcon";
 
 const ImagePreview = dynamic(
   () => import("@/components/atoms/ImagePreview/ImagePreview"),

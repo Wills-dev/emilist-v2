@@ -1,7 +1,7 @@
 import { Mail, Phone } from "lucide-react";
 
-import InstagramIcon from "@/components/atoms/icons/Instagram";
-import ArrowRight from "@/components/atoms/icons/ArrowRight";
+import InstagramIcon from "@/components/atoms/icons/Instagram/Instagram";
+import ArrowRight from "@/components/atoms/icons/ArrowRight/ArrowRight";
 
 const supportContacts = [
   {

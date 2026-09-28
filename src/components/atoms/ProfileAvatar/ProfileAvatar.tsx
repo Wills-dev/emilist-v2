@@ -6,13 +6,14 @@ const ProfileAvatar = ({
   variant = "small",
 }: {
   profileImage?: string;
-  variant?: "very-small" | "small" | "large";
+  variant?: "very-small" | "small" | "medium" | "large";
 }) => {
   const userAvatar = profileImage || "/assets/images/avatar.svg";
 
   const variants = {
     "very-small": "w-8 h-8",
     small: "w-10 h-10",
+    medium: "w-14 h-14",
     large: "sm:w-20.25 sm:h-20.25 w-10 h-10",
   };
 

@@ -3,7 +3,7 @@
 import Container from "@/components/atoms/Container/Container";
 import MaterialMainInfo from "../MaterialMainInfo/MaterialMainInfo";
 import MaterialReviewSummary from "../MaterialReviewSummary/MaterialReviewSummary";
-import MaterialInfoSkeleton from "../MaterialInfoWrapper/MaterialInfoSkeleton";
+import MaterialInfoSkeleton from "../MaterialInfoWrapper/MaterialInfoSkeleton/MaterialInfoSkeleton";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import PublicSellersOtherMaterials from "../PublicSellersOtherMaterials/PublicSellersOtherMaterials";
 

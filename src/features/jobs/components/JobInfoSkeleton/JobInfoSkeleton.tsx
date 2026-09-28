@@ -1,5 +1,5 @@
 import Container from "@/components/atoms/Container/Container";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton/skeleton";
 
 const JobMainInfoSkeleton = () => (
   <div className="w-full min-w-0 flex-1" aria-hidden="true">

@@ -1,4 +1,4 @@
-import ArrowUp from "../icons/ArrowUp";
+import ArrowUp from "../icons/ArrowUp/ArrowUp";
 
 const DownloadMobile = () => {
   return (

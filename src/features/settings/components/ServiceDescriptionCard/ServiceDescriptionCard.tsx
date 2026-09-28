@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import Button from "@/components/atoms/Button/Button";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 import { UserExpertService } from "../../types/expertService";
 
 const ServiceDescriptionCard = ({

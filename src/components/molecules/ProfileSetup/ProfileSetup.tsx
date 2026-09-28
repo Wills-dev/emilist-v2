@@ -13,7 +13,7 @@ import { CompleteProfileForm } from "@/features/auth/types";
 import { LANGUAGES } from "@/lib/constants/languages";
 import { countriesAndStates } from "@/lib/constants/countries";
 import { photoTips } from "@/lib/constants";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip/tooltip";
 import SingleImageInput from "../SingleImageInput/SingleImageInput";
 
 interface ProfileSetupProps {

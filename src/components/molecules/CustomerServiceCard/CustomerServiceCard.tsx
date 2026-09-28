@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import Dot from "@/components/atoms/Dot/Dot";
-import ArrowUp from "@/components/atoms/icons/ArrowUp";
+import ArrowUp from "@/components/atoms/icons/ArrowUp/ArrowUp";
 
 const CustomerServiceCard = ({
   href,

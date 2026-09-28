@@ -1,4 +1,4 @@
-import ProIcon from "../icons/ProIcon";
+import ProIcon from "../icons/ProIcon/ProIcon";
 
 const JoinPro = () => {
   return (

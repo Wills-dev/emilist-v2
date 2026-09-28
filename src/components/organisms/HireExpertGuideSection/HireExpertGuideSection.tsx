@@ -1,8 +1,8 @@
 import ArrowGuide from "@/components/atoms/ArrowGuide/ArrowGuide";
 import Container from "@/components/atoms/Container/Container";
-import BankNote from "@/components/atoms/icons/BankNote";
-import BicepsFlex from "@/components/atoms/icons/BicepsFlex";
-import NoteBook from "@/components/atoms/icons/NoteBook";
+import BankNote from "@/components/atoms/icons/BankNote/BankNote";
+import BicepsFlex from "@/components/atoms/icons/BicepsFlex/BicepsFlex";
+import NoteBook from "@/components/atoms/icons/NoteBook/NoteBook";
 import SectionTitle from "@/components/atoms/SectionTitle/SectionTitle";
 import HireExpertGuideCard from "@/components/molecules/HireExpertGuideCard/HireExpertGuideCard";
 

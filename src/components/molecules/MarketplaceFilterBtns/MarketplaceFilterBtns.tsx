@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 
-import FilterIcon from "@/components/atoms/icons/FilterIcon";
+import FilterIcon from "@/components/atoms/icons/FilterIcon/FilterIcon";
 
 const MarketplaceFilterBtns = ({
   onReset,

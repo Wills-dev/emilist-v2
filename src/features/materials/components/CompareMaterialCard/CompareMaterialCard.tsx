@@ -17,7 +17,7 @@ import Price from "@/components/atoms/Price/Price";
 import { routes } from "@/lib/helpers/routes";
 import { CompareMaterialItem } from "./types";
 import { useAddToCart } from "../../hooks/useAddToCart";
-import CompareInfo from "./CompareInfo";
+import CompareInfo from "./CompareInfo/CompareInfo";
 
 const CompareMaterialCard = ({
   material,
@@ -66,7 +66,7 @@ const CompareMaterialCard = ({
         />
       </div>
       <Button
-        href={routes.profile(material.merchantId)}
+        href={routes.profiles.merchant(material.merchantId, material.id)}
         variant="default"
         className="h-8 w-full text-xs"
       >

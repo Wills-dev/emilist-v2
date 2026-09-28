@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 import Container from "@/components/atoms/Container/Container";
-import FilterIcon from "@/components/atoms/icons/FilterIcon";
+import FilterIcon from "@/components/atoms/icons/FilterIcon/FilterIcon";
 import MarketplaceActionTitle from "@/components/atoms/MarketplaceActionTitle/MarketplaceActionTitle";
 import Select from "@/components/atoms/Select/Select";
 import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/MarketplaceFilterBtns";

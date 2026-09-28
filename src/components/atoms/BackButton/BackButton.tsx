@@ -3,9 +3,11 @@
 import { useRouter } from "next/navigation";
 
 export default function BackButton({
+  href,
   onClose,
   isDashboard,
 }: {
+  href?: string;
   onClose?: () => void;
   isDashboard?: boolean;
 }) {
@@ -16,7 +18,8 @@ export default function BackButton({
       onClose();
       return;
     }
-    router.back();
+    if (href) router.push(href);
+    else router.back();
   };
 
   return (

@@ -42,7 +42,7 @@ const CompareJobCard = ({ job, index }: { job: CompareJobItem; index: number }) 
       <ul className="min-h-31 space-y-3 rounded-md bg-white p-3 text-[10px] text-[#5E625F]">
         {job.credentials.map((credential) => <li key={credential}>• {credential}</li>)}
       </ul>
-      <Button href={routes.profile(job.ownerId)} variant="default" className="h-8 w-full text-xs">View Profile</Button>
+      <Button href={routes.profiles.employer(job.ownerId, job.id)} variant="default" className="h-8 w-full text-xs">View Profile</Button>
     </section>
 
     <section className="min-h-24 border-y border-[#ECECEC] bg-white p-4 shadow-[0_8px_16px_rgba(27,49,37,0.06)]">

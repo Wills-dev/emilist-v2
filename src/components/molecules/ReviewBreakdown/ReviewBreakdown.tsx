@@ -1,4 +1,4 @@
-import StarIcon from "@/components/atoms/icons/StarIcon";
+import StarIcon from "@/components/atoms/icons/StarIcon/StarIcon";
 import ReviewCard from "@/components/atoms/ReviewCard/ReviewCard";
 
 const ReviewBreakdown = ({

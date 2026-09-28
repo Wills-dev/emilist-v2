@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { memo } from "react";
 
-import CartIcon from "@/components/atoms/icons/CartIcon";
+import CartIcon from "@/components/atoms/icons/CartIcon/CartIcon";
 
 import { routes } from "@/lib/helpers/routes";
 import { useGetCartItems } from "../../hooks/useGetCartItems";

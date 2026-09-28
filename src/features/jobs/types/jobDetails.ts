@@ -2,12 +2,12 @@ import type {
   FetchAllJobsItemDto,
   JobListDurationDto,
   JobListMediaDto,
-  JobListMoneyDto,
 } from "./listJobs";
 
 export interface JobMilestoneDto {
   _id?: string;
   id?: string;
+  status?: string;
   achievement?: string;
   title?: string;
   details?: string;
@@ -44,6 +44,7 @@ export interface FetchJobByIdQuery {
 
 export interface JobDetailsViewModel {
   id: string;
+  status: string;
   category: string;
   title: string;
   createdAt: string;
@@ -55,6 +56,9 @@ export interface JobDetailsViewModel {
   level: string;
   isLiked: boolean;
   ownerId: string;
+  ownerVerified?: boolean;
+  ownerUsername?: string;
+  ownerBio?: string;
   ownerName: string;
   ownerImage: string;
   ownerRating: number;
@@ -62,8 +66,10 @@ export interface JobDetailsViewModel {
   urgency: string;
   description: string[];
   images: string[];
+  attachments?: { url: string; name: string }[];
   milestones: Array<{
     id: string;
+    status?: string;
     title: string;
     duration: string;
     amount: number;

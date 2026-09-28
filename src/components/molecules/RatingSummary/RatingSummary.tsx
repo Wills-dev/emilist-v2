@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 import FilterSectionWrapper from "@/components/atoms/FilterSectionWrapper/FilterSectionWrapper";
 import FilterTitle from "@/components/atoms/FilterTilte/FilterTilte";
-import StarIcon from "@/components/atoms/icons/StarIcon";
+import StarIcon from "@/components/atoms/icons/StarIcon/StarIcon";
 
 const RatingSummary = ({
   title,

@@ -1,4 +1,4 @@
-import NesLetterForm from "../forms/NewsLetterForm/NesLetterForm";
+import NesLetterForm from "../forms/NewsLetterForm/NesLetterForm/NesLetterForm";
 
 const NewsLetter = () => {
   return (

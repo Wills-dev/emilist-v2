@@ -2,9 +2,9 @@ import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
 
 import Button from "@/components/atoms/Button/Button";
-import ClockIcon from "@/components/atoms/icons/ClockIcon";
-import LocationIcon from "@/components/atoms/icons/LocationIcon";
-import UserIcon from "@/components/atoms/icons/UserIcon";
+import ClockIcon from "@/components/atoms/icons/ClockIcon/ClockIcon";
+import LocationIcon from "@/components/atoms/icons/LocationIcon/LocationIcon";
+import UserIcon from "@/components/atoms/icons/UserIcon/UserIcon";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import PriceWrapper from "@/components/molecules/PriceWrapper/PriceWrapper";
 import Rating from "@/components/molecules/Rating/Rating";

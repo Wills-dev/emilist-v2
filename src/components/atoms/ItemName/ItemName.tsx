@@ -1,4 +1,4 @@
-import VerifyIcon from "../icons/VerifyIcon";
+import VerifyIcon from "../icons/VerifyIcon/VerifyIcon";
 
 const ItemName = ({
   title,

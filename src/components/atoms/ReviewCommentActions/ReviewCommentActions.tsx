@@ -1,6 +1,6 @@
 "use client";
 
-import HandIcon from "../icons/HandIcon";
+import HandIcon from "../icons/HandIcon/HandIcon";
 import { useRateReviewHelpfulness } from "@/features/materials/hooks/useRateReviewHelpfulness";
 
 const ReviewCommentActions = ({

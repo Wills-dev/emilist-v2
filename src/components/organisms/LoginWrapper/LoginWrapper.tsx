@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import Logo from "@/components/atoms/Logo/Logo";
-import UserIcon from "@/components/atoms/icons/UserIcon";
+import UserIcon from "@/components/atoms/icons/UserIcon/UserIcon";
 import LoginForm from "@/components/molecules/forms/LoginForm/LoginForm";
 import { routes } from "@/lib/helpers/routes";
 import { useStore } from "@/store/authStore";

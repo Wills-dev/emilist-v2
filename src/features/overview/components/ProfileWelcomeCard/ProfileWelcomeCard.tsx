@@ -3,7 +3,7 @@
 import { useStore } from "@/store/authStore";
 
 import Button from "@/components/atoms/Button/Button";
-import WelcomeIcon from "@/components/atoms/icons/WelcomeIcon";
+import WelcomeIcon from "@/components/atoms/icons/WelcomeIcon/WelcomeIcon";
 
 const ProfileWelcomeCard = () => {
   const openModal = useStore((state) => state.openModal);

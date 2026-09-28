@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import MarketplaceSavedButton from "@/components/atoms/MarketplaceSavedButton/MarketplaceSavedButton";
-import ShopBag from "@/components/atoms/icons/ShopBag";
+import ShopBag from "@/components/atoms/icons/ShopBag/ShopBag";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
 import SearchBar from "@/components/molecules/SearchBar/SearchBar";
 import { dashbaordMarketplaceTabs } from "@/lib/constants";

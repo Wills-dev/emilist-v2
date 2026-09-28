@@ -1,5 +1,5 @@
 import PaginationControls from "@/components/atoms/PaginationControls/PaginationControls";
-import ArrowBack from "@/components/atoms/icons/ArrowBack";
+import ArrowBack from "@/components/atoms/icons/ArrowBack/ArrowBack";
 
 const PaginationPanel = ({
   page,
@@ -16,7 +16,7 @@ const PaginationPanel = ({
   onPrev: () => void;
   onNext: () => void;
   onPageChange?: (page: number) => void;
-  variant?: "default" | "centered";
+  variant?: "default" | "centered" | "inline";
 }) => {
   const pages: Array<number | "ellipsis"> = (() => {
     if (!totalPages) return [page];
@@ -29,6 +29,40 @@ const PaginationPanel = ({
     }
     return [1, "ellipsis", page - 1, page, page + 1, "ellipsis", totalPages];
   })();
+
+  if (variant === "inline") {
+    return (
+      <nav
+        aria-label="Pagination"
+        className="flex items-center gap-4 border-t border-[#ECECEC] pt-4"
+      >
+        <button
+          type="button"
+          onClick={onPrev}
+          disabled={page <= 1}
+          aria-label="Previous page"
+          className="flex size-9 items-center justify-center rounded-lg border border-[#F1F2F9] text-[#737774] disabled:opacity-40"
+        >
+          <ArrowBack />
+        </button>
+        <span
+          aria-current="page"
+          className="flex size-9 items-center justify-center rounded-lg border border-[#DDF7E8] bg-[#F0FDF5] text-sm text-[#010156]"
+        >
+          {page}
+        </span>
+        <button
+          type="button"
+          onClick={onNext}
+          disabled={totalPages ? page >= totalPages : !hasMore}
+          aria-label="Next page"
+          className="flex size-9 rotate-180 items-center justify-center rounded-lg border border-[#F1F2F9] text-[#737774] disabled:opacity-40"
+        >
+          <ArrowBack />
+        </button>
+      </nav>
+    );
+  }
 
   if (variant === "centered") {
     return (

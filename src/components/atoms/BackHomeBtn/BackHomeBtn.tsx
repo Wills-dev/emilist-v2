@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { routes } from "@/lib/helpers/routes";
 
-import ArrowBack from "../icons/ArrowBack";
+import ArrowBack from "../icons/ArrowBack/ArrowBack";
 
 const BackHomeBtn = () => {
   return (

@@ -1,4 +1,4 @@
-import Line43 from "../icons/Line43";
+import Line43 from "../icons/Line43/Line43";
 
 const ArrowGuide = () => {
   return (

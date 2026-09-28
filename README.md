@@ -18,6 +18,10 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Full-viewport job image previews rendered through a portal with scroll locking and Escape-key dismissal
 - API-backed public and dashboard job details with galleries, milestones, urgency-aware timelines, employer information, responsive loading skeletons, and dashboard actions
 - Swipeable job comparison with reusable comparison cards and downloadable CSV reports
+- Dashboard job management with API-backed status tabs, subscription-restricted leads, action menus, and URL-preserved tab selection
+- Shared owner/artisan job-information layouts with applicants, milestones, invoices, payments, and status-specific actions
+- Dashboard job editing with reused creation steps, existing attachment removal, and multipart updates
+- Role-specific public and dashboard profiles for artisans, employers, and merchants
 - Responsive dashboard expert marketplace with service filters, saved experts, profile details, full review pages, and animated infinite-scroll listings
 - Responsive public expert marketplace with the dedicated expert banner, search, sorting, service filters, public profiles, rating summaries, and full review pages
 - Swipeable expert comparison with reusable comparison cards and downloadable comparison reports
@@ -141,7 +145,9 @@ Place reusable UI in `src/components`. Shared components should receive data and
 
 ### One component per folder
 
-Give each component its own folder and implementation file (for example, `MaterialCard/MaterialCard.tsx`). Keep component-specific tests and supporting files in that same folder so they are easy to find and maintain.
+Give each component file its own identically named folder (for example, `MaterialCard/MaterialCard.tsx` or `ProfileSkeleton/ProfileSkeleton.tsx`). This also applies to providers, icons, nested components, and shared UI primitives such as `src/components/ui/skeleton/skeleton.tsx`. Import the implementation using its full path. Keep component-specific tests and supporting files alongside it.
+
+Next.js route conventions (`page.tsx`, `layout.tsx`, and `loading.tsx`) and non-component modules such as table-column definitions retain their existing locations.
 
 ### Hooks separate behaviour from presentation
 
@@ -290,6 +296,49 @@ The public and dashboard marketplace lists use an intersection observer to reque
 
 Development fixtures for owner reviews and comparison records are kept in `src/features/jobs/constants/dummy.ts`. Public and dashboard job-information pages resolve real list IDs through the fetch-job-by-ID endpoint, while the saved-jobs page uses the liked-jobs endpoint. Components should not define dummy records inline. Reusable domain options that are not fixtures, such as job categories, belong in `src/features/jobs/constants/index.ts`, while data shapes belong in `src/features/jobs/types`.
 
+### Dashboard job management
+
+`/dashboard/jobs` separates Listed, Overdue, Paused, Active, Completed, and Leads tabs. Listed is the default and has no query parameter; other tabs use `?tab=active`, `?tab=leads`, and so on. Detail and applicant navigation carries the originating tab so returning restores it. Job-information sections use `?section=applicants`, `invoices`, or `payments`.
+
+| Route | Purpose |
+| --- | --- |
+| `/dashboard/jobs/[id]` | Shared job details with owner/artisan-specific actions and milestones. |
+| `/dashboard/jobs/[id]/edit` | Edit job details, attachments, and milestones using the shared creation steps. |
+| `/dashboard/jobs/[id]/applicants/[expertId]` | View an applicant in the context of the job. |
+| `/dashboard/jobs/[id]/applicants/[expertId]/reviews` | View applicant reviews while preserving job navigation. |
+
+Listed jobs include `listed`, `in-review`, `applied`, and `rejected` records. Rejected rows are muted. Row actions use an icon-triggered dropdown with a View entry. Artisan details provide offer-response, withdrawal, and milestone-completion controls; owner details provide editing, applicant review, pause/resume, and milestone-review controls as appropriate to the status.
+
+Job requests follow `api → query hook → mapper → presentation`, with shared keys in `queries/jobKeys.ts`:
+
+| Endpoint | Usage |
+| --- | --- |
+| `GET /jobs/fetch-listed-jobs` | Listed-job records and pagination. |
+| `GET /jobs/fetch-jobs-by-status` | Active, paused, overdue, and completed records. |
+| `GET /jobs/leads` | Paginated recommendations for the user's business. |
+| `PUT /jobs/update-job/{jobId}` | Multipart job updates, reusing the job-creation serializer. |
+| `DELETE /jobs/remove-job/{jobId}/file/{fileId}` | Remove an existing job attachment. |
+
+Leads require an active subscription on a non-basic plan. The client sends only the documented `page` and `limit` parameters (defaults: 1 and 10). Search filters the current page and is labelled accordingly. Lead queries include the signed-in user's ID in their cache key, support cancellation, and reuse the jobs table's skeleton and empty states. Expert leads remain a separate, unavailable category.
+
+**Leads contract assumptions:** the adapter currently expects the shared `{ message, data: { jobs, currentPage, totalPages, totalJobs } }` envelope and treats HTTP 402/403 as subscription restrictions. Confirm these against a real endpoint response. Other failures show an error with retry; malformed successful responses are rejected rather than displayed as empty results.
+
+Editing is API-backed. Other job actions without mutation endpoints currently display availability feedback. Applicant, invoice, and payment collections use separate view models and should be connected when their response contracts are available; rendering these panels does not imply that hiring, payment, or milestone mutations are integrated.
+
+### Role-specific profiles
+
+| Route | Purpose |
+| --- | --- |
+| `/profiles/[kind]/[id]` | Public profile for `artisan`, `employer`, or `merchant`. |
+| `/profiles/[kind]/[id]/reviews` | Public profile reviews. |
+| `/dashboard/profiles/[kind]/[id]` | Profile within the authenticated dashboard layout. |
+| `/dashboard/profiles/[kind]/[id]/reviews` | Profile reviews within the dashboard. |
+| `/profile/[id]` | Compatibility destination for older links that contain only a user ID. |
+
+Employer and merchant pages share `PersonProfileView`; artisans reuse the expert profile and review components. Employer summaries resolve through `?jobId=...`, and merchant summaries through `?materialId=...`, verifying that the source record belongs to the requested user. Full profile/review APIs are not yet connected. Missing sources show an unavailable state; product ratings are not used as merchant ratings. Artisan profiles continue to use the existing expert fixtures.
+
+The singular `/profile/[id]` route cannot resolve a generic user without a lookup API and currently shows an unavailable state. It is not the current user's settings page; that remains `/dashboard/settings`.
+
 ### Dashboard experts marketplace
 
 The authenticated expert marketplace lives under `/dashboard/marketplace/experts`. It reuses shared marketplace controls and expert cards while supplying dashboard-specific profile, review, saved, and comparison destinations.
@@ -361,7 +410,11 @@ Use `/download` as the public smart-download URL and QR-code destination. On iPh
 
 ### Loading states
 
-Use the shared shadcn `Skeleton` for loading UI. Skeleton layouts should match the rendered page structure—including dashboard container widths, columns, spacing, and tertiary panels—to prevent layout shifts when data resolves. The shared primitive uses `bg-gray-200` as the loading surface.
+Use the shared shadcn `Skeleton` for loading UI. Skeleton layouts should match the rendered page structure—including dashboard container widths, columns, spacing, and tertiary panels—to prevent layout shifts when data resolves. The shared primitive at `src/components/ui/skeleton/skeleton.tsx` uses `bg-gray-200` and disables its pulse animation for reduced-motion preferences.
+
+Route-level `loading.tsx` files and Suspense fallbacks cover profiles and reviews, dashboard jobs, marketplace listings and details, comparisons, listed materials, login, cart, and checkout. Reuse the same skeleton for client-side query loading where appropriate. Profile skeletons distinguish artisan galleries from employer/merchant summaries; job-section skeletons distinguish applicants, invoices, and payments. Public route fallbacks retain their marketplace banners. Shared placeholder sections live under `src/components/molecules/PageSkeleton`, while feature-specific skeletons stay with their feature.
+
+Navigation side effects belong in effects or event handlers, not state updater callbacks. The congratulations countdown navigates from an effect after reaching zero and cleans up its timers.
 
 The overview skeleton intentionally renders before the current user's profile-completion status is known. Once authentication initializes, it is replaced by either the completed dashboard or the profile-completion welcome state.
 

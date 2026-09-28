@@ -1,5 +1,5 @@
 import FormTitleWrapper from "@/components/atoms/FormTitleWrapper/FormTitleWrapper";
-import EnterpriseIcon from "@/components/atoms/icons/EnterpriseIcon";
+import EnterpriseIcon from "@/components/atoms/icons/EnterpriseIcon/EnterpriseIcon";
 
 const EnterpriseWrapper = ({
   title,

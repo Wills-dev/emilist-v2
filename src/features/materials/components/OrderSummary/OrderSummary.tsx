@@ -1,7 +1,7 @@
 import Button from "@/components/atoms/Button/Button";
 import FilterSectionWrapper from "@/components/atoms/FilterSectionWrapper/FilterSectionWrapper";
 import FilterTitle from "@/components/atoms/FilterTilte/FilterTilte";
-import CardIcon from "@/components/atoms/icons/CardIcon";
+import CardIcon from "@/components/atoms/icons/CardIcon/CardIcon";
 import { getCurrencySign } from "@/lib/helpers/currencySign";
 import { numberWithCommas } from "@/lib/helpers/formatNumbers";
 import { CartOrderSummary } from "../../types";

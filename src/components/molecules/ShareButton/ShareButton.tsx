@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import ShareIcon from "@/components/atoms/icons/ShareIcon";
+import ShareIcon from "@/components/atoms/icons/ShareIcon/ShareIcon";
 import IconWrapper from "@/components/atoms/IconWrapper/IconWrapper";
 import ShareModal from "../ShareModal/ShareModal";
 

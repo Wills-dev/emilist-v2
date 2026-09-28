@@ -29,7 +29,9 @@ const parseMoney = (value: JobListMoneyDto | string | number | undefined) => {
 
 const getImageUrl = (value: string | JobListMediaDto) => {
   if (typeof value === "string") return value.trim();
-  return value.url?.trim() || value.secureUrl?.trim() || value.src?.trim() || "";
+  return (
+    value.url?.trim() || value.secureUrl?.trim() || value.src?.trim() || ""
+  );
 };
 
 const formatDuration = (value: JobListDurationDto | string | undefined) => {
@@ -41,11 +43,12 @@ const formatDuration = (value: JobListDurationDto | string | undefined) => {
 
   const numericAmount = Number(amount);
   const normalizedUnit = String(unit).replace(/\(s\)$/i, "");
-  const displayUnit = numericAmount === 1
-    ? normalizedUnit.replace(/s$/i, "")
-    : normalizedUnit.endsWith("s")
-      ? normalizedUnit
-      : `${normalizedUnit}s`;
+  const displayUnit =
+    numericAmount === 1
+      ? normalizedUnit.replace(/s$/i, "")
+      : normalizedUnit.endsWith("s")
+        ? normalizedUnit
+        : `${normalizedUnit}s`;
 
   return `${amount} ${displayUnit}`;
 };
@@ -83,7 +86,10 @@ const formatJobTimeline = (job: JobDetailsDto) => {
   }
 
   if (job.jobUrgency === "regularly") {
-    const frequency = frequencyLabels[job.jobFrequency || ""] || job.jobFrequency || "Recurring";
+    const frequency =
+      frequencyLabels[job.jobFrequency || ""] ||
+      job.jobFrequency ||
+      "Recurring";
     if (job.startDate && job.endDate) {
       return `${frequency}, ${formatDate(job.startDate)} – ${formatDate(job.endDate)}`;
     }
@@ -101,7 +107,8 @@ const urgencyLabels: Record<string, string> = {
 };
 
 export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
-  const poster = job.userId && typeof job.userId === "object" ? job.userId : undefined;
+  const poster =
+    job.userId && typeof job.userId === "object" ? job.userId : undefined;
   const selectedBudget =
     job.jobUrgency === "right_now"
       ? job.totalBudget
@@ -113,9 +120,17 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
     typeof job.location === "string" ? job.location : job.location?.address;
   const description = job.description?.trim() || "No job description provided.";
 
+  const files = (job.jobFiles ?? job.files ?? job.images ?? [])
+    .map(getImageUrl)
+    .filter(Boolean);
+  const isDocument = (url: string) =>
+    /\.(pdf|docx?|xlsx?|pptx?|txt|csv|zip)(?:[?#]|$)/i.test(url);
+
   return {
     id: job._id,
-    category: job.jobCategory?.trim() || job.category?.trim() || "Uncategorised",
+    status: job.status || "listed",
+    category:
+      job.jobCategory?.trim() || job.category?.trim() || "Uncategorised",
     title: job.title?.trim() || "Untitled job",
     createdAt: job.createdAt || new Date(0).toISOString(),
     price: toNumber(budget?.amount),
@@ -126,20 +141,40 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
     level: job.experienceLevel?.trim() || "Not specified",
     isLiked: Boolean(job.liked),
     ownerId: poster?._id || (typeof job.userId === "string" ? job.userId : ""),
-    ownerName: poster?.fullName?.trim() || poster?.userName?.trim() || "Job poster",
+    ownerVerified: poster?.isVerified,
+    ownerUsername: poster?.userName,
+    ownerBio: poster?.bio,
+    ownerName:
+      poster?.fullName?.trim() || poster?.userName?.trim() || "Job poster",
     ownerImage: poster?.profileImage?.trim() || "",
     ownerRating: Math.max(0, toNumber(job.posterRating?.averageRating)),
     ownerReviewCount: Math.max(0, toNumber(job.posterRating?.totalReviews)),
     urgency: urgencyLabels[job.jobUrgency] || job.jobUrgency,
     description: description.split(/\n+/).filter(Boolean),
-    images: (job.jobFiles ?? job.files ?? job.images ?? []).map(getImageUrl).filter(Boolean),
+    images: files.filter((url) => !isDocument(url)),
+    attachments: files
+      .filter(isDocument)
+      .map((url) => ({
+        url,
+        name: url.split(/[?#]/)[0].split("/").pop() || "Attachment",
+      })),
     milestones: (job.milestones ?? []).map((milestone, index) => ({
       id: milestone._id || milestone.id || `milestone-${index + 1}`,
-      title: milestone.achievement?.trim() || milestone.title?.trim() || `Milestone ${index + 1}`,
-      duration: formatDuration(milestone.timeFrame ?? milestone.duration) || "Timeline unavailable",
+      status: milestone.status,
+      title:
+        milestone.achievement?.trim() ||
+        milestone.title?.trim() ||
+        `Milestone ${index + 1}`,
+      duration:
+        formatDuration(milestone.timeFrame ?? milestone.duration) ||
+        "Timeline unavailable",
       amount: toNumber(milestone.amount),
       currency: milestone.currency?.trim() || budget?.currency?.trim() || "NGN",
-      details: milestone.details?.trim() || milestone.description?.trim() || milestone.achievement?.trim() || "No milestone details provided.",
+      details:
+        milestone.details?.trim() ||
+        milestone.description?.trim() ||
+        milestone.achievement?.trim() ||
+        "No milestone details provided.",
       isExpanded: true,
     })),
   };
