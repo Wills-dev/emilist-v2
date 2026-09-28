@@ -19,11 +19,14 @@ import {
   formatInputTextNumberWithCommas,
 } from "@/lib/helpers/formatNumbers";
 import { usePostJobStore } from "@/store/job/postJobStore";
+import { PostJobStoreState } from "@/store/types/job";
 
 const JobUrgencyFields = ({
   errors,
+  useStore = usePostJobStore,
 }: {
   errors: PostJobDetailsErrors;
+  useStore?: <T>(selector: (state: PostJobStoreState) => T) => T;
 }) => {
   const {
     budget,
@@ -37,7 +40,7 @@ const JobUrgencyFields = ({
     setField,
     setScheduleField,
     startDate,
-  } = usePostJobStore(
+  } = useStore(
     useShallow((state) => ({
       budget: state.budget,
       endDate: state.endDate,

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import Button from "@/components/atoms/Button/Button";
 import Container from "@/components/atoms/Container/Container";
-import ArrowUp from "@/components/atoms/icons/ArrowUp";
+import ArrowUp from "@/components/atoms/icons/ArrowUp/ArrowUp";
 import AppSection from "@/components/organisms/AppSection/AppSection";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 

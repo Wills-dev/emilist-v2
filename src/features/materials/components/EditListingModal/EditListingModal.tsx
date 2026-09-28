@@ -3,8 +3,8 @@
 import Button from "@/components/atoms/Button/Button";
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
 import { OtherSellerProduct } from "../../types";
-import EditListingFields, { Field } from "./EditListingFields";
-import ListingImageInput from "./ListingImageInput";
+import EditListingFields, { Field } from "./EditListingFields/EditListingFields";
+import ListingImageInput from "./ListingImageInput/ListingImageInput";
 import { useEditListingForm } from "./useEditListingForm";
 import { useListingImages } from "./useListingImages";
 

@@ -2,9 +2,9 @@
 
 import DashboardNavCard from "@/components/atoms/DashboardNavCard/DashboardNavCard";
 import DownloadMobile from "@/components/atoms/DownloadMobile/DownloadMobile";
-import Logout from "@/components/atoms/icons/Logout";
-import MessageIcon2 from "@/components/atoms/icons/MessageIcon2";
-import WarningIcon from "@/components/atoms/icons/WarningIcon";
+import Logout from "@/components/atoms/icons/Logout/Logout";
+import MessageIcon2 from "@/components/atoms/icons/MessageIcon2/MessageIcon2";
+import WarningIcon from "@/components/atoms/icons/WarningIcon/WarningIcon";
 import UserIdentity from "@/components/molecules/UserIdentity/UserIdentity";
 import { dashboardMainLinks } from "@/lib/constants";
 import { routes } from "@/lib/helpers/routes";

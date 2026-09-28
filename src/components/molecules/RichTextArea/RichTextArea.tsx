@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 
-import RichTextToolbar from "./RichTextToolbar";
+import RichTextToolbar from "./RichTextToolbar/RichTextToolbar";
 import { createRichTextExtensions } from "./extensions";
 
 interface RichTextAreaProps {

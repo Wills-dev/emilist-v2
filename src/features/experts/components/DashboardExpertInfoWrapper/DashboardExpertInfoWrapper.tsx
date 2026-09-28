@@ -1,5 +1,7 @@
 "use client";
 
+import { toast } from "sonner";
+import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import { motion } from "framer-motion";
 
 import BackButton from "@/components/atoms/BackButton/BackButton";
@@ -11,10 +13,10 @@ import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge"
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import ItemName from "@/components/atoms/ItemName/ItemName";
 import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
-import ClockIcon from "@/components/atoms/icons/ClockIcon";
-import LevelIcon from "@/components/atoms/icons/LevelIcon";
-import LocationIcon from "@/components/atoms/icons/LocationIcon";
-import UserIcon from "@/components/atoms/icons/UserIcon";
+import ClockIcon from "@/components/atoms/icons/ClockIcon/ClockIcon";
+import LevelIcon from "@/components/atoms/icons/LevelIcon/LevelIcon";
+import LocationIcon from "@/components/atoms/icons/LocationIcon/LocationIcon";
+import UserIcon from "@/components/atoms/icons/UserIcon/UserIcon";
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 
 import LikeButton from "@/components/molecules/LikeButton/LikeButton";
@@ -35,13 +37,51 @@ import ExpertReviewSummary from "../ExpertReviewSummary/ExpertReviewSummary";
 const DashboardExpertInfoWrapper = ({
   expertId,
   publicPage = false,
+  profilePage = false,
+  jobContext,
 }: {
   expertId: string;
   publicPage?: boolean;
+  profilePage?: boolean;
+  jobContext?: { jobId: string; tab: string };
 }) => {
   const expert =
     dashboardExperts.find((item) => item.id === expertId) ??
-    dashboardExperts[0];
+    (jobContext || profilePage ? undefined : dashboardExperts[0]);
+
+  const backHref = jobContext
+    ? routes.dashboardLinks.jobApplicants(jobContext.jobId, jobContext.tab)
+    : undefined;
+  if (!expert)
+    return (
+      <Container variant="small" className="space-y-4 py-4">
+        <BackButton href={backHref} isDashboard />
+        <EmptyState
+          title="Expert details unavailable"
+          description="This expert’s profile is not available yet."
+        />
+      </Container>
+    );
+  const reviewsHref = jobContext
+    ? routes.dashboardLinks.jobApplicantReviews(
+        jobContext.jobId,
+        expert.id,
+        jobContext.tab,
+      )
+    : profilePage
+      ? `${publicPage ? "" : "/dashboard"}${routes.profiles.artisanReviews(expert.id)}`
+      : publicPage
+        ? routes.marketplace.expertInfoReviews(expert.id)
+        : routes.dashboardLinks.marketplaceExpertReviews(expert.id);
+  const profileHref = jobContext
+    ? routes.dashboardLinks.jobApplicantInfo(
+        jobContext.jobId,
+        expert.id,
+        jobContext.tab,
+      )
+    : profilePage
+      ? `${publicPage ? "" : "/dashboard"}${routes.profiles.artisan(expertId)}`
+      : publicPage ? routes.profiles.artisan(expertId) : routes.dashboardLinks.marketplaceExpertInfo(expertId);
 
   return (
     <Container variant={publicPage ? "center" : "small"}>
@@ -51,21 +91,39 @@ const DashboardExpertInfoWrapper = ({
         transition={{ duration: 0.45, ease: "easeOut" }}
         className="space-y-4 pb-20 pt-4"
       >
-        <div className="lg:hidden">
-          <MarketplaceTab
-            tabContent={publicPage ? marketplaceTabs : dashbaordMarketplaceTabs}
-          />
-        </div>
-        <div className="flex w-full flex-wrap justify-between gap-2">
+        {!jobContext && !profilePage && (
+          <div className="lg:hidden">
+            <MarketplaceTab
+              tabContent={
+                publicPage ? marketplaceTabs : dashbaordMarketplaceTabs
+              }
+            />
+          </div>
+        )}
+        <div
+          className={
+            jobContext
+              ? "grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(280px,32%)]"
+              : "flex w-full flex-wrap justify-between gap-2"
+          }
+        >
           <motion.main
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.08, ease: "easeOut" }}
-            className={publicPage ? "w-full max-w-202" : "w-full max-w-182.25"}
+            className={
+              jobContext
+                ? "w-full min-w-0"
+                : publicPage
+                  ? "w-full max-w-202"
+                  : "w-full max-w-182.25"
+            }
           >
             <div className="flex items-center justify-between pb-4">
-              <BackButton />
-              <FlagActionBtn onClick={() => {}} actionTitle="Flag expert" />
+              <BackButton href={backHref} isDashboard={Boolean(jobContext)} />
+              {!jobContext && !profilePage && (
+                <FlagActionBtn onClick={() => {}} actionTitle="Flag expert" />
+              )}
             </div>
             <div className="space-y-8 rounded-[11.33px] border border-[#F1F2F9] bg-[#F9F9F9] px-2 pb-6 pt-8 sm:px-5 md:px-11">
               <JobCategory category={expert.serviceType} variant="secondary" />
@@ -108,10 +166,12 @@ const DashboardExpertInfoWrapper = ({
                       />
                       <InfoItem value={expert.level} icon={<LevelIcon />} />
                     </div>
-                    <div className="flex flex-wrap items-center gap-6">
-                      <CompareBtn />
-                      <PromoteBtn />
-                    </div>
+                    {!jobContext && !profilePage && (
+                      <div className="flex flex-wrap items-center gap-6">
+                        <CompareBtn />
+                        <PromoteBtn />
+                      </div>
+                    )}
                   </div>
                   <div className="flex items-center gap-3">
                     <ShareButton
@@ -128,19 +188,20 @@ const DashboardExpertInfoWrapper = ({
                 <ImageSliderWrapper
                   images={dashboardExpertProfile.galleryImages}
                   productName={expert.businessName}
+                  imageClassName={
+                    jobContext
+                      ? "h-auto aspect-square sm:aspect-[2/1] sm:h-auto"
+                      : undefined
+                  }
+                  showFileNames={Boolean(jobContext)}
                 />
                 <UserRatingCard
                   id={expert.id}
                   fullName={expert.businessName}
                   rating={expert.rating}
                   noOfReviews={expert.noOfReviews}
-                  reviewsHref={
-                    publicPage
-                      ? routes.marketplace.expertInfoReviews(expert.id)
-                      : routes.dashboardLinks.marketplaceExpertReviews(
-                          expert.id,
-                        )
-                  }
+                  reviewsHref={reviewsHref}
+                  profileHref={profileHref}
                 />
                 <div className="rounded-lg bg-white p-4 text-sm leading-6 text-[#5E625F]">
                   <RichTextContent
@@ -150,7 +211,18 @@ const DashboardExpertInfoWrapper = ({
                   />
                 </div>
               </div>
-              <Button variant="primary" className="h-11 w-full">
+              <Button
+                variant="primary"
+                className="h-11 w-full"
+                onClick={
+                  jobContext
+                    ? () =>
+                        toast.info(
+                          `Hiring ${expert.businessName} is not available yet.`,
+                        )
+                    : undefined
+                }
+              >
                 Hire Expert
               </Button>
             </div>
@@ -159,9 +231,19 @@ const DashboardExpertInfoWrapper = ({
             initial={{ opacity: 0, x: 12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.16, ease: "easeOut" }}
-            className={publicPage ? "w-full max-w-96.75" : "w-full max-w-87.75"}
+            className={
+              jobContext
+                ? "w-full min-w-0"
+                : publicPage
+                  ? "w-full max-w-96.75"
+                  : "w-full max-w-87.75"
+            }
           >
-            <ExpertReviewSummary expertId={expert.id} publicPage={publicPage} />
+            <ExpertReviewSummary
+              expertId={expert.id}
+              publicPage={publicPage}
+              reviewsHref={reviewsHref}
+            />
           </motion.aside>
         </div>
       </motion.div>

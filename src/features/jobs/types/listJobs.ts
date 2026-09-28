@@ -12,6 +12,8 @@ export interface JobListLocationDto {
 }
 
 export interface JobListPosterDto {
+  isVerified?: boolean;
+  bio?: string;
   _id: string;
   uniqueId?: string;
   userName?: string;

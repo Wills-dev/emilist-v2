@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { routes } from "@/lib/helpers/routes";
+import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import { motion } from "framer-motion";
 
 import BackButton from "@/components/atoms/BackButton/BackButton";
@@ -22,13 +24,18 @@ import {
 const DashboardExpertReviews = ({
   expertId,
   publicPage = false,
+  profilePage = false,
+  jobContext,
 }: {
   expertId: string;
   publicPage?: boolean;
+  profilePage?: boolean;
+  jobContext?: { jobId: string; tab: string };
 }) => {
   const expert =
     dashboardExperts.find((item) => item.id === expertId) ??
-    dashboardExperts[0];
+    (jobContext || profilePage ? undefined : dashboardExperts[0]);
+  const [page, setPage] = useState(1);
   const [reviews, setReviews] = useState(dashboardExpertReviews);
   const [, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
@@ -71,6 +78,30 @@ const DashboardExpertReviews = ({
     setIsModalOpen(false);
   };
 
+  const profileHref = jobContext
+    ? routes.dashboardLinks.jobApplicantInfo(
+        jobContext.jobId,
+        expertId,
+        jobContext.tab,
+      )
+    : profilePage
+      ? `${publicPage ? "" : "/dashboard"}${routes.profiles.artisan(expertId)}`
+      : publicPage ? routes.profiles.artisan(expertId) : routes.dashboardLinks.marketplaceExpertInfo(expertId);
+  if (!expert)
+    return (
+      <Container variant="small" className="space-y-4 py-4">
+        <BackButton href={profileHref} isDashboard />
+        <EmptyState
+          title="Expert reviews unavailable"
+          description="This expert’s reviews are not available yet."
+        />
+      </Container>
+    );
+  const currentPage = Math.min(
+    page,
+    Math.max(1, Math.ceil(visibleReviews.length / 5)),
+  );
+
   return (
     <Container variant={publicPage ? "center" : "small"}>
       <motion.div
@@ -80,10 +111,16 @@ const DashboardExpertReviews = ({
         className="space-y-6 pb-20 pt-4"
       >
         <div className="flex items-center justify-between">
-          <BackButton />
+          <BackButton href={profileHref} isDashboard={Boolean(jobContext)} />
           <FlagActionBtn onClick={() => {}} actionTitle="Flag expert" />
         </div>
-        <div className="flex flex-wrap items-start justify-between gap-4">
+        <div
+          className={
+            jobContext
+              ? "grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_32%]"
+              : "flex flex-wrap items-start justify-between gap-4"
+          }
+        >
           <div
             className={`w-full min-w-72.5 bg-[#F9F9F9] p-6 ${publicPage ? "max-w-197.75" : "max-w-160"}`}
           >
@@ -96,19 +133,16 @@ const DashboardExpertReviews = ({
           <div
             className={`w-full min-w-72.5 space-y-3 ${publicPage ? "max-w-96.75" : "max-w-109.75"}`}
           >
-            <FilterSectionWrapper
-              variant={publicPage ? "primary" : "tertiary"}
-            >
+            <FilterSectionWrapper variant={publicPage ? "primary" : "tertiary"}>
               <FilterTitle title="Expert profile" />
               <UserRatingCard
                 id={expert.id}
+                profileHref={profileHref}
                 fullName={expert.businessName}
                 rating={expert.rating}
               />
             </FilterSectionWrapper>
-            <FilterSectionWrapper
-              variant={publicPage ? "primary" : "tertiary"}
-            >
+            <FilterSectionWrapper variant={publicPage ? "primary" : "tertiary"}>
               <FilterTitle
                 title={`${expert.noOfCompletedJobs} jobs completed`}
               />
@@ -127,16 +161,19 @@ const DashboardExpertReviews = ({
               : dashboardExpertReviewSummary.totalComments
           }
           variant="large"
-          onSubmit={setSubmittedQuery}
+          onSubmit={(query) => {
+            setSubmittedQuery(query);
+            setPage(1);
+          }}
           setSearch={setQuery}
-          reviews={visibleReviews}
+          reviews={visibleReviews.slice((currentPage - 1) * 5, currentPage * 5)}
           onAddComment={() => setIsModalOpen(true)}
           sectionVariant={publicPage ? "primary" : "tertiary"}
           pagination={{
-            page: 1,
-            hasMore: false,
-            onNext: () => {},
-            onPrev: () => {},
+            page: currentPage,
+            hasMore: currentPage * 5 < visibleReviews.length,
+            onNext: () => setPage(currentPage + 1),
+            onPrev: () => setPage(Math.max(1, currentPage - 1)),
           }}
         />
       </motion.div>

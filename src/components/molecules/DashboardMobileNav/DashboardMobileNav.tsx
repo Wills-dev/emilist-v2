@@ -9,14 +9,14 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "@/components/ui/sheet/sheet";
 
 import DashboardNavCard from "@/components/atoms/DashboardNavCard/DashboardNavCard";
 import Logo from "@/components/atoms/Logo/Logo";
-import BriefcaseIcon from "@/components/atoms/icons/BriefcaseIcon";
-import Logout from "@/components/atoms/icons/Logout";
-import MessageIcon2 from "@/components/atoms/icons/MessageIcon2";
-import WarningIcon from "@/components/atoms/icons/WarningIcon";
+import BriefcaseIcon from "@/components/atoms/icons/BriefcaseIcon/BriefcaseIcon";
+import Logout from "@/components/atoms/icons/Logout/Logout";
+import MessageIcon2 from "@/components/atoms/icons/MessageIcon2/MessageIcon2";
+import WarningIcon from "@/components/atoms/icons/WarningIcon/WarningIcon";
 import JoinPro from "@/components/atoms/JoinPro/JoinPro";
 import UserIdentity from "../UserIdentity/UserIdentity";
 

@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 
 import Container from "@/components/atoms/Container/Container";
 import SectionTitle from "@/components/atoms/SectionTitle/SectionTitle";
-import ServiceSectionAction from "@/components/molecules/ServiceSectionActions/ServiceSectionAction";
+import ServiceSectionAction from "@/components/molecules/ServiceSectionActions/ServiceSectionAction/ServiceSectionAction";
 import SectionWrapper from "@/components/molecules/SectionWrapper/SectionWrapper";
 import ExpertCard from "@/features/experts/components/ExpertCard/ExpertCard";
 import HomeJobSection from "@/features/jobs/components/HomeJobSection/HomeJobSection";

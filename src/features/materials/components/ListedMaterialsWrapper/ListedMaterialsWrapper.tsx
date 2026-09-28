@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import Container from "@/components/atoms/Container/Container";
 import DashboardTitle from "@/components/atoms/DashboardTitle/DashboardTitle";
-import Clipboard from "@/components/atoms/icons/Clipboard";
+import Clipboard from "@/components/atoms/icons/Clipboard/Clipboard";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import ListHeader from "@/components/molecules/ListHeader/ListHeader";
 import PaginationPanel from "@/components/molecules/PaginationPanel/PaginationPanel";
@@ -13,7 +13,7 @@ import { sortOptions } from "@/lib/constants/filter";
 import { usePagination } from "@/lib/hooks/usePagination";
 import { useStore } from "@/store/authStore";
 import ListedCard from "../ListedCard/ListedCard";
-import ListedCardSkeleton from "../ListedCard/ListedCardSkeleton";
+import ListedCardSkeleton from "../ListedCard/ListedCardSkeleton/ListedCardSkeleton";
 import { useGetOtherSellerMaterials } from "../../hooks/useGetOtherSellerMaterials";
 
 const PAGE_LIMIT = 10;

@@ -1,3 +1,4 @@
+import VerifyIcon from "@/components/atoms/icons/VerifyIcon/VerifyIcon";
 import ProfileAvatar from "@/components/atoms/ProfileAvatar/ProfileAvatar";
 import Rating from "../Rating/Rating";
 import Link from "next/link";
@@ -13,6 +14,8 @@ const UserRatingCard = ({
   detail,
   avatarVariant = "small",
   reviewsHref,
+  profileHref,
+  isVerified = false,
 }: {
   id: string;
   fullName: string;
@@ -22,6 +25,8 @@ const UserRatingCard = ({
   detail?: string;
   avatarVariant?: "very-small" | "small" | "large";
   reviewsHref?: string;
+  profileHref?: string;
+  isVerified?: boolean;
 }) => {
   return (
     <div className="flex items-center gap-2">
@@ -29,10 +34,15 @@ const UserRatingCard = ({
       <div className="space-y-1">
         {id ? (
           <Link
-            href={routes?.profile(id)}
+            href={profileHref ?? routes?.profile(id)}
             className="text-[#5E625F] text-sm font-exo font-semibold truncate hover:underline duration-300 transition-all"
           >
             {fullName}
+            {isVerified && (
+              <span className="ml-1 inline-flex align-middle text-sm">
+                <VerifyIcon />
+              </span>
+            )}
           </Link>
         ) : (
           <span className="block truncate font-exo text-sm font-semibold text-[#5E625F]">

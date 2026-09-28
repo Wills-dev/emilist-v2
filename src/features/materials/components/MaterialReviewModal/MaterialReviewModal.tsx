@@ -4,7 +4,7 @@ import { Star } from "lucide-react";
 
 import Button from "@/components/atoms/Button/Button";
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 
 import { useAddMaterialReview } from "../../hooks/useAddMaterialReview";
 

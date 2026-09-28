@@ -1,4 +1,4 @@
-import LikeIcon from "@/components/atoms/icons/LikeIcon";
+import LikeIcon from "@/components/atoms/icons/LikeIcon/LikeIcon";
 import IconWrapper from "@/components/atoms/IconWrapper/IconWrapper";
 
 const LikeButton = ({

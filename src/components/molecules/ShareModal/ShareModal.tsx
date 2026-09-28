@@ -39,7 +39,7 @@ const ShareModal = ({
     },
     expert: {
       title: "Expert Profile on Emilist",
-      link: `${webUrl}${routes?.marketplace?.expertInfo(id)}`,
+      link: `${webUrl}${routes.profiles.artisan(id)}`,
       shareText: `Discover ${name} on Emilist. Connect and explore their services and experience.`,
     },
     user: {

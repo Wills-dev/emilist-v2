@@ -4,7 +4,7 @@ import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import SectionWrapper from "@/components/molecules/SectionWrapper/SectionWrapper";
 import { routes } from "@/lib/helpers/routes";
 import { useHomeJobs } from "../../hooks/useHomeJobs";
-import JobCardSkeleton from "../JobCard/JobCardSkeleton";
+import JobCardSkeleton from "../JobCard/JobCardSkeleton/JobCardSkeleton";
 import JobCardItem from "../JobCardItem/JobCardItem";
 
 const HOME_JOB_LIMIT = 4;

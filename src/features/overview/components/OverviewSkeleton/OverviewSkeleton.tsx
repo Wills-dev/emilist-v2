@@ -1,5 +1,5 @@
 import Container from "@/components/atoms/Container/Container";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton/skeleton";
 
 const OverviewSkeleton = () => (
   <Container variant="small">

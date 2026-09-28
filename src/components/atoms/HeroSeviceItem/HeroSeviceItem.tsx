@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import ArrowUp from "../icons/ArrowUp";
+import ArrowUp from "../icons/ArrowUp/ArrowUp";
 
 const HeroSeviceItem = ({
   desc,

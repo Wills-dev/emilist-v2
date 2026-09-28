@@ -3,7 +3,7 @@
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import Container from "@/components/atoms/Container/Container";
 import DashboardTitle from "@/components/atoms/DashboardTitle/DashboardTitle";
-import PackageIcon from "@/components/atoms/icons/PackageIcon";
+import PackageIcon from "@/components/atoms/icons/PackageIcon/PackageIcon";
 import { sortOptions } from "@/lib/constants/filter";
 import OrderCard from "../OrderCard/OrderCard";
 import PaginationPanel from "@/components/molecules/PaginationPanel/PaginationPanel";

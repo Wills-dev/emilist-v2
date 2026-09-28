@@ -7,7 +7,7 @@ import BackHomeBtn from "@/components/atoms/BackHomeBtn/BackHomeBtn";
 import InputWrapper from "../../InputWrapper/InputWrapper";
 import Label from "@/components/atoms/Label/Label";
 import Input from "@/components/atoms/Input/Input";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 import CustomCheckbox from "@/components/atoms/CustomCheckbox/CustomCheckbox";
 import EnterpriseImage from "../../EnterpriseImage/EnterpriseImage";
 import Select from "@/components/atoms/Select/Select";

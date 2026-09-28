@@ -1,21 +1,21 @@
-import ExpertIcon from "@/components/atoms/icons/ExpertIcon";
-import PostJobIcon from "@/components/atoms/icons/PostJobIcon";
-import EnterpriseIcon from "@/components/atoms/icons/EnterpriseIcon";
-import BriefcaseIcon from "@/components/atoms/icons/BriefcaseIcon";
-import BonicularIcon from "@/components/atoms/icons/BonicularIcon";
-import GiverIcon from "@/components/atoms/icons/GiverIcon";
+import ExpertIcon from "@/components/atoms/icons/ExpertIcon/ExpertIcon";
+import PostJobIcon from "@/components/atoms/icons/PostJobIcon/PostJobIcon";
+import EnterpriseIcon from "@/components/atoms/icons/EnterpriseIcon/EnterpriseIcon";
+import BriefcaseIcon from "@/components/atoms/icons/BriefcaseIcon/BriefcaseIcon";
+import BonicularIcon from "@/components/atoms/icons/BonicularIcon/BonicularIcon";
+import GiverIcon from "@/components/atoms/icons/GiverIcon/GiverIcon";
 
-import Twitter from "@/components/atoms/icons/Twitter";
-import LinkedIn from "@/components/atoms/icons/LinkedIn";
-import Instagram from "@/components/atoms/icons/Instagram";
+import Twitter from "@/components/atoms/icons/Twitter/Twitter";
+import LinkedIn from "@/components/atoms/icons/LinkedIn/LinkedIn";
+import Instagram from "@/components/atoms/icons/Instagram/Instagram";
 
 import { routes } from "../helpers/routes";
-import FacebookIcon from "@/components/atoms/icons/FacebookIcon";
-import OverviewIcon from "@/components/atoms/icons/OverviewIcon";
-import MarketplaceIcon from "@/components/atoms/icons/MarketplaceIcon";
-import JobsIcon from "@/components/atoms/icons/JobsIcon";
-import PaymentIcon from "@/components/atoms/icons/PaymentIcon";
-import ReportIcon from "@/components/atoms/icons/ReportIcon";
+import FacebookIcon from "@/components/atoms/icons/FacebookIcon/FacebookIcon";
+import OverviewIcon from "@/components/atoms/icons/OverviewIcon/OverviewIcon";
+import MarketplaceIcon from "@/components/atoms/icons/MarketplaceIcon/MarketplaceIcon";
+import JobsIcon from "@/components/atoms/icons/JobsIcon/JobsIcon";
+import PaymentIcon from "@/components/atoms/icons/PaymentIcon/PaymentIcon";
+import ReportIcon from "@/components/atoms/icons/ReportIcon/ReportIcon";
 
 export const navbarLinks = [
   {

@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, X } from "lucide-react";
 
 import Input from "@/components/atoms/Input/Input";
 import Select from "@/components/atoms/Select/Select";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 import FormField from "@/components/molecules/FormField/FormField";
 import { currencies } from "@/lib/constants/currencies";
 import {
@@ -12,6 +12,7 @@ import {
   formatInputTextNumberWithCommas,
 } from "@/lib/helpers/formatNumbers";
 import { usePostJobStore } from "@/store/job/postJobStore";
+import { PostJobStoreState } from "@/store/types/job";
 import { POST_JOB_DURATION_OPTIONS } from "../../constants/postJob";
 import { PostJobMilestoneFieldErrors } from "../../helpers/validatePostJob";
 import {
@@ -29,6 +30,7 @@ const MilestoneFormItem = ({
   isRightNow,
   milestone,
   milestoneCount,
+  useStore = usePostJobStore,
 }: {
   currency: string;
   derivedAmount: number | null;
@@ -39,10 +41,11 @@ const MilestoneFormItem = ({
   isRightNow: boolean;
   milestone: PostJobMilestoneDraft;
   milestoneCount: number;
+  useStore?: <T>(selector: (state: PostJobStoreState) => T) => T;
 }) => {
-  const removeMilestone = usePostJobStore((state) => state.removeMilestone);
-  const toggleMilestone = usePostJobStore((state) => state.toggleMilestone);
-  const updateMilestone = usePostJobStore((state) => state.updateMilestone);
+  const removeMilestone = useStore((state) => state.removeMilestone);
+  const toggleMilestone = useStore((state) => state.toggleMilestone);
+  const updateMilestone = useStore((state) => state.updateMilestone);
   const autoDuration = isFinal && isRightNow;
   const duration = autoDuration ? derivedDuration : milestone.timeFrame;
   const amountValue = isFinal

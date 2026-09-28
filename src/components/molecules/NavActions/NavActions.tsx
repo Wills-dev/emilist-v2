@@ -1,8 +1,8 @@
 "use client";
 
-import ArrowUp from "@/components/atoms/icons/ArrowUp";
+import ArrowUp from "@/components/atoms/icons/ArrowUp/ArrowUp";
 import Button from "@/components/atoms/Button/Button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton/skeleton";
 
 import { routes } from "@/lib/helpers/routes";
 import { useStore } from "@/store/authStore";

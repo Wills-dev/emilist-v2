@@ -2,10 +2,10 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-import EmojiIcon from "@/components/atoms/icons/EmojiIcon";
-import SelectFileIcon from "@/components/atoms/icons/SelectFileIcon";
-import SendIcon from "@/components/atoms/icons/SendIcon";
-import UploadImageIcon from "@/components/atoms/icons/UploadImageIcon";
+import EmojiIcon from "@/components/atoms/icons/EmojiIcon/EmojiIcon";
+import SelectFileIcon from "@/components/atoms/icons/SelectFileIcon/SelectFileIcon";
+import SendIcon from "@/components/atoms/icons/SendIcon/SendIcon";
+import UploadImageIcon from "@/components/atoms/icons/UploadImageIcon/UploadImageIcon";
 import EmojiPicker from "@/components/molecules/EmojiPicker/EmojiPicker";
 
 const DOCUMENT_FILE_TYPES =

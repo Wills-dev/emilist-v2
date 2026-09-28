@@ -1,3 +1,4 @@
+import { routes } from "@/lib/helpers/routes";
 import ShareButton from "../ShareButton/ShareButton";
 import LikeButton from "../LikeButton/LikeButton";
 import UserRatingCard from "../UserRatingCard/UserRatingCard";
@@ -37,6 +38,15 @@ const UserProfileCard = ({
     <div className="flex items-center justify-between gap-2 pl-2">
       <UserRatingCard
         id={profileId ?? id}
+        profileHref={
+          type === "expert"
+            ? routes.profiles.artisan(profileId ?? id)
+            : type === "job" && profileId
+              ? routes.profiles.employer(profileId, id)
+              : type === "material" && profileId
+                ? routes.profiles.merchant(profileId, id)
+                : undefined
+        }
         imgUrl={imgUrl}
         fullName={fullName}
         rating={rating}

@@ -1,6 +1,6 @@
 "use client";
 
-import EditIcon from "@/components/atoms/icons/EditIcon";
+import EditIcon from "@/components/atoms/icons/EditIcon/EditIcon";
 import ItemActionButton from "@/components/atoms/ItemActionButton/ItemActionButton";
 
 const ListedCardActionBtns = ({

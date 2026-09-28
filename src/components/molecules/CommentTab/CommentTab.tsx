@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import QuoteIcon from "@/components/atoms/icons/QuoteIcon";
+import QuoteIcon from "@/components/atoms/icons/QuoteIcon/QuoteIcon";
 import Dot from "@/components/atoms/Dot/Dot";
 
 const CommentTab = ({

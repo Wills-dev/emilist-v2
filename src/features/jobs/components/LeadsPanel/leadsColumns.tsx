@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreVertical } from "lucide-react";
+import JobActionsMenu from "../JobActionsMenu/JobActionsMenu";
 
 import { routes } from "@/lib/helpers/routes";
 import type { LeadJobRow } from "../../types/manageJobs";
@@ -30,40 +29,19 @@ export const leadsColumns: ColumnDef<LeadJobRow>[] = [
   { accessorKey: "location", header: "Location" },
   { accessorKey: "applicants", header: "Applicants" },
   {
-    id: "apply",
-    header: "",
-    cell: ({ row }) => (
-      <Link
-        href={routes.dashboardLinks.marketplaceJobInfo(row.original.id)}
-        className="text-sm font-medium text-[#6667FF]"
-      >
-        Apply Now
-      </Link>
-    ),
-  },
-  {
-    id: "view",
-    header: "",
-    cell: ({ row }) => (
-      <Link
-        href={routes.dashboardLinks.marketplaceJobInfo(row.original.id)}
-        className="text-sm text-[#737774]"
-      >
-        View
-      </Link>
-    ),
-  },
-  {
     id: "actions",
     header: "",
-    cell: () => (
-      <button
-        type="button"
-        aria-label="More actions"
-        className="text-[#8A8D8B]"
-      >
-        <MoreVertical className="size-4" />
-      </button>
+    cell: ({ row }) => (
+      <JobActionsMenu
+        jobTitle={row.original.jobTitle}
+        viewHref={routes.dashboardLinks.marketplaceJobInfo(row.original.id)}
+        actions={[
+          {
+            label: "Apply Now",
+            href: routes.dashboardLinks.marketplaceJobInfo(row.original.id),
+          },
+        ]}
+      />
     ),
   },
 ];

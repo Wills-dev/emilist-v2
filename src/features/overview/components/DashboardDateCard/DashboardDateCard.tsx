@@ -1,4 +1,4 @@
-import CalendarIcon from "@/components/atoms/icons/CalendarIcon";
+import CalendarIcon from "@/components/atoms/icons/CalendarIcon/CalendarIcon";
 
 const DashboardDateCard = ({ compact = false }: { compact?: boolean }) => {
   const date = new Date();

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
-import InsightEmptyState from "@/components/atoms/icons/InsightEmptyState";
+import InsightEmptyState from "@/components/atoms/icons/InsightEmptyState/InsightEmptyState";
 import { routes } from "@/lib/helpers/routes";
 import {
   InsightReportData,

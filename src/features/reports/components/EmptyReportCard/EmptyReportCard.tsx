@@ -1,4 +1,4 @@
-import InsightEmptyState from "@/components/atoms/icons/InsightEmptyState";
+import InsightEmptyState from "@/components/atoms/icons/InsightEmptyState/InsightEmptyState";
 
 import ReportCard from "../ReportCard/ReportCard";
 

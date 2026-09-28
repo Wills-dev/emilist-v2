@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { X } from "lucide-react";
-import StarIcon from "../icons/StarIcon";
+import StarIcon from "../icons/StarIcon/StarIcon";
 
 const FilterSelector = ({
   value,

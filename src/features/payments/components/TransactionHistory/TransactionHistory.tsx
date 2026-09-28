@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { MoreVertical, Printer, Search } from "lucide-react";
 
-import InsightEmptyState from "@/components/atoms/icons/InsightEmptyState";
+import InsightEmptyState from "@/components/atoms/icons/InsightEmptyState/InsightEmptyState";
 import CompactPagination from "@/components/molecules/CompactPagination/CompactPagination";
 import SegmentedTabs from "@/components/molecules/SegmentedTabs/SegmentedTabs";
 import DataTable from "@/components/organisms/DataTable/DataTable";

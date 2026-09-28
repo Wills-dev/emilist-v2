@@ -24,6 +24,51 @@ export interface ListedJobsEnvelope {
 
 export type ListedJobDto = FetchAllJobsItemDto;
 
+// Statuses accepted by GET /jobs/fetch-jobs-by-status. "pending" is a legacy
+// alias the API maps onto "listed", so it isn't one of the manage-jobs tabs.
+export type JobStatusFilter =
+  | "listed"
+  | "pending"
+  | "in review"
+  | "completed"
+  | "active"
+  | "paused"
+  | "overdue";
+
+export interface JobMilestoneProgressDto {
+  completedMilestones?: number;
+  totalMilestones?: number;
+  currentMilestone?: string;
+}
+
+export interface JobsByStatusItemDto extends FetchAllJobsItemDto {
+  milestoneProgress?: JobMilestoneProgressDto | string;
+  dueDate?: string;
+  completedAt?: string;
+  isOverdue?: boolean;
+}
+
+export interface JobsByStatusPage {
+  currentPage: number;
+  totalPages: number;
+  totalJobs: number;
+  jobs: JobsByStatusItemDto[];
+}
+
+export interface JobsByStatusEnvelope {
+  message: string;
+  data: JobsByStatusPage;
+}
+
+export type JobsByStatusQuery = Pick<
+  FetchAllJobsQuery,
+  "page" | "limit" | "search" | "title" | "location" | "category" | "service"
+> & {
+  status: JobStatusFilter;
+};
+
+export type JobsByStatusListQuery = Omit<JobsByStatusQuery, "page" | "status">;
+
 export interface ListedJobRow {
   id: string;
   date: string;
@@ -61,6 +106,15 @@ export interface ActiveJobRow {
   jobTitle: string;
   budget: string;
   progress: string;
+}
+
+export interface CompletedJobRow {
+  id: string;
+  completedDate: string;
+  jobId: string;
+  jobTitle: string;
+  duration: string;
+  budget: string;
 }
 
 export interface LeadJobRow {

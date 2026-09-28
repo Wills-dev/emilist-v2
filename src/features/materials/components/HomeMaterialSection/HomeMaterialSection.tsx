@@ -2,7 +2,7 @@
 
 import SectionWrapper from "@/components/molecules/SectionWrapper/SectionWrapper";
 import MaterialCard from "../MaterialCard/MaterialCard";
-import MaterialCardSkeleton from "../MaterialCard/MaterialCardSkeleton";
+import MaterialCardSkeleton from "../MaterialCard/MaterialCardSkeleton/MaterialCardSkeleton";
 
 import { useGetAllMaterials } from "../../hooks/useGetAllMaterials";
 import { routes } from "@/lib/helpers/routes";

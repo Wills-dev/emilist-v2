@@ -4,7 +4,7 @@ import Container from "@/components/atoms/Container/Container";
 import MaterialMainInfo from "../MaterialMainInfo/MaterialMainInfo";
 import MaterialReviewSummary from "../MaterialReviewSummary/MaterialReviewSummary";
 import OtherSellersMaterials from "../OtherSellersMaterials/OtherSellersMaterials";
-import MaterialInfoSkeleton from "./MaterialInfoSkeleton";
+import MaterialInfoSkeleton from "./MaterialInfoSkeleton/MaterialInfoSkeleton";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 
 import { routes } from "@/lib/helpers/routes";

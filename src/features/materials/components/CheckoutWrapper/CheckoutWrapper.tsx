@@ -3,11 +3,11 @@
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import Container from "@/components/atoms/Container/Container";
 import CartProductWrapper from "../CartProductWrapper/CartProductWrapper";
-import WalletIcon from "@/components/atoms/icons/WalletIcon";
+import WalletIcon from "@/components/atoms/icons/WalletIcon/WalletIcon";
 import OrderSummary from "../OrderSummary/OrderSummary";
 import SetAddress from "../SetAddress/SetAddress";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
-import { Skeleton } from "@/components/ui/skeleton";
+import CartPageSkeleton from "../CartPageSkeleton/CartPageSkeleton";
 import { useGetCartItems } from "../../hooks/useGetCartItems";
 import {
   getCartCurrency,
@@ -26,16 +26,7 @@ const CheckoutWrapper = ({
   const currency = getCartCurrency(cart);
   const orderSummary = getCartOrderSummary(cart);
 
-  if (isLoading) {
-    return (
-      <Container variant={isDashboard ? "small" : "center"}>
-        <div className="pt-6 pb-15 space-y-10">
-          <Skeleton className="h-8.5 w-20 bg-gray-200" />
-          <Skeleton className="h-125 w-full bg-gray-200" />
-        </div>
-      </Container>
-    );
-  }
+  if (isLoading) return <CartPageSkeleton dashboard={isDashboard} checkout />;
 
   if (isError || items.length === 0) {
     return (

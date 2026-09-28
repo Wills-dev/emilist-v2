@@ -8,7 +8,7 @@ import Button from "@/components/atoms/Button/Button";
 import Input from "@/components/atoms/Input/Input";
 import Label from "@/components/atoms/Label/Label";
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 import SegmentedTabs from "@/components/molecules/SegmentedTabs/SegmentedTabs";
 import ExpertiseFormAction from "@/features/experts/components/ExpertiseFormAction/ExpertiseFormAction";
 import { UserExpertService } from "../../types/expertService";

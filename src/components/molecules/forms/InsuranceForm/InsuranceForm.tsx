@@ -6,7 +6,7 @@ import AddMoreBtn from "@/components/atoms/AddMoreBtn/AddMoreBtn";
 import InputWrapper from "../../InputWrapper/InputWrapper";
 import Label from "@/components/atoms/Label/Label";
 import ExpertiseFormAction from "@/features/experts/components/ExpertiseFormAction/ExpertiseFormAction";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 import SelectWrapper from "../../SelectWrapper/SelectWrapper";
 
 import { Insurance } from "@/features/experts/types";

@@ -1,5 +1,5 @@
 import BackButton from "@/components/atoms/BackButton/BackButton";
-import FilterIcon from "@/components/atoms/icons/FilterIcon";
+import FilterIcon from "@/components/atoms/icons/FilterIcon/FilterIcon";
 import MarketplaceActionTitle from "@/components/atoms/MarketplaceActionTitle/MarketplaceActionTitle";
 import Select from "@/components/atoms/Select/Select";
 import { sortOptions } from "@/lib/constants/filter";

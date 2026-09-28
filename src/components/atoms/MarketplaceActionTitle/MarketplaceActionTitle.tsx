@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ArrowRight from "../icons/ArrowRight";
+import ArrowRight from "../icons/ArrowRight/ArrowRight";
 
 const MarketplaceActionTitle = ({
   title,

@@ -35,7 +35,7 @@ const ManageJobsHeader = ({
           </p>
         </div>
         <span className="shrink-0 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide">
-          Pro users only
+          Non-basic plans
         </span>
       </div>
     ) : (

@@ -1,4 +1,4 @@
-import StarIcon from "@/components/atoms/icons/StarIcon";
+import StarIcon from "@/components/atoms/icons/StarIcon/StarIcon";
 
 const Rating = ({
   rating,

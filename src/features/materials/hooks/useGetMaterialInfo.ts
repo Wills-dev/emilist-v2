@@ -8,7 +8,7 @@ export const useGetMaterialInfo = (materialId: string) => {
   const { data, isLoading } = useQuery<ProductReviewResponse>({
     queryKey: ["material info", materialId, currentUserId],
     queryFn: () => getMaterialInfo(materialId, currentUserId),
-    enabled: true,
+    enabled: Boolean(materialId),
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });

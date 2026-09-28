@@ -7,7 +7,7 @@ import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import { useInfiniteScrollTrigger } from "@/lib/hooks/useInfiniteScrollTrigger";
 import { cn } from "@/lib/utils";
 import type { JobCardViewModel } from "../../types/listJobs";
-import JobCardSkeleton from "../JobCard/JobCardSkeleton";
+import JobCardSkeleton from "../JobCard/JobCardSkeleton/JobCardSkeleton";
 import JobCardItem from "../JobCardItem/JobCardItem";
 
 interface JobCardListProps {

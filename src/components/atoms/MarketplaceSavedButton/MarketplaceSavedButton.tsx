@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import LikeIcon from "../icons/LikeIcon";
+import LikeIcon from "../icons/LikeIcon/LikeIcon";
 
 const MarketplaceSavedButton = ({
   href,

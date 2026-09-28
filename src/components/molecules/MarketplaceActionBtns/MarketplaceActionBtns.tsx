@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
-import FilterIcon from "@/components/atoms/icons/FilterIcon";
+import FilterIcon from "@/components/atoms/icons/FilterIcon/FilterIcon";
 import Select from "@/components/atoms/Select/Select";
-import PlusIcon from "@/components/atoms/icons/PlusIcon";
+import PlusIcon from "@/components/atoms/icons/PlusIcon/PlusIcon";
 import BackButton from "@/components/atoms/BackButton/BackButton";
 
 import { sortOptions } from "@/lib/constants/filter";

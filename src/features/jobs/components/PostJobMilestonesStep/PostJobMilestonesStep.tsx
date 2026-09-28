@@ -12,14 +12,17 @@ import {
 } from "../../helpers/postJobMilestones";
 import { PostJobMilestonesValidation } from "../../helpers/validatePostJob";
 import { usePostJobStore } from "@/store/job/postJobStore";
+import { PostJobStoreState } from "@/store/types/job";
 
 const formatAmount = (currency: string, amount: number) =>
   `${currency} ${amount.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
 
 const PostJobMilestonesStep = ({
   validation,
+  useStore = usePostJobStore,
 }: {
   validation?: PostJobMilestonesValidation;
+  useStore?: <T>(selector: (state: PostJobStoreState) => T) => T;
 }) => {
   const {
     addMilestone,
@@ -27,7 +30,7 @@ const PostJobMilestonesStep = ({
     jobDuration,
     jobUrgency,
     milestones,
-  } = usePostJobStore(
+  } = useStore(
     useShallow((state) => ({
       addMilestone: state.addMilestone,
       budget: state.budget,
@@ -144,6 +147,7 @@ const PostJobMilestonesStep = ({
                 isFinal ? (durationSummary?.finalDuration ?? null) : null
               }
               errors={validation?.errors[milestone.id]}
+              useStore={useStore}
             />
           );
         })}

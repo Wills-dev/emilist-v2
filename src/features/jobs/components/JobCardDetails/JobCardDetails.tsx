@@ -1,8 +1,8 @@
 "use client";
 
-import ClockIcon from "@/components/atoms/icons/ClockIcon";
-import LocationIcon from "@/components/atoms/icons/LocationIcon";
-import UserIcon from "@/components/atoms/icons/UserIcon";
+import ClockIcon from "@/components/atoms/icons/ClockIcon/ClockIcon";
+import LocationIcon from "@/components/atoms/icons/LocationIcon/LocationIcon";
+import UserIcon from "@/components/atoms/icons/UserIcon/UserIcon";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import UserProfileCard from "@/components/molecules/UserProfileCard/UserProfileCard";
 import DatedPosted from "@/components/atoms/DatedPosted/DatedPosted";

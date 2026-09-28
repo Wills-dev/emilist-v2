@@ -1,4 +1,4 @@
-import ArrowUp from "@/components/atoms/icons/ArrowUp";
+import ArrowUp from "@/components/atoms/icons/ArrowUp/ArrowUp";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, X } from "lucide-react";
 

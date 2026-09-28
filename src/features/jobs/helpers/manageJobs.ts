@@ -1,5 +1,19 @@
-import type { FetchAllJobsItemDto, JobListMoneyDto } from "../types/listJobs";
-import type { BadgeTone, ListedJobRow } from "../types/manageJobs";
+import type {
+  FetchAllJobsItemDto,
+  JobListMoneyDto,
+  JobListScheduleDto,
+} from "../types/listJobs";
+import type {
+  ActiveJobRow,
+  BadgeTone,
+  CompletedJobRow,
+  JobMilestoneProgressDto,
+  JobsByStatusItemDto,
+  ListedJobRow,
+  ManageJobsTab,
+  OverdueJobRow,
+  PausedJobRow,
+} from "../types/manageJobs";
 import { formatDuration } from "./jobList";
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
@@ -66,11 +80,11 @@ const JOB_STATUS_META: Record<string, { label: string; tone: BadgeTone }> = {
   overdue: { label: "Overdue", tone: "danger" },
   paused: { label: "Paused", tone: "warning" },
   active: { label: "Active", tone: "success" },
-  completed: { label: "Completed", tone: "success" },
+  completed: { label: "Completed", tone: "neutral" },
 };
 
 export const resolveJobStatusMeta = (status: string) => {
-  const key = status?.trim().toLowerCase();
+  const key = normalizeJobStatus(status);
   return (
     JOB_STATUS_META[key] ?? {
       label: status || "Unknown",
@@ -83,7 +97,7 @@ export const resolveJobStatusMeta = (status: string) => {
 const ACTION_NEEDED_STATUSES = new Set(["draft", "in-review", "in_review"]);
 
 export const jobNeedsAction = (status: string) =>
-  ACTION_NEEDED_STATUSES.has(status?.trim().toLowerCase());
+  ACTION_NEEDED_STATUSES.has(normalizeJobStatus(status));
 
 const resolveJobOwnerId = (job: FetchAllJobsItemDto) => {
   const poster = job.userId;
@@ -99,20 +113,33 @@ export const resolveIsJobOwner = (
   return Boolean(ownerId && currentUserId && ownerId === currentUserId);
 };
 
+export const normalizeJobStatus = (status: string) =>
+  status?.trim().toLowerCase().replace(/[ _]+/g, "-");
+
+export const isListedJobStatus = (status: string) =>
+  ["listed", "in-review", "applied", "rejected"].includes(
+    normalizeJobStatus(status),
+  );
+
 export const resolveListedJobAction = (
   status: string,
-  isOwner: boolean,
-): { label: string; disabled?: boolean } => {
-  if (isOwner) return { label: "Edit Job" };
-
-  const key = status?.trim().toLowerCase();
-  if (key === "in-review" || key === "in_review") {
-    return { label: "Accept Job Offer" };
+): { label: string; disabled?: boolean } | null => {
+  switch (normalizeJobStatus(status)) {
+    case "listed":
+      return { label: "Edit Job" };
+    case "in-review":
+      return { label: "Accept Job Offer" };
+    case "applied":
+      return { label: "Withdraw Application" };
+    default:
+      return null;
   }
-  if (key === "rejected")
-    return { label: "Withdraw Application", disabled: true };
-  return { label: "Withdraw Application" };
 };
+
+export const resolveManageJobsTab = (value?: string | null): ManageJobsTab =>
+  ["overdue", "paused", "active", "completed", "leads"].includes(value ?? "")
+    ? (value as ManageJobsTab)
+    : "listed";
 
 export const mapListedJobRow = (
   job: FetchAllJobsItemDto,
@@ -133,3 +160,67 @@ export const mapListedJobRow = (
     needsAction: jobNeedsAction(statusRaw),
   };
 };
+
+export const resolveShortJobId = (id: string) =>
+  id ? `#${id.slice(-6).toUpperCase()}` : "—";
+
+const resolveJobStartDate = (job: FetchAllJobsItemDto) => {
+  const schedule = parseJsonObject<JobListScheduleDto>(job.jobSchedule);
+  return schedule?.startDate ?? job.createdAt;
+};
+
+const parseMilestoneProgress = (
+  value: JobMilestoneProgressDto | string | undefined,
+) => parseJsonObject<JobMilestoneProgressDto>(value);
+
+export const resolveMilestoneProgressLabel = (job: JobsByStatusItemDto) => {
+  const progress = parseMilestoneProgress(job.milestoneProgress);
+  if (!progress) return "—";
+  if (progress.currentMilestone) return progress.currentMilestone;
+
+  const completed = Number(progress.completedMilestones);
+  const total = Number(progress.totalMilestones);
+  if (Number.isFinite(completed) && Number.isFinite(total) && total > 0) {
+    return `Milestone ${completed}/${total}`;
+  }
+
+  return "—";
+};
+
+export const mapOverdueJobRow = (job: JobsByStatusItemDto): OverdueJobRow => ({
+  id: job._id,
+  startDate: formatListDate(job.dueDate ?? resolveJobStartDate(job)),
+  jobId: resolveShortJobId(job._id),
+  jobTitle: job.title?.trim() || "Untitled job",
+  duration: formatDuration(job) ?? "—",
+  budget: resolveBudgetLabel(job),
+});
+
+export const mapPausedJobRow = (job: JobsByStatusItemDto): PausedJobRow => ({
+  id: job._id,
+  dateCreated: formatListDate(job.createdAt),
+  jobId: resolveShortJobId(job._id),
+  jobTitle: job.title?.trim() || "Untitled job",
+  duration: formatDuration(job) ?? "—",
+  budget: resolveBudgetLabel(job),
+});
+
+export const mapActiveJobRow = (job: JobsByStatusItemDto): ActiveJobRow => ({
+  id: job._id,
+  startDate: formatListDate(resolveJobStartDate(job)),
+  jobId: resolveShortJobId(job._id),
+  jobTitle: job.title?.trim() || "Untitled job",
+  budget: resolveBudgetLabel(job),
+  progress: resolveMilestoneProgressLabel(job),
+});
+
+export const mapCompletedJobRow = (
+  job: JobsByStatusItemDto,
+): CompletedJobRow => ({
+  id: job._id,
+  completedDate: formatListDate(job.completedAt ?? job.createdAt),
+  jobId: resolveShortJobId(job._id),
+  jobTitle: job.title?.trim() || "Untitled job",
+  duration: formatDuration(job) ?? "—",
+  budget: resolveBudgetLabel(job),
+});

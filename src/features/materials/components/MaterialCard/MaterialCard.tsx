@@ -83,7 +83,9 @@ const MaterialCard = ({
         </div>
         <div className="space-y-4">
           <UserProfileCard
-            id={sellerId || id}
+            id={id}
+            profileId={sellerId ?? ""}
+            shareId={id}
             isLiked={isMaterialLiked}
             fullName={fullName}
             rating={rating}

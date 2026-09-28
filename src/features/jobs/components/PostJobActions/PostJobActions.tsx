@@ -8,10 +8,16 @@ const PostJobActions = ({
   currentStep,
   isPending,
   onBack,
+  submitLabel = "Post your job",
+  cancelHref = routes.dashboard,
+  cancelLabel = "Go to Dashboard",
 }: {
   currentStep: 1 | 2;
   isPending: boolean;
   onBack: () => void;
+  submitLabel?: string;
+  cancelHref?: string;
+  cancelLabel?: string;
 }) => {
   return (
     <div className="flex flex-col items-center gap-3 sm:gap-6">
@@ -21,7 +27,7 @@ const PostJobActions = ({
         className="h-11 w-full"
         loading={isPending}
       >
-        {currentStep === 1 ? "Proceed" : "Post your job"}
+        {currentStep === 1 ? "Proceed" : submitLabel}
       </Button>
 
       {currentStep === 2 && (
@@ -36,16 +42,16 @@ const PostJobActions = ({
       )}
 
       <Link
-        href={routes.dashboard}
+        href={cancelHref}
         className="hidden items-center gap-1 font-exo text-sm font-semibold text-[#18A154] hover:underline sm:flex"
       >
-        Go to Dashboard <ArrowRight className="size-4" />
+        {cancelLabel} <ArrowRight className="size-4" />
       </Link>
       <Link
-        href={routes.dashboard}
+        href={cancelHref}
         className="flex h-11 w-full items-center justify-center gap-1 rounded-[10px] border border-[#25C269] font-exo text-sm font-semibold text-[#18A154] sm:hidden"
       >
-        <ArrowLeft className="size-4" /> Back to Dashboard
+        <ArrowLeft className="size-4" /> {cancelLabel}
       </Link>
     </div>
   );

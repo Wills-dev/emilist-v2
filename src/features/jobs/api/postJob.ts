@@ -7,9 +7,10 @@ const appendJson = (formData: FormData, key: string, value: unknown) => {
   formData.append(key, JSON.stringify(value));
 };
 
-export const serializePostJob = (payload: PostJobWriteDto) => {
-  const formData = new FormData();
-
+export const appendPostJobFields = (
+  formData: FormData,
+  payload: PostJobWriteDto,
+) => {
   formData.append("jobCategory", payload.jobCategory);
   formData.append("service", payload.service);
   formData.append("title", payload.title);
@@ -57,6 +58,9 @@ export const serializePostJob = (payload: PostJobWriteDto) => {
   payload.files?.forEach((file) => formData.append("files", file));
   return formData;
 };
+
+export const serializePostJob = (payload: PostJobWriteDto) =>
+  appendPostJobFields(new FormData(), payload);
 
 export const postJob = async (payload: PostJobWriteDto) => {
   const formData = serializePostJob(payload);

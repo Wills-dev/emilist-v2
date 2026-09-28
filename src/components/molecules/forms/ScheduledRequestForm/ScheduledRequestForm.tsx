@@ -7,7 +7,7 @@ import Label from "@/components/atoms/Label/Label";
 import Input from "@/components/atoms/Input/Input";
 import MultiSelect from "@/components/atoms/MultiSelect/MultiSelect";
 import SelectWrapper from "../../SelectWrapper/SelectWrapper";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 import EnterpriseImage from "../../EnterpriseImage/EnterpriseImage";
 import BackHomeBtn from "@/components/atoms/BackHomeBtn/BackHomeBtn";
 import Select from "@/components/atoms/Select/Select";

@@ -1,4 +1,5 @@
 export interface Milestone {
+  status?: string;
   id: string;
   title: string;
   duration: string;

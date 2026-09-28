@@ -1,7 +1,7 @@
 "use client";
 
 import DashboardTitle from "@/components/atoms/DashboardTitle/DashboardTitle";
-import LikeIcon from "@/components/atoms/icons/LikeIcon";
+import LikeIcon from "@/components/atoms/icons/LikeIcon/LikeIcon";
 import MarketplaceSavedButton from "@/components/atoms/MarketplaceSavedButton/MarketplaceSavedButton";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
 import SearchBar from "@/components/molecules/SearchBar/SearchBar";

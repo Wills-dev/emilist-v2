@@ -1,4 +1,4 @@
-import ArrowBack from "../icons/ArrowBack";
+import ArrowBack from "../icons/ArrowBack/ArrowBack";
 
 const PaginationControls = ({
   disablePrev,
@@ -14,6 +14,8 @@ const PaginationControls = ({
   return (
     <div className="flex items-center gap-4 text-[#707471]">
       <button
+        type="button"
+        aria-label="Previous page"
         disabled={disablePrev}
         onClick={prev}
         className="disabled:opacity-45 cursor-pointer"
@@ -21,6 +23,8 @@ const PaginationControls = ({
         <ArrowBack />
       </button>
       <button
+        type="button"
+        aria-label="Next page"
         disabled={disableNext}
         onClick={next}
         className="rotate-180 disabled:opacity-45 cursor-pointer"

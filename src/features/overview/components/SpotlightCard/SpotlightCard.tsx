@@ -1,3 +1,4 @@
+import { routes } from "@/lib/helpers/routes";
 import { Megaphone } from "lucide-react";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 
@@ -22,6 +23,7 @@ const SpotlightCard = () => (
     <div className="p-6">
       <UserRatingCard
         id={spotlightUser.id}
+        profileHref={routes.profiles.artisan(spotlightUser.id)}
         fullName={spotlightUser.fullName}
         detail={spotlightUser.detail}
         rating={spotlightUser.rating}

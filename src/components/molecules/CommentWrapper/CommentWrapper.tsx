@@ -3,12 +3,12 @@ import clsx from "clsx";
 import { Review } from "@/lib/types/review";
 
 import SearchBar from "../SearchBar/SearchBar";
-import PlusIcon from "@/components/atoms/icons/PlusIcon";
+import PlusIcon from "@/components/atoms/icons/PlusIcon/PlusIcon";
 import CommentCard from "../CommentCard/CommentCard";
 import SeeAllBtn from "@/components/atoms/SeeAllBtn/SeeAllBtn";
 import PaginationPanel from "../PaginationPanel/PaginationPanel";
 import EmptyState from "../EmptyState/EmptyState";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton/skeleton";
 
 const CommentWrapper = ({
   variant,

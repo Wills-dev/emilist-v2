@@ -1,4 +1,4 @@
-import Truck2 from "@/components/atoms/icons/Truck2";
+import Truck2 from "@/components/atoms/icons/Truck2/Truck2";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import { OrderTrackingStatus } from "../../hooks/useTrackOrder";
 

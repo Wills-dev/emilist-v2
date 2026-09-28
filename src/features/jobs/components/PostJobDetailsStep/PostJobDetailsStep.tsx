@@ -4,9 +4,12 @@ import { useShallow } from "zustand/react/shallow";
 
 import Input from "@/components/atoms/Input/Input";
 import Select from "@/components/atoms/Select/Select";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 import FormField from "@/components/molecules/FormField/FormField";
 import OptionToggle from "@/components/molecules/OptionToggle/OptionToggle";
+import ExistingJobFiles, {
+  ExistingJobFile,
+} from "../ExistingJobFiles/ExistingJobFiles";
 import JobImageInput from "../JobImageInput/JobImageInput";
 import JobUrgencyFields from "../JobUrgencyFields/JobUrgencyFields";
 import {
@@ -22,15 +25,24 @@ import {
   JobUrgency,
 } from "../../types/postJob";
 import { usePostJobStore } from "@/store/job/postJobStore";
+import { PostJobStoreState } from "@/store/types/job";
 
 const PostJobDetailsStep = ({
   errors,
   onAddImages,
   onRemoveImage,
+  existingFiles,
+  onRemoveExistingFile,
+  removingExistingFileId,
+  useStore = usePostJobStore,
 }: {
   errors: PostJobDetailsErrors;
   onAddImages: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveImage: (index: number) => void;
+  existingFiles?: ExistingJobFile[];
+  onRemoveExistingFile?: (fileId: string) => void;
+  removingExistingFileId?: string | null;
+  useStore?: <T>(selector: (state: PostJobStoreState) => T) => T;
 }) => {
   const {
     allowBidding,
@@ -45,7 +57,7 @@ const PostJobDetailsStep = ({
     setField,
     setLocationField,
     title,
-  } = usePostJobStore(
+  } = useStore(
     useShallow((state) => ({
       allowBidding: state.allowBidding,
       description: state.description,
@@ -157,6 +169,14 @@ const PostJobDetailsStep = ({
           />
         </FormField>
 
+        {existingFiles && onRemoveExistingFile && (
+          <ExistingJobFiles
+            files={existingFiles}
+            onRemove={onRemoveExistingFile}
+            removingFileId={removingExistingFileId}
+          />
+        )}
+
         <JobImageInput
           previews={previews}
           onAdd={onAddImages}
@@ -183,7 +203,7 @@ const PostJobDetailsStep = ({
           />
         </div>
 
-        <JobUrgencyFields errors={errors} />
+        <JobUrgencyFields errors={errors} useStore={useStore} />
 
         <FormField
           htmlFor="job-location"

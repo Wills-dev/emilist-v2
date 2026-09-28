@@ -1,4 +1,6 @@
 "use client";
+import { usePathname } from "next/navigation";
+import { routes } from "@/lib/helpers/routes";
 
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import DatedPosted from "@/components/atoms/DatedPosted/DatedPosted";
@@ -31,6 +33,7 @@ const MaterialMainInfo = ({
 }: {
   material: ProductReviewResponse;
 }) => {
+  const pathname = usePathname();
   const { product, isLiked, averageRating, numberOfRatings } = material;
   const location = product.deliveryLocations[0];
   const locationText = [location?.lga, location?.state]
@@ -156,6 +159,14 @@ const MaterialMainInfo = ({
             />
             <UserRatingCard
               id={product.userId._id}
+              profileHref={
+                pathname.startsWith("/dashboard")
+                  ? routes.dashboardLinks.merchantProfile(
+                      product.userId._id,
+                      product._id,
+                    )
+                  : routes.profiles.merchant(product.userId._id, product._id)
+              }
               fullName={product.merchantName || product.storeName}
               rating={averageRating}
               noOfReviews={numberOfRatings}

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 
 import Container from "@/components/atoms/Container/Container";
-import UserFlag from "@/components/atoms/icons/UserFlag";
+import UserFlag from "@/components/atoms/icons/UserFlag/UserFlag";
 import { routes } from "@/lib/helpers/routes";
 
 const CongratsContent = ({
@@ -37,7 +37,7 @@ const CongratsContent = ({
       origin: { x: 1, y: 0.5 },
     });
 
-    setTimeout(() => {
+    const confettiTimeout = setTimeout(() => {
       confetti({
         particleCount: 150,
         spread: 180,
@@ -45,20 +45,21 @@ const CongratsContent = ({
       });
     }, 300);
 
-    const interval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          router.push(href);
-          return 0;
-        }
+    return () => clearTimeout(confettiTimeout);
+  }, []);
 
-        return prev - 1;
-      });
+  useEffect(() => {
+    if (countdown === 0) {
+      router.push(href);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setCountdown((prev) => Math.max(0, prev - 1));
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [href, router]);
+    return () => clearTimeout(timeout);
+  }, [countdown, href, router]);
 
   return (
     <div className="flex-1 h-full flex justify-center items-center">

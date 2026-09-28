@@ -5,7 +5,7 @@ import { ArrowRight, Download } from "lucide-react";
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import CompareMaterialCard from "../CompareMaterialCard/CompareMaterialCard";
-import CompareMaterialCardSkeleton from "../CompareMaterialCard/CompareMaterialCardSkeleton";
+import CompareMaterialCardSkeleton from "../CompareMaterialCard/CompareMaterialCardSkeleton/CompareMaterialCardSkeleton";
 import { useGetComparedMaterials } from "../../hooks/useGetComparedMaterials";
 import Container from "@/components/atoms/Container/Container";
 import { mapComparedMaterial } from "./mapComparedMaterial";

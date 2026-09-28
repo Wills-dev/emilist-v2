@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
+import JobActionsMenu from "../JobActionsMenu/JobActionsMenu";
 import { toast } from "sonner";
 
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
@@ -34,12 +35,21 @@ export const listedJobsColumns: ColumnDef<ListedJobRow>[] = [
     accessorKey: "jobTitle",
     header: "Job Title",
     cell: ({ row }) => (
-      <span className="font-medium text-[#101828]">
+      <Link
+        href={routes.dashboardLinks.jobInfo(row.original.id)}
+        className="rounded-sm font-medium text-[#101828] hover:text-[#6667FF] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6667FF]"
+      >
         {row.original.jobTitle}
-      </span>
+      </Link>
     ),
   },
-  { accessorKey: "jobDuration", header: "Job Duration" },
+  {
+    accessorKey: "jobDuration",
+    header: "Job Duration",
+    cell: ({ row }) => (
+      <span className="whitespace-nowrap">{row.original.jobDuration}</span>
+    ),
+  },
   { accessorKey: "budget", header: "Budget" },
   {
     accessorKey: "statusRaw",
@@ -53,32 +63,31 @@ export const listedJobsColumns: ColumnDef<ListedJobRow>[] = [
     id: "action",
     header: "",
     cell: ({ row }) => {
-      const action = resolveListedJobAction(
-        row.original.statusRaw,
-        row.original.isOwner,
-      );
+      const action = resolveListedJobAction(row.original.statusRaw);
       return (
-        <button
-          type="button"
-          disabled={action.disabled}
-          onClick={() => toast.info(`${action.label} is coming soon.`)}
-          className="text-sm font-medium text-[#6667FF] disabled:cursor-not-allowed disabled:text-[#B7BAC7]"
-        >
-          {action.label}
-        </button>
+        <JobActionsMenu
+          jobTitle={row.original.jobTitle}
+          viewHref={routes.dashboardLinks.jobInfo(row.original.id)}
+          actions={
+            action
+              ? [
+                  action.label === "Edit Job"
+                    ? {
+                        label: action.label,
+                        disabled: action.disabled,
+                        href: routes.dashboardLinks.editJob(row.original.id),
+                      }
+                    : {
+                        label: action.label,
+                        disabled: action.disabled,
+                        onSelect: () =>
+                          toast.info(`${action.label} is coming soon.`),
+                      },
+                ]
+              : []
+          }
+        />
       );
     },
-  },
-  {
-    id: "view",
-    header: "",
-    cell: ({ row }) => (
-      <Link
-        href={routes.dashboardLinks.marketplaceJobInfo(row.original.id)}
-        className="text-sm text-[#737774]"
-      >
-        View
-      </Link>
-    ),
   },
 ];

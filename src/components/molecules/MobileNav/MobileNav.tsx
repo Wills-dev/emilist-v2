@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "@/components/ui/sheet/sheet";
 
 import NavMenu from "../NavMenu/NavMenu";
 import NavActions from "../NavActions/NavActions";

@@ -1,5 +1,5 @@
 import DeleteBtn from "@/components/atoms/DeleteBtn/DeleteBtn";
-import PlusIcon from "@/components/atoms/icons/PlusIcon";
+import PlusIcon from "@/components/atoms/icons/PlusIcon/PlusIcon";
 
 import Image from "next/image";
 

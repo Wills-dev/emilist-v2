@@ -4,13 +4,13 @@ import { useMemo, useState } from "react";
 import { Bell, ChevronDown, X } from "lucide-react";
 
 import Button from "@/components/atoms/Button/Button";
-import NotificationEmpty from "@/components/atoms/icons/NotificationEmpty";
+import NotificationEmpty from "@/components/atoms/icons/NotificationEmpty/NotificationEmpty";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog/dialog";
 import { NotificationData, NotificationSortOrder } from "../../types";
 import NotificationItem from "../NotificationItem/NotificationItem";
 

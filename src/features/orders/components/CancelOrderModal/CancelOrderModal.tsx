@@ -4,7 +4,7 @@ import { SubmitEvent } from "react";
 
 import Button from "@/components/atoms/Button/Button";
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
-import Textarea from "@/components/atoms/TextArea/Textarea";
+import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 
 const CancelOrderModal = ({
   open,

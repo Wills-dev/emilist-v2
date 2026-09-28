@@ -1,8 +1,8 @@
 import Container from "@/components/atoms/Container/Container";
-import Binoculars from "@/components/atoms/icons/Binoculars";
-import SearchGreen from "@/components/atoms/icons/SearchGreen";
-import Streamline from "@/components/atoms/icons/Streamline";
-import Truck from "@/components/atoms/icons/Truck";
+import Binoculars from "@/components/atoms/icons/Binoculars/Binoculars";
+import SearchGreen from "@/components/atoms/icons/SearchGreen/SearchGreen";
+import Streamline from "@/components/atoms/icons/Streamline/Streamline";
+import Truck from "@/components/atoms/icons/Truck/Truck";
 import MarketIconWrap from "@/components/atoms/MarketIconWrap/MarketIconWrap";
 
 import Image from "next/image";

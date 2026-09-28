@@ -28,7 +28,16 @@ export const routes = {
         sellerName ? `?sellerName=${encodeURIComponent(sellerName)}` : ""
       }`,
   },
-  profile: (userId: string) => `/profile/${userId}`,
+  profile: (userId: string) => `/profile/${encodeURIComponent(userId)}`,
+  profiles: {
+    artisan: (id: string) => `/profiles/artisan/${encodeURIComponent(id)}`,
+    artisanReviews: (id: string) =>
+      `/profiles/artisan/${encodeURIComponent(id)}/reviews`,
+    employer: (id: string, jobId?: string) =>
+      `/profiles/employer/${encodeURIComponent(id)}${jobId ? `?jobId=${encodeURIComponent(jobId)}` : ""}`,
+    merchant: (id: string, materialId?: string) =>
+      `/profiles/merchant/${encodeURIComponent(id)}${materialId ? `?materialId=${encodeURIComponent(materialId)}` : ""}`,
+  },
   login: "/auth/login",
   signUp: "/auth/register",
   verifyEmail: "/auth/verify-email",
@@ -38,6 +47,27 @@ export const routes = {
     marketplace: "/dashboard/marketplace/jobs",
     payments: "/dashboard/payments",
     jobs: "/dashboard/jobs",
+    employerProfile: (
+      id: string,
+      jobId: string,
+      tab = "listed",
+      reviews = false,
+    ) =>
+      `/dashboard/profiles/employer/${encodeURIComponent(id)}${reviews ? "/reviews" : ""}?jobId=${encodeURIComponent(jobId)}${tab === "listed" ? "" : `&tab=${encodeURIComponent(tab)}`}`,
+    merchantProfile: (id: string, materialId: string) =>
+      `/dashboard/profiles/merchant/${encodeURIComponent(id)}?materialId=${encodeURIComponent(materialId)}`,
+    jobInfo: (jobId: string, tab = "listed") =>
+      `/dashboard/jobs/${encodeURIComponent(jobId)}${tab === "listed" ? "" : `?tab=${encodeURIComponent(tab)}`}`,
+    editJob: (jobId: string) =>
+      `/dashboard/jobs/${encodeURIComponent(jobId)}/edit`,
+    jobApplicants: (jobId: string, tab = "listed") =>
+      `/dashboard/jobs/${encodeURIComponent(jobId)}?section=applicants${tab === "listed" ? "" : `&tab=${encodeURIComponent(tab)}`}`,
+    jobApplicantInfo: (jobId: string, expertId: string, tab = "listed") =>
+      `/dashboard/jobs/${encodeURIComponent(jobId)}/applicants/${encodeURIComponent(expertId)}${tab === "listed" ? "" : `?tab=${encodeURIComponent(tab)}`}`,
+    jobApplicantReviews: (jobId: string, expertId: string, tab = "listed") =>
+      `/dashboard/jobs/${encodeURIComponent(jobId)}/applicants/${encodeURIComponent(expertId)}/reviews${tab === "listed" ? "" : `?tab=${encodeURIComponent(tab)}`}`,
+    jobsTab: (tab = "listed") =>
+      `/dashboard/jobs${tab === "listed" ? "" : `?tab=${encodeURIComponent(tab)}`}`,
     marketplaceJobs: "/dashboard/marketplace/jobs",
     marketplaceJobInfo: (jobId: string) =>
       `/dashboard/marketplace/jobs/${jobId}`,
