@@ -131,7 +131,7 @@ const ProfileSetup = ({
           placeholder="7 Funds street"
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
+      <div className="col-span-2 flex flex-col gap-2">
         <Label htmlFor="bio" title="Bio" />
         <RichTextArea
           id="bio"
@@ -142,7 +142,7 @@ const ProfileSetup = ({
           ariaLabel="Bio"
         />
       </div>
-      <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
+      <div className="col-span-2 flex flex-col gap-2">
         <div className="flex items-center justify-between">
           {" "}
           <span className="text-[#474C48] font-medium font-exo max-sm:text-sm ">
@@ -165,6 +165,7 @@ const ProfileSetup = ({
           </TooltipProvider>
         </div>
         <SingleImageInput
+          rounded
           imagePreview={imagePreview}
           deleteImage={deleteImage}
           handleImageChange={handleImageChange}

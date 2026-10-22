@@ -14,6 +14,7 @@ const JobCardItem = ({
 }) => (
   <JobCard
     id={job.id}
+    status={job.status}
     posterId={job.posterId}
     category={job.category}
     title={job.title}

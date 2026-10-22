@@ -1,4 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useStore } from "@/store/authStore";
 
 import { fetchAllJobs } from "../api/fetchAllJobs";
 import { jobKeys } from "../queries/jobKeys";
@@ -10,8 +11,10 @@ export const useGetAllJobs = ({
 }: {
   query: FetchAllJobsListQuery;
   enabled?: boolean;
-}) =>
-  useInfiniteQuery({
+}) => {
+  const isAuthInitialized = useStore((state) => state.isAuthInitialized);
+
+  return useInfiniteQuery({
     queryKey: jobKeys.list(query),
     queryFn: ({ pageParam, signal }) =>
       fetchAllJobs({ ...query, page: Number(pageParam) }, signal),
@@ -20,7 +23,9 @@ export const useGetAllJobs = ({
       lastPage.currentPage < lastPage.totalPages
         ? lastPage.currentPage + 1
         : undefined,
-    enabled,
+    // Wait for the viewer ID to settle before starting a personalized query.
+    enabled: enabled && isAuthInitialized,
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
+};

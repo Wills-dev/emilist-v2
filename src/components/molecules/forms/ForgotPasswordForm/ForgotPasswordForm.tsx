@@ -26,6 +26,7 @@ const ForgotPasswordForm = () => {
     otp,
     handleChange,
     handleKeyDown,
+    handlePaste,
     inputRefs,
   } = useVerifyPasswordResetOtp();
 
@@ -86,6 +87,7 @@ const ForgotPasswordForm = () => {
                 value={digit}
                 onChange={(e) => handleChange(i, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(i, e)}
+                onPaste={(e) => handlePaste(i, e)}
                 disabled={!hasRequestedOtp}
                 className="outline-none max-w-10 w-10 disabled:cursor-not-allowed"
                 placeholder="*"

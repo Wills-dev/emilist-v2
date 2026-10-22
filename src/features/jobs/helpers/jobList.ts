@@ -187,6 +187,7 @@ export const mapJobListItem = (job: FetchAllJobsItemDto): JobCardViewModel => {
 
   return {
     id: job._id,
+    status: job.status,
     posterId:
       poster?._id || (typeof job.userId === "string" ? job.userId : ""),
     category: job.jobCategory?.trim() || job.category?.trim() || "Uncategorised",

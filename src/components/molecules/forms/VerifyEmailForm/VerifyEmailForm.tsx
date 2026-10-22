@@ -12,6 +12,7 @@ const VerifyEmailForm = () => {
     otp,
     handleChange,
     handleKeyDown,
+    handlePaste,
     otpCountDown,
     inputRefs,
   } = useVerifyEmail();
@@ -50,6 +51,7 @@ const VerifyEmailForm = () => {
               value={digit}
               onChange={(e) => handleChange(i, e.target.value)}
               onKeyDown={(e) => handleKeyDown(i, e)}
+                onPaste={(e) => handlePaste(i, e)}
               className="h-full flex-1 w-full outline-none"
               placeholder="*"
             />

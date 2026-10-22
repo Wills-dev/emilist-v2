@@ -1,3 +1,4 @@
+import { formatNoticePeriod } from "../../helpers/formatNoticePeriod";
 import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
 
@@ -27,19 +28,24 @@ const ServiceProfileCard = ({
   profileImage: ReturnType<typeof useProfileImageUpload>;
 }) => (
   <div className="rounded-lg bg-[#F4F7F5] p-3">
-    <div className="mb-4 w-fit rounded-lg bg-white px-2">
+    <div className="mb-4 space-y-2">
+      <label htmlFor="profile-business-selector" className="block text-sm font-medium text-[#303632]">Business / service</label>
+      <div className="rounded-lg bg-white px-2">
       <select
+        id="profile-business-selector"
         value={activeId}
         onChange={(event) => onSelect(event.target.value)}
-        aria-label="Switch expert service"
-        className="h-9 min-w-40 bg-white text-sm outline-none"
+        aria-label="Switch business or service"
+        className="h-10 w-full bg-white text-sm outline-none"
       >
         {experts.map((item) => (
           <option key={item.id} value={item.id}>
-            {item.service}
+            {item.businessName} — {item.services.join(", ") || item.service}
           </option>
         ))}
       </select>
+      </div>
+      <p className="text-xs text-[#737774]">Choose a business to view and manage its services.</p>
     </div>
 
     <div className="rounded-lg bg-white p-4">
@@ -136,7 +142,7 @@ const ServiceProfileCard = ({
           icon={<LocationIcon />}
           className="text-[#6667FF]"
         />
-        <InfoItem value={expert.noticePeriod} icon={<ClockIcon />} />
+        <InfoItem value={formatNoticePeriod(expert.noticePeriod)} icon={<ClockIcon />} />
         <InfoItem
           value={`${expert.numberOfEmployee} employees`}
           icon={<UserIcon />}

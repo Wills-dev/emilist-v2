@@ -1,3 +1,4 @@
+import { formatNoticePeriod } from "../../helpers/formatNoticePeriod";
 import Button from "@/components/atoms/Button/Button";
 import { UserExpertService } from "../../types/expertService";
 
@@ -56,7 +57,7 @@ const ServiceBusinessDetails = ({
           label="Starting price"
           value={`${expert.currency} ${Number(expert.startingPrice).toLocaleString()} ${expert.rateUnit}`}
         />
-        <Detail label="Notice period" value={expert.noticePeriod} />
+        <Detail label="Notice period" value={formatNoticePeriod(expert.noticePeriod)} />
       </div>
     </div>
   </div>

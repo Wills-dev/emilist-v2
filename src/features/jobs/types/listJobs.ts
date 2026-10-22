@@ -137,6 +137,7 @@ export interface FetchAllJobsWireParams {
 }
 
 export interface JobCardViewModel {
+  status?: string;
   id: string;
   posterId: string;
   category: string;

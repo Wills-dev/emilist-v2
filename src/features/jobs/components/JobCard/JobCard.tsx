@@ -5,6 +5,7 @@ import JobImagePreview from "../JobImagePreview/JobImagePreview";
 
 export interface JobCardProps {
   id: string;
+  status?: string;
   posterId?: string;
   category: string;
   title: string;
@@ -28,6 +29,7 @@ export interface JobCardProps {
 
 const JobCard = ({
   id,
+  status,
   posterId,
   category,
   title,
@@ -73,7 +75,7 @@ const JobCard = ({
         compareHref={compareHref}
         reviewsHref={reviewsHref}
       />
-      <JobCardActions jobId={id} detailsHref={detailsHref} />
+      <JobCardActions status={status} jobId={id} posterId={posterId} detailsHref={detailsHref} />
     </div>
   );
 };
