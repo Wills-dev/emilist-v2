@@ -31,6 +31,7 @@ export const useLogin = () => {
 
   const setCurrentUser = useStore((state) => state.setCurrentUser);
   const setOtpEmail = useStore((state) => state.setOtpEmail);
+  const setOtpCountDown = useStore((state) => state.setOtpCountDown);
   const openModal = useStore((state) => state.openModal);
   const closeAllModals = useStore((state) => state.closeAllModals);
   const clearPendingFlow = useStore((state) => state.clearPendingFlow);
@@ -111,13 +112,15 @@ export const useLogin = () => {
       }
       router.push(destination);
     },
-    onError: (error: ApiErrorResponse) => {
-      console.log("error logging in", error);
+    onError: (error: ApiErrorResponse, variables) => {
+      const message = error.response?.data?.message;
       if (
-        error?.response?.data?.message &&
-        error?.response?.data?.message === "Kindly verify your email!"
+        typeof message === "string" &&
+        message.startsWith("Kindly verify your email!")
       ) {
-        setOtpEmail(userInfo.email);
+        setOtpEmail(variables.email);
+        setOtpCountDown(300);
+        toast.info(message);
         if (isModalFlow) {
           openModal("verify-otp");
         } else {

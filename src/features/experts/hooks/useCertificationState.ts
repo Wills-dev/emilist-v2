@@ -55,11 +55,14 @@ export const useCertificationState = () => {
     (cert) => !isEmptyCertification(cert),
   );
 
-  const certificationsPayload = certifications.map(
-    ({ image, preview, ...rest }) => rest,
-  );
+  const certificationsPayload = validCertifications.map((certification) => {
+    const metadata = { ...certification };
+    delete metadata.image;
+    delete metadata.preview;
+    return metadata;
+  });
 
-  const certificate = certifications.map(({ image }) => image) || [];
+  const certificate = validCertifications.map(({ image }) => image);
 
   return {
     resetCertification,

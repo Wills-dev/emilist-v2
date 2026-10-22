@@ -25,6 +25,22 @@ export const useVerifyPasswordResetOtp = () => {
     if (updated.every(Boolean)) handleSubmit(updated.join(""));
   };
 
+  const handlePaste = (index: number, event: React.ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const digits = event.clipboardData.getData("text").replace(/\s/g, "");
+    if (!/^\d+$/.test(digits)) return;
+
+    const start = digits.length >= otp.length ? 0 : index;
+    const pastedDigits = digits.slice(0, otp.length - start);
+    const updated = [...otp];
+    for (let offset = 0; offset < pastedDigits.length; offset++) {
+      updated[start + offset] = pastedDigits[offset];
+    }
+    setOtp(updated);
+    inputRefs.current[Math.min(start + pastedDigits.length, otp.length - 1)]?.focus();
+    if (updated.every(Boolean)) handleSubmit(updated.join(""));
+  };
+
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
@@ -65,6 +81,7 @@ export const useVerifyPasswordResetOtp = () => {
     setOtp,
     handleChange,
     handleKeyDown,
+    handlePaste,
     inputRefs,
   };
 };

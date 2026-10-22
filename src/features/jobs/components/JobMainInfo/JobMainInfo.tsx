@@ -15,7 +15,7 @@ import MilestoneIcon from "@/components/atoms/icons/MilestoneIcon/MilestoneIcon"
 import ShareButton from "@/components/molecules/ShareButton/ShareButton";
 import LikeButton from "@/components/molecules/LikeButton/LikeButton";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
-import Button from "@/components/atoms/Button/Button";
+import ApplyJobButton from "../ApplyJobButton/ApplyJobButton";
 import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 import ArrowRight from "@/components/atoms/icons/ArrowRight/ArrowRight";
@@ -24,6 +24,8 @@ import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
 import { routes } from "@/lib/helpers/routes";
 import type { JobDetailsViewModel } from "../../types";
 import { useToggleLike } from "../../hooks/useToggleLike";
+import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
+import { resolveJobStatusMeta } from "../../helpers/manageJobs";
 
 const JobMainInfo = ({
   jobId = "12345",
@@ -40,6 +42,7 @@ const JobMainInfo = ({
   showDashboardActions?: boolean;
   job: JobDetailsViewModel;
 }) => {
+  const statusMeta = resolveJobStatusMeta(job.status);
   const { handleToggleLike, isLiked, isUpdating } = useToggleLike({
     jobId: job.id,
     initialIsLiked: job.isLiked,
@@ -52,7 +55,10 @@ const JobMainInfo = ({
         <FlagActionBtn onClick={() => {}} actionTitle="Flag Job" />
       </div>
       <div className="bg-[#F9F9F9] border-[0.94px] border-[#F1F2F9] pt-8 md:px-11 sm:px-5 px-2  pb-6 rounded-[11.33px] space-y-8">
-        <JobCategory category={job.category} variant="secondary" />
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <JobCategory category={job.category} variant="secondary" />
+          <StatusBadge label={statusMeta.label} tone={statusMeta.tone} />
+        </div>
         <div className="space-y-6">
           <div className="space-y-4">
             <div className="flex items-end justify-between gap-2.5 flex-wrap pb-4 border-b border-[#ECECEC]">
@@ -83,7 +89,7 @@ const JobMainInfo = ({
                     icon={<UserIcon />}
                   />
                   <InfoItem value={job.level} icon={<LevelIcon />} />
-                  <div className="flex items-center"></div>
+                  <InfoItem value={`Job type: ${job.type || "Not specified"}`} icon={<MilestoneIcon />} />
                   <div className="flex items-center gap-1">
                     <InfoItem
                       value={`${job.milestones.length} milestones`}
@@ -163,9 +169,7 @@ const JobMainInfo = ({
             </div>
           </div>
         </div>
-        <Button variant="primary" className="w-full h-11">
-          {applyLabel}
-        </Button>
+        <ApplyJobButton jobId={job.id} job={job} ownerId={job.ownerId} variant="primary" className="w-full h-11" label={applyLabel} />
       </div>
     </div>
   );

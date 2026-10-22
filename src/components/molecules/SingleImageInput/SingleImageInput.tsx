@@ -8,17 +8,19 @@ const SingleImageInput = ({
   deleteImage,
   handleImageChange,
   id = "image",
+  rounded = false,
 }: {
   imagePreview: string;
   deleteImage: () => void;
   handleImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: string;
+  rounded?: boolean;
 }) => {
   return (
-    <label htmlFor={id} className="">
-      <div className="h-35 backdrop-blur-2xl bg-[#ECECEC] p-1.5 w-full rounded-[10px]">
+    <label htmlFor={id} className={rounded ? "w-35 self-start" : ""}>
+      <div className={`relative h-35 backdrop-blur-2xl bg-[#ECECEC] p-1.5 w-full ${rounded ? "rounded-full" : "rounded-[10px]"}`}>
         {imagePreview ? (
-          <div className="relative overflow-hidden rounded-[10px] w-full h-full bg-white">
+          <div className={`relative overflow-hidden w-full h-full bg-white ${rounded ? "rounded-full" : "rounded-[10px]"}`}>
             <Image
               src={imagePreview}
               alt="Preview"
@@ -26,18 +28,12 @@ const SingleImageInput = ({
               className="h-full w-full object-cover"
             />
 
-            <button
-              type="button"
-              onClick={deleteImage}
-              className="absolute right-1 top-1 rounded-full bg-red-500 px-2 py-1 text-xs text-white cursor-pointer"
-            >
-              ×
-            </button>
+
           </div>
         ) : (
           <>
             {" "}
-            <div className="w-full h-full bg-white rounded-[10px] border border-dashed flex justify-center items-center border-[#A2A4A2] text-[#A2A4A2]">
+            <div className={`w-full h-full bg-white border border-dashed flex justify-center items-center border-[#A2A4A2] text-[#A2A4A2] ${rounded ? "rounded-full" : "rounded-[10px]"}`}>
               <ImagePlus />
               <input
                 type="file"
@@ -49,6 +45,16 @@ const SingleImageInput = ({
               />
             </div>
           </>
+        )}
+        {imagePreview && (
+            <button
+              type="button"
+              aria-label="Remove photo"
+              onClick={deleteImage}
+              className="absolute right-1 top-1 rounded-full bg-red-500 px-2 py-1 text-xs text-white cursor-pointer"
+            >
+              ×
+            </button>
         )}
       </div>
     </label>

@@ -71,7 +71,7 @@ export const parseFormattedAmount = (value: AmountInput): number | null => {
  * Keep allocation arithmetic in minor units so values such as 100.10 - 70.05
  * resolve to exactly 30.05 instead of a binary floating-point remainder.
  */
-const parseAmountToMinorUnits = (value: AmountInput): number | null => {
+export const parseAmountToMinorUnits = (value: AmountInput): number | null => {
   const amount = parseFormattedAmount(value);
   if (amount === null) return null;
 

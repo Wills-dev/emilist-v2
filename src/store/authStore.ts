@@ -12,6 +12,16 @@ export type ModalType =
   | "terms-prompt"
   | null;
 
+export interface UserBusiness {
+  _id: string;
+  services: string[];
+  displayImage?: string;
+  expertType?: string;
+  isVerified: boolean;
+  uniqueId?: string;
+  businessName: string;
+}
+
 export interface User {
   uniqueId: string;
   _id: string;
@@ -28,6 +38,15 @@ export interface User {
   country?: string;
   bio?: string;
   image?: string;
+  displayImage?: string;
+  isEmailVerified?: boolean;
+  businesses?: UserBusiness[];
+  level?: string;
+  status?: string;
+  isPrimeMember?: boolean;
+  requestedVerification?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
   username?: string;
   gender?: string;
   businessMobile?: string;

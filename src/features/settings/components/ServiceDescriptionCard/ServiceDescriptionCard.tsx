@@ -3,7 +3,8 @@
 import { useState } from "react";
 
 import Button from "@/components/atoms/Button/Button";
-import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
+import RichTextArea from "@/components/molecules/RichTextArea/RichTextArea";
+import RichTextContent from "@/components/atoms/RichTextContent/RichTextContent";
 import { UserExpertService } from "../../types/expertService";
 
 const ServiceDescriptionCard = ({
@@ -35,9 +36,10 @@ const ServiceDescriptionCard = ({
       </div>
       {editing ? (
         <>
-          <Textarea
+          <RichTextArea
             value={description}
-            onChange={(event) => setDescription(event.target.value)}
+            onChange={setDescription}
+            ariaLabel="Business description"
             className="mt-4 min-h-28"
           />
           <div className="mt-3 flex justify-end gap-2">
@@ -61,9 +63,11 @@ const ServiceDescriptionCard = ({
           </div>
         </>
       ) : (
-        <p className="mt-5 text-sm leading-6 text-[#737774]">
-          {expert.businessDescription}
-        </p>
+        <RichTextContent
+          key={expert.businessDescription}
+          value={expert.businessDescription}
+          className="mt-5 text-sm leading-6 text-[#737774]"
+        />
       )}
     </div>
   );

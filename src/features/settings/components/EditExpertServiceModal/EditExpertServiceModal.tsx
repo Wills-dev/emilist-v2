@@ -32,8 +32,8 @@ const EditExpertServiceModal = ({ open, onClose, expert, onSave, loading }: Prop
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="expert-notice-period" title="Notice period" />
-          <Input id="expert-notice-period" value={draft.noticePeriod} onChange={(e) => update("noticePeriod", e.target.value)} placeholder="3 days" />
+          <Label htmlFor="expert-notice-period" title="Notice period (days)" />
+          <Input id="expert-notice-period" value={draft.noticePeriod} onChange={(e) => update("noticePeriod", e.target.value)} placeholder="3" type="number" min="0" step="1" />
         </div>
       </div>
       <div className="mt-7 flex gap-3"><Button variant="default" className="h-11 flex-1" onClick={() => onClose(false)}>Cancel</Button><Button variant="primary" className="h-11 flex-1" loading={loading} onClick={() => onSave(draft)}>Save Changes</Button></div>

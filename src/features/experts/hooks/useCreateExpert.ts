@@ -45,9 +45,9 @@ export const useCreateExpert = () => {
 
   const { business, businessImages, resetBusiness } = useBusinessProfileState();
 
-  const { insurances, resetInsurance, validInsurances } = useInsuranceState();
+  const { resetInsurance, validInsurances } = useInsuranceState();
 
-  const { memberships, resetMembership, validMemberships } =
+  const { resetMembership, validMemberships } =
     useMembershipState();
 
   const {
@@ -145,8 +145,8 @@ export const useCreateExpert = () => {
       noticePeriod,
       businessDescription,
       ...(certValid === true && { certifications: certificationsPayload }),
-      ...(membValid === true && { memberships }),
-      ...(insurValid === true && { insurances }),
+      ...(membValid === true && { memberships: validMemberships }),
+      ...(insurValid === true && { insurances: validInsurances }),
     };
 
     const payload: NewExpertFormType = {

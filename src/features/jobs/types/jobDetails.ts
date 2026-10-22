@@ -43,6 +43,7 @@ export interface FetchJobByIdQuery {
 }
 
 export interface JobDetailsViewModel {
+  type?: string;
   id: string;
   status: string;
   category: string;
@@ -70,6 +71,7 @@ export interface JobDetailsViewModel {
   milestones: Array<{
     id: string;
     status?: string;
+    achievement?: string;
     title: string;
     duration: string;
     amount: number;

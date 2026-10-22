@@ -128,6 +128,7 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
 
   return {
     id: job._id,
+    type: job.type,
     status: job.status || "listed",
     category:
       job.jobCategory?.trim() || job.category?.trim() || "Uncategorised",
@@ -161,6 +162,7 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
     milestones: (job.milestones ?? []).map((milestone, index) => ({
       id: milestone._id || milestone.id || `milestone-${index + 1}`,
       status: milestone.status,
+      achievement: milestone.achievement,
       title:
         milestone.achievement?.trim() ||
         milestone.title?.trim() ||
