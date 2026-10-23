@@ -1,5 +1,6 @@
 "use client";
 
+import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
 import { ArrowDown, FileText, Printer } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -18,7 +19,7 @@ export const subscriptionHistoryColumns: ColumnDef<SubscriptionHistoryItem>[] = 
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => <span className="rounded-full bg-[#EAFBF1] px-2 py-1 text-xs text-[#07883E]">{row.original.status}</span>,
+    cell: ({ row }) => <StatusBadge label={row.original.status} />,
   },
   { accessorKey: "datePaid", header: "Date Paid" },
   {

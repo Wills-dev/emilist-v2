@@ -1,163 +1,63 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import PaginationPanel from "@/components/molecules/PaginationPanel/PaginationPanel";
 import JobApplicantCard from "../../JobApplicantCard/JobApplicantCard";
 import { routes } from "@/lib/helpers/routes";
+import { useJobApplicants } from "../../../hooks/useJobApplicants";
+import { useApplicantFilters } from "../../../hooks/useApplicantFilters";
+import { APPLICATION_STATUSES } from "../../../types/applicants";
+import { POST_JOB_EXPERIENCE_OPTIONS } from "../../../constants/postJob";
 import type { JobApplicant } from "../../../types/jobManagement";
 
-export default function JobApplicantsPanel({
-  applicants,
-  count,
-  jobId,
-  budget,
-  currency,
-  originTab = "listed",
-  onHire,
-}: {
-  applicants?: JobApplicant[];
-  count: number;
+export default function JobApplicantsPanel({ jobId, ownerId, budget, currency, jobType, milestoneIds, originTab = "listed", onHire }: {
   jobId: string;
+  jobType?: string;
+  milestoneIds: string[];
+  ownerId: string;
   budget: number;
   currency: string;
   originTab?: string;
   onHire: (applicant: JobApplicant) => void;
 }) {
-  const [page, setPage] = useState(1);
-  const [level, setLevel] = useState("");
-  const [location, setLocation] = useState("");
-  const [sort, setSort] = useState("latest");
+  const { page, limit, status, experienceLevel, setPage, setLimit, setStatus, setExperienceLevel } = useApplicantFilters();
   const [showFilters, setShowFilters] = useState(false);
-  const filtered = useMemo(
-    () =>
-      (applicants ?? [])
-        .filter(
-          (applicant) =>
-            (!level || applicant.level === level) &&
-            (!location || applicant.location === location),
-        )
-        .toSorted((a, b) =>
-          sort === "latest"
-            ? b.appliedAt.localeCompare(a.appliedAt)
-            : a.appliedAt.localeCompare(b.appliedAt),
-        ),
-    [applicants, level, location, sort],
-  );
-  const totalPages = Math.max(1, Math.ceil(filtered.length / 4));
-  const currentPage = Math.min(page, totalPages);
-  return (
-    <section className="space-y-5">
-      <div className="flex flex-wrap items-center gap-3 py-2 text-sm text-[#5E625F]">
-        <button
-          type="button"
-          onClick={() => setShowFilters(!showFilters)}
-          aria-label="Toggle applicant filters"
-          aria-expanded={showFilters}
-          className="rounded-full bg-[#EDEEF0] px-3 py-1.5"
-        >
-          <SlidersHorizontal className="size-4" />
-        </button>
-        <div
-          className={`${showFilters ? "flex" : "hidden sm:flex"} flex-wrap gap-3`}
-        >
-          <select
-            aria-label="Experience level"
-            value={level}
-            onChange={(e) => {
-              setLevel(e.target.value);
-              setPage(1);
-            }}
-            className="max-w-44 rounded-full bg-[#EDEEF0] px-3 py-1.5"
-          >
-            <option value="">Experience level</option>
-            {[...new Set((applicants ?? []).map((a) => a.level))].map(
-              (value) => (
-                <option key={value}>{value}</option>
-              ),
-            )}
-          </select>
-          <select
-            aria-label="Location"
-            value={location}
-            onChange={(e) => {
-              setLocation(e.target.value);
-              setPage(1);
-            }}
-            className="max-w-44 rounded-full bg-[#EDEEF0] px-3 py-1.5"
-          >
-            <option value="">Location</option>
-            {[...new Set((applicants ?? []).map((a) => a.location))].map(
-              (value) => (
-                <option key={value}>{value}</option>
-              ),
-            )}
-          </select>
-        </div>
-        <select
-          aria-label="Sort applicants"
-          value={sort}
-          onChange={(e) => {
-            setSort(e.target.value);
-            setPage(1);
-          }}
-          className="ml-auto rounded-lg bg-[#EDEEF0] p-2"
-        >
-          <option value="latest">Showing latest</option>
-          <option value="oldest">Showing oldest</option>
+  const query = useJobApplicants({ jobId, page, limit, ...(status ? { status } : {}), ...(experienceLevel ? { experienceLevel } : {}) }, ownerId);
+  const totalPages = Math.max(1, Math.ceil((query.data?.total ?? 0) / (query.data?.limit ?? limit)));
+  const selectClass = "max-w-full rounded-full bg-[#EDEEF0] px-4 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-[#25C269]";
+
+  return <section className="space-y-6" aria-label="Job applicants">
+    <div className="flex flex-wrap items-center gap-3 py-3 text-sm text-[#5E625F]">
+      <button type="button" aria-label="Toggle applicant filters" aria-expanded={showFilters} onClick={() => setShowFilters((value) => !value)} className="rounded-full bg-[#EDEEF0] px-4 py-2"><SlidersHorizontal className="size-4" /></button>
+      <div className={`${showFilters ? "flex" : "hidden sm:flex"} flex-wrap gap-3`}>
+        <select aria-label="Experience level" value={experienceLevel} onChange={(event) => setExperienceLevel(event.target.value)} className={selectClass}>
+          <option value="">Experience level</option>
+          {POST_JOB_EXPERIENCE_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+        </select>
+        <select aria-label="Application status" value={status} onChange={(event) => setStatus(event.target.value)} className={selectClass}>
+          <option value="">Status</option>
+          {APPLICATION_STATUSES.map((value) => <option key={value} value={value}>{value.charAt(0).toUpperCase() + value.slice(1)}</option>)}
         </select>
       </div>
-      <div className={filtered.length ? "space-y-6" : "bg-white p-3"}>
-        {filtered.length === 0 ? (
-          <EmptyState
-            title={
-              !applicants && count > 0
-                ? "Applicant details unavailable"
-                : "No applicants found"
-            }
-            description={
-              !applicants && count > 0
-                ? `${count} applications have been received. Applicant details are not available yet.`
-                : ""
-            }
-            className="min-h-[60vh] border-0"
-          />
-        ) : (
-          <>
-            <div className="grid gap-5 xl:grid-cols-2">
-              {filtered
-                .slice((currentPage - 1) * 4, currentPage * 4)
-                .map((applicant) => (
-                  <JobApplicantCard
-                    key={applicant.id}
-                    applicant={applicant}
-                    budget={budget}
-                    currency={currency}
-                    profileHref={routes.dashboardLinks.jobApplicantInfo(
-                      jobId,
-                      applicant.expertId ?? applicant.id,
-                      originTab,
-                    )}
-                    reviewsHref={routes.dashboardLinks.jobApplicantReviews(
-                      jobId,
-                      applicant.expertId ?? applicant.id,
-                      originTab,
-                    )}
-                    onHire={() => onHire(applicant)}
-                  />
-                ))}
-            </div>
-            <PaginationPanel
-              variant="inline"
-              page={currentPage}
-              totalPages={totalPages}
-              onPrev={() => setPage(currentPage - 1)}
-              onNext={() => setPage(currentPage + 1)}
-            />
-          </>
-        )}
-      </div>
-    </section>
-  );
+      <label className="ml-auto flex items-center gap-2 text-xs">Per page
+        <select value={limit} onChange={(event) => setLimit(Number(event.target.value))} className={selectClass}>
+          {[4, 8, 12, 20].map((size) => <option key={size} value={size}>{size}</option>)}
+        </select>
+      </label>
+    </div>
+    <div className="min-h-72">
+      {query.isPending ? <p role="status" className="py-12 text-center text-sm">Loading applicants…</p> : query.isError ?
+        <EmptyState title="Unable to load applicants" description="Please try again." actionLabel="Try again" onAction={() => void query.refetch()} /> :
+        !query.data.applicants.length ? <EmptyState title="No applicants found" description={status || experienceLevel ? "No applications match your filters." : "Applications will appear here when artisans apply."} /> :
+        <div className="grid gap-6 xl:grid-cols-2">
+          {query.data.applicants.map((applicant) => <JobApplicantCard key={applicant.id} applicant={applicant} jobType={jobType} budget={budget} currency={currency}
+            profileHref={applicant.expertId ? routes.dashboardLinks.jobApplicantInfo(jobId, applicant.expertId, originTab) : undefined}
+            reviewsHref={applicant.expertId ? routes.dashboardLinks.jobApplicantReviews(jobId, applicant.expertId, originTab) : undefined}
+            onHire={() => onHire(applicant)} jobId={jobId} milestoneIds={milestoneIds} />)}
+        </div>}
+    </div>
+    <PaginationPanel variant="inline" page={page} totalPages={query.isPending || query.isError ? undefined : totalPages} hasMore={false} onPrev={() => setPage(Math.max(1, page - 1))} onNext={() => setPage(Math.min(totalPages, page + 1))} />
+  </section>;
 }

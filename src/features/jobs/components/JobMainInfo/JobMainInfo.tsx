@@ -24,6 +24,8 @@ import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
 import { routes } from "@/lib/helpers/routes";
 import type { JobDetailsViewModel } from "../../types";
 import { useToggleLike } from "../../hooks/useToggleLike";
+import Link from "next/link";
+import { useStore } from "@/store/authStore";
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
 import { resolveJobStatusMeta } from "../../helpers/manageJobs";
 
@@ -42,6 +44,8 @@ const JobMainInfo = ({
   showDashboardActions?: boolean;
   job: JobDetailsViewModel;
 }) => {
+  const currentUserId = useStore((state) => state.currentUser?._id);
+  const isOwner = Boolean(currentUserId && currentUserId === job.ownerId);
   const statusMeta = resolveJobStatusMeta(job.status);
   const { handleToggleLike, isLiked, isUpdating } = useToggleLike({
     jobId: job.id,
@@ -169,6 +173,7 @@ const JobMainInfo = ({
             </div>
           </div>
         </div>
+        {isOwner && <Link href={routes.dashboardLinks.jobApplicants(job.id)} className="flex h-11 w-full items-center justify-center rounded-lg bg-[#25C269] font-medium text-white">View applicants ({job.applicants})</Link>}
         <ApplyJobButton jobId={job.id} job={job} ownerId={job.ownerId} variant="primary" className="w-full h-11" label={applyLabel} />
       </div>
     </div>

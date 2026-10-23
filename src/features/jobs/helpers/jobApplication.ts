@@ -25,6 +25,10 @@ export const buildJobApplication = ({ jobId, businessId, type, maximumPrice, mil
   if (!businessId || !jobId) throw new Error("Select a business before applying.");
   if (type === "regular") return { jobId, businessId, type };
   if (type !== "biddable") throw new Error("This job’s application type is unavailable.");
+  return { jobId, businessId, type, ...buildBidTerms(maximumPrice, milestones) };
+};
+
+export const buildBidTerms = (maximumPrice: string, milestones: BidMilestoneDraft[]) => {
   const price = Number(maximumPrice);
   if (!Number.isFinite(price) || price <= 0) throw new Error("Enter a valid maximum price.");
   if (milestones.some((item) => !item.milestoneId || item.milestoneId.startsWith("milestone-"))) {
@@ -39,7 +43,7 @@ export const buildJobApplication = ({ jobId, businessId, type, maximumPrice, mil
     throw new Error(`The milestone total is ${totalMinorUnits < (priceMinorUnits ?? 0) ? "less" : "more"} than your bid amount. Milestone prices must add up exactly to your bid amount.`);
   }
   return {
-    jobId, businessId, type, maximumPrice: price,
+    maximumPrice: price,
     milestones: milestones.map((item) => ({
       milestoneId: item.milestoneId,
       amount: Number(item.amount),

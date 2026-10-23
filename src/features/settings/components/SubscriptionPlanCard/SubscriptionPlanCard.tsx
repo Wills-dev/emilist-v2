@@ -1,5 +1,6 @@
 "use client";
 
+import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
 import { useState } from "react";
 import { Check, Star } from "lucide-react";
 import { toast } from "sonner";
@@ -59,11 +60,7 @@ const SubscriptionPlanCard = ({
                 <p className="font-exo font-semibold">{plan.name} Plan</p>
               </div>
               {plan.status && (
-                <span
-                  className={`rounded-full px-2 py-1 text-xs ${plan.status === "active" ? "bg-[#EAFBF1] text-[#07883E]" : "bg-[#F7F7F7] text-[#B1B3B1]"}`}
-                >
-                  {plan.status === "active" ? "Active" : "Inactive"}
-                </span>
+                <StatusBadge label={plan.status === "active" ? "Active" : "Inactive"} />
               )}
             </div>
             {plan.billingProgress && (
