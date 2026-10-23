@@ -43,6 +43,7 @@ export interface JobMilestoneProgressDto {
 
 export interface JobsByStatusItemDto extends FetchAllJobsItemDto {
   milestoneProgress?: JobMilestoneProgressDto | string;
+  maximumPrice?: number;
   dueDate?: string;
   completedAt?: string;
   isOverdue?: boolean;
@@ -57,7 +58,7 @@ export interface JobsByStatusPage {
 
 export interface JobsByStatusEnvelope {
   message: string;
-  data: JobsByStatusPage;
+  data: JobsByStatusPage | JobsByStatusItemDto[];
 }
 
 export type JobsByStatusQuery = Pick<
