@@ -1,6 +1,6 @@
 import type { JobDetailsViewModel } from "./jobDetails";
 
-export type JobInfoTab = "details" | "applicants" | "invoices" | "payments";
+export type JobInfoTab = "details" | "applicants" | "invoices" | "payments" | "application";
 export type JobAction =
   | "edit"
   | "remove"
@@ -16,6 +16,17 @@ export type JobAction =
   | "complete-milestone"
   | "rate-employer";
 export interface JobApplicant {
+  applicantUserId?: string;
+  counterOffers?: unknown[];
+  latestCounterOffer?: import("./applicationDetails").ApplicationDetailsDto["latestCounterOffer"];
+  counterOfferSummary?: import("./counterOffer").CounterOfferSummary;
+  jobType?: string;
+  bidCount?: number;
+  status?: import("./applicants").ApplicationStatus;
+  acceptedAt?: string;
+  rejectedAt?: string;
+  bidMilestones?: { milestoneId: string; amount: number; achievement: string }[];
+  quote?: unknown;
   expertId?: string;
   isVerified?: boolean;
   jobsCompleted?: number;

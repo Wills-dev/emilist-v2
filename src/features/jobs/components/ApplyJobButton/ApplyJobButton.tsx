@@ -25,7 +25,7 @@ const ApplyJobButton = ({ jobId, ownerId, job, status, label = "Apply Now", vari
   const currentUser = useStore((state) => state.currentUser);
   const setIsModalFlow = useStore((state) => state.setIsModalFlow);
   const openModal = useStore((state) => state.openModal);
-  if (normalizeJobStatus(status ?? job?.status ?? "") === "applied") return null;
+  if (job?.applicationId || normalizeJobStatus(status ?? job?.applicationStatus ?? job?.status ?? "") === "applied") return null;
   if (currentUser?._id && currentUser._id === (ownerId ?? job?.ownerId)) return null;
   const apply = () => {
     if (!currentUser) {

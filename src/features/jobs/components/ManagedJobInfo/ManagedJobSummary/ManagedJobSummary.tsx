@@ -44,8 +44,10 @@ export default function ManagedJobSummary({
   onAction,
   onReviewApplicants,
   originTab = "listed",
+  applicationMessage,
 }: {
   originTab?: string;
+  applicationMessage?: string;
   job: ManagedJob;
   isOwner: boolean;
   onAction: (action: JobAction, milestoneId?: string) => void;
@@ -75,7 +77,7 @@ export default function ManagedJobSummary({
           ? `Waiting for employer to review Milestone ${reviewIndex + 1}`
           : status === "paused" && pausedIndex >= 0
             ? `Paused at Milestone ${pausedIndex + 1}`
-            : getJobStatusMessage(status, isOwner);
+            : applicationMessage || getJobStatusMessage(status, isOwner);
   return (
     <article className="space-y-6 rounded-xl border border-[#ECECEC] bg-[#F9F9F9] px-3 py-5 sm:p-7">
       <div className="flex items-center justify-between gap-4">

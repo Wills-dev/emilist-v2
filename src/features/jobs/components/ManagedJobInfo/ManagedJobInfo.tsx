@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import Container from "@/components/atoms/Container/Container";
 import { routes } from "@/lib/helpers/routes";
 import { useStore } from "@/store/authStore";
+import { useApplicationDetails } from "../../hooks/useApplicationDetails";
+import { getApplicationAttention } from "../../helpers/applicationAttention";
 import { useGetJobById } from "../../hooks/useGetJobById";
 import {
   resolveManageJobsTab,
@@ -27,6 +29,7 @@ import JobMilestoneInfo from "../JobMilestoneInfo/JobMilestoneInfo";
 import ManagedJobSummary from "./ManagedJobSummary/ManagedJobSummary";
 import JobApplicantsPanel from "./JobApplicantsPanel/JobApplicantsPanel";
 import JobInvoicesPanel from "./JobInvoicesPanel/JobInvoicesPanel";
+import MyApplicationPanel from "../MyApplicationPanel/MyApplicationPanel";
 import JobPaymentsPanel from "./JobPaymentsPanel/JobPaymentsPanel";
 
 // Kept separate from fetching so owner/artisan layouts can share the same view.
@@ -47,6 +50,12 @@ export function ManagedJobInfoView({
   backHref: string;
   onAction: (action: JobAction, milestoneId?: string) => void;
 }) {
+  const trackApplication = !isOwner && Boolean(job.applicationId) && job.type?.trim().toLowerCase() === "biddable";
+  const applicationQuery = useApplicationDetails(job.applicationId ?? "", job.id, { enabled: trackApplication, refetchInterval: 30 * 1000 });
+  const applicationAttention = getApplicationAttention(applicationQuery.data);
+  const applicationMessage = trackApplication
+    ? applicationQuery.isPending ? "Checking application updates…" : applicationQuery.isError ? "Application updates unavailable. Open My Application to retry." : applicationAttention.message
+    : undefined;
   const [localTab, setLocalTab] = useState<JobInfoTab>("details");
   const selectedTab = selectedSection ?? localTab;
   const setSelectedTab = (tab: JobInfoTab) => {
@@ -67,9 +76,9 @@ export function ManagedJobInfoView({
           { id: "invoices" as const, label: "Invoices" },
           { id: "payments" as const, label: "Payments" },
         ]
-      : isOwner
-        ? [{ id: "applicants" as const, label: "Applicants" }]
-        : []),
+      : []),
+    ...(isOwner ? [{ id: "applicants" as const, label: "Applicants" }] : []),
+    ...(!isOwner && (Boolean(job.applicationId) || normalizeJobStatus(job.status) === "applied") && job.type?.trim().toLowerCase() === "biddable" ? [{ id: "application" as const, label: "My Application" }] : []),
   ];
   const tab = tabs.some((item) => item.id === selectedTab)
     ? selectedTab
@@ -95,9 +104,10 @@ export function ManagedJobInfoView({
                   type="button"
                   aria-current={tab === item.id ? "page" : undefined}
                   onClick={() => setSelectedTab(item.id)}
-                  className={`flex items-center gap-2 whitespace-nowrap border-b-2 px-1 py-3 text-sm ${tab === item.id ? "border-[#25C269] text-[#00A63E]" : "border-transparent text-[#707471] hover:text-[#18A154]"}`}
+                  className={`flex items-center gap-2 whitespace-nowrap border-b-2 px-1 py-3 text-sm ${item.id === "application" && applicationAttention.requiresResponse ? "motion-safe:animate-pulse text-[#18A154]" : ""} ${tab === item.id ? "border-[#25C269] text-[#00A63E]" : "border-transparent text-[#707471] hover:text-[#18A154]"}`}
                 >
                   {item.label}
+                  {item.id === "application" && applicationAttention.requiresResponse && <span className="relative flex size-2" aria-label="Counteroffer awaiting your response"><span aria-hidden="true" className="absolute inline-flex size-full rounded-full bg-[#25C269] opacity-75 motion-safe:animate-ping" /><span aria-hidden="true" className="relative inline-flex size-2 rounded-full bg-[#18A154]" /></span>}
                   {item.id === "applicants" && (
                     <span
                       className={`rounded-full px-1.5 py-0.5 text-[10px] ${tab === item.id ? "bg-[#25C269] text-white" : "bg-[#EDEEF0] text-[#4F5D75]"}`}
@@ -142,13 +152,15 @@ export function ManagedJobInfoView({
               originTab={originTab}
               isOwner={isOwner}
               onAction={onAction}
+              applicationMessage={applicationMessage}
               onReviewApplicants={() => setSelectedTab("applicants")}
             />
           )}
-          {tab === "applicants" && (
+          {tab === "applicants" && isOwner && (
             <JobApplicantsPanel
-              applicants={job.applicantsList}
-              count={job.applicants}
+              ownerId={job.ownerId}
+              jobType={job.type}
+              milestoneIds={job.milestones.map((milestone) => milestone.id)}
               jobId={job.id}
               budget={job.price}
               currency={job.currency}
@@ -158,6 +170,7 @@ export function ManagedJobInfoView({
               }
             />
           )}
+          {tab === "application" && <MyApplicationPanel job={job} />}
           {tab === "invoices" && <JobInvoicesPanel invoices={job.invoices} />}
           {tab === "payments" && <JobPaymentsPanel payments={job.payments} />}
         </main>
@@ -203,7 +216,7 @@ export default function ManagedJobInfo({ jobId }: { jobId: string }) {
   const pathname = usePathname();
   const section = searchParams.get("section");
   const selectedSection: JobInfoTab =
-    section === "applicants" || section === "invoices" || section === "payments"
+    section === "applicants" || section === "invoices" || section === "payments" || section === "application"
       ? section
       : "details";
   const onSectionChange = (nextSection: JobInfoTab) => {

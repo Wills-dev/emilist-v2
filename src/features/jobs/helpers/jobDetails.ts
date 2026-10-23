@@ -128,6 +128,8 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
 
   return {
     id: job._id,
+    applicationId: job.applicationId,
+    applicationStatus: job.applicationStatus,
     type: job.type,
     status: job.status || "listed",
     category:

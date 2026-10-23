@@ -20,7 +20,7 @@ import { balanceBidMilestones, buildJobApplication, type BidMilestoneDraft } fro
 
 const JobApplicationModal = ({ job, onClose }: { job: JobDetailsViewModel; onClose: () => void }) => {
   const currentUserId = useStore((state) => state.currentUser?._id);
-  const alreadyApplied = normalizeJobStatus(job.status) === "applied";
+  const alreadyApplied = Boolean(job.applicationId) || normalizeJobStatus(job.applicationStatus ?? job.status) === "applied";
   const isOwner = Boolean(currentUserId && currentUserId === job.ownerId);
   const businesses = useUserBusinesses();
   const application = useApplyJob(onClose);

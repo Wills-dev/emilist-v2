@@ -19,6 +19,8 @@ export interface JobMilestoneDto {
 }
 
 export interface JobDetailsDto extends FetchAllJobsItemDto {
+  applicationId?: string;
+  applicationStatus?: string;
   experienceLevel?: string;
   startDate?: string;
   endDate?: string;
@@ -43,6 +45,8 @@ export interface FetchJobByIdQuery {
 }
 
 export interface JobDetailsViewModel {
+  applicationId?: string;
+  applicationStatus?: string;
   type?: string;
   id: string;
   status: string;
