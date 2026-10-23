@@ -47,13 +47,13 @@ const parseMoney = (
   return parseJsonObject<JobListMoneyDto>(value);
 };
 
-export const resolveBudgetLabel = (job: FetchAllJobsItemDto) => {
+export const resolveBudgetLabel = (job: FetchAllJobsItemDto & { maximumPrice?: number }) => {
   const money =
     parseMoney(job.totalBudget) ??
     parseMoney(job.estimatedBudget) ??
     parseMoney(job.recurringBudget) ??
     parseMoney(job.budget);
-  const amount = Number(money?.amount);
+  const amount = Number(job.maximumPrice ?? money?.amount);
 
   if (!Number.isFinite(amount)) return "—";
   return formatBudgetAmount(amount, money?.currency ?? "NGN");
@@ -174,6 +174,10 @@ const parseMilestoneProgress = (
 ) => parseJsonObject<JobMilestoneProgressDto>(value);
 
 export const resolveMilestoneProgressLabel = (job: JobsByStatusItemDto) => {
+  if (typeof job.milestoneProgress === "string") {
+    const fraction = job.milestoneProgress.trim().match(/^(\d+)\s*\/\s*(\d+)$/);
+    if (fraction && Number(fraction[2]) > 0) return `Milestone ${Number(fraction[1])}/${Number(fraction[2])}`;
+  }
   const progress = parseMilestoneProgress(job.milestoneProgress);
   if (!progress) return "—";
   if (progress.currentMilestone) return progress.currentMilestone;

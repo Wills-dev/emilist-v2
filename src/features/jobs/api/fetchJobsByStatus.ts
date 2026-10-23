@@ -1,3 +1,4 @@
+import { normalizeJobsByStatusResponse } from "../helpers/jobsByStatusResponse";
 import { axiosInstance } from "@/lib/axiosInstance";
 import type {
   JobsByStatusEnvelope,
@@ -67,12 +68,5 @@ export const fetchJobsByStatus = async (
     },
   );
 
-  const page = response.data?.data;
-  if (!page || !Array.isArray(page.jobs)) {
-    throw new Error(
-      "The jobs-by-status response did not include a valid jobs page.",
-    );
-  }
-
-  return page;
+  return normalizeJobsByStatusResponse(response.data?.data, query.page, query.limit);
 };
