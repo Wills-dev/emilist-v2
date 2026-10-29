@@ -5,6 +5,7 @@ import { ReceiptText } from "lucide-react";
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import PaginationPanel from "@/components/molecules/PaginationPanel/PaginationPanel";
+import { getInvoiceDisplay } from "../../../helpers/invoiceDisplay";
 import { formatBudgetAmount } from "../../../helpers/manageJobs";
 import type { JobInvoice } from "../../../types/jobManagement";
 
@@ -27,6 +28,7 @@ export function JobInvoiceCard({
   invoice: JobInvoice;
   index: number;
 }) {
+  const invoiceDisplay = getInvoiceDisplay(invoice);
   return (
     <article className="border-[6px] border-[#EDEEF0] bg-[#F9F9F9] text-[#303632]">
       <div className="flex justify-between gap-3 p-4 sm:p-5">
@@ -62,22 +64,23 @@ export function JobInvoiceCard({
           <div className="space-y-2">
             <p className="text-[#768592]">Status</p>
             <StatusBadge
-              label={invoice.paidAt ? "Paid" : "Unpaid"}
-              tone={invoice.paidAt ? "success" : "warning"}
+              label={invoiceDisplay.label}
+              tone={invoiceDisplay.paid ? "success" : "warning"}
             />
           </div>
           <div className="space-y-2 text-right">
-            <p>{invoice.paidAt ? "Date" : "Due Date"}</p>
+            <p>{invoiceDisplay.paid ? "Date" : "Due Date"}</p>
             <p className="font-semibold">
-              {dateLabel(invoice.paidAt ?? invoice.dueAt)}
+              {dateLabel(invoiceDisplay.date)}
             </p>
           </div>
         </div>
         <div className="space-y-3 p-3 sm:p-4">
           <div className="flex flex-wrap justify-between gap-1">
             <span className="text-[#768592]">Subtotal</span>
-            <span>{formatBudgetAmount(invoice.amount, invoice.currency)}</span>
+            <span>{formatBudgetAmount(invoice.subtotal ?? invoice.amount, invoice.currency)}</span>
           </div>
+          {invoice.additionalAmount !== undefined && <div className="flex flex-wrap justify-between gap-1"><span className="text-[#768592]">Additional costs</span><span>{formatBudgetAmount(invoice.additionalAmount, invoice.currency)}</span></div>}
           <div className="flex flex-wrap items-center justify-between gap-1">
             <span className="text-[#768592]">Total ({invoice.currency})</span>
             <strong className="font-exo text-sm text-[#101828] sm:text-base">
@@ -88,6 +91,7 @@ export function JobInvoiceCard({
           </div>
         </div>
       </div>
+      {invoice.note && <div className="border-b-[6px] border-[#EDEEF0] p-4 text-sm"><p className="mb-2 text-xs text-[#768592]">Reason for additional costs</p><p className="whitespace-pre-wrap wrap-anywhere">{invoice.note}</p></div>}
       {invoice.downloadUrl ? (
         <a
           href={invoice.downloadUrl}

@@ -4,7 +4,20 @@ import type {
   JobListMediaDto,
 } from "./listJobs";
 
+export interface JobMilestoneInvoiceDto {
+  additionalAmount?: number | string;
+  invoiceRaised?: boolean;
+  note?: string;
+  number?: string;
+  issuedAt?: string;
+  dueAt?: string;
+  paidAt?: string;
+  downloadUrl?: string;
+}
+
 export interface JobMilestoneDto {
+  invoice?: JobMilestoneInvoiceDto;
+  paymentStatus?: string;
   _id?: string;
   id?: string;
   status?: string;
@@ -19,6 +32,7 @@ export interface JobMilestoneDto {
 }
 
 export interface JobDetailsDto extends FetchAllJobsItemDto {
+  maximumPrice?: number;
   applicationId?: string;
   applicationStatus?: string;
   experienceLevel?: string;
@@ -47,6 +61,8 @@ export interface FetchJobByIdQuery {
 export interface JobDetailsViewModel {
   applicationId?: string;
   applicationStatus?: string;
+  invoices?: import("./jobManagement").JobInvoice[];
+  payments?: import("./jobManagement").JobPayment[];
   type?: string;
   id: string;
   status: string;
@@ -76,6 +92,8 @@ export interface JobDetailsViewModel {
     id: string;
     status?: string;
     achievement?: string;
+    paymentStatus?: string;
+    invoice?: { invoiceRaised: boolean; additionalAmount: number; note: string; totalAmount: number };
     title: string;
     duration: string;
     amount: number;

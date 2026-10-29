@@ -101,11 +101,11 @@ export default function ManagedJobSummary({
             </h1>
             <IdentifierBadge label="Job ID" value={job.id} />
           </div>
-          {!inProgress && (
+          {(
             <PriceWrapper
               price={job.price}
               currency={job.currency}
-              title="budget starts from"
+              title={inProgress ? "agreed amount" : "budget starts from"}
             />
           )}
           {(inProgress ||

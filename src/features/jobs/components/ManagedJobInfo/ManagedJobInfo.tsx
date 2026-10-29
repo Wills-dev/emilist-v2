@@ -10,6 +10,8 @@ import { routes } from "@/lib/helpers/routes";
 import { useStore } from "@/store/authStore";
 import { useApplicationDetails } from "../../hooks/useApplicationDetails";
 import { getApplicationAttention } from "../../helpers/applicationAttention";
+import { useManagedJobActions } from "../../hooks/useManagedJobActions";
+import CompleteMilestoneModal from "../CompleteMilestoneModal/CompleteMilestoneModal";
 import { useGetJobById } from "../../hooks/useGetJobById";
 import {
   resolveManageJobsTab,
@@ -17,7 +19,6 @@ import {
 } from "../../helpers/manageJobs";
 import {
   isManagedJobInProgress,
-  jobActionLabels,
 } from "../../helpers/jobManagement";
 import type {
   JobAction,
@@ -50,9 +51,9 @@ export function ManagedJobInfoView({
   backHref: string;
   onAction: (action: JobAction, milestoneId?: string) => void;
 }) {
-  const trackApplication = !isOwner && Boolean(job.applicationId) && job.type?.trim().toLowerCase() === "biddable";
+  const trackApplication = !isOwner && !isManagedJobInProgress(job.status) && Boolean(job.applicationId) && job.type?.trim().toLowerCase() === "biddable";
   const applicationQuery = useApplicationDetails(job.applicationId ?? "", job.id, { enabled: trackApplication, refetchInterval: 30 * 1000 });
-  const applicationAttention = getApplicationAttention(applicationQuery.data);
+  const applicationAttention = getApplicationAttention(trackApplication ? applicationQuery.data : undefined);
   const applicationMessage = trackApplication
     ? applicationQuery.isPending ? "Checking application updates…" : applicationQuery.isError ? "Application updates unavailable. Open My Application to retry." : applicationAttention.message
     : undefined;
@@ -229,6 +230,7 @@ export default function ManagedJobInfo({ jobId }: { jobId: string }) {
   };
   const tab = resolveManageJobsTab(searchParams.get("tab"));
   const backHref = routes.dashboardLinks.jobsTab(tab);
+  const jobActions = useManagedJobActions(job, tab);
   if (isPending) return <ManagedJobSkeleton section={selectedSection} />;
   if (isError || !job)
     return (
@@ -247,6 +249,7 @@ export default function ManagedJobInfo({ jobId }: { jobId: string }) {
       </div>
     );
   return (
+    <>
     <ManagedJobInfoView
       key={job.id}
       originTab={tab}
@@ -255,20 +258,17 @@ export default function ManagedJobInfo({ jobId }: { jobId: string }) {
       job={job}
       isOwner={Boolean(currentUserId && currentUserId === job.ownerId)}
       backHref={backHref}
-      onAction={(action) => {
-        if (action === "rate-employer")
-          router.push(
-            routes.dashboardLinks.employerProfile(
-              job.ownerId,
-              job.id,
-              tab,
-              true,
-            ),
-          );
-        else if (action === "edit")
-          router.push(routes.dashboardLinks.editJob(job.id));
-        else toast.info(`${jobActionLabels[action]} is not available yet.`);
-      }}
+      onAction={jobActions.handleAction}
     />
+    {jobActions.completionMilestone && (
+      <CompleteMilestoneModal
+        key={jobActions.completionMilestone.id}
+        jobId={job.id}
+        milestoneId={jobActions.completionMilestone.id}
+        currency={jobActions.completionMilestone.currency || job.currency}
+        onClose={jobActions.closeCompleteMilestone}
+      />
+    )}
+    </>
   );
 }

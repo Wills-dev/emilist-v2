@@ -12,12 +12,14 @@ import type { JobPayment } from "../../../types/jobManagement";
 
 const paymentTone = {
   paid: "success",
+  unpaid: "warning",
   pending: "warning",
   upcoming: "neutral",
   overdue: "danger",
 } as const;
 const paymentLabel = {
   paid: "Paid",
+  unpaid: "Unpaid",
   pending: "Pending",
   upcoming: "Upcoming",
   overdue: "Overdue",

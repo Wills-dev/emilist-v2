@@ -34,6 +34,8 @@ export const getJobStatusMessage = (status: string, isOwner: boolean) => {
       return "Waiting for Employer’s response…";
     case "rejected":
       return "Employer has responded";
+    case "completed":
+      return "This job is completed.";
     case "paused":
       return "This job is paused";
     case "overdue":

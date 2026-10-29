@@ -1,3 +1,4 @@
+import { getMilestoneInvoiceAmounts, mapMilestoneBilling } from "./milestoneBilling";
 import type {
   JobListDurationDto,
   JobListMediaDto,
@@ -126,7 +127,10 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
   const isDocument = (url: string) =>
     /\.(pdf|docx?|xlsx?|pptx?|txt|csv|zip)(?:[?#]|$)/i.test(url);
 
+  const ownerName = poster?.fullName?.trim() || poster?.userName?.trim() || poster?.uniqueId?.trim() || "Job poster";
+  const billing = mapMilestoneBilling(job, ownerName, budget?.currency?.trim() || "NGN");
   return {
+    ...billing,
     id: job._id,
     applicationId: job.applicationId,
     applicationStatus: job.applicationStatus,
@@ -136,7 +140,7 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
       job.jobCategory?.trim() || job.category?.trim() || "Uncategorised",
     title: job.title?.trim() || "Untitled job",
     createdAt: job.createdAt || new Date(0).toISOString(),
-    price: toNumber(budget?.amount),
+    price: toNumber(job.maximumPrice ?? budget?.amount),
     currency: budget?.currency?.trim() || "NGN",
     location: location?.trim() || "Location not specified",
     duration: formatJobTimeline(job),
@@ -147,8 +151,7 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
     ownerVerified: poster?.isVerified,
     ownerUsername: poster?.userName,
     ownerBio: poster?.bio,
-    ownerName:
-      poster?.fullName?.trim() || poster?.userName?.trim() || "Job poster",
+    ownerName,
     ownerImage: poster?.profileImage?.trim() || "",
     ownerRating: Math.max(0, toNumber(job.posterRating?.averageRating)),
     ownerReviewCount: Math.max(0, toNumber(job.posterRating?.totalReviews)),
@@ -164,6 +167,13 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
     milestones: (job.milestones ?? []).map((milestone, index) => ({
       id: milestone._id || milestone.id || `milestone-${index + 1}`,
       status: milestone.status,
+      paymentStatus: milestone.paymentStatus,
+      invoice: milestone.invoice ? {
+        invoiceRaised: Boolean(milestone.invoice.invoiceRaised),
+        additionalAmount: getMilestoneInvoiceAmounts(milestone.amount, milestone.invoice.additionalAmount).additionalAmount,
+        totalAmount: getMilestoneInvoiceAmounts(milestone.amount, milestone.invoice.additionalAmount).total,
+        note: milestone.invoice.note?.trim() ?? "",
+      } : undefined,
       achievement: milestone.achievement,
       title:
         milestone.achievement?.trim() ||
