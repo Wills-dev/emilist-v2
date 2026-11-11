@@ -1,5 +1,8 @@
 "use client";
 
+import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
+import MilestoneInvoiceDetails from "../MilestoneInvoiceDetails/MilestoneInvoiceDetails";
+import type { JobDetailsViewModel } from "../../types/jobDetails";
 import InfoRow from "@/components/atoms/InfoRow/InfoRow";
 import { getCurrencySign } from "@/lib/helpers/currencySign";
 import { formatAmount } from "@/lib/helpers/formatNumbers";
@@ -17,6 +20,8 @@ const MilestoneCard = ({
   details,
   title,
   status,
+  paymentStatus,
+  invoice,
   onReview,
   onComplete,
 }: {
@@ -30,11 +35,14 @@ const MilestoneCard = ({
   currency: string;
   title?: string;
   status?: string;
+  paymentStatus?: string;
+  invoice?: JobDetailsViewModel["milestones"][number]["invoice"];
   onReview?: () => void;
   onComplete?: () => void;
 }) => {
-  const approved = status === "approved" || status === "completed";
-  const tone = approved
+  const approved = status === "approved";
+  const completed = status === "completed";
+  const tone = approved || completed
     ? "text-[#18A154]"
     : status === "overdue"
       ? "text-[#FF5D7A]"
@@ -97,7 +105,7 @@ const MilestoneCard = ({
                 <div className="w-full flex justify-between items-center">
                   <InfoRow title="Duration:" value={duration} showDot />
                   <InfoRow
-                    title={approved ? "Paid:" : "Payment:"}
+                    title={paymentStatus === "paid" ? "Paid:" : "Payment:"}
                     value={`${currency && getCurrencySign(currency)}${amount && formatAmount(amount)}`}
                     showDot
                   />
@@ -108,6 +116,7 @@ const MilestoneCard = ({
               <p className="text-sm font-exo font-semibold">Details</p>
               <p className="text-sm">{details}</p>
             </div>
+            <MilestoneInvoiceDetails invoice={invoice} paymentStatus={paymentStatus} currency={currency} />
             {(status === "active" || status === "in-progress") &&
               onComplete && (
                 <button
@@ -127,14 +136,8 @@ const MilestoneCard = ({
                 Review Milestone
               </button>
             ) : (
-              (approved || status === "paused" || status === "overdue") && (
-                <p className={`text-xs ${tone}`}>
-                  {approved
-                    ? "Approved"
-                    : status === "paused"
-                      ? "Paused"
-                      : "Overdue"}
-                </p>
+              (approved || completed || status === "paused" || status === "overdue") && (
+                <StatusBadge label={completed ? "Completed" : approved ? "Approved" : status === "paused" ? "Paused" : "Overdue"} />
               )
             )}
           </motion.div>

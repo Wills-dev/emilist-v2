@@ -6,13 +6,13 @@ import JobActionsMenu from "../JobActionsMenu/JobActionsMenu";
 import { toast } from "sonner";
 
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
-import { cn } from "@/lib/utils";
 import { routes } from "@/lib/helpers/routes";
 import {
   resolveJobStatusMeta,
   resolveListedJobAction,
 } from "../../helpers/manageJobs";
 import type { ListedJobRow } from "../../types/manageJobs";
+import styles from "./JobAttention.module.css";
 
 export const listedJobsColumns: ColumnDef<ListedJobRow>[] = [
   { accessorKey: "date", header: "Date" },
@@ -20,13 +20,14 @@ export const listedJobsColumns: ColumnDef<ListedJobRow>[] = [
     accessorKey: "jobType",
     header: "Job Type",
     cell: ({ row }) => (
-      <span
-        className={cn(
-          "flex items-center gap-1.5 text-[#4F5D75]",
-          row.original.needsAction &&
-            "before:inline-block before:size-1.5 before:rounded-full before:bg-[#18A154]",
+      <span className="flex items-center gap-2.5 text-[#4F5D75]">
+        {row.original.requiresAttention && (
+          <span
+            className={styles.indicator}
+            role="img"
+            aria-label="Requires attention"
+          />
         )}
-      >
         {row.original.jobType}
       </span>
     ),
@@ -63,7 +64,13 @@ export const listedJobsColumns: ColumnDef<ListedJobRow>[] = [
     id: "action",
     header: "",
     cell: ({ row }) => {
-      const action = resolveListedJobAction(row.original.statusRaw);
+      const resolvedAction = resolveListedJobAction(row.original.statusRaw);
+      const action =
+        resolvedAction?.label === "Accept Job Offer" &&
+        row.original.isOwner &&
+        !row.original.requiresAttention
+          ? null
+          : resolvedAction;
       return (
         <JobActionsMenu
           jobTitle={row.original.jobTitle}

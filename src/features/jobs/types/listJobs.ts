@@ -66,6 +66,9 @@ export interface FetchAllJobsItemDto {
   type: string;
   status: string;
   userId: JobListPosterDto | string | null;
+  attention?: {
+    requiresAttention?: boolean;
+  };
   applicantsCount: number;
   milestonesCount: number;
   liked: boolean;

@@ -149,6 +149,7 @@ export const mapListedJobRow = (
   const isOwner = resolveIsJobOwner(job, currentUserId);
 
   return {
+    requiresAttention: job.attention?.requiresAttention === true,
     id: job._id,
     date: formatListDate(job.createdAt),
     jobType: isOwner ? "Created" : "Applied",
@@ -192,6 +193,7 @@ export const resolveMilestoneProgressLabel = (job: JobsByStatusItemDto) => {
 };
 
 export const mapOverdueJobRow = (job: JobsByStatusItemDto): OverdueJobRow => ({
+  requiresAttention: job.attention?.requiresAttention === true,
   id: job._id,
   startDate: formatListDate(job.dueDate ?? resolveJobStartDate(job)),
   jobId: resolveShortJobId(job._id),
@@ -201,6 +203,7 @@ export const mapOverdueJobRow = (job: JobsByStatusItemDto): OverdueJobRow => ({
 });
 
 export const mapPausedJobRow = (job: JobsByStatusItemDto): PausedJobRow => ({
+  requiresAttention: job.attention?.requiresAttention === true,
   id: job._id,
   dateCreated: formatListDate(job.createdAt),
   jobId: resolveShortJobId(job._id),
@@ -210,6 +213,7 @@ export const mapPausedJobRow = (job: JobsByStatusItemDto): PausedJobRow => ({
 });
 
 export const mapActiveJobRow = (job: JobsByStatusItemDto): ActiveJobRow => ({
+  requiresAttention: job.attention?.requiresAttention === true,
   id: job._id,
   startDate: formatListDate(resolveJobStartDate(job)),
   jobId: resolveShortJobId(job._id),
@@ -221,6 +225,7 @@ export const mapActiveJobRow = (job: JobsByStatusItemDto): ActiveJobRow => ({
 export const mapCompletedJobRow = (
   job: JobsByStatusItemDto,
 ): CompletedJobRow => ({
+  requiresAttention: job.attention?.requiresAttention === true,
   id: job._id,
   completedDate: formatListDate(job.completedAt ?? job.createdAt),
   jobId: resolveShortJobId(job._id),

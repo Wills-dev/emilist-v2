@@ -4,7 +4,7 @@ import { Milestone } from "../types";
 const ITEMS_PER_PAGE = 3;
 const MAX_MILESTONES = 5;
 
-export const useMilestoneActions = (initialMilestones: Milestone[]) => {
+export const useMilestoneActions = <T extends Milestone>(initialMilestones: T[]) => {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(
     () => new Set(initialMilestones.filter(({ isExpanded }) => isExpanded).map(({ id }) => id)),
   );

@@ -71,6 +71,7 @@ export type JobsByStatusQuery = Pick<
 export type JobsByStatusListQuery = Omit<JobsByStatusQuery, "page" | "status">;
 
 export interface ListedJobRow {
+  requiresAttention?: boolean;
   id: string;
   date: string;
   jobType: "Created" | "Applied";
@@ -83,6 +84,7 @@ export interface ListedJobRow {
 }
 
 export interface OverdueJobRow {
+  requiresAttention?: boolean;
   id: string;
   startDate: string;
   jobId: string;
@@ -92,6 +94,7 @@ export interface OverdueJobRow {
 }
 
 export interface PausedJobRow {
+  requiresAttention?: boolean;
   id: string;
   dateCreated: string;
   jobId: string;
@@ -101,6 +104,7 @@ export interface PausedJobRow {
 }
 
 export interface ActiveJobRow {
+  requiresAttention?: boolean;
   id: string;
   startDate: string;
   jobId: string;
@@ -110,6 +114,7 @@ export interface ActiveJobRow {
 }
 
 export interface CompletedJobRow {
+  requiresAttention?: boolean;
   id: string;
   completedDate: string;
   jobId: string;

@@ -57,6 +57,8 @@ const JobMilestoneInfo = ({
                     .replace(/[ _]+/g, "-") || "pending"
                 : undefined
             }
+            paymentStatus={milestone.paymentStatus}
+            invoice={milestone.invoice}
             onComplete={onComplete ? () => onComplete(milestone.id) : undefined}
             onReview={onReview ? () => onReview(milestone.id) : undefined}
             isExpanded={milestone?.isExpanded}

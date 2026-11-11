@@ -44,6 +44,11 @@ export interface JobApplicant {
   reviewCount: number;
 }
 export interface JobInvoice {
+  invoiceId?: string;
+  subtotal?: number;
+  additionalAmount?: number;
+  note?: string;
+  status?: "paid" | "unpaid" | "pending" | "overdue";
   id: string;
   number: string;
   billedTo: string;
@@ -63,7 +68,7 @@ export interface JobPayment {
   date: string;
   amount: number;
   currency: string;
-  status: "paid" | "pending" | "upcoming" | "overdue";
+  status: "paid" | "unpaid" | "pending" | "upcoming" | "overdue";
   receiptUrl?: string;
 }
 
