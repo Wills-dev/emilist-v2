@@ -11,6 +11,7 @@ import { useStore } from "@/store/authStore";
 import { useApplicationDetails } from "../../hooks/useApplicationDetails";
 import { getApplicationAttention } from "../../helpers/applicationAttention";
 import { useManagedJobActions } from "../../hooks/useManagedJobActions";
+import JobPaymentModal from "../JobPaymentModal/JobPaymentModal";
 import CompleteMilestoneModal from "../CompleteMilestoneModal/CompleteMilestoneModal";
 import { useGetJobById } from "../../hooks/useGetJobById";
 import {
@@ -21,6 +22,7 @@ import {
   isManagedJobInProgress,
 } from "../../helpers/jobManagement";
 import type {
+  JobInvoice,
   JobAction,
   JobInfoTab,
   ManagedJob,
@@ -57,6 +59,7 @@ export function ManagedJobInfoView({
   const applicationMessage = trackApplication
     ? applicationQuery.isPending ? "Checking application updates…" : applicationQuery.isError ? "Application updates unavailable. Open My Application to retry." : applicationAttention.message
     : undefined;
+  const [paymentInvoice, setPaymentInvoice] = useState<JobInvoice | null>(null);
   const [localTab, setLocalTab] = useState<JobInfoTab>("details");
   const selectedTab = selectedSection ?? localTab;
   const setSelectedTab = (tab: JobInfoTab) => {
@@ -86,6 +89,9 @@ export function ManagedJobInfoView({
     : "details";
   return (
     <Container variant="small" className="py-4">
+      {isOwner && paymentInvoice && (
+        <JobPaymentModal key={paymentInvoice.id} jobId={job.id} invoice={paymentInvoice} onClose={() => setPaymentInvoice(null)} />
+      )}
       <div
         className={`grid min-w-0 items-start gap-4 ${tab === "details" ? "xl:grid-cols-[minmax(0,1fr)_minmax(280px,32%)]" : "grid-cols-1"}`}
       >
@@ -172,8 +178,8 @@ export function ManagedJobInfoView({
             />
           )}
           {tab === "application" && <MyApplicationPanel job={job} />}
-          {tab === "invoices" && <JobInvoicesPanel invoices={job.invoices} canPay={isOwner} />}
-          {tab === "payments" && <JobPaymentsPanel payments={job.payments} invoices={job.invoices} canPay={isOwner} />}
+          {tab === "invoices" && <JobInvoicesPanel invoices={job.invoices} canPay={isOwner} onMakePayment={isOwner ? setPaymentInvoice : undefined} />}
+          {tab === "payments" && <JobPaymentsPanel payments={job.payments} invoices={job.invoices} canPay={isOwner} onMakePayment={isOwner ? setPaymentInvoice : undefined} />}
         </main>
         {tab === "details" && (
           <aside className="min-w-0">

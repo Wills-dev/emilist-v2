@@ -44,6 +44,7 @@ export interface JobApplicant {
   reviewCount: number;
 }
 export interface JobInvoice {
+  milestoneId?: string;
   invoiceId?: string;
   subtotal?: number;
   additionalAmount?: number;
