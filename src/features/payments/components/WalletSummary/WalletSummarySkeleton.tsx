@@ -22,6 +22,12 @@ export default function WalletSummarySkeleton() {
             <Skeleton className="h-4 w-24" />
           </div>
         </div>
+        <div className="space-y-2 rounded-lg bg-white p-4">
+          <Skeleton className="h-3 w-32" />
+          <Skeleton className="h-4 w-40" />
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-5 w-36" />
+        </div>
       </div>
     </section>
   );

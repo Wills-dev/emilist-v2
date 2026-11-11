@@ -31,7 +31,7 @@ const WalletActionModal = ({
   isSubmitting?: boolean;
 }) => {
   const selectedWallet = wallets.find((wallet) => wallet.id === selectedWalletId) ?? wallets[0];
-  const currencies = ["NGN", "USD", "EUR", "CAD"] as const;
+  const currencies = ["NGN", "USD", "GBP", "EUR"] as const;
   const availableCurrencies = currencies.filter((currency) => !wallets.some((wallet) => wallet.currency === currency));
   const [currency, setCurrency] = useState<string>(mode === "add-wallet" ? availableCurrencies[0] ?? "" : selectedWallet?.currency ?? "NGN");
   const submitting = useRef(false);
