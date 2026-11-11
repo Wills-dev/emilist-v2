@@ -61,11 +61,11 @@ export default function JobPaymentModal(props: JobPaymentFormParams) {
             </div>
           ) : <p className="text-sm leading-6 text-[#707471]">Continue to Paystack to complete your payment securely.</p>}
         </fieldset>
-        <div className="grid grid-cols-1 gap-3 border-t border-[#ECECEC] pt-5 sm:grid-cols-[auto_1fr]">
-          <Button variant="default" disabled={form.isSubmitting} onClick={form.handleClose}>Cancel</Button>
-          <Button type="submit" variant="primary" className="w-full" disabled={!form.canSubmit || form.isSubmitting} loading={form.isSubmitting}>
+        <div className="flex flex-col gap-3 border-t border-[#ECECEC] pt-5 sm:flex-row">
+          <Button type="submit" variant="primary" className="w-full sm:order-2 sm:flex-1" disabled={!form.canSubmit || form.isSubmitting} loading={form.isSubmitting}>
             <LockKeyhole className="size-4" />{form.paymentMethod === "Card" ? "Continue to Paystack" : `Pay ${money(form.amount)}`}
           </Button>
+          <Button variant="default" className="w-full sm:order-1 sm:w-auto" disabled={form.isSubmitting} onClick={form.handleClose}>Cancel</Button>
         </div>
       </form>
     </ModalWrapper>

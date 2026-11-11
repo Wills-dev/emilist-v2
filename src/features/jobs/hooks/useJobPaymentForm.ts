@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type SubmitEvent } from "react";
+import { getPaymentReturnUrl } from "@/lib/helpers/paymentRedirect";
 import { useFetchWallets } from "@/features/payments/hooks/useFetchWallets";
 import type { JobInvoice } from "../types/jobManagement";
 import type { JobPaymentMethod } from "../types/payForJob";
@@ -32,7 +33,7 @@ export const useJobPaymentForm = ({ jobId, invoice, onClose }: JobPaymentFormPar
     event.preventDefault();
     if (!canSubmit || submitting.current || mutation.isPending) return;
     submitting.current = true;
-    mutation.mutate({ jobId, milestoneId: invoice.milestoneId ?? invoice.id, paymentMethod, currency, isAdditionalAmount }, {
+    mutation.mutate({ jobId, milestoneId: invoice.milestoneId ?? invoice.id, paymentMethod, currency, isAdditionalAmount, redirectUrl: getPaymentReturnUrl() }, {
       onSettled: () => { submitting.current = false; },
     });
   };

@@ -1,3 +1,5 @@
+import type { PaymentCheckoutResponse } from "@/lib/helpers/paymentRedirect";
+
 export type JobPaymentMethod = "Wallet" | "Card";
 
 export interface PayForJobPayload {
@@ -6,15 +8,7 @@ export interface PayForJobPayload {
   paymentMethod: JobPaymentMethod;
   currency: string;
   isAdditionalAmount: boolean;
+  redirectUrl: string;
 }
 
-export interface PayForJobResponse {
-  message?: string;
-  status?: boolean | string;
-  success?: boolean;
-  data?: {
-    authorization_url?: string;
-    authorizationUrl?: string;
-    checkoutUrl?: string;
-  };
-}
+export type PayForJobResponse = PaymentCheckoutResponse;

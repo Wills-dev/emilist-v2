@@ -7,11 +7,13 @@ export const normalizeWallets = (response: unknown): PaymentWallet[] => {
   const items = Array.isArray(data) ? data : (data as { wallets?: unknown } | null)?.wallets;
   if (!Array.isArray(items)) throw new Error("Unable to read the wallets response.");
   return items.map((item: unknown) => {
-    const wallet = item as { _id?: string; id?: string; currency?: string; balance?: number | string };
+    const wallet = item as { walletId?: string; _id?: string; id?: string; currency?: string; balance?: number | string; isDefault?: boolean; createdAt?: string };
     if (!wallet || typeof wallet.currency !== "string") throw new Error("A wallet is missing its currency.");
     const balance = wallet.balance === undefined || wallet.balance === null || wallet.balance === "" ? undefined : Number(wallet.balance);
     return {
-      id: wallet._id ?? wallet.id ?? wallet.currency,
+      id: wallet.walletId ?? wallet._id ?? wallet.id ?? wallet.currency,
+      isDefault: wallet.isDefault === true,
+      createdAt: wallet.createdAt,
       currency: wallet.currency.toUpperCase(),
       balance: balance !== undefined && Number.isFinite(balance) ? balance : undefined,
     };
