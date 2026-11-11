@@ -17,6 +17,10 @@ const SearchableSelect = ({
   placeholder = "Select an option",
   searchPlaceholder = "Search options...",
   size = "compact",
+  emptyMessage = "No options found.",
+  disabled = false,
+  ariaLabel,
+  modal = false,
 }: {
   options: selectOption[] | string[];
   value: string;
@@ -24,6 +28,10 @@ const SearchableSelect = ({
   placeholder?: string;
   searchPlaceholder?: string;
   size?: "compact" | "default";
+  emptyMessage?: string;
+  disabled?: boolean;
+  ariaLabel?: string;
+  modal?: boolean;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -46,21 +54,25 @@ const SearchableSelect = ({
   );
 
   const handleOpenChange = (open: boolean) => {
+    if (open && disabled) return;
     setIsOpen(open);
 
     if (!open) setSearch("");
   };
 
   const handleSelect = (optionValue: string) => {
+    if (disabled) return;
     onValueChange(optionValue);
     handleOpenChange(false);
   };
 
   return (
-    <Popover open={isOpen} onOpenChange={handleOpenChange}>
+    <Popover modal={modal} open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <button
           type="button"
+          disabled={disabled}
+          aria-label={ariaLabel}
           className={`flex w-full items-center justify-between gap-2 rounded-[10px] text-left text-[#737774] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#25C269] ${
             size === "default"
               ? "h-11 bg-[#ECECEC] px-3 text-base"
@@ -77,9 +89,9 @@ const SearchableSelect = ({
         align="start"
         sideOffset={8}
         collisionPadding={16}
-        className="w-72 max-w-[calc(100vw-2rem)] gap-0 overflow-hidden p-0"
+        className="w-72 max-h-(--radix-popover-content-available-height) max-w-[calc(100vw-2rem)] gap-0 overflow-hidden p-0"
       >
-        <div className="flex items-center gap-2 border-b border-[#ECECEC] px-3 py-2">
+        <div className="flex shrink-0 items-center gap-2 border-b border-[#ECECEC] px-3 py-2">
           <Search className="size-4 text-[#737774]" aria-hidden="true" />
           <input
             autoFocus
@@ -90,7 +102,7 @@ const SearchableSelect = ({
             className="w-full bg-transparent text-sm outline-none placeholder:text-[#8A8D8B]"
           />
         </div>
-        <div className="max-h-60 overflow-y-auto p-1">
+        <div className="min-h-0 max-h-60 overflow-y-auto overscroll-contain touch-pan-y p-1">
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option) => {
               const isSelected = option.value === value;
@@ -109,7 +121,7 @@ const SearchableSelect = ({
             })
           ) : (
             <p className="px-3 py-6 text-center text-sm text-[#737774]">
-              No locations found.
+              {emptyMessage}
             </p>
           )}
         </div>

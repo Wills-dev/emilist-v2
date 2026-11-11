@@ -6,9 +6,10 @@ import { Popover as PopoverPrimitive } from "radix-ui";
 import { cn } from "@/lib/utils";
 
 function Popover({
+  modal = false,
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
-  return <PopoverPrimitive.Root data-slot="popover" {...props} modal={false} />;
+  return <PopoverPrimitive.Root data-slot="popover" {...props} modal={modal} />;
 }
 
 function PopoverTrigger({
