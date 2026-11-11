@@ -44,6 +44,7 @@ export interface JobApplicant {
   reviewCount: number;
 }
 export interface JobInvoice {
+  invoiceId?: string;
   subtotal?: number;
   additionalAmount?: number;
   note?: string;

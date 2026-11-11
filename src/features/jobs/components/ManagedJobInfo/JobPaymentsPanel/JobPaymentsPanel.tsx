@@ -1,14 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CircleCheck, Repeat2, Printer, Tag, ArrowDown } from "lucide-react";
+import { DropdownMenu } from "radix-ui";
+import { toast } from "sonner";
+import { downloadInvoice } from "../../../helpers/downloadInvoice";
+import { CircleCheck, Repeat2, Printer, ArrowDown, MoreVertical } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import PaginationPanel from "@/components/molecules/PaginationPanel/PaginationPanel";
 import DataTable from "@/components/organisms/DataTable/DataTable";
 import { formatBudgetAmount } from "../../../helpers/manageJobs";
-import type { JobPayment } from "../../../types/jobManagement";
+import type { JobInvoice, JobPayment } from "../../../types/jobManagement";
 
 const paymentTone = {
   paid: "success",
@@ -70,8 +73,14 @@ function PaymentSummary({
 
 export default function JobPaymentsPanel({
   payments: paymentData,
+  invoices = [],
+  canPay = false,
+  onMakePayment,
 }: {
   payments?: JobPayment[];
+  invoices?: JobInvoice[];
+  canPay?: boolean;
+  onMakePayment?: (invoice: JobInvoice) => void;
 }) {
   const payments = useMemo(() => paymentData ?? [], [paymentData]);
   const [page, setPage] = useState(1);
@@ -135,31 +144,40 @@ export default function JobPaymentsPanel({
       ),
     },
     {
-      id: "receipt",
+      id: "actions",
       header: "",
-      cell: ({ row }) => (
-        <div className="flex items-center gap-5 text-[#737774]">
-          <Tag className="size-4" aria-label={row.original.milestone} />
-          {row.original.receiptUrl ? (
-            <a
-              href={row.original.receiptUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Open receipt ${row.original.reference}`}
-            >
-              <Printer className="size-4" />
-            </a>
-          ) : (
-            <button
-              disabled
-              aria-label="Receipt unavailable"
-              className="opacity-40"
-            >
-              <Printer className="size-4" />
-            </button>
-          )}
-        </div>
-      ),
+      cell: ({ row }) => {
+        const payment = row.original;
+        const invoice = invoices.find((item) => item.id === payment.id);
+        const payable = canPay && invoice && (payment.status === "unpaid" || payment.status === "overdue");
+        const itemClassName = "flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-[#4F5D75] outline-none data-[highlighted]:bg-[#F0FDF5] data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40";
+        return (
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
+              <button type="button" aria-label={`Actions for ${payment.milestone}`} className="inline-flex size-8 items-center justify-center rounded-md hover:bg-[#EDEEF0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18A154]">
+                <MoreVertical className="size-4" />
+              </button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Portal>
+              <DropdownMenu.Content align="end" sideOffset={4} className="z-50 min-w-48 rounded-lg border border-[#EDEEF0] bg-white p-1 shadow-lg">
+                {payable && (
+                  <DropdownMenu.Item disabled={!onMakePayment} onSelect={() => onMakePayment?.(invoice)} className={itemClassName}>
+                    Make Payment
+                  </DropdownMenu.Item>
+                )}
+                {payable && !onMakePayment && <p className="max-w-52 px-3 py-2 text-xs text-[#768592]">Invoice payments are not available yet.</p>}
+                {invoice && <DropdownMenu.Item className={itemClassName} onSelect={() => { void downloadInvoice(invoice).catch(() => toast.error("Unable to download invoice. Please try again.")); }}>Download Invoice</DropdownMenu.Item>}
+                {payment.receiptUrl && (
+                  <DropdownMenu.Item asChild>
+                    <a href={payment.receiptUrl} target="_blank" rel="noopener noreferrer" className={itemClassName}><Printer className="size-4" />Open Receipt</a>
+                  </DropdownMenu.Item>
+                )}
+                {!invoice && !payment.receiptUrl && <DropdownMenu.Item disabled className={itemClassName}>Receipt unavailable</DropdownMenu.Item>}
+              </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
+        );
+      },
     },
   ];
   return (

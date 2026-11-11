@@ -5,6 +5,7 @@ import type {
 } from "./listJobs";
 
 export interface JobMilestoneInvoiceDto {
+  invoiceId?: string;
   additionalAmount?: number | string;
   invoiceRaised?: boolean;
   note?: string;

@@ -172,8 +172,8 @@ export function ManagedJobInfoView({
             />
           )}
           {tab === "application" && <MyApplicationPanel job={job} />}
-          {tab === "invoices" && <JobInvoicesPanel invoices={job.invoices} />}
-          {tab === "payments" && <JobPaymentsPanel payments={job.payments} />}
+          {tab === "invoices" && <JobInvoicesPanel invoices={job.invoices} canPay={isOwner} />}
+          {tab === "payments" && <JobPaymentsPanel payments={job.payments} invoices={job.invoices} canPay={isOwner} />}
         </main>
         {tab === "details" && (
           <aside className="min-w-0">

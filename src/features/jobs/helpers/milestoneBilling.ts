@@ -25,6 +25,7 @@ export const mapMilestoneBilling = (job: JobDetailsDto, ownerName: string, curre
     const milestoneLabel = `Milestone ${index + 1}: ${milestone.achievement || milestone.title || ""}`.trim();
     invoices.push({
       id,
+      invoiceId: invoice.invoiceId,
       number: invoice.number || "—",
       billedTo: ownerName,
       milestone: milestoneLabel,
