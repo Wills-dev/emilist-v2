@@ -4,11 +4,12 @@ export type PaymentModalType = "add-wallet" | "fund" | "withdraw" | "statement";
 
 export interface Wallet {
   id: string;
-  name: string;
-  currency: "NGN" | "USD" | "EUR" | "CAD";
-  balance: number;
-  bank: string;
-  accountNumber: string;
+  name?: string;
+  currency: string;
+  balance?: number;
+  isDefault?: boolean;
+  bank?: string;
+  accountNumber?: string;
 }
 
 export interface Transaction {

@@ -435,8 +435,10 @@ Use Tailwind utilities and the theme tokens defined in `src/app/globals.css`. Pr
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `NEXT_PUBLIC_BACKEND_BASE_URL` | Yes | Base URL used by the Axios API client. |
-| `NEXT_PUBLIC_WEB_URL` | Recommended | Public application URL used when composing referral and QR-code download links. |
+| `NEXT_PUBLIC_WEB_URL` | Recommended | Public application base URL used for payment return URLs, referrals, and QR-code download links. Payment return URLs fall back to the browser origin if unset. |
 | `NEXT_PUBLIC_COOKIE_DOMAIN` | Optional | Cookie domain for multi-subdomain production deployments. |
+
+Set `NEXT_PUBLIC_WEB_URL` to the frontend address for each environment (for example, `http://localhost:3000` locally). Wallet funding returns to `/dashboard/payments`; job payments return to the current Job Info path and section. Restart the development server after changing this variable; production builds require rebuilding because `NEXT_PUBLIC_` values are bundled at build time.
 
 ## License
 

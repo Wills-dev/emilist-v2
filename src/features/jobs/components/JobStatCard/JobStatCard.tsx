@@ -39,7 +39,7 @@ const JobStatCard = ({
           value={day}
           onChange={(event) => onDayChange(event.target.value)}
           aria-label={`Day for ${stat.label}`}
-          className="h-7 cursor-pointer appearance-none rounded-lg border border-[#E5E7E6] bg-white pl-2.5 pr-6 text-xs text-[#737774] outline-none"
+          className="h-7 cursor-pointer appearance-none rounded-lg border border-[#E5E7E6] bg-white pl-2.5 pr-9 text-xs text-[#737774] outline-none"
         >
           {DAYS.map((option) => (
             <option key={option} value={option}>
@@ -47,7 +47,7 @@ const JobStatCard = ({
             </option>
           ))}
         </select>
-        <ChevronDown className="pointer-events-none absolute right-1.5 top-1/2 size-3 -translate-y-1/2 text-[#8A8D8B]" />
+        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-3 -translate-y-1/2 text-[#8A8D8B]" />
       </div>
     </div>
 

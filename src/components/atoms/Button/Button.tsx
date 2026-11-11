@@ -16,7 +16,7 @@ const Button = ({
   type = "button",
 }: ButtonProps) => {
   const baseStyle =
-    "rounded-[10px] px-5 py-3 cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap font-exo transition-all duration-300 border ";
+    "relative rounded-[10px] px-5 py-3 cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap font-exo transition-all duration-300 border ";
   const variants = {
     primary:
       "bg-[#25C269] hover:bg-green-600 border-[#25C269] text-[#FBFFF8] font-bold disabled:bg-[#25C269]/30 disabled:border-[#25C269]/30 disabled:cursor-not-allowed",
@@ -35,8 +35,16 @@ const Button = ({
       onClick={onClick}
       className={clsx(baseStyle, styles, className)}
       disabled={disabled || loading}
+      aria-busy={loading || undefined}
     >
-      {loading ? <Loader className="animate-spin w-8 h-8" /> : children}
+      <span className={clsx("inline-flex items-center justify-center gap-2", loading && "opacity-0")}>
+        {children}
+      </span>
+      {loading && (
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
+          <Loader className="size-5 animate-spin" />
+        </span>
+      )}
     </button>
   );
 
