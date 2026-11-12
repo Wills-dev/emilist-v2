@@ -7,7 +7,6 @@ import NotificationIcon from "@/components/atoms/icons/NotificationIcon/Notifica
 import WarningIcon from "@/components/atoms/icons/WarningIcon/WarningIcon";
 import NavIconWrapper from "@/components/atoms/NavIconWrapper/NavIconWrapper";
 import NotificationModal from "@/features/notifications/components/NotificationModal/NotificationModal";
-import { testNotifications } from "@/features/notifications/constants/testNotifications";
 import { routes } from "@/lib/helpers/routes";
 
 const DashboardNavIconWrap = () => {
@@ -41,13 +40,12 @@ const DashboardNavIconWrap = () => {
       <NavIconWrapper>
         <WarningIcon />
       </NavIconWrapper>
-      <NavIconWrapper onClick={() => setNotificationsOpen(true)}>
+      <NavIconWrapper ariaLabel="Open notifications" onClick={() => setNotificationsOpen(true)}>
         <NotificationIcon />
       </NavIconWrapper>
       <NotificationModal
         open={notificationsOpen}
         onClose={setNotificationsOpen}
-        initialNotifications={testNotifications}
       />
     </div>
   );
