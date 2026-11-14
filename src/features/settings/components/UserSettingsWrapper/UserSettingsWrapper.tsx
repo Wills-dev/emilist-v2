@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Container from "@/components/atoms/Container/Container";
 import UserBiodata from "../UserBiodata/UserBiodata";
@@ -33,8 +34,16 @@ const UserSettingsWrapper = () => {
   const imageUpload = useProfileImageUpload();
   const bankDetails = useBankDetailsForm();
   const isAuthInitialized = useStore((state) => state.isAuthInitialized);
-  const [activeTab, setActiveTab] =
-    useState<(typeof userSettingsTabs)[number]["id"]>("user-details");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const activeTab = userSettingsTabs.find((tab) => tab.id === searchParams.get("tab"))?.id ?? "user-details";
+  const setActiveTab = (tab: (typeof userSettingsTabs)[number]["id"]) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (tab === "user-details") params.delete("tab");
+    else params.set("tab", tab);
+    router.replace(`${pathname}${params.size ? `?${params}` : ""}`, { scroll: false });
+  };
   const [verificationOpen, setVerificationOpen] = useState(false);
   const activeTabLabel =
     userSettingsTabs.find((tab) => tab.id === activeTab)?.label ?? "Settings";
@@ -42,7 +51,7 @@ const UserSettingsWrapper = () => {
   if (!isAuthInitialized) return <UserSettingsSkeleton />;
 
   return (
-    <Container variant="small">
+    <Container variant="small" className="min-w-0">
       <motion.div
         initial="hidden"
         animate="visible"
@@ -53,7 +62,7 @@ const UserSettingsWrapper = () => {
             transition: { staggerChildren: 0.1 },
           },
         }}
-        className="space-y-4 pb-20 pt-4"
+        className="min-w-0 space-y-4 pb-20 pt-4"
       >
         <motion.section
           variants={itemAnimation}

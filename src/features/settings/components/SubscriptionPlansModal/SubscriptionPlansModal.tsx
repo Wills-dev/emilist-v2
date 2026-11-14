@@ -3,8 +3,7 @@
 import { useState } from "react";
 
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
-import { subscriptionPlans } from "../../constants/subscriptions";
-import SubscriptionPlanCard from "../SubscriptionPlanCard/SubscriptionPlanCard";
+import SubscriptionPlansContent from "../SubscriptionPlansContent/SubscriptionPlansContent";
 
 interface SubscriptionPlansModalProps {
   open: boolean;
@@ -42,15 +41,7 @@ const SubscriptionPlansModal = ({
           </button>
         ))}
       </div>
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-        {subscriptionPlans.map((plan) => (
-          <SubscriptionPlanCard
-            key={plan.id}
-            plan={plan}
-            billingCycle={billingCycle}
-          />
-        ))}
-      </div>
+      <SubscriptionPlansContent billingCycle={billingCycle} enabled={open} />
     </ModalWrapper>
   );
 };

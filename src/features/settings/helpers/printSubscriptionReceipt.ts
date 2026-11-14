@@ -1,3 +1,4 @@
+import { formatBudgetAmount } from "@/features/jobs/helpers/manageJobs";
 import { SubscriptionHistoryItem } from "../types/subscription";
 
 const escapeHtml = (value: string) =>
@@ -14,6 +15,7 @@ const escapeHtml = (value: string) =>
   );
 
 export const printSubscriptionReceipt = (item: SubscriptionHistoryItem) => {
+  if (item.amount === undefined || item.status !== "Paid") return;
   const logoUrl = new URL("/assets/images/logo.svg", window.location.origin).href;
   const iframe = document.createElement("iframe");
   iframe.setAttribute("title", `Receipt ${item.id}`);
@@ -59,7 +61,7 @@ export const printSubscriptionReceipt = (item: SubscriptionHistoryItem) => {
         <main class="receipt">
           <header class="header"><img class="brand-logo" src="${escapeHtml(logoUrl)}" alt="Emilist" /><h1>Subscription Receipt</h1></header>
           <section class="body">
-            <div class="amount"><small>Amount paid</small><strong>₦${item.amount.toLocaleString()}</strong></div>
+            <div class="amount"><small>Amount paid</small><strong>${escapeHtml(formatBudgetAmount(item.amount, item.currency ?? "NGN"))}</strong></div>
             ${fields.map(([label, value]) => `<div class="row"><span class="label">${escapeHtml(label)}</span><span class="value${label === "Payment status" ? " status" : ""}">${escapeHtml(value)}</span></div>`).join("")}
             <p class="footer">Thank you for your subscription payment.</p>
           </section>
