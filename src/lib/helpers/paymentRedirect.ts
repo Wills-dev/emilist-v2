@@ -4,6 +4,7 @@ export interface PaymentCheckoutResponse {
   success?: boolean;
   authorizationUrl?: string;
   data?: {
+    paymentLink?: string;
     authorization_url?: string;
     authorizationUrl?: string;
     checkoutUrl?: string;
@@ -12,6 +13,7 @@ export interface PaymentCheckoutResponse {
 
 export const getPaymentCheckoutUrl = (response: PaymentCheckoutResponse) => {
   const checkout =
+    response.data?.paymentLink ??
     response.data?.authorizationUrl ??
     response.data?.authorization_url ??
     response.data?.checkoutUrl ??

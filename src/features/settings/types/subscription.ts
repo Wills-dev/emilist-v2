@@ -1,8 +1,10 @@
 export interface SubscriptionPlan {
   id: string;
   name: string;
-  monthlyPrice: number;
-  yearlyPrice: number;
+  monthlyPrice?: number;
+  yearlyPrice?: number;
+  currency?: string;
+  description?: string;
   features: string[];
   status?: "active" | "inactive";
   billingProgress?: string;
@@ -12,9 +14,10 @@ export interface SubscriptionPlan {
 export interface SubscriptionHistoryItem {
   id: string;
   issueDate: string;
-  amount: number;
+  amount?: number;
+  currency?: string;
   description: string;
   receipt: string;
-  status: "Paid" | "Pending";
+  status: string;
   datePaid: string;
 }

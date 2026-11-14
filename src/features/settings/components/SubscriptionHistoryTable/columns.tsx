@@ -1,5 +1,6 @@
 "use client";
 
+import { formatBudgetAmount } from "@/features/jobs/helpers/manageJobs";
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
 import { ArrowDown, FileText, Printer } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
@@ -9,7 +10,7 @@ import { printSubscriptionReceipt } from "../../helpers/printSubscriptionReceipt
 
 export const subscriptionHistoryColumns: ColumnDef<SubscriptionHistoryItem>[] = [
   { accessorKey: "issueDate", header: "Issue Date" },
-  { accessorKey: "amount", header: "Amount", cell: ({ row }) => `₦ ${row.original.amount.toLocaleString()}` },
+  { accessorKey: "amount", header: "Amount", cell: ({ row }) => row.original.amount === undefined ? "—" : formatBudgetAmount(row.original.amount, row.original.currency ?? "NGN") },
   { accessorKey: "description", header: "Description" },
   {
     accessorKey: "receipt",
@@ -25,6 +26,6 @@ export const subscriptionHistoryColumns: ColumnDef<SubscriptionHistoryItem>[] = 
   {
     id: "print",
     header: "",
-    cell: ({ row }) => <button type="button" aria-label={`Print receipt ${row.original.id}`} onClick={() => printSubscriptionReceipt(row.original)} className="text-[#737774] transition-colors hover:text-[#25C269]"><Printer className="size-5" /></button>,
+    cell: ({ row }) => <button type="button" aria-label={`Print receipt ${row.original.id}`} disabled={row.original.amount === undefined || row.original.status !== "Paid"} onClick={() => printSubscriptionReceipt(row.original)} className="text-[#737774] transition-colors hover:text-[#25C269] disabled:cursor-not-allowed disabled:opacity-30"><Printer className="size-5" /></button>,
   },
 ];
