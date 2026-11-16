@@ -33,7 +33,7 @@ export const useJobPaymentForm = ({ jobId, invoice, onClose }: JobPaymentFormPar
     event.preventDefault();
     if (!canSubmit || submitting.current || mutation.isPending) return;
     submitting.current = true;
-    mutation.mutate({ jobId, milestoneId: invoice.milestoneId ?? invoice.id, paymentMethod, currency, isAdditionalAmount, redirectUrl: getPaymentReturnUrl() }, {
+    mutation.mutate({ jobId, milestoneId: invoice.milestoneId ?? invoice.id, paymentMethod, currency, isAdditionalAmount, redirectUrl: getPaymentReturnUrl(`/dashboard/payments/job-complete?jobId=${encodeURIComponent(jobId)}`) }, {
       onSettled: () => { submitting.current = false; },
     });
   };

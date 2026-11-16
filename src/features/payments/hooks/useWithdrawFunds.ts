@@ -5,6 +5,7 @@ import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { withdrawFunds } from "../api/withdrawFunds";
+import { transactionKeys } from "../queries/transactionKeys";
 import { walletKeys } from "../queries/walletKeys";
 
 export const useWithdrawFunds = (onSuccess: () => void) => {
@@ -13,7 +14,7 @@ export const useWithdrawFunds = (onSuccess: () => void) => {
     mutationFn: withdrawFunds,
     retry: false,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: walletKeys.all });
+      await Promise.all([queryClient.invalidateQueries({ queryKey: walletKeys.all }), queryClient.invalidateQueries({ queryKey: transactionKeys.all })]);
       toast.success("Withdrawal requested. Awaiting admin approval.");
       onSuccess();
     },

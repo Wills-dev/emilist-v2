@@ -1,4 +1,4 @@
-export type TransactionStatus = "pending" | "failed" | "successful";
+export type TransactionStatus = "pending" | "processing" | "failed" | "successful" | "unknown";
 export type TransactionFilter = "all" | TransactionStatus;
 export type PaymentModalType = "add-wallet" | "fund" | "withdraw" | "statement";
 
@@ -14,10 +14,18 @@ export interface Wallet {
 
 export interface Transaction {
   id: string;
+  shortTransactionId?: string;
+  formattedAmount?: string;
+  walletId?: string;
+  balance?: number;
+  paymentMethod?: string;
   date: string;
   amount: number;
   counterparty: string;
-  type: "inflow" | "outflow";
+  type: "inflow" | "outflow" | "unknown";
+  currency?: string;
+  reference?: string;
+  createdAt?: string;
   status: TransactionStatus;
   year: number;
 }

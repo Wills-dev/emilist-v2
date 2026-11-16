@@ -19,7 +19,7 @@ const chartConfig = {
 
 const rangeMonths = { "1M": 1, "3M": 3, "6M": 6, "1Y": 12 } as const;
 
-const TransactionChart = ({ data }: { data: MonthlyTransaction[] }) => {
+const TransactionChart = ({ data, count = 0 }: { data: MonthlyTransaction[]; count?: number }) => {
   const [range, setRange] = useState<keyof typeof rangeMonths>("1Y");
   const visibleData = data.slice(-rangeMonths[range]);
 
@@ -27,11 +27,10 @@ const TransactionChart = ({ data }: { data: MonthlyTransaction[] }) => {
     <section className="bg-white p-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm text-[#667085]">Transactions</p>
+          <p className="text-sm text-[#667085]">Loaded transactions</p>
           <div className="mt-2 flex items-center gap-2">
-            <strong className="font-exo text-2xl text-[#101828]">32</strong>
-            <span className="text-xs text-[#18A154]">↑ 73%</span>
-            <span className="text-[10px] text-[#737774]">since last month</span>
+            <strong className="font-exo text-2xl text-[#101828]">{count.toLocaleString()}</strong>
+            <span className="text-[10px] text-[#737774]">Chart shows confirmed amounts</span>
           </div>
         </div>
         <div className="flex gap-1">
