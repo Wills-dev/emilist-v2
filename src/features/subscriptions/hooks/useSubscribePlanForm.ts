@@ -31,7 +31,7 @@ export const useSubscribePlanForm = ({ plan, billingCycle, onClose }: SubscribeP
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!canSubmit || submitting.current || mutation.isPending) return;
-    const redirectUrl = getPaymentReturnUrl("/dashboard/settings?tab=subscriptions");
+    const redirectUrl = getPaymentReturnUrl("/dashboard/payments/subscription-complete");
     submitting.current = true;
     mutation.mutate({ planId: plan.id, paymentMethod: isFree ? "Wallet" : paymentMethod, currency, redirectUrl }, { onSettled: () => { submitting.current = false; } });
   };

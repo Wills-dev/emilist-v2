@@ -3,6 +3,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
+import { useStore } from "@/store/authStore";
+import { saveCheckoutConfirmation, currentCheckoutReturnPath } from "@/features/payments/helpers/checkoutConfirmation";
+import { transactionKeys } from "@/features/payments/queries/transactionKeys";
 import { getPaymentCheckoutUrl } from "@/lib/helpers/paymentRedirect";
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { walletKeys } from "@/features/payments/queries/walletKeys";
@@ -11,6 +14,7 @@ import { jobKeys } from "../queries/jobKeys";
 
 export const usePayForJob = (onClose: () => void) => {
   const queryClient = useQueryClient();
+  const userId = useStore((state) => state.currentUser?._id);
   return useMutation({
     mutationFn: payForJob,
     retry: false,
@@ -19,10 +23,14 @@ export const usePayForJob = (onClose: () => void) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: jobKeys.all }),
         queryClient.invalidateQueries({ queryKey: walletKeys.all }),
+        queryClient.invalidateQueries({ queryKey: transactionKeys.all }),
       ]);
       if (payload.paymentMethod === "Card") {
         try {
-          window.location.assign(getPaymentCheckoutUrl(response));
+          const checkout = getPaymentCheckoutUrl(response);
+          if (!userId) throw new Error("Sign in again to continue payment.");
+          saveCheckoutConfirmation(response, { userId, kind: "job", returnPath: currentCheckoutReturnPath() });
+          window.location.assign(checkout);
         } catch (error) {
           toast.error(error instanceof Error ? error.message : "Unable to open Paystack checkout.");
           onClose();

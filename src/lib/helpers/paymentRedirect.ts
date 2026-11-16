@@ -5,6 +5,13 @@ export interface PaymentCheckoutResponse {
   authorizationUrl?: string;
   data?: {
     paymentLink?: string;
+    reference?: string;
+    transactionId?: string;
+    transaction?: {
+      _id?: string;
+      transactionId?: string;
+      reference?: string;
+    };
     authorization_url?: string;
     authorizationUrl?: string;
     checkoutUrl?: string;

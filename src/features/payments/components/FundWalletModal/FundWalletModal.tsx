@@ -9,7 +9,7 @@ import { useFundWalletForm, type FundWalletFormParams } from "../../hooks/useFun
 export default function FundWalletModal(props: FundWalletFormParams) {
   const form = useFundWalletForm(props);
   return (
-    <ModalWrapper open onClose={form.handleOpenChange} title="Fund Wallet" description="Add money to your wallet securely with Paystack." className="max-w-lg!" headerClassName="border-b border-[#ECECEC] pb-5" showCloseButton={!form.isSubmitting}>
+    <ModalWrapper open onClose={form.handleOpenChange} title="Fund Wallet" description="Fund your wallet with Paystack or submit a bank-transfer receipt." className="max-w-lg!" headerClassName="border-b border-[#ECECEC] pb-5" showCloseButton={!form.isSubmitting}>
       <form onSubmit={form.handleSubmit} className="space-y-5 pt-5">
         <fieldset disabled={form.isSubmitting} className="space-y-4">
           <label className="block space-y-2 text-sm text-[#555B57]">
@@ -26,12 +26,28 @@ export default function FundWalletModal(props: FundWalletFormParams) {
               <div className="min-w-0 flex-1"><Input type="text" inputMode="decimal" required value={form.amountInput} onChange={form.handleAmountChange} placeholder="Enter amount" /></div>
             </div>
           </label>
-          {form.wallet && !form.supportedCurrency && <p role="status" className="text-sm text-[#737774]">Paystack wallet funding is currently available for NGN wallets. Select an NGN wallet to continue.</p>}
-          <div className="flex items-center gap-3 rounded-xl border border-[#DDEBE1] bg-[#F0FDF5] p-4 text-sm font-medium text-[#125C32]"><CreditCard className="size-5" />Paystack</div>
-          <p className="text-xs leading-5 text-[#737774]">You’ll be redirected to Paystack to complete your payment. Your balance will update once payment is confirmed.</p>
+          <fieldset>
+            <legend className="mb-3 text-sm text-[#555B57]">Payment method</legend>
+            <div className="flex flex-wrap gap-3">
+              {([...(form.supportedCurrency ? ["Card" as const] : []), "BankTransfer" as const]).map((method) => (
+                <label key={method} className={`flex cursor-pointer items-center gap-2 rounded-lg border p-3 text-sm ${form.paymentMethod === method ? "border-[#18A154] bg-[#F0FDF5] text-[#125C32]" : "border-[#EDEEF0] text-[#737774]"}`}>
+                  <input type="radio" name="funding-method" checked={form.paymentMethod === method} onChange={() => form.setPaymentMethod(method)} className="accent-[#18A154]" />
+                  {method === "Card" && <CreditCard className="size-4" />}{method === "Card" ? "Paystack" : "Bank transfer"}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          {form.paymentMethod === "BankTransfer" ? <>
+            <label className="block space-y-2 text-sm text-[#555B57]">
+              <span>Transfer receipt</span>
+              <input key={form.walletId} type="file" accept="image/*" required onChange={form.handleReceiptChange} className="block w-full rounded-lg border border-[#EDEEF0] p-3 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[#F0FDF5] file:px-3 file:py-2 file:text-[#125C32]" />
+              {form.receiptError && <span role="alert" className="block text-xs text-[#DC3545]">{form.receiptError}</span>}
+            </label>
+            <p className="text-xs leading-5 text-[#737774]">Upload the receipt for a transfer you’ve already made. Your wallet will be credited after an administrator confirms it.</p>
+          </> : <p className="text-xs leading-5 text-[#737774]">You’ll be redirected to Paystack to complete your payment. Your balance will update once payment is confirmed.</p>}
         </fieldset>
         <div className="flex flex-col gap-3 border-t border-[#ECECEC] pt-5 sm:flex-row">
-          <Button type="submit" variant="primary" className="w-full sm:order-2 sm:flex-1" loading={form.isSubmitting} disabled={!form.canSubmit || form.isSubmitting}><LockKeyhole className="size-4" />Continue to Paystack</Button>
+          <Button type="submit" variant="primary" className="w-full sm:order-2 sm:flex-1" loading={form.isSubmitting} disabled={!form.canSubmit || form.isSubmitting}><LockKeyhole className="size-4" />{form.paymentMethod === "Card" ? "Continue to Paystack" : "Submit Transfer"}</Button>
           <Button variant="default" className="w-full sm:order-1 sm:w-auto" disabled={form.isSubmitting} onClick={form.handleClose}>Cancel</Button>
         </div>
       </form>

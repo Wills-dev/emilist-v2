@@ -45,7 +45,7 @@ const SubscriptionsTab = () => {
           <div role="alert" className="text-sm text-[#737774]"><p>Unable to load your current subscription.</p><button type="button" onClick={() => void current.refetch()} className="mt-2 text-[#18A154] underline">Retry</button></div>
         ) : !current.data ? <p className="text-sm text-[#737774]">You don’t have a current subscription.</p> : <>
           <div className="flex flex-wrap items-center gap-3"><p className="font-exo text-lg font-semibold">{currentName}</p><StatusBadge label={statusLabel(current.data.status)} tone={current.data.status.toLowerCase() === "active" ? "success" : "neutral"} /></div>
-          <dl className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-[#737774]"><div><dt>Started</dt><dd className="mt-1 text-[#303632]">{dateLabel(current.data.startedAt)}</dd></div><div><dt>Expires</dt><dd className="mt-1 text-[#303632]">{dateLabel(current.data.expiresAt)}</dd></div></dl>
+          <dl className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-[#737774]"><div><dt>Started</dt><dd className="mt-1 text-[#303632]">{dateLabel(current.data.startedAt)}</dd></div><div><dt>Expires</dt><dd className="mt-1 text-[#303632]">{currentName.trim().toLowerCase() === "basic" && !current.data.expiresAt ? "Doesn’t expire" : dateLabel(current.data.expiresAt)}</dd></div></dl>
         </>}
       </div>
       <div className="min-w-0 bg-white p-2"><SubscriptionPlansContent summary onViewPlan={() => setPlansOpen(true)} /></div>
