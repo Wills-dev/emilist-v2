@@ -10,21 +10,23 @@ import { useJobApplicants } from "../../../hooks/useJobApplicants";
 import { useApplicantFilters } from "../../../hooks/useApplicantFilters";
 import { APPLICATION_STATUSES } from "../../../types/applicants";
 import { POST_JOB_EXPERIENCE_OPTIONS } from "../../../constants/postJob";
-import type { JobApplicant } from "../../../types/jobManagement";
 
-export default function JobApplicantsPanel({ jobId, ownerId, budget, currency, jobType, milestoneIds, originTab = "listed", onHire }: {
+export default function JobApplicantsPanel({ jobId, ownerId, budget, currency, jobType, jobStatus, acceptedApplicationId, milestoneIds, originTab = "listed" }: {
   jobId: string;
   jobType?: string;
+  jobStatus?: string;
+  acceptedApplicationId?: string;
   milestoneIds: string[];
   ownerId: string;
   budget: number;
   currency: string;
   originTab?: string;
-  onHire: (applicant: JobApplicant) => void;
 }) {
   const { page, limit, status, experienceLevel, setPage, setLimit, setStatus, setExperienceLevel } = useApplicantFilters();
   const [showFilters, setShowFilters] = useState(false);
   const query = useJobApplicants({ jobId, page, limit, ...(status ? { status } : {}), ...(experienceLevel ? { experienceLevel } : {}) }, ownerId);
+  const assignedApplicationId = acceptedApplicationId || query.data?.applicants.find((applicant) => ["accepted", "active", "paused", "pause", "completed"].includes(applicant.status?.trim().toLowerCase() ?? ""))?.id;
+  const hasAcceptedApplication = Boolean(assignedApplicationId) || ["active", "paused", "completed", "overdue"].includes(jobStatus?.trim().toLowerCase() ?? "");
   const totalPages = Math.max(1, Math.ceil((query.data?.total ?? 0) / (query.data?.limit ?? limit)));
   const selectClass = "max-w-full rounded-full bg-[#EDEEF0] px-4 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-[#25C269]";
 
@@ -52,10 +54,10 @@ export default function JobApplicantsPanel({ jobId, ownerId, budget, currency, j
         <EmptyState title="Unable to load applicants" description="Please try again." actionLabel="Try again" onAction={() => void query.refetch()} /> :
         !query.data.applicants.length ? <EmptyState title="No applicants found" description={status || experienceLevel ? "No applications match your filters." : "Applications will appear here when artisans apply."} /> :
         <div className="grid gap-6 xl:grid-cols-2">
-          {query.data.applicants.map((applicant) => <JobApplicantCard key={applicant.id} applicant={applicant} jobType={jobType} budget={budget} currency={currency}
+          {query.data.applicants.map((applicant) => <JobApplicantCard key={applicant.id} applicant={applicant} jobType={jobType} jobStatus={jobStatus} acceptedApplicationId={assignedApplicationId} hasAcceptedApplication={hasAcceptedApplication} budget={budget} currency={currency}
             profileHref={applicant.expertId ? routes.dashboardLinks.jobApplicantInfo(jobId, applicant.expertId, originTab) : undefined}
             reviewsHref={applicant.expertId ? routes.dashboardLinks.jobApplicantReviews(jobId, applicant.expertId, originTab) : undefined}
-            onHire={() => onHire(applicant)} jobId={jobId} milestoneIds={milestoneIds} />)}
+            jobId={jobId} milestoneIds={milestoneIds} />)}
         </div>}
     </div>
     <PaginationPanel variant="inline" page={page} totalPages={query.isPending || query.isError ? undefined : totalPages} hasMore={false} onPrev={() => setPage(Math.max(1, page - 1))} onNext={() => setPage(Math.min(totalPages, page + 1))} />

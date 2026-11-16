@@ -1,10 +1,11 @@
 import { SubmitEvent, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { postJob } from "../api";
+import { jobKeys } from "../queries/jobKeys";
 import { MAX_POST_JOB_FILES } from "../constants/postJob";
 import { buildPostJobPayload } from "../helpers/buildPostJobPayload";
 import {
@@ -33,6 +34,7 @@ const revokePreviews = (previews: string[]) => {
 
 export const usePostJob = (initialExpertId?: string) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const pathname = usePathname();
   const storeState = usePostJobStore();
   const currentUser = useStore((state) => state.currentUser);
@@ -49,7 +51,8 @@ export const usePostJob = (initialExpertId?: string) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: postJob,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: jobKeys.all });
       revokePreviews(usePostJobStore.getState().previews);
       usePostJobStore.getState().resetForm();
       clearPendingFlow();

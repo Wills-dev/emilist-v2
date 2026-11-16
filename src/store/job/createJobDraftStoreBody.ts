@@ -1,11 +1,6 @@
 import { StateCreator } from "zustand";
 
 import { MAX_POST_JOB_MILESTONES } from "@/features/jobs/constants/postJob";
-import {
-  deriveFinalMilestoneAmount,
-  deriveFinalMilestoneDuration,
-} from "@/features/jobs/helpers/postJobMilestones";
-import { formatInputTextNumberWithCommas } from "@/lib/helpers/formatNumbers";
 import { PostJobStoreState } from "@/store/types/job";
 import {
   createDefaultJobDraft,
@@ -60,43 +55,17 @@ export const createJobDraftStoreBody: StateCreator<PostJobStoreState> = (
       location: { ...state.location, [field]: value },
     })),
 
-  addMilestone: () =>
-    set((state) => {
-      if (state.milestones.length >= MAX_POST_JOB_MILESTONES) return state;
-
-      const milestones = state.milestones.map((milestone) => ({
-        ...milestone,
-        timeFrame: { ...milestone.timeFrame },
-      }));
-      const previousFinal = milestones.at(-1);
-      const finalAmount = deriveFinalMilestoneAmount(
-        milestones,
-        state.budget.amount,
-      );
-
-      if (previousFinal && finalAmount !== null) {
-        previousFinal.amount = formatInputTextNumberWithCommas(
-          String(finalAmount),
-        );
-      }
-
-      if (previousFinal && state.jobUrgency === "right_now") {
-        const finalDuration = deriveFinalMilestoneDuration(
-          milestones,
-          state.jobDuration,
-        );
-        if (finalDuration) {
-          previousFinal.timeFrame = {
-            number: String(finalDuration.number),
-            period: finalDuration.period,
-          };
-        }
-      }
-
-      return {
-        milestones: [...milestones, createMilestone(createMilestoneId())],
-      };
-    }),
+  addMilestone: () => {
+    if (get().milestones.length >= MAX_POST_JOB_MILESTONES) return undefined;
+    const milestone = createMilestone(createMilestoneId());
+    if (get().jobUrgency === "right_now") milestone.timeFrame.period = get().jobDuration.unit;
+    set((state) => ({
+      milestones: state.milestones.length
+        ? [...state.milestones.slice(0, -1), milestone, state.milestones[state.milestones.length - 1]]
+        : [milestone],
+    }));
+    return milestone.id;
+  },
   updateMilestone: (id, updates) =>
     set((state) => ({
       milestones: state.milestones.map((milestone) =>

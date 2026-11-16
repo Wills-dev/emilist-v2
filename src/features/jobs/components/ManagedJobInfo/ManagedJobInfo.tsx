@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
-import { toast } from "sonner";
 import Container from "@/components/atoms/Container/Container";
 import { routes } from "@/lib/helpers/routes";
 import { useStore } from "@/store/authStore";
@@ -12,6 +11,7 @@ import { useApplicationDetails } from "../../hooks/useApplicationDetails";
 import { getApplicationAttention } from "../../helpers/applicationAttention";
 import { useManagedJobActions } from "../../hooks/useManagedJobActions";
 import JobPaymentModal from "../JobPaymentModal/JobPaymentModal";
+import JobPlaybackConfirmation from "../JobPlaybackConfirmation/JobPlaybackConfirmation";
 import CompleteMilestoneModal from "../CompleteMilestoneModal/CompleteMilestoneModal";
 import { useGetJobById } from "../../hooks/useGetJobById";
 import {
@@ -167,14 +167,13 @@ export function ManagedJobInfoView({
             <JobApplicantsPanel
               ownerId={job.ownerId}
               jobType={job.type}
+              jobStatus={job.status}
+              acceptedApplicationId={job.acceptedApplicationId || job.applications?.find((application) => ["accepted", "active", "paused", "pause"].includes(application.status?.trim().toLowerCase() ?? ""))?._id}
               milestoneIds={job.milestones.map((milestone) => milestone.id)}
               jobId={job.id}
               budget={job.price}
               currency={job.currency}
               originTab={originTab}
-              onHire={(applicant) =>
-                toast.info(`Hiring ${applicant.name} is not available yet.`)
-              }
             />
           )}
           {tab === "application" && <MyApplicationPanel job={job} />}
@@ -266,6 +265,7 @@ export default function ManagedJobInfo({ jobId }: { jobId: string }) {
       backHref={backHref}
       onAction={jobActions.handleAction}
     />
+    {jobActions.playbackAction && <JobPlaybackConfirmation action={jobActions.playbackAction} jobTitle={job.title} busy={jobActions.isUpdatingPlayback} onConfirm={jobActions.confirmPlayback} onClose={jobActions.closePlaybackConfirmation} />}
     {jobActions.completionMilestone && (
       <CompleteMilestoneModal
         key={jobActions.completionMilestone.id}

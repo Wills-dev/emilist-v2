@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { downloadInvoice } from "../../../helpers/downloadInvoice";
 import { CircleCheck, Repeat2, Printer, ArrowDown, MoreVertical } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
+import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import PaginationPanel from "@/components/molecules/PaginationPanel/PaginationPanel";
@@ -44,10 +45,11 @@ function PaymentSummary({
   upcoming?: boolean;
 }) {
   const totals = payments.reduce<Record<string, number>>(
-    (sums, payment) => ({
-      ...sums,
-      [payment.currency]: (sums[payment.currency] ?? 0) + payment.amount,
-    }),
+    (sums, payment) => {
+      const amount = upcoming ? payment.amount : payment.amountPaid;
+      if (amount === undefined) return sums;
+      return { ...sums, [payment.currency]: (sums[payment.currency] ?? 0) + amount };
+    },
     {},
   );
   const Icon = upcoming ? Repeat2 : CircleCheck;
@@ -67,6 +69,7 @@ function PaymentSummary({
           .map(([currency, amount]) => formatBudgetAmount(amount, currency))
           .join(" / ") || "—"}
       </p>
+      {!upcoming && payments.some((payment) => payment.amountPaid === undefined) && <p className="text-xs text-[#768592]">Some paid amounts are unavailable.</p>}
     </article>
   );
 }
@@ -95,10 +98,14 @@ export default function JobPaymentsPanel({
     [payments, descending],
   );
   const columns: ColumnDef<JobPayment>[] = [
+    { accessorKey: "paidAt", header: "Payment Date", cell: ({ row }) => dateLabel(row.original.paidAt ?? "") },
     { accessorKey: "reference", header: "Reference" },
+    { accessorKey: "invoiceId", header: "Invoice ID", cell: ({ row }) => row.original.invoiceId ? <IdentifierBadge label="ID" value={row.original.invoiceId} maxWidth="max-w-40" /> : "—" },
+    { accessorKey: "subtotal", header: "Job Cost", cell: ({ row }) => row.original.subtotal === undefined ? "—" : formatBudgetAmount(row.original.subtotal, row.original.currency) },
+    { accessorKey: "additionalAmount", header: "Additional Cost", cell: ({ row }) => row.original.additionalAmount === undefined ? "—" : formatBudgetAmount(row.original.additionalAmount, row.original.currency) },
     {
       accessorKey: "amount",
-      header: "Amount",
+      header: "Total",
       cell: ({ row }) => (
         <span
           className={
@@ -113,6 +120,8 @@ export default function JobPaymentsPanel({
         </span>
       ),
     },
+    { accessorKey: "amountPaid", header: "Amount Paid", cell: ({ row }) => row.original.amountPaid === undefined ? "—" : <span className="text-[#00B750]">{formatBudgetAmount(row.original.amountPaid, row.original.currency)}</span> },
+    { accessorKey: "paymentMethod", header: "Payment Type", cell: ({ row }) => row.original.paymentMethod === "Card" ? "Paystack" : row.original.paymentMethod || "—" },
     { accessorKey: "recipient", header: "Recipient" },
     {
       accessorKey: "milestone",
@@ -127,11 +136,6 @@ export default function JobPaymentsPanel({
           <ArrowDown className={`size-3 ${descending ? "rotate-180" : ""}`} />
         </button>
       ),
-    },
-    {
-      accessorKey: "date",
-      header: "Date",
-      cell: ({ row }) => dateLabel(row.original.date),
     },
     {
       accessorKey: "status",
@@ -199,6 +203,7 @@ export default function JobPaymentsPanel({
             <DataTable
               data={sorted.slice((page - 1) * 10, page * 10)}
               columns={columns}
+              minWidth="min-w-340 [&_th]:whitespace-nowrap [&_td]:whitespace-nowrap"
               rowClassName="odd:bg-[#F8FAFB] even:bg-white"
             />
           </div>

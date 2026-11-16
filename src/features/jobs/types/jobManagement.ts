@@ -44,6 +44,8 @@ export interface JobApplicant {
   reviewCount: number;
 }
 export interface JobInvoice {
+  amountPaid?: number;
+  paymentMethod?: string;
   milestoneId?: string;
   invoiceId?: string;
   subtotal?: number;
@@ -62,6 +64,12 @@ export interface JobInvoice {
   downloadUrl?: string;
 }
 export interface JobPayment {
+  invoiceId?: string;
+  subtotal?: number;
+  additionalAmount?: number;
+  amountPaid?: number;
+  paymentMethod?: string;
+  paidAt?: string;
   id: string;
   reference: string;
   recipient: string;

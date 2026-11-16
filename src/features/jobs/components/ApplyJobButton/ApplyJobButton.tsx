@@ -1,5 +1,7 @@
 "use client";
 
+import type { JobListApplicationDto } from "../../types/listJobs";
+import { hasUserApplied } from "../../helpers/hasUserApplied";
 import { normalizeJobStatus } from "../../helpers/manageJobs";
 import { useState } from "react";
 import Button from "@/components/atoms/Button/Button";
@@ -17,7 +19,8 @@ const ApplicationLoader = ({ jobId, onClose }: { jobId: string; onClose: () => v
   </ModalWrapper>;
 };
 
-const ApplyJobButton = ({ jobId, ownerId, job, status, label = "Apply Now", variant = "secondary", className }: {
+const ApplyJobButton = ({ jobId, ownerId, job, applications, status, label = "Apply Now", variant = "secondary", className }: {
+  applications?: JobListApplicationDto[];
   jobId: string; status?: string; ownerId?: string; job?: JobDetailsViewModel; label?: string;
   variant?: "primary" | "secondary"; className?: string;
 }) => {
@@ -25,8 +28,10 @@ const ApplyJobButton = ({ jobId, ownerId, job, status, label = "Apply Now", vari
   const currentUser = useStore((state) => state.currentUser);
   const setIsModalFlow = useStore((state) => state.setIsModalFlow);
   const openModal = useStore((state) => state.openModal);
-  if (job?.applicationId || normalizeJobStatus(status ?? job?.applicationStatus ?? job?.status ?? "") === "applied") return null;
   if (currentUser?._id && currentUser._id === (ownerId ?? job?.ownerId)) return null;
+  const applied = hasUserApplied(applications ?? job?.applications, currentUser?._id) || Boolean(job?.applicationId) ||
+    normalizeJobStatus(job?.applicationStatus ?? status ?? job?.status ?? "") === "applied";
+  if (applied) return <Button type="button" variant={variant} className={`${className ?? ""} opacity-50 cursor-not-allowed`} disabled>Applied</Button>;
   const apply = () => {
     if (!currentUser) {
       setIsModalFlow(true);

@@ -1,3 +1,4 @@
+import { resolveJobApplicationType } from "./jobApplicationType";
 import { getMilestoneInvoiceAmounts, mapMilestoneBilling } from "./milestoneBilling";
 import type {
   JobListDurationDto,
@@ -132,9 +133,11 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
   return {
     ...billing,
     id: job._id,
+    applications: job.applications,
     applicationId: job.applicationId,
+    acceptedApplicationId: job.acceptedApplicationId,
     applicationStatus: job.applicationStatus,
-    type: job.type,
+    type: resolveJobApplicationType(job) ?? job.type,
     status: job.status || "listed",
     category:
       job.jobCategory?.trim() || job.category?.trim() || "Uncategorised",

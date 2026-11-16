@@ -187,6 +187,7 @@ export const mapJobListItem = (job: FetchAllJobsItemDto): JobCardViewModel => {
 
   return {
     id: job._id,
+    applications: job.applications,
     status: job.status,
     posterId:
       poster?._id || (typeof job.userId === "string" ? job.userId : ""),

@@ -47,7 +47,8 @@ export async function downloadInvoice(invoice: JobInvoice) {
     return Number.isNaN(parsed.getTime()) ? "—" : parsed.toLocaleDateString("en-GB", { timeZone: "UTC" });
   };
   text(`Issued: ${date(invoice.issuedAt)}`, 800, 390, 20);
-  text(`Due: ${date(invoice.dueAt)}`, 800, 425, 20);
+  const paid = getInvoiceDisplay(invoice).paid;
+  text(`${paid ? "Paid" : "Due"}: ${date(paid ? invoice.paidAt ?? "" : invoice.dueAt)}`, 800, 425, 20);
   ctx.fillStyle = "#f0fdf5";
   ctx.fillRect(80, 500, 1080, 64);
   text("DESCRIPTION", 105, 540, 18, "#125c32", true);
@@ -63,6 +64,11 @@ export async function downloadInvoice(invoice: JobInvoice) {
   totalLine("Subtotal", invoice.subtotal ?? invoice.amount);
   if (invoice.additionalAmount !== undefined) totalLine("Additional costs", invoice.additionalAmount);
   totalLine("TOTAL", invoice.amount, true);
+  if (paid && invoice.amountPaid !== undefined) totalLine("AMOUNT PAID", invoice.amountPaid, true);
+  if (paid && invoice.paymentMethod) {
+    text(`Payment method: ${invoice.paymentMethod === "Card" ? "Paystack" : invoice.paymentMethod}`, 80, y, 20, "#768592");
+    y += 40;
+  }
   if (invoice.note) {
     text("NOTES", 80, y + 40, 17, "#768592", true);
     wrap(invoice.note, 80, y + 80, 1080);

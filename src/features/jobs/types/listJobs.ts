@@ -1,3 +1,9 @@
+export interface JobListApplicationDto {
+  _id?: string;
+  user: string | { _id?: string } | null;
+  status?: string;
+}
+
 import type {
   JobDurationUnit,
   JobExperienceLevel,
@@ -55,6 +61,8 @@ export interface JobListMediaDto {
  * may already return the corresponding create-job fields.
  */
 export interface FetchAllJobsItemDto {
+  applications?: JobListApplicationDto[];
+  allowBidding?: boolean;
   _id: string;
   title: string;
   description: string;
@@ -140,6 +148,7 @@ export interface FetchAllJobsWireParams {
 }
 
 export interface JobCardViewModel {
+  applications?: JobListApplicationDto[];
   status?: string;
   id: string;
   posterId: string;

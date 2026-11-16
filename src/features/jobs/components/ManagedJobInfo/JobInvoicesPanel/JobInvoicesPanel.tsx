@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { downloadInvoice } from "../../../helpers/downloadInvoice";
-import { ReceiptText, CreditCard } from "lucide-react";
+import { ReceiptText, CreditCard, ShieldAlert } from "lucide-react";
 import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
@@ -96,8 +96,8 @@ export function JobInvoiceCard({
               <p className="font-semibold">{dateLabel(invoice.issuedAt)}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-[#768592]">Due Date</p>
-              <p className="font-semibold">{dateLabel(invoice.dueAt)}</p>
+              <p className="text-[#768592]">{invoiceDisplay.paid ? "Payment Date" : "Due Date"}</p>
+              <p className="font-semibold">{dateLabel(invoiceDisplay.date)}</p>
             </div>
           </div>
         </div>
@@ -115,10 +115,17 @@ export function JobInvoiceCard({
               })}
             </strong>
           </div>
+          {invoiceDisplay.paid && <>
+            <div className="flex flex-wrap justify-between gap-1 border-t border-[#EDEEF0] pt-3">
+              <span className="text-[#768592]">Amount Paid</span>
+              <strong className="text-[#18A154]">{invoice.amountPaid === undefined ? "—" : formatBudgetAmount(invoice.amountPaid, invoice.currency)}</strong>
+            </div>
+            {invoice.paymentMethod && <div className="flex flex-wrap justify-between gap-1"><span className="text-[#768592]">Payment Method</span><span>{invoice.paymentMethod === "Card" ? "Paystack" : invoice.paymentMethod}</span></div>}
+          </>}
         </div>
       </div>
       {invoice.note && <div className="border-b-[6px] border-[#EDEEF0] p-4 text-sm"><p className="mb-2 text-xs text-[#768592]">Reason for additional costs</p><p className="whitespace-pre-wrap wrap-anywhere">{invoice.note}</p></div>}
-      <div className="flex flex-col items-stretch gap-3 p-3 sm:flex-row">
+      <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-2">
         <button
           type="button"
           onClick={() => void handleDownload()}
@@ -128,13 +135,16 @@ export function JobInvoiceCard({
           <ReceiptText className="size-4 shrink-0" />
           {downloading ? "Preparing PDF…" : "Download Invoice"}
         </button>
+        <button type="button" onClick={() => toast.info("Dispute submission is not available yet.")} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#FFCDD6] bg-white px-4 py-2.5 text-sm text-[#C84460] hover:bg-[#FFF0F3]">
+          <ShieldAlert className="size-4 shrink-0" />Raise Dispute
+        </button>
         {canPay && !invoiceDisplay.paid && invoice.status !== "pending" && (
           <button
             type="button"
             disabled={!onMakePayment}
             onClick={() => onMakePayment?.(invoice)}
             title={!onMakePayment ? "Invoice payments are not available yet" : undefined}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#18A154] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#125C32] disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg sm:col-span-2 bg-[#18A154] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#125C32] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <CreditCard className="size-4 shrink-0" />
             Make Payment

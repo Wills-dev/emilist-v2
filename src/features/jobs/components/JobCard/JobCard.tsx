@@ -1,9 +1,11 @@
+import type { JobListApplicationDto } from "../../types/listJobs";
 import JobCardActions from "../JobCardActions/JobCardActions";
 import JobCardDetails from "../JobCardDetails/JobCardDetails";
 import JobCategory from "../JobCategory/JobCategory";
 import JobImagePreview from "../JobImagePreview/JobImagePreview";
 
 export interface JobCardProps {
+  applications?: JobListApplicationDto[];
   id: string;
   status?: string;
   posterId?: string;
@@ -29,6 +31,7 @@ export interface JobCardProps {
 
 const JobCard = ({
   id,
+  applications,
   status,
   posterId,
   category,
@@ -75,7 +78,7 @@ const JobCard = ({
         compareHref={compareHref}
         reviewsHref={reviewsHref}
       />
-      <JobCardActions status={status} jobId={id} posterId={posterId} detailsHref={detailsHref} />
+      <JobCardActions applications={applications} status={status} jobId={id} posterId={posterId} detailsHref={detailsHref} />
     </div>
   );
 };

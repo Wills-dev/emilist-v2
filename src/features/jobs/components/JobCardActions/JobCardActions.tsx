@@ -1,6 +1,6 @@
 "use client";
 
-import { normalizeJobStatus } from "../../helpers/manageJobs";
+import type { JobListApplicationDto } from "../../types/listJobs";
 import ApplyJobButton from "../ApplyJobButton/ApplyJobButton";
 import Button from "@/components/atoms/Button/Button";
 
@@ -9,11 +9,13 @@ import { useStore } from "@/store/authStore";
 
 const JobCardActions = ({
   jobId,
+  applications,
   status,
   posterId,
   detailsHref,
 }: {
   jobId: string;
+  applications?: JobListApplicationDto[];
   status?: string;
   posterId?: string;
   detailsHref?: string;
@@ -33,9 +35,9 @@ const JobCardActions = ({
           View More
         </Button>
       </div>
-      {!isJobOwner && normalizeJobStatus(status ?? "") !== "applied" && (
+      {!isJobOwner && (
         <div className="flex-1 w-full">
-          <ApplyJobButton status={status} jobId={jobId} ownerId={posterId} className="w-full h-8 text-xs" />
+          <ApplyJobButton applications={applications} status={status} jobId={jobId} ownerId={posterId} className="w-full h-8 text-xs" />
         </div>
       )}
     </div>

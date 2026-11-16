@@ -9,7 +9,7 @@ export interface FetchApplicantsQuery {
 }
 export interface ApplicantDto {
   _id: string;
-  job: { type?: string; _id: string; title: string; status: string; jobCategory?: string; service?: string };
+  job: { allowBidding?: boolean; type?: string; _id: string; title: string; status: string; jobCategory?: string; service?: string };
   user: { _id: string; fullName?: string; userName?: string; email?: string; profileImage?: string; level?: string } | null;
   status: ApplicationStatus;
   appliedAt?: string;
