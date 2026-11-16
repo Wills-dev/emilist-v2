@@ -12,7 +12,7 @@ import { APPLICATION_STATUSES } from "../../../types/applicants";
 import { POST_JOB_EXPERIENCE_OPTIONS } from "../../../constants/postJob";
 import type { JobApplicant } from "../../../types/jobManagement";
 
-export default function JobApplicantsPanel({ jobId, ownerId, budget, currency, jobType, milestoneIds, originTab = "listed", onHire }: {
+export default function JobApplicantsPanel({ jobId, ownerId, budget, currency, jobType, milestoneIds, originTab = "listed", onAccept, onReject }: {
   jobId: string;
   jobType?: string;
   milestoneIds: string[];
@@ -20,7 +20,8 @@ export default function JobApplicantsPanel({ jobId, ownerId, budget, currency, j
   budget: number;
   currency: string;
   originTab?: string;
-  onHire: (applicant: JobApplicant) => void;
+  onAccept: (applicant: JobApplicant) => void;
+  onReject: (applicant: JobApplicant) => void;
 }) {
   const { page, limit, status, experienceLevel, setPage, setLimit, setStatus, setExperienceLevel } = useApplicantFilters();
   const [showFilters, setShowFilters] = useState(false);
@@ -55,7 +56,7 @@ export default function JobApplicantsPanel({ jobId, ownerId, budget, currency, j
           {query.data.applicants.map((applicant) => <JobApplicantCard key={applicant.id} applicant={applicant} jobType={jobType} budget={budget} currency={currency}
             profileHref={applicant.expertId ? routes.dashboardLinks.jobApplicantInfo(jobId, applicant.expertId, originTab) : undefined}
             reviewsHref={applicant.expertId ? routes.dashboardLinks.jobApplicantReviews(jobId, applicant.expertId, originTab) : undefined}
-            onHire={() => onHire(applicant)} jobId={jobId} milestoneIds={milestoneIds} />)}
+            onAccept={() => onAccept(applicant)} onReject={() => onReject(applicant)} jobId={jobId} milestoneIds={milestoneIds} />)}
         </div>}
     </div>
     <PaginationPanel variant="inline" page={page} totalPages={query.isPending || query.isError ? undefined : totalPages} hasMore={false} onPrev={() => setPage(Math.max(1, page - 1))} onNext={() => setPage(Math.min(totalPages, page + 1))} />

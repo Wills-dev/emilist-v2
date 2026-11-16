@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ApplicationResponseConfirmation from "../ApplicationResponseConfirmation/ApplicationResponseConfirmation";
 import ApplicantOfferModal from "../ApplicantOfferModal/ApplicantOfferModal";
 import Link from "next/link";
 import ProfileAvatar from "@/components/atoms/ProfileAvatar/ProfileAvatar";
@@ -17,7 +18,8 @@ export default function JobApplicantCard({
   currency,
   profileHref,
   reviewsHref,
-  onHire,
+  onAccept,
+  onReject,
   jobId,
   milestoneIds,
 }: {
@@ -27,12 +29,17 @@ export default function JobApplicantCard({
   currency: string;
   profileHref?: string;
   reviewsHref?: string;
-  onHire: () => void;
+  onAccept: () => void;
+  onReject: () => void;
   jobId: string;
   milestoneIds: string[];
 }) {
   const [offerOpen, setOfferOpen] = useState(false);
-  const biddable = (applicant.jobType ?? jobType)?.trim().toLowerCase() === "biddable";
+  const [responseAction, setResponseAction] = useState<"accept" | "reject" | null>(null);
+  const resolvedJobType = jobType?.trim().toLowerCase() || applicant.jobType?.trim().toLowerCase();
+  const biddable = resolvedJobType === "biddable";
+  const regular = resolvedJobType === "regular";
+  const canAcceptApplication = Boolean(applicant.id) && (!applicant.status || ["pending", "applied"].includes(applicant.status.trim().toLowerCase()));
   return (
     <article className="min-w-0 space-y-4 rounded-2xl border border-[#F1F2F9] bg-[#F9F9F9] p-4 sm:p-6">
       <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#ECECEC] pb-4">
@@ -87,18 +94,24 @@ export default function JobApplicantCard({
           )}
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3 text-xs font-medium">
-        {profileHref && <Link
+      <div className="grid grid-cols-1 gap-3 text-xs font-medium sm:grid-cols-2">
+        {profileHref ? <Link
           href={profileHref}
-          className="flex h-11 items-center justify-center rounded-lg border border-[#D9D9D9] bg-[#FBFFF8] text-[#5E625F] hover:bg-white"
-        >
-          View Profile
-        </Link>}
-        {biddable ? <button type="button" onClick={() => setOfferOpen(true)} className="h-11 rounded-lg border border-[#25C269] text-[#18A154] hover:bg-[#F0FDF5]">View Offer</button> :
-          <button type="button" onClick={onHire} disabled={!!applicant.status && !["pending", "applied"].includes(applicant.status) || !applicant.expertId} className="h-11 rounded-lg border border-[#25C269] text-[#18A154] hover:bg-[#F0FDF5] disabled:cursor-not-allowed disabled:opacity-50">Hire Expert</button>}
-
+          className={`flex h-11 items-center justify-center rounded-lg border border-[#D9D9D9] bg-[#FBFFF8] text-[#5E625F] hover:bg-white ${regular ? "sm:col-span-2" : ""}`}
+        >View Profile</Link> : <button type="button" disabled className={`h-11 rounded-lg border border-[#D9D9D9] text-[#5E625F] opacity-50 ${regular ? "sm:col-span-2" : ""}`}>View Profile</button>}
+        {biddable && <button type="button" onClick={() => setOfferOpen(true)} className="h-11 rounded-lg border border-[#25C269] text-[#18A154] hover:bg-[#F0FDF5]">View Offer</button>}
+        {regular && <>
+          <button type="button" onClick={() => setResponseAction("reject")} disabled={!canAcceptApplication} className="h-11 rounded-lg border border-[#FF5D7A] text-[#E84F6A] hover:bg-[#FFF0F3] disabled:cursor-not-allowed disabled:opacity-50">Reject Application</button>
+          <button type="button" onClick={() => setResponseAction("accept")} disabled={!canAcceptApplication} className="h-11 rounded-lg bg-[#25C269] text-white hover:bg-[#18A154] disabled:cursor-not-allowed disabled:opacity-50">Accept Application</button>
+        </>}
       </div>
-      {offerOpen && <ApplicantOfferModal applicant={applicant} currency={applicant.currency ?? currency} onClose={() => setOfferOpen(false)} jobId={jobId} milestoneIds={milestoneIds} />}
+      {regular && responseAction && <ApplicationResponseConfirmation action={responseAction} applicantName={applicant.name} onClose={() => setResponseAction(null)} onConfirm={() => {
+        if (!canAcceptApplication) return;
+        if (responseAction === "accept") onAccept();
+        else onReject();
+        setResponseAction(null);
+      }} />}
+      {biddable && offerOpen && <ApplicantOfferModal applicant={applicant} currency={applicant.currency ?? currency} onClose={() => setOfferOpen(false)} jobId={jobId} milestoneIds={milestoneIds} />}
     </article>
   );
 }

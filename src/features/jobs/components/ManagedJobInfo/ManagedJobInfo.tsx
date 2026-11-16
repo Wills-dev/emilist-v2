@@ -172,9 +172,10 @@ export function ManagedJobInfoView({
               budget={job.price}
               currency={job.currency}
               originTab={originTab}
-              onHire={(applicant) =>
-                toast.info(`Hiring ${applicant.name} is not available yet.`)
+              onAccept={() =>
+                toast.info("Accepting regular job applications is not available yet.")
               }
+              onReject={() => toast.info("Rejecting regular job applications is not available yet.")}
             />
           )}
           {tab === "application" && <MyApplicationPanel job={job} />}

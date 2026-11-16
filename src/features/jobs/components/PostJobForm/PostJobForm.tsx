@@ -1,5 +1,8 @@
 "use client";
 
+// @refresh reset
+// Keep custom-hook edits from reusing an outdated hook layout. Drafts live in Zustand.
+
 import { useEffect, useRef, useState } from "react";
 
 import PostJobActions from "../PostJobActions/PostJobActions";

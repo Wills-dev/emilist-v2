@@ -60,6 +60,7 @@ export interface FetchJobByIdQuery {
 }
 
 export interface JobDetailsViewModel {
+  applications?: import("./listJobs").JobListApplicationDto[];
   applicationId?: string;
   applicationStatus?: string;
   invoices?: import("./jobManagement").JobInvoice[];

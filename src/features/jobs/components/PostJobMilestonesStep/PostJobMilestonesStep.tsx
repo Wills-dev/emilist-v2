@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Plus } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 
@@ -39,6 +40,23 @@ const PostJobMilestonesStep = ({
       milestones: state.milestones,
     })),
   );
+  const pendingFocus = useRef<string | null>(null);
+  const handleAddMilestone = () => {
+    pendingFocus.current = addMilestone() ?? null;
+  };
+  useEffect(() => {
+    const id = pendingFocus.current;
+    if (!id) return;
+    const row = document.getElementById(`${id}-milestone`);
+    const input = document.getElementById(`${id}-duration`);
+    if (!row || !input) return;
+    pendingFocus.current = null;
+    row.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
+    input.focus({ preventScroll: true });
+  }, [milestones]);
   const amountSummary = summarizeMilestoneAmounts(
     milestones,
     budget.amount,
@@ -101,7 +119,7 @@ const PostJobMilestonesStep = ({
             </h3>
             <p className="text-xs leading-5 text-[#737774]">
               Review-and-payment checkpoints. Add up to 5; the final one
-              balances automatically.
+              balances automatically. New milestones are added before it.
             </p>
           </div>
           <span className="shrink-0 rounded-full bg-[#E9F8EF] px-2.5 py-1 text-xs font-semibold text-[#18A154]">
@@ -156,7 +174,7 @@ const PostJobMilestonesStep = ({
       <div className="border-t border-[#E5E5E5] pt-6">
         <button
           type="button"
-          onClick={addMilestone}
+          onClick={handleAddMilestone}
           disabled={milestones.length >= MAX_POST_JOB_MILESTONES}
           className="inline-flex items-center gap-1 font-exo text-sm text-[#6667FF] hover:underline disabled:cursor-not-allowed disabled:opacity-50"
         >

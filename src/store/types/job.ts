@@ -39,7 +39,7 @@ export interface PostJobStoreState extends PostJobDraft {
     field: K,
     value: JobLocation[K] | null,
   ) => void;
-  addMilestone: () => void;
+  addMilestone: () => string | undefined;
   updateMilestone: (
     id: string,
     updates: Partial<Omit<PostJobMilestoneDraft, "id">>,

@@ -1,3 +1,4 @@
+import { resolveJobApplicationType } from "./jobApplicationType";
 import type { ApplicantDto } from "../types/applicants";
 import type { JobApplicant } from "../types/jobManagement";
 
@@ -7,7 +8,7 @@ export const mapJobApplicant = (application: ApplicantDto): JobApplicant => ({
   counterOffers: application.counterOffers,
   counterOfferSummary: application.counterOfferSummary,
   expertId: application.businessId ?? application.user?._id,
-  jobType: application.job.type,
+  jobType: resolveJobApplicationType(application.job),
   name: application.businessName || application.applicantName || application.user?.fullName || application.user?.userName || "Applicant unavailable",
   image: application.displayImage ?? application.user?.profileImage,
   level: application.experienceLevel ? application.experienceLevel.charAt(0).toUpperCase() + application.experienceLevel.slice(1) : "Level not specified",

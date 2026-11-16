@@ -57,11 +57,15 @@ const MilestoneFormItem = ({
 
   return (
     <article
-      className={`space-y-6 ${index > 0 ? "border-t border-[#E5E5E5] pt-6" : ""}`}
+      id={`${milestone.id}-milestone`}
+      className={`scroll-mt-48 space-y-6 ${index > 0 ? "border-t border-[#E5E5E5] pt-6" : ""}`}
     >
       <div className="flex items-center justify-between gap-4">
-        <h3 className="font-exo font-semibold">Milestone {itemNumber}</h3>
-        <div className="flex items-center gap-4">
+        <h3 className="flex min-w-0 flex-wrap items-center gap-2 font-exo font-semibold">
+          Milestone {itemNumber}
+          {isFinal && <span className="rounded-full bg-[#E9F8EF] px-2 py-1 text-[10px] font-medium text-[#18A154]">Final · Auto balance</span>}
+        </h3>
+        <div className="flex shrink-0 items-center gap-4">
           <button
             type="button"
             onClick={() => toggleMilestone(milestone.id)}
