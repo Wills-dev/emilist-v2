@@ -20,15 +20,17 @@ const Milestones = ({ milestones, currency }: { milestones: ApplicationBid["mile
   {milestones.map((item, index) => <li key={item.milestoneId} className="space-y-2 rounded-lg border border-[#ECECEC] p-4"><p className="text-xs text-[#707471]">Milestone {index + 1}</p><p className="whitespace-pre-wrap text-sm">{item.achievement}</p><PriceWrapper price={item.amount} currency={currency} title="price" /></li>)}
 </ol>;
 
-export default function ApplicationBidDetails({ application, currency, counterAllowed, counterReason, busy = false, onCounterOffer }: {
-  application: ApplicationDetailsDto; currency: string; counterAllowed: boolean; counterReason: string; busy?: boolean; onCounterOffer: () => void;
+export default function ApplicationBidDetails({ application, currency, counterAllowed, counterReason, busy = false, onCounterOffer, readOnly = false, readOnlyReason }: {
+  application: ApplicationDetailsDto; currency: string; counterAllowed: boolean; counterReason: string; busy?: boolean; onCounterOffer: () => void; readOnly?: boolean; readOnlyReason?: string;
 }) {
   const [confirmation, setConfirmation] = useState<{ action: BidResponseAction; offerKey: string } | null>(null);
   const mutation = useRespondCounterBid(() => setConfirmation(null));
   const current = application.currentBid;
   const isOwner = application.participantRole === "job_owner";
-  const { canRespond, counterLimitReached } = getBidResponseActions(application);
-  const showCounter = !counterLimitReached && (canRespond || counterAllowed);
+  const eligibility = getBidResponseActions(application);
+  const canRespond = !readOnly && eligibility.canRespond;
+  const counterLimitReached = eligibility.counterLimitReached;
+  const showCounter = !readOnly && !counterLimitReached && (canRespond || counterAllowed);
   const actionCount = (canRespond ? 2 : 0) + (showCounter ? 1 : 0);
   const offerKey = JSON.stringify([application._id, application.currentBid, application.latestCounterOffer, application.bidHistory]);
   const requestResponse = (action: BidResponseAction) => setConfirmation({ action, offerKey });
@@ -43,6 +45,7 @@ export default function ApplicationBidDetails({ application, currency, counterAl
   };
   const confirmationModal = confirmation && current ? <BidResponseConfirmation action={confirmation.action} amount={current.maximumPrice} currency={currency} isOwner={isOwner} busy={mutation.isPending} disabled={busy || !canRespond} onCancel={() => setConfirmation(null)} onConfirm={confirmResponse} /> : null;
   return <div className="space-y-6 pt-5 text-[#303632]">
+    {readOnly && readOnlyReason && <p role="status" className="rounded-lg bg-[#F4F7F5] p-3 text-sm text-[#707471]">{readOnlyReason}</p>}
     <section className="space-y-4" aria-label="Current offer">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#F4F7F5] p-4"><h3 className="font-exo font-semibold">Current Offer</h3><StatusBadge label={application.status} />{current && <PriceWrapper price={current.maximumPrice} currency={currency} title="offered amount" />}</div>
       {current ? <Milestones milestones={current.milestones} currency={currency} /> : <p className="text-sm text-[#707471]">This application has no bid terms.</p>}
@@ -69,6 +72,6 @@ export default function ApplicationBidDetails({ application, currency, counterAl
       </ol>
       {!application.bidHistory.length && <p className="mt-3 text-sm text-[#707471]">No bid history available.</p>}
     </details>
-    {confirmationModal}
+    {!readOnly && confirmationModal}
   </div>;
 }

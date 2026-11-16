@@ -5,6 +5,7 @@ import type {
 } from "./listJobs";
 
 export interface JobMilestoneInvoiceDto {
+  reviewStatus?: string;
   invoiceId?: string;
   additionalAmount?: number | string;
   invoiceRaised?: boolean;
@@ -17,6 +18,8 @@ export interface JobMilestoneInvoiceDto {
 }
 
 export interface JobMilestoneDto {
+  datePaid?: string;
+  paymentInfo?: { amountPaid?: number | string; paymentMethod?: string; date?: string };
   invoice?: JobMilestoneInvoiceDto;
   paymentStatus?: string;
   _id?: string;
@@ -33,6 +36,7 @@ export interface JobMilestoneDto {
 }
 
 export interface JobDetailsDto extends FetchAllJobsItemDto {
+  acceptedApplicationId?: string;
   maximumPrice?: number;
   applicationId?: string;
   applicationStatus?: string;
@@ -60,6 +64,7 @@ export interface FetchJobByIdQuery {
 }
 
 export interface JobDetailsViewModel {
+  acceptedApplicationId?: string;
   applications?: import("./listJobs").JobListApplicationDto[];
   applicationId?: string;
   applicationStatus?: string;

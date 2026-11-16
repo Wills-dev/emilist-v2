@@ -20,8 +20,13 @@ export const mapMilestoneBilling = (job: JobDetailsDto, ownerName: string, curre
     const id = milestone._id ?? milestone.id;
     if (!invoice?.invoiceRaised || !id) return;
     const amounts = getMilestoneInvoiceAmounts(milestone.amount, invoice.additionalAmount);
-    const statusText = milestone.paymentStatus?.trim().toLowerCase();
+    const statusText = (milestone.paymentStatus ?? invoice.reviewStatus)?.trim().toLowerCase();
     const status = statusText === "paid" || statusText === "pending" || statusText === "overdue" ? statusText : "unpaid";
+    const rawPaid = milestone.paymentInfo?.amountPaid;
+    const parsedPaid = rawPaid !== undefined && rawPaid !== null && String(rawPaid).trim() ? Number(String(rawPaid).replaceAll(",", "")) : undefined;
+    const amountPaid = parsedPaid !== undefined && Number.isFinite(parsedPaid) && parsedPaid >= 0 ? parsedPaid : undefined;
+    const paidAt = status === "paid" ? milestone.datePaid || milestone.paymentInfo?.date || invoice.paidAt : undefined;
+    const paymentMethod = milestone.paymentInfo?.paymentMethod;
     const milestoneLabel = `Milestone ${index + 1}: ${milestone.achievement || milestone.title || ""}`.trim();
     invoices.push({
       id,
@@ -32,7 +37,9 @@ export const mapMilestoneBilling = (job: JobDetailsDto, ownerName: string, curre
       milestone: milestoneLabel,
       issuedAt: invoice.issuedAt ?? "",
       dueAt: invoice.dueAt ?? "",
-      paidAt: invoice.paidAt,
+      paidAt,
+      amountPaid,
+      paymentMethod,
       amount: amounts.total,
       subtotal: amounts.subtotal,
       additionalAmount: amounts.additionalAmount,
@@ -45,8 +52,14 @@ export const mapMilestoneBilling = (job: JobDetailsDto, ownerName: string, curre
       id,
       reference: invoice.number || "—",
       recipient: "Assigned expert",
-      milestone: milestoneLabel,
-      date: (status === "paid" ? invoice.paidAt : invoice.dueAt) ?? "",
+      milestone: `Milestone ${index + 1}`,
+      invoiceId: invoice.invoiceId,
+      subtotal: amounts.subtotal,
+      additionalAmount: amounts.additionalAmount,
+      amountPaid,
+      paymentMethod,
+      paidAt,
+      date: invoice.dueAt ?? "",
       amount: amounts.total,
       currency: milestone.currency || currency,
       status,
