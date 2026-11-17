@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { safeAuthDestination } from "@/lib/helpers/authRedirect";
 
 import Logo from "@/components/atoms/Logo/Logo";
 import UserIcon from "@/components/atoms/icons/UserIcon/UserIcon";
@@ -12,6 +13,8 @@ import { useStore } from "@/store/authStore";
 
 const LoginWrapper = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const destination = safeAuthDestination(searchParams.get("redirect"));
   const currentUser = useStore((state) => state.currentUser);
   const isAuthInitialized = useStore((state) => state.isAuthInitialized);
   const openModal = useStore((state) => state.openModal);
@@ -22,8 +25,8 @@ const LoginWrapper = () => {
   }, [setIsModalFlow]);
 
   useEffect(() => {
-    if (isAuthInitialized && currentUser) router.replace(routes.dashboard);
-  }, [currentUser, isAuthInitialized, router]);
+    if (isAuthInitialized && currentUser) router.replace(destination);
+  }, [currentUser, destination, isAuthInitialized, router]);
 
   const openSignUp = () => {
     setIsModalFlow(true);

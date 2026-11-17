@@ -10,6 +10,7 @@ import { ApiErrorResponse } from "@/lib/types/error";
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { useStore } from "@/store/authStore";
 import { useAuthState } from "./useAuthState";
+import { safeAuthDestination } from "@/lib/helpers/authRedirect";
 import { createCookie } from "@/lib/helpers/cookie";
 import { getUserFromResponse } from "../helpers/getUserFromResponse";
 
@@ -38,7 +39,7 @@ export const useLogin = () => {
 
   const queryRedirect = searchParams.get("redirect");
 
-  const destination = redirectPath || queryRedirect || routes.dashboard;
+  const destination = safeAuthDestination(queryRedirect || redirectPath);
 
   const { mutate, isPending: isLogging } = useMutation({
     mutationFn: login,

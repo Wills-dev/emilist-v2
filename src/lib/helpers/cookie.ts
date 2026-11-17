@@ -35,6 +35,9 @@ export const readCookie = (cookieName: string) => {
 export const clearClear = (cookieName: string) => {
   const cookies = new Cookies();
   cookies.remove(cookieName, { path: "/" });
+  if (process.env.NEXT_PUBLIC_COOKIE_DOMAIN) {
+    cookies.remove(cookieName, { path: "/", domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN });
+  }
   notifyAuthCookieChange();
 };
 
