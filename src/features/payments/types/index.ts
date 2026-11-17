@@ -19,6 +19,11 @@ export interface Transaction {
   walletId?: string;
   balance?: number;
   paymentMethod?: string;
+  paymentService?: string;
+  serviceType?: string;
+  jobId?: string;
+  milestoneId?: string;
+  orderId?: string;
   date: string;
   amount: number;
   counterparty: string;

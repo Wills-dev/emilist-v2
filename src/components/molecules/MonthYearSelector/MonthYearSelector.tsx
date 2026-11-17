@@ -1,52 +1,39 @@
-const MONTHS = [
+"use client";
+
+import SearchableSelect from "@/components/atoms/SearchableSelect/SearchableSelect";
+
+export const MONTHS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
 
-const buildYearOptions = (currentYear: number, span = 4) =>
-  Array.from({ length: span }, (_, index) => currentYear - index);
-
-const MonthYearSelector = ({
-  month,
-  year,
-  onMonthChange,
-  onYearChange,
-  years,
-}: {
-  month: string;
-  year: number;
+const MonthYearSelector = ({ month, year, onMonthChange, onYearChange, years }: {
+  month?: string;
+  year?: number;
   onMonthChange: (month: string) => void;
-  onYearChange: (year: number) => void;
+  onYearChange: (year: number | undefined) => void;
   years?: number[];
 }) => {
-  const yearOptions = years ?? buildYearOptions(year);
-
+  const currentYear = new Date().getFullYear();
+  const yearOptions = years ?? Array.from({ length: 21 }, (_, index) => currentYear - index);
   return (
-    <div className="flex items-center gap-2">
-      <select
-        value={month}
-        onChange={(event) => onMonthChange(event.target.value)}
-        aria-label="Select month"
-        className="h-9 rounded-lg border border-[#E5E7E6] bg-white px-3 text-sm text-[#737774] outline-none"
-      >
-        {MONTHS.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      <select
-        value={year}
-        onChange={(event) => onYearChange(Number(event.target.value))}
-        aria-label="Select year"
-        className="h-9 rounded-lg border border-[#E5E7E6] bg-white px-3 text-sm text-[#737774] outline-none"
-      >
-        {yearOptions.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+    <div className="flex min-w-0 items-center gap-2">
+      <div className="w-36">
+        <SearchableSelect
+          triggerClassName="bg-[#E5E7EB] text-[#474C48] hover:bg-[#DDE1E6]"
+          options={[{ label: "All months", value: "" }, ...MONTHS.map((label) => ({ label, value: label }))]}
+          value={month ?? ""} onValueChange={onMonthChange}
+          placeholder="All months" searchPlaceholder="Find month…" ariaLabel="Filter by month"
+        />
+      </div>
+      <div className="w-24">
+        <SearchableSelect
+          triggerClassName="bg-[#E5E7EB] text-[#474C48] hover:bg-[#DDE1E6]"
+          options={[{ label: "All years", value: "" }, ...Array.from(new Set([...yearOptions, ...(year ? [year] : [])])).sort((a, b) => b - a).map((value) => ({ label: String(value), value: String(value) }))]}
+          value={year ? String(year) : ""} onValueChange={(value) => onYearChange(value ? Number(value) : undefined)}
+          placeholder="All years" searchPlaceholder="Find year…" ariaLabel="Filter by year"
+        />
+      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import type { JobAnalyticsQuery } from "../types/jobAnalytics";
 import type { JobLeadsQuery } from "../types/jobLeads";
 import type { FetchAllJobsListQuery } from "../types/listJobs";
 import type { JobsByStatusQuery, ListedJobsQuery } from "../types/manageJobs";
@@ -6,6 +7,8 @@ export const jobKeys = {
   leads: (query: JobLeadsQuery, userId?: string) =>
     [...jobKeys.all, "leads", userId, query] as const,
   all: ["jobs"] as const,
+  analytics: (query: JobAnalyticsQuery, userId?: string) =>
+    [...jobKeys.all, "analytics", userId, query] as const,
   lists: () => [...jobKeys.all, "list"] as const,
   list: (query: FetchAllJobsListQuery) => [...jobKeys.lists(), query] as const,
   details: () => [...jobKeys.all, "detail"] as const,

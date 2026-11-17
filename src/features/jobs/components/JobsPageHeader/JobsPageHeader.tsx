@@ -1,27 +1,18 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import MonthYearSelector from "@/components/molecules/MonthYearSelector/MonthYearSelector";
+import DateFilter, { type DateFilterValue } from "@/components/molecules/DateFilter/DateFilter";
 import { routes } from "@/lib/helpers/routes";
 
 const JobsPageHeader = ({
-  month,
-  year,
-  onMonthChange,
-  onYearChange,
+  filters,
+  onFiltersChange,
 }: {
-  month: string;
-  year: number;
-  onMonthChange: (month: string) => void;
-  onYearChange: (year: number) => void;
+  filters: DateFilterValue;
+  onFiltersChange: (value: DateFilterValue) => void;
 }) => (
   <div className="flex flex-wrap items-center justify-between gap-3">
-    <MonthYearSelector
-      month={month}
-      year={year}
-      onMonthChange={onMonthChange}
-      onYearChange={onYearChange}
-    />
+    <DateFilter value={filters} onChange={onFiltersChange} />
 
     <div className="flex flex-wrap items-center gap-5 text-xs">
       <Link

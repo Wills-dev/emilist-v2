@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { downloadInvoice } from "../../../helpers/downloadInvoice";
 import { ReceiptText, CreditCard, ShieldAlert } from "lucide-react";
+import Button from "@/components/atoms/Button/Button";
 import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
@@ -133,11 +134,11 @@ export function JobInvoiceCard({
           className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-[#DCE3DE] bg-white px-4 py-2.5 text-sm hover:bg-[#F0FDF5] disabled:opacity-50"
         >
           <ReceiptText className="size-4 shrink-0" />
-          {downloading ? "Preparing PDF…" : "Download Invoice"}
+          {downloading ? "Preparing PDF…" : invoiceDisplay.paid ? "Download Receipt" : "Download Invoice"}
         </button>
-        <button type="button" onClick={() => toast.info("Dispute submission is not available yet.")} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#FFCDD6] bg-white px-4 py-2.5 text-sm text-[#C84460] hover:bg-[#FFF0F3]">
+        <Button type="button" variant="danger" onClick={() => toast.info("Dispute submission is not available yet.")} className="w-full py-2.5 text-sm">
           <ShieldAlert className="size-4 shrink-0" />Raise Dispute
-        </button>
+        </Button>
         {canPay && !invoiceDisplay.paid && invoice.status !== "pending" && (
           <button
             type="button"

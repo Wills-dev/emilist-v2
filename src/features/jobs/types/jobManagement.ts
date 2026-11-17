@@ -44,6 +44,9 @@ export interface JobApplicant {
   reviewCount: number;
 }
 export interface JobInvoice {
+  jobId?: string;
+  jobTitle?: string;
+  paymentReference?: string;
   amountPaid?: number;
   paymentMethod?: string;
   milestoneId?: string;

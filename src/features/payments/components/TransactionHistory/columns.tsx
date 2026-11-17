@@ -3,6 +3,7 @@
 import { MoreVertical, Printer } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
+import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import { formatBudgetAmount } from "@/features/jobs/helpers/manageJobs";
 import { Transaction } from "../../types";
 import { printTransactionReceipt } from "../../helpers/printTransactionReceipt";
@@ -14,6 +15,15 @@ const statusStyles = {
   unknown: "bg-[#F1F2F9] text-[#737774]",
   failed: "bg-[#FFF0F3] text-[#FF5D7A]",
 };
+
+const serviceLabels: Record<string, string> = {
+  walletfunding: "Wallet Funding",
+  job: "Job",
+  withdrawal: "Withdrawal",
+  subscription: "Subscription",
+  order: "Order",
+};
+const identifier = (value?: string) => value ? <IdentifierBadge label="ID" value={value} maxWidth="max-w-40" /> : "—";
 
 export const transactionColumns = (onStatus?: (id: string) => void): ColumnDef<Transaction>[] => [
   { accessorKey: "date", header: "Date" },
@@ -28,7 +38,14 @@ export const transactionColumns = (onStatus?: (id: string) => void): ColumnDef<T
       </span>
     ),
   },
+  { accessorKey: "currency", header: "Currency", cell: ({ row }) => row.original.currency || "—" },
   { accessorKey: "counterparty", header: "Counterparty" },
+  { accessorKey: "paymentMethod", header: "Payment Method", cell: ({ row }) => row.original.paymentMethod === "BankTransfer" ? "Bank Transfer" : row.original.paymentMethod || "—" },
+  { accessorKey: "paymentService", header: "Payment Service", cell: ({ row }) => row.original.paymentService || "—" },
+  { accessorKey: "serviceType", header: "Service Type", cell: ({ row }) => serviceLabels[row.original.serviceType?.toLowerCase() ?? ""] || row.original.serviceType || "—" },
+  { accessorKey: "jobId", header: "Job ID", cell: ({ row }) => identifier(row.original.jobId) },
+  { accessorKey: "milestoneId", header: "Milestone ID", cell: ({ row }) => identifier(row.original.milestoneId) },
+  { accessorKey: "orderId", header: "Order ID", cell: ({ row }) => identifier(row.original.orderId) },
   { accessorKey: "balance", header: "Balance", cell: ({ row }) => row.original.balance === undefined ? "—" : formatBudgetAmount(row.original.balance, row.original.currency ?? "NGN") },
   { accessorKey: "type", header: "Transaction Type", cell: ({ row }) => <span className="capitalize text-[#667085]">{row.original.type}</span> },
   {
