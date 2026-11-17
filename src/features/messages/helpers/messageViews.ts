@@ -11,7 +11,7 @@ export const conversationView = (conversation: Conversation, onlineIds: string[]
     isOnline: onlineIds.includes(conversation.participant._id),
   },
   preview: conversation.lastMessage?.content || (conversation.lastMessage?.attachments?.length ? "Attachment" : "Start a conversation"),
-  lastMessageAt: conversation.lastMessage ? new Date(conversation.lastMessage.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "",
+  lastMessageAt: conversation.lastMessage?.createdAt ?? "",
   unreadCount: conversation.unreadCount,
   messages: [],
 });

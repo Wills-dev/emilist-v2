@@ -11,7 +11,7 @@ const ConversationListItem = ({
   active: boolean;
   onSelect: (id: string) => void;
 }) => {
-  const { select } = useConversationItem(thread.id, onSelect);
+  const { select, timestamp } = useConversationItem(thread.id, onSelect, thread.lastMessageAt);
   return (
   <button
     type="button"
@@ -35,7 +35,7 @@ const ConversationListItem = ({
       </span>
     </span>
     <span className="shrink-0 pt-1 text-[10px] text-[#8A8D8B]">
-      {thread.lastMessageAt}
+      <time dateTime={thread.lastMessageAt || undefined}>{timestamp}</time>
       {Boolean(thread.unreadCount) && <span className="mt-2 block rounded-full bg-[#18A154] px-2 py-0.5 text-center text-white">{thread.unreadCount}</span>}
     </span>
   </button>
