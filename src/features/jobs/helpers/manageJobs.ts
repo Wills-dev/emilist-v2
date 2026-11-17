@@ -213,6 +213,7 @@ export const mapPausedJobRow = (job: JobsByStatusItemDto): PausedJobRow => ({
 });
 
 export const mapActiveJobRow = (job: JobsByStatusItemDto): ActiveJobRow => ({
+  canCloseContract: job.disputeSummary?.canCloseContract === true,
   requiresAttention: job.attention?.requiresAttention === true,
   id: job._id,
   startDate: formatListDate(resolveJobStartDate(job)),

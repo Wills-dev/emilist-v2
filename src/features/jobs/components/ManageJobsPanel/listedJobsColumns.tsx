@@ -67,8 +67,7 @@ export const listedJobsColumns: ColumnDef<ListedJobRow>[] = [
       const resolvedAction = resolveListedJobAction(row.original.statusRaw);
       const action =
         resolvedAction?.label === "Accept Job Offer" &&
-        row.original.isOwner &&
-        !row.original.requiresAttention
+        row.original.isOwner
           ? null
           : resolvedAction;
       return (

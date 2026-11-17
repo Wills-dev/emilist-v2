@@ -10,7 +10,6 @@ export type JobAction =
   | "review"
   | "accept"
   | "withdraw"
-  | "rate"
   | "convert"
   | "counter-offer"
   | "complete-milestone"

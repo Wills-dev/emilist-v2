@@ -32,8 +32,9 @@ const StatusBadge = ({
 }) => (
   <span
     className={clsx(
-      "inline-flex w-fit items-center rounded-full px-2.5 py-1 text-xs font-medium capitalize",
+      "inline-flex w-fit shrink-0 items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium capitalize",
       toneStyles[getStatusBadgeTone(label, tone)],
+      label.trim().toLowerCase() === "completed" && "bg-[#E2E5E3]!",
       className,
     )}
   >

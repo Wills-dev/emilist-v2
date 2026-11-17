@@ -15,11 +15,10 @@ export const jobActionLabels: Record<JobAction, string> = {
   review: "Review Milestone",
   accept: "Accept Job Offer",
   withdraw: "Withdraw Application",
-  rate: "Rate expert",
   convert: "Convert to recurring job",
   "counter-offer": "Suggest Counter-Offer",
   "complete-milestone": "Complete Milestone",
-  "rate-employer": "Rate employer",
+  "rate-employer": "Rate job owner",
 };
 
 export const getJobStatusMessage = (status: string, isOwner: boolean) => {
@@ -48,6 +47,7 @@ export const getJobStatusMessage = (status: string, isOwner: boolean) => {
 export const getJobPrimaryAction = (
   status: string,
   isOwner: boolean,
+  canCloseContract = false,
 ): JobAction | null => {
   const key = normalizeJobStatus(status);
   if (!isOwner) {
@@ -61,7 +61,7 @@ export const getJobPrimaryAction = (
     case "listed":
       return "edit";
     case "active":
-      return "pause";
+      return canCloseContract ? null : "pause";
     case "paused":
       return "resume";
     case "overdue":

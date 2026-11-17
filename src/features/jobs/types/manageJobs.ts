@@ -42,6 +42,7 @@ export interface JobMilestoneProgressDto {
 }
 
 export interface JobsByStatusItemDto extends FetchAllJobsItemDto {
+  disputeSummary?: { canCloseContract?: boolean };
   milestoneProgress?: JobMilestoneProgressDto | string;
   maximumPrice?: number;
   dueDate?: string;
@@ -104,6 +105,7 @@ export interface PausedJobRow {
 }
 
 export interface ActiveJobRow {
+  canCloseContract?: boolean;
   requiresAttention?: boolean;
   id: string;
   startDate: string;
