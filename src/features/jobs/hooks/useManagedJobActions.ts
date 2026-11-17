@@ -23,7 +23,7 @@ export const useManagedJobActions = (job: JobDetailsViewModel | undefined, origi
     playbackTarget.current = null;
     setPlaybackAction(null);
   });
-  const canChangePlayback = (action: "pause" | "resume") => Boolean(job && userId && userId === job.ownerId && normalizeJobStatus(job.status) === (action === "pause" ? "active" : "paused"));
+  const canChangePlayback = (action: "pause" | "resume") => Boolean(job && userId && userId === job.ownerId && !(action === "pause" && job.canCloseContract === true) && normalizeJobStatus(job.status) === (action === "pause" ? "active" : "paused"));
   const closePlaybackConfirmation = () => {
     if (!playbackMutation.isPending && !changingPlayback.current) setPlaybackAction(null);
   };
@@ -68,6 +68,7 @@ export const useManagedJobActions = (job: JobDetailsViewModel | undefined, origi
       return;
     }
     if (action === "rate-employer") {
+      if (!userId || userId === job.ownerId || normalizeJobStatus(job.status) !== "completed") return;
       router.push(routes.dashboardLinks.employerProfile(job.ownerId, job.id, originTab, true));
     } else if (action === "edit") {
       router.push(routes.dashboardLinks.editJob(job.id));

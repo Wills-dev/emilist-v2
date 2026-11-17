@@ -181,6 +181,8 @@ The details step sends the conditional block required by the selected urgency:
 | In future | `in_future` | `jobSchedule`, `estimatedBudget` | `estimatedBudget` |
 | Regularly | `regularly` | `jobFrequency`, `startDate`, `recurringBudget`; `endDate` is optional | One `recurringBudget` period |
 
+Job owners can close a contract from job details when the API returns `job.disputeSummary.canCloseContract: true`. The frontend delegates eligibility checks to the backend. The review modal submits work and communication ratings, a review note, and the recommendation choice to `PATCH /jobs/close-contract/{jobId}`, then refreshes job queries. Owners review applicants before accepting; the job-table dropdown only offers acceptance to artisans.
+
 Shared fields include category, service, title, description, urgency, location, milestones, optional images, and either public-bidding fields or a direct-hire expert ID. Category and service options currently come from `src/features/jobs/constants/postJob.ts` and should be replaced by an authoritative taxonomy endpoint when one is available.
 
 Milestone allocation follows these invariants:

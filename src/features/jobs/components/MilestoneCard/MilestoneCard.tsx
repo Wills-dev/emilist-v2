@@ -58,7 +58,7 @@ const MilestoneCard = ({
     <div
       className={`w-full md:space-y-8 space-y-6 ${milestoneNumber !== 1 && "border-t border-[#ECECEC] pt-6"}`}
     >
-      <div className="flex items-center justify-between text-sm">
+      <div className="flex items-center justify-between gap-2 text-sm">
         <h6 className={`flex items-center gap-2.5 ${tone}`}>
           <span className="block w-1.5 h-1.5 bg-current rounded-full" />
           <span className="font-exo font-semibold uppercase">

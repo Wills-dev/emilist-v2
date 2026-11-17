@@ -132,6 +132,7 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
   const billing = mapMilestoneBilling(job, ownerName, budget?.currency?.trim() || "NGN");
   return {
     ...billing,
+    canCloseContract: job.disputeSummary?.canCloseContract === true,
     id: job._id,
     applications: job.applications,
     applicationId: job.applicationId,

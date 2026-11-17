@@ -125,24 +125,17 @@ export function ManagedJobInfoView({
                 </button>
               ))}
             </nav>
-            {inProgress && !isOwner && tab === "details" && (
+            {normalizeJobStatus(job.status) === "completed" && !isOwner && tab === "details" && (
               <button
                 type="button"
                 onClick={() => onAction("rate-employer")}
                 className="py-2 text-xs text-[#6667FF] underline"
               >
-                Rate employer →
+                Rate job owner →
               </button>
             )}
             {inProgress && isOwner && tab === "details" && (
               <div className="hidden gap-4 py-2 text-xs xl:flex">
-                <button
-                  type="button"
-                  onClick={() => onAction("rate")}
-                  className="underline"
-                >
-                  Rate expert →
-                </button>
                 <button
                   type="button"
                   onClick={() => onAction("convert")}

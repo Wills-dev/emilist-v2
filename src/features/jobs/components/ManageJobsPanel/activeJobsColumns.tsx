@@ -44,7 +44,7 @@ export const activeJobsColumns: ColumnDef<ActiveJobRow>[] = [
       <JobActionsMenu
         jobTitle={row.original.jobTitle}
         viewHref={routes.dashboardLinks.jobInfo(row.original.id, "active")}
-        actions={[
+        actions={row.original.canCloseContract ? [] : [
           {
             label: "Pause Job",
             onSelect: () => toast.info("Pause Job is coming soon."),

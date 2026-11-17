@@ -2,6 +2,7 @@
 
 import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import Link from "next/link";
+import CloseContract from "../../CloseContract/CloseContract";
 import JobMessageButton from "../../JobMessageButton/JobMessageButton";
 import {
   Pencil,
@@ -58,7 +59,7 @@ export default function ManagedJobSummary({
   const status = normalizeJobStatus(job.status);
   const meta = resolveJobStatusMeta(status);
   const inProgress = isManagedJobInProgress(status);
-  const primaryAction = getJobPrimaryAction(status, isOwner);
+  const primaryAction = getJobPrimaryAction(status, isOwner, job.canCloseContract === true);
   const reviewIndex = job.milestones.findIndex(
     (milestone) => normalizeJobStatus(milestone.status ?? "") === "in-review",
   );
@@ -133,13 +134,12 @@ export default function ManagedJobSummary({
                   {(
                     (isOwner
                       ? [
-                          "rate",
                           "convert",
                           ...(status !== "completed" ? ["cancel"] : []),
                         ]
                       : inProgress
                         ? [
-                            "rate-employer",
+                            ...(status === "completed" ? ["rate-employer"] : []),
                             ...(status === "overdue" ? ["cancel"] : []),
                           ]
                         : status === "applied"
@@ -280,6 +280,7 @@ export default function ManagedJobSummary({
           <p key={index}>{paragraph}</p>
         ))}
       </div>
+      {isOwner && <CloseContract job={job} />}
       {isOwner && status === "in-review" ? (
         <Button
           variant="primary"
