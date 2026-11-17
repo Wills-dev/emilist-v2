@@ -138,8 +138,5 @@ export interface JobStat {
   id: string;
   label: string;
   tone: BadgeTone;
-  context: string;
   value: number;
-  trend: string;
-  day: string;
 }

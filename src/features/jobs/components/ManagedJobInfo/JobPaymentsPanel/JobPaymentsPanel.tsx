@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react";
 import { DropdownMenu } from "radix-ui";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { downloadInvoice } from "../../../helpers/downloadInvoice";
-import { CircleCheck, Repeat2, Printer, ArrowDown, MoreVertical } from "lucide-react";
+import { CircleCheck, Repeat2, Printer, ArrowDown, MoreVertical, ShieldAlert } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import StatusBadge from "@/components/atoms/StatusBadge/StatusBadge";
@@ -170,7 +171,8 @@ export default function JobPaymentsPanel({
                   </DropdownMenu.Item>
                 )}
                 {payable && !onMakePayment && <p className="max-w-52 px-3 py-2 text-xs text-[#768592]">Invoice payments are not available yet.</p>}
-                {invoice && <DropdownMenu.Item className={itemClassName} onSelect={() => { void downloadInvoice(invoice).catch(() => toast.error("Unable to download invoice. Please try again.")); }}>Download Invoice</DropdownMenu.Item>}
+                {invoice && <DropdownMenu.Item className={itemClassName} onSelect={() => { void downloadInvoice(invoice).catch(() => toast.error("Unable to download invoice. Please try again.")); }}>{payment.status === "paid" ? "Download Receipt" : "Download Invoice"}</DropdownMenu.Item>}
+                {invoice && <DropdownMenu.Item className={cn(itemClassName, "text-[#E84F6A] data-[highlighted]:bg-[#FFF0F3]")} onSelect={() => toast.info("Dispute submission is not available yet.")}><ShieldAlert className="size-4" />Raise Dispute</DropdownMenu.Item>}
                 {payment.receiptUrl && (
                   <DropdownMenu.Item asChild>
                     <a href={payment.receiptUrl} target="_blank" rel="noopener noreferrer" className={itemClassName}><Printer className="size-4" />Open Receipt</a>

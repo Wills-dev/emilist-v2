@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { DateFilterValue } from "@/components/molecules/DateFilter/DateFilter";
 
 import Container from "@/components/atoms/Container/Container";
 
@@ -9,21 +10,15 @@ import JobsPageHeader from "../JobsPageHeader/JobsPageHeader";
 import ManageJobsPanel from "../ManageJobsPanel/ManageJobsPanel";
 
 const JobsDashboardWrapper = () => {
-  const now = new Date();
-  const [month, setMonth] = useState(
-    now.toLocaleString("en-US", { month: "long" }),
-  );
-  const [year, setYear] = useState(now.getFullYear());
+  const [filters, setFilters] = useState<DateFilterValue>(() => {
+    const now = new Date();
+    return { month: now.getMonth() + 1, year: now.getFullYear() };
+  });
 
   return (
     <Container variant="small" className="space-y-4 py-4">
-      <JobsPageHeader
-        month={month}
-        year={year}
-        onMonthChange={setMonth}
-        onYearChange={setYear}
-      />
-      <JobStatsRow />
+      <JobsPageHeader filters={filters} onFiltersChange={setFilters} />
+      <JobStatsRow query={filters} />
       <ManageJobsPanel />
     </Container>
   );

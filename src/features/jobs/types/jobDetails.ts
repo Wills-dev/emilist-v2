@@ -19,7 +19,7 @@ export interface JobMilestoneInvoiceDto {
 
 export interface JobMilestoneDto {
   datePaid?: string;
-  paymentInfo?: { amountPaid?: number | string; paymentMethod?: string; date?: string };
+  paymentInfo?: { reference?: string; amountPaid?: number | string; paymentMethod?: string; date?: string };
   invoice?: JobMilestoneInvoiceDto;
   paymentStatus?: string;
   _id?: string;

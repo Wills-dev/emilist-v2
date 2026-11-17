@@ -49,7 +49,7 @@ const TransactionHistory = ({
         (item) =>
           (filter === "all" || item.status === filter) &&
           (year === "all" || item.year === Number(year)) &&
-          `${item.id} ${item.shortTransactionId ?? ""} ${item.reference ?? ""} ${item.counterparty}`.toLowerCase().includes(search.toLowerCase()),
+          `${item.id} ${item.shortTransactionId ?? ""} ${item.reference ?? ""} ${item.counterparty} ${item.paymentMethod ?? ""} ${item.paymentService ?? ""} ${item.serviceType ?? ""} ${item.jobId ?? ""} ${item.milestoneId ?? ""} ${item.orderId ?? ""}`.toLowerCase().includes(search.toLowerCase()),
       ),
     [data, filter, search, year],
   );
@@ -83,7 +83,7 @@ const TransactionHistory = ({
 
       {pageData.length ? (
         <>
-          <DataTable data={pageData} columns={transactionColumns(onViewStatus)} minWidth="min-w-225" />
+          <DataTable data={pageData} columns={transactionColumns(onViewStatus)} minWidth="min-w-400 [&_th]:whitespace-nowrap [&_td]:whitespace-nowrap" />
           <CompactPagination page={page} totalPages={totalPages} onChange={setPage} />
         </>
       ) : (

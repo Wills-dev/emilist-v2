@@ -8,6 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover/popover";
+import { cn } from "@/lib/utils";
 import { selectOption } from "@/lib/types";
 
 const SearchableSelect = ({
@@ -21,6 +22,7 @@ const SearchableSelect = ({
   disabled = false,
   ariaLabel,
   modal = false,
+  triggerClassName = "",
 }: {
   options: selectOption[] | string[];
   value: string;
@@ -32,6 +34,7 @@ const SearchableSelect = ({
   disabled?: boolean;
   ariaLabel?: string;
   modal?: boolean;
+  triggerClassName?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -73,11 +76,11 @@ const SearchableSelect = ({
           type="button"
           disabled={disabled}
           aria-label={ariaLabel}
-          className={`flex w-full items-center justify-between gap-2 rounded-[10px] text-left text-[#737774] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#25C269] ${
+          className={cn(`flex w-full items-center justify-between gap-2 rounded-[10px] text-left text-[#737774] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#25C269] ${
             size === "default"
               ? "h-11 bg-[#ECECEC] px-3 text-base"
               : "h-7.5 bg-[#F6F7F9] px-2 text-xs"
-          }`}
+          }`, triggerClassName)}
         >
           <span className="truncate">
             {selectedOption?.label ?? placeholder}
