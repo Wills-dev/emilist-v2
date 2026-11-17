@@ -1,65 +1,32 @@
 "use client";
 
-import { useEffect } from "react";
-import { createPortal } from "react-dom";
 import Image from "next/image";
-
 import { motion } from "framer-motion";
+import { Dialog as DialogPrimitive } from "radix-ui";
+import { X } from "lucide-react";
+import { Dialog, DialogPortal, DialogOverlay, DialogTitle, DialogClose } from "@/components/ui/dialog/dialog";
+import { useImagePreview } from "@/lib/hooks/useImagePreview";
 
-const ImagePreview = ({
-  onCancel,
-  imageUrl,
-  alt,
-}: {
-  onCancel: () => void;
-  imageUrl: string;
-  alt: string;
+const ImagePreview = ({ onCancel, imageUrl, alt, unoptimized = false }: {
+  onCancel: () => void; imageUrl: string; alt: string; unoptimized?: boolean;
 }) => {
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-
-    const previousOverflow = document.body.style.overflow;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onCancel();
-    };
-
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [onCancel]);
-
-  if (typeof document === "undefined") return null;
-
-  return createPortal(
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${alt} preview`}
-      className="fixed inset-0 z-[9999] flex h-dvh w-screen items-center justify-center bg-black/80 p-4"
-      onClick={onCancel}
-    >
-      <div
-        className="max-h-[90dvh] w-full max-w-4xl overflow-auto"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <Image
-          src={imageUrl}
-          alt={alt}
-          className="w-full h-auto rounded-lg"
-          width={800}
-          height={700}
-        />
-      </div>
-    </motion.div>,
-    document.body,
+  const { close } = useImagePreview(onCancel);
+  return (
+    <Dialog open onOpenChange={close}>
+      <DialogPortal>
+        <DialogOverlay className="z-[9998] bg-black/80" />
+        <DialogPrimitive.Content asChild aria-describedby={undefined}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}
+            className="fixed left-1/2 top-1/2 z-[9999] w-[calc(100vw-2rem)] max-w-4xl -translate-x-1/2 -translate-y-1/2 outline-none">
+            <DialogTitle className="sr-only">{alt} preview</DialogTitle>
+            <div className="max-h-[calc(100dvh-2rem)] overflow-auto rounded-lg">
+              <Image src={imageUrl} alt={alt} unoptimized={unoptimized} width={800} height={700} className="h-auto max-h-[calc(100dvh-2rem)] w-full rounded-lg object-contain" />
+            </div>
+            <DialogClose className="absolute right-2 top-2 flex size-9 items-center justify-center rounded-full bg-black/70 text-white focus-visible:ring-2 focus-visible:ring-white" aria-label="Close image preview"><X className="size-5" /></DialogClose>
+          </motion.div>
+        </DialogPrimitive.Content>
+      </DialogPortal>
+    </Dialog>
   );
 };
 

@@ -39,7 +39,7 @@ const MessageComposer = (props: ComposerOptions) => {
         </div>
       )}
       {error && <p role="alert" className="text-xs text-[#FF5D7A]">{error}</p>}
-      <div className="flex items-center gap-2 rounded-full border border-[#F1F2F9] bg-[#F9F9F9] px-3 py-2">
+      <div className="flex items-center gap-1.5 rounded-full border border-[#F1F2F9] bg-[#F9F9F9] px-2 py-2 sm:gap-2 sm:px-3">
         <input
           ref={fileInputRef} type="file" multiple onChange={handleFiles}
           disabled={props.sending || voice.recording || voice.starting} className="sr-only" aria-label="Message attachments"
@@ -57,7 +57,7 @@ const MessageComposer = (props: ComposerOptions) => {
           value={message} onChange={handleChange} onBlur={onStopTyping}
           disabled={props.sending || voice.recording || voice.starting} maxLength={5000}
           placeholder="Type your message" aria-label="Message"
-          className="min-w-0 flex-1 border-l border-[#D9D9D9] bg-transparent px-3 py-1 text-sm outline-none placeholder:text-[#737774]"
+          className="min-w-0 flex-1 border-l border-[#D9D9D9] bg-transparent px-2 py-1 text-base outline-none sm:px-3 lg:text-sm placeholder:text-[#737774]"
         />
         {voice.recording ? <button type="button" onClick={voice.stop} aria-label="Stop recording" className="shrink-0 text-[#FF5D7A]"><Square className="size-4 fill-current" /></button> : <button type="button" onClick={voice.start} disabled={props.sending || voice.starting || files.length >= 10} aria-label={voice.starting ? "Starting microphone" : "Record voice message"} className="shrink-0 text-[#737774] disabled:opacity-50">{voice.starting ? <LoaderCircle className="size-4 animate-spin" /> : <Mic className="size-4" />}</button>}
         <button

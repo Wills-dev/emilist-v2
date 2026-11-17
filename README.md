@@ -392,7 +392,7 @@ Public and dashboard expert profiles reuse the same profile and review component
 
 ### Dashboard messages
 
-The authenticated message center is at `/dashboard/messages`. The desktop sidebar, mobile drawer, and header message icon navigate to this full page. Desktop keeps the inbox and chat side by side; mobile retains the original animated transitions between them. Contact previews truncate to one line, and message sections show Today, Yesterday, or the existing date format for older days.
+The authenticated message center is at `/dashboard/messages`. The desktop sidebar, mobile drawer, and header message icon navigate to this full page. Desktop keeps the inbox and chat side by side; mobile retains the original animated transitions between them. Contact previews truncate to one line, and message sections show Today, Yesterday, or the existing date format for older days. The message page follows the visual viewport when a mobile keyboard opens, prevents page scrolling, keeps the composer visible above safe-area insets, and scrolls history independently. Mobile inputs use a 16px font to avoid focus zoom. Message images open in the shared accessible image-preview dialog; file attachments download through credential-free blob requests instead of opening another tab.
 
 Messaging lives under `src/features/messages`: `api/` owns HTTP requests, `queries/` user-scoped cache keys, `hooks/` state and event handlers, `helpers/` mapping/validation/cache updates, `audio/` incoming chimes, and `components/` presentation. It uses the shared authenticated Axios client and `socket.io-client`; temporary message fixtures have been removed.
 

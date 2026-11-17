@@ -11,7 +11,7 @@ const MessageHistory = ({ center }: { center: MessageCenter }) => {
   return (
     <div className="relative min-h-0 flex-1 overflow-hidden">
       <GrayedLogo variant="message" />
-      <div ref={scrollRef} className="relative z-1 h-full space-y-4 overflow-y-auto px-4 py-4 sm:px-6">
+      <div ref={scrollRef} className="relative z-1 h-full space-y-4 overflow-y-auto overscroll-contain touch-pan-y px-4 py-4 sm:px-6">
         {center.loadingMessages ? <MessagingSkeleton variant="chat" /> : center.historyError ? (
           <div role="alert" className="text-center text-sm text-[#737774]">
             Unable to load messages.{" "}

@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 const MessagesEmptyState = ({ conversation = false, pageEmpty = false }: { conversation?: boolean; pageEmpty?: boolean }) => (
-  <div className={`flex flex-col items-center justify-center bg-white px-4 text-center ${conversation ? "min-h-48 py-6" : pageEmpty ? "min-h-[calc(100vh-7rem)] py-16" : "h-full min-h-0 py-16"}`}>
+  <div className={`flex flex-col items-center justify-center bg-white px-4 text-center ${conversation ? "min-h-48 py-6" : pageEmpty ? "h-full min-h-0 py-16" : "h-full min-h-0 py-16"}`}>
     <Image
       src="/assets/images/Message-emptystate.svg"
       alt=""
