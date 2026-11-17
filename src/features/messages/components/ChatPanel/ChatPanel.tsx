@@ -12,7 +12,7 @@ const ChatPanel = ({ center, className = "", showBack = true }: { center: Messag
     {!center.activeThread ? <MessagesEmptyState /> : <>
       <ChatHeader thread={center.activeThread} typing={center.typing} onBack={center.closeConversation} showBack={showBack} />
       <MessageHistory key={center.activeThread.participant.id} center={center} />
-      <div className="border-t border-[#F0F2F1] bg-white p-3">
+      <div className="shrink-0 border-t border-[#F0F2F1] bg-white p-2 sm:p-3">
         <MessageComposer
           key={center.activeThread.participant.id}
           onSend={center.submitMessage}

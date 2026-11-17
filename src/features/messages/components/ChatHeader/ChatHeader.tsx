@@ -8,7 +8,7 @@ const ChatHeader = ({ thread, typing, onBack, showBack = true }: {
   onBack: () => void;
   showBack?: boolean;
 }) => (
-  <header className="flex min-h-16 items-center justify-between gap-3 bg-linear-to-r from-[#0F6B4B] to-[#215342] px-4 text-white sm:px-5">
+  <header className="flex min-h-16 shrink-0 items-center justify-between gap-3 bg-linear-to-r from-[#0F6B4B] to-[#215342] px-4 text-white sm:px-5">
     <div className="flex min-w-0 items-center gap-3">
       {showBack && <button type="button" onClick={onBack} aria-label="Back to inbox" className="md:hidden">
         <ArrowLeft className="size-5" />
