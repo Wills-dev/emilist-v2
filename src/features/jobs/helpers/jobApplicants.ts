@@ -4,6 +4,7 @@ import type { JobApplicant } from "../types/jobManagement";
 
 export const mapJobApplicant = (application: ApplicantDto): JobApplicant => ({
   id: application._id,
+  businessId: application.businessId,
   applicantUserId: application.user?._id,
   counterOffers: application.counterOffers,
   counterOfferSummary: application.counterOfferSummary,

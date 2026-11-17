@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useExpertReviewsPage } from "../../hooks/useExpertReviewsPage";
+import type { ExpertDetailsData } from "../../types/expertDetails";
 import { routes } from "@/lib/helpers/routes";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import { motion } from "framer-motion";
@@ -26,57 +27,23 @@ const DashboardExpertReviews = ({
   publicPage = false,
   profilePage = false,
   jobContext,
+  details,
 }: {
+  details?: ExpertDetailsData;
   expertId: string;
   publicPage?: boolean;
   profilePage?: boolean;
   jobContext?: { jobId: string; tab: string };
 }) => {
-  const expert =
+  const expert = details?.expert ??
     dashboardExperts.find((item) => item.id === expertId) ??
     (jobContext || profilePage ? undefined : dashboardExperts[0]);
-  const [page, setPage] = useState(1);
-  const [reviews, setReviews] = useState(dashboardExpertReviews);
-  const [, setQuery] = useState("");
-  const [submittedQuery, setSubmittedQuery] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-
-  const visibleReviews = useMemo(() => {
-    const query = submittedQuery.trim().toLowerCase();
-    if (!query) return reviews;
-    return reviews.filter((review) =>
-      `${review.user?.firstName ?? ""} ${review.user?.lastName ?? ""} ${review.comment ?? ""}`
-        .toLowerCase()
-        .includes(query),
-    );
-  }, [reviews, submittedQuery]);
-
-  const resetForm = () => {
-    setRating(0);
-    setComment("");
-  };
-
-  const handleAddReview = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setReviews((current) => [
-      {
-        _id: `expert-${expertId}-${Date.now()}`,
-        rating,
-        comment: comment.trim(),
-        createdAt: new Date().toISOString(),
-        user: {
-          _id: "current-user",
-          firstName: "Toks",
-          lastName: "Williams",
-        },
-      },
-      ...current,
-    ]);
-    resetForm();
-    setIsModalOpen(false);
-  };
+  const summary = details?.reviews ?? dashboardExpertReviewSummary;
+  const {
+    submittedQuery, visibleReviews, currentPage, isModalOpen, setIsModalOpen,
+    rating, comment, setRating, setComment, resetForm, handleAddReview,
+    onSearch, setSearch, onAddComment, onNext, onPrev, flag,
+  } = useExpertReviewsPage(expertId, details?.reviews.reviews ?? dashboardExpertReviews, Boolean(details));
 
   const profileHref = jobContext
     ? routes.dashboardLinks.jobApplicantInfo(
@@ -97,10 +64,6 @@ const DashboardExpertReviews = ({
         />
       </Container>
     );
-  const currentPage = Math.min(
-    page,
-    Math.max(1, Math.ceil(visibleReviews.length / 5)),
-  );
 
   return (
     <Container variant={publicPage ? "center" : "small"}>
@@ -112,7 +75,7 @@ const DashboardExpertReviews = ({
       >
         <div className="flex items-center justify-between">
           <BackButton href={profileHref} isDashboard={Boolean(jobContext)} />
-          <FlagActionBtn onClick={() => {}} actionTitle="Flag expert" />
+          <FlagActionBtn onClick={flag} actionTitle="Flag expert" />
         </div>
         <div
           className={
@@ -125,8 +88,8 @@ const DashboardExpertReviews = ({
             className={`w-full min-w-72.5 bg-[#F9F9F9] p-6 ${publicPage ? "max-w-197.75" : "max-w-160"}`}
           >
             <ReviewBreakdown
-              totalReviews={dashboardExpertReviewSummary.totalReviews}
-              reviewBreakdown={dashboardExpertReviewSummary.ratingDistribution}
+              totalReviews={summary.totalReviews}
+              reviewBreakdown={summary.ratingDistribution}
               variant={publicPage ? "primary" : "tertiary"}
             />
           </div>
@@ -149,7 +112,7 @@ const DashboardExpertReviews = ({
             </FilterSectionWrapper>
             <RatingSummary
               title="Expert Rating"
-              rating={dashboardExpertReviewSummary.averageRating}
+              rating={summary.averageRating}
               variant={publicPage ? "primary" : "tertiary"}
             />
           </div>
@@ -158,22 +121,19 @@ const DashboardExpertReviews = ({
           totalComments={
             submittedQuery
               ? visibleReviews.length
-              : dashboardExpertReviewSummary.totalComments
+              : summary.totalComments
           }
           variant="large"
-          onSubmit={(query) => {
-            setSubmittedQuery(query);
-            setPage(1);
-          }}
-          setSearch={setQuery}
+          onSubmit={onSearch}
+          setSearch={setSearch}
           reviews={visibleReviews.slice((currentPage - 1) * 5, currentPage * 5)}
-          onAddComment={() => setIsModalOpen(true)}
+          onAddComment={onAddComment}
           sectionVariant={publicPage ? "primary" : "tertiary"}
           pagination={{
             page: currentPage,
             hasMore: currentPage * 5 < visibleReviews.length,
-            onNext: () => setPage(currentPage + 1),
-            onPrev: () => setPage(Math.max(1, currentPage - 1)),
+            onNext,
+            onPrev,
           }}
         />
       </motion.div>

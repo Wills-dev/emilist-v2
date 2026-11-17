@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useExpertReviewList } from "../../hooks/useExpertReviewList";
+import type { ExpertDetailsData } from "../../types/expertDetails";
 
 import CommentWrapper from "@/components/molecules/CommentWrapper/CommentWrapper";
 import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
@@ -15,40 +16,33 @@ const ExpertReviewSummary = ({
   expertId,
   publicPage = false,
   reviewsHref,
+  data,
 }: {
+  data?: ExpertDetailsData["reviews"];
   expertId: string;
   publicPage?: boolean;
   reviewsHref?: string;
 }) => {
-  const [, setSearch] = useState("");
-  const [submittedQuery, setSubmittedQuery] = useState("");
-  const reviews = useMemo(() => {
-    const query = submittedQuery.trim().toLowerCase();
-    if (!query) return dashboardExpertReviews;
-    return dashboardExpertReviews.filter((review) =>
-      `${review.user?.firstName ?? ""} ${review.user?.lastName ?? ""} ${review.comment ?? ""}`
-        .toLowerCase()
-        .includes(query),
-    );
-  }, [submittedQuery]);
+  const summary = data ?? dashboardExpertReviewSummary;
+  const { submittedQuery, setSubmittedQuery, setSearch, visibleReviews: reviews } = useExpertReviewList(data?.reviews ?? dashboardExpertReviews);
 
   return (
     <div id="expert-reviews" className="w-full space-y-6">
       <ReviewBreakdown
-        totalReviews={dashboardExpertReviewSummary.totalReviews}
-        reviewBreakdown={dashboardExpertReviewSummary.ratingDistribution}
+        totalReviews={summary.totalReviews}
+        reviewBreakdown={summary.ratingDistribution}
         titleClassName="text-lg"
       />
       <RatingSummary
         title="Expert Rating"
-        rating={dashboardExpertReviewSummary.averageRating}
+        rating={summary.averageRating}
         variant={publicPage ? "primary" : "tertiary"}
       />
       <CommentWrapper
         totalComments={
           submittedQuery
             ? reviews.length
-            : dashboardExpertReviewSummary.totalComments
+            : summary.totalComments
         }
         variant="small"
         onSubmit={setSubmittedQuery}

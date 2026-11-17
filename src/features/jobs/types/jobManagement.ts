@@ -16,6 +16,7 @@ export type JobAction =
   | "complete-milestone"
   | "rate-employer";
 export interface JobApplicant {
+  businessId?: string;
   applicantUserId?: string;
   counterOffers?: unknown[];
   latestCounterOffer?: import("./applicationDetails").ApplicationDetailsDto["latestCounterOffer"];

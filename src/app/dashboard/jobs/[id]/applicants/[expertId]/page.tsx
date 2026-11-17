@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
-import DashboardExpertInfoWrapper from "@/features/experts/components/DashboardExpertInfoWrapper/DashboardExpertInfoWrapper";
+import ApplicantProfilePage from "@/features/jobs/components/ApplicantProfilePage/ApplicantProfilePage";
 import { resolveManageJobsTab } from "@/features/jobs/helpers/manageJobs";
 
 export default async function JobApplicantPage({
@@ -15,9 +15,10 @@ export default async function JobApplicantPage({
   );
   return (
     <DashboardLayout>
-      <DashboardExpertInfoWrapper
+      <ApplicantProfilePage
         expertId={expertId}
-        jobContext={{ jobId: id, tab }}
+        jobId={id}
+        tab={tab}
       />
     </DashboardLayout>
   );

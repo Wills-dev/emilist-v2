@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
-import DashboardExpertReviews from "@/features/experts/components/DashboardExpertReviews/DashboardExpertReviews";
+import ApplicantProfilePage from "@/features/jobs/components/ApplicantProfilePage/ApplicantProfilePage";
 import { resolveManageJobsTab } from "@/features/jobs/helpers/manageJobs";
 
 export default async function JobApplicantReviewsPage({
@@ -15,9 +15,11 @@ export default async function JobApplicantReviewsPage({
   );
   return (
     <DashboardLayout>
-      <DashboardExpertReviews
+      <ApplicantProfilePage
         expertId={expertId}
-        jobContext={{ jobId: id, tab }}
+        jobId={id}
+        tab={tab}
+        reviewsPage
       />
     </DashboardLayout>
   );

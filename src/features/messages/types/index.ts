@@ -1,3 +1,5 @@
+import type { MessageAttachment } from "./messaging";
+
 export interface MessageParticipant {
   id: string;
   name: string;
@@ -10,8 +12,9 @@ export interface ChatMessage {
   text: string;
   sender: "current-user" | "participant";
   time: string;
-  status?: "sent" | "read";
+  status?: "sent" | "read" | "sending" | "failed";
   dateLabel?: string;
+  attachments?: MessageAttachment[];
 }
 
 export interface MessageThread {

@@ -14,7 +14,7 @@ const MessageAvatar = ({
       size === "small" ? "size-6" : "size-9"
     }`}
   >
-    <Image src={src} alt={name} fill sizes="36px" className="object-cover" />
+    {src ? <Image unoptimized src={src} alt={name} fill sizes="36px" className="object-cover" /> : <span className="flex h-full items-center justify-center text-sm font-medium text-[#39704F]">{name.charAt(0).toUpperCase()}</span>}
   </span>
 );
 
