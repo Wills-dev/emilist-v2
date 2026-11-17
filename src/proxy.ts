@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { routes } from "./lib/helpers/routes";
+import { loginRedirectUrl } from "./lib/helpers/authRedirect";
 
 const PROTECTED_PATHS = ["/dashboard"];
 
@@ -11,9 +11,8 @@ export function proxy(req: NextRequest) {
   );
 
   if (isProtected && !token) {
-    const redirect = encodeURIComponent(req.nextUrl.pathname);
     return NextResponse.redirect(
-      new URL(`${routes?.login}?redirect=${redirect}`, req.url),
+      new URL(loginRedirectUrl(`${req.nextUrl.pathname}${req.nextUrl.search}`), req.url),
     );
   }
 

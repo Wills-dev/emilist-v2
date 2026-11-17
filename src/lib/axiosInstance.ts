@@ -1,4 +1,5 @@
 import axios from "axios";
+import { handleExpiredSession } from "./helpers/handleExpiredSession";
 
 import { readCookie } from "./helpers/cookie";
 
@@ -24,5 +25,13 @@ axiosInstance.interceptors.request.use(
   },
   (err) => {
     throw new Error(err);
+  },
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (axios.isAxiosError(error) && error.response?.status === 401) handleExpiredSession();
+    return Promise.reject(error);
   },
 );
