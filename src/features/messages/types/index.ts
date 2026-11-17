@@ -21,6 +21,7 @@ export interface MessageThread {
   id: string;
   participant: MessageParticipant;
   preview: string;
+  /** Original ISO timestamp; the sidebar formats it in the viewer’s local time. */
   lastMessageAt: string;
   unreadCount?: number;
   messages: ChatMessage[];
