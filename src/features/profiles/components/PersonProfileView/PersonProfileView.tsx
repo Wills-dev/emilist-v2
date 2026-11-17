@@ -1,5 +1,7 @@
 "use client";
 
+import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
+import { useProfileShare } from "@/features/reports/hooks/useProfileShare";
 import { useState } from "react";
 import Link from "next/link";
 import { Heart, Share2, Flag } from "lucide-react";
@@ -31,6 +33,8 @@ export default function PersonProfileView({
   reviewsPage?: boolean;
   dashboard?: boolean;
 }) {
+  const { ref: impressionRef } = useResourceTracking({ resourceType: "profile", subjectUserId: profile.id });
+  const share = useProfileShare(shareHref, profile.name, profile.id);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const role =
@@ -51,19 +55,6 @@ export default function PersonProfileView({
   const updateSearch = (value: string) => {
     setSearch(value);
     setPage(1);
-  };
-  const share = async () => {
-    const url = new URL(shareHref, window.location.origin).href;
-    try {
-      if (navigator.share) await navigator.share({ title: profile.name, url });
-      else {
-        await navigator.clipboard.writeText(url);
-        toast.success("Profile link copied");
-      }
-    } catch (error) {
-      if (!(error instanceof DOMException && error.name === "AbortError"))
-        toast.error("Could not share this profile.");
-    }
   };
   const statistics = (
     <div className={`grid gap-3 ${reviewsPage ? "" : "sm:grid-cols-2"}`}>
@@ -148,7 +139,7 @@ export default function PersonProfileView({
       variant={dashboard ? "small" : "center"}
       className="py-4 sm:py-6"
     >
-      <div className="mb-4 flex justify-between gap-4">
+      <div ref={impressionRef} className="mb-4 flex justify-between gap-4">
         <BackButton
           href={reviewsPage ? profileHref : backHref}
           isDashboard={dashboard}
@@ -202,7 +193,7 @@ export default function PersonProfileView({
                   <button
                     type="button"
                     aria-label="Share profile"
-                    onClick={() => void share()}
+                    onClick={share}
                     className="rounded-lg bg-[#EDEEF0] p-2.5 text-[#737774]"
                   >
                     <Share2 className="size-4" />

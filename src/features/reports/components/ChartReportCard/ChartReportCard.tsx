@@ -1,121 +1,38 @@
 "use client";
 
-import { useState } from "react";
-
 import DonutChart from "@/components/molecules/DonutChart/DonutChart";
-
-import { ChartReportData } from "../../types";
-import {
-  filterReportByPeriod,
-  getReportPeriodOptions,
-} from "../../utils/reportFilters";
-import {
-  formatReportCurrency,
-  ReportCurrency,
-} from "../../utils/currency";
+import InsightEmptyState from "@/components/atoms/icons/InsightEmptyState/InsightEmptyState";
+import type { ChartReportData } from "../../types";
+import { useChartReport } from "../../hooks/useChartReport";
 import ReportCard from "../ReportCard/ReportCard";
 import ReportLegendGrid from "../ReportLegendGrid/ReportLegendGrid";
 
-const ChartReportCard = ({ report }: { report: ChartReportData }) => {
-  const [period, setPeriod] = useState(report.periodLabel);
-  const [viewValue, setViewValue] = useState(report.views?.[0]?.value ?? "");
-  const [currency, setCurrency] = useState<ReportCurrency>("NGN");
-  const view = report.views?.find((option) => option.value === viewValue);
-  const filteredReport = filterReportByPeriod(report, view, period);
-  const financeLegends = report.currencyOptions
-    ? filteredReport.legends.map((legend, index) => ({
-        ...legend,
-        value: formatReportCurrency(
-          (filteredReport.segments[index]?.value ?? 0) * 1000,
-          currency,
-        ),
-      }))
-    : filteredReport.legends;
-  const financeTotal = report.currencyOptions
-    ? formatReportCurrency(
-        Number(filteredReport.centerValue.replace(/[^\d.]/g, "")),
-        currency,
-      )
-    : filteredReport.centerValue;
-  const chartSegments = filteredReport.segments.map((segment) => ({
-    ...segment,
-    displayValue:
-      financeLegends.find((legend) => legend.label === segment.label)?.value ??
-      segment.value.toLocaleString(),
-  }));
-
+const ChartReportCard = ({ report, period, currency, onPeriodChange, onCurrencyChange }: {
+  report: ChartReportData; period: string; currency: string;
+  onPeriodChange: (value: string) => void; onCurrencyChange: (value: string) => void;
+}) => {
+  const chart = useChartReport(report, onCurrencyChange, period);
   return (
-    <ReportCard
-      title={report.title}
-      subtitle={filteredReport.subtitle}
-      periodLabel={period}
-      periodOptions={getReportPeriodOptions(report.periodLabel)}
-      onPeriodChange={setPeriod}
-      actionLabel={report.actionLabel}
-    >
+    <ReportCard title={report.title} subtitle={report.subtitle} periodLabel={period}
+      periodOptions={chart.periodOptions} onPeriodChange={onPeriodChange}
+      actionLabel={report.actionLabel} actionHref={report.actionHref}>
       <div className="w-full">
-        {report.views && (
-          <div
-            role="group"
-            aria-label={`${report.title} chart view`}
-            className="mb-4 flex flex-wrap gap-5 text-[10px] text-[#555B57]"
-          >
-            {report.views.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => setViewValue(option.value)}
-                className="flex items-center gap-1"
-                aria-pressed={viewValue === option.value}
-              >
-                <span
-                  className={`size-2 rounded-full border ${
-                    viewValue === option.value
-                      ? "border-[#25C269] bg-[#25C269]"
-                      : "border-[#737774]"
-                  }`}
-                />
-                {option.label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {report.currencyOptions && (
-          <div className="mb-3 flex flex-wrap gap-4 text-[10px] text-[#555B57]">
-            {report.currencyOptions.map((currencyOption) => (
-              <button
-                key={currencyOption}
-                type="button"
-                onClick={() => setCurrency(currencyOption as ReportCurrency)}
-                aria-pressed={currency === currencyOption}
-                className="flex items-center gap-1"
-              >
-                <span
-                  className={`size-2 rounded-full border ${
-                    currency === currencyOption
-                      ? "border-[#25C269] bg-[#25C269]"
-                      : "border-[#737774]"
-                  }`}
-                />
-                {currencyOption}
-              </button>
-            ))}
-          </div>
-        )}
-
-        <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-center">
-          <DonutChart
-            segments={chartSegments}
-            centerValue={financeTotal}
-            centerLabel={filteredReport.centerLabel}
-            ariaLabel={`${report.title} report chart for ${period}`}
-          />
-          <ReportLegendGrid items={financeLegends} />
-        </div>
+        {report.views && <div role="group" aria-label={`${report.title} chart view`} className="mb-4 flex flex-wrap gap-5 text-[10px] text-[#555B57]">
+          {report.views.map((option) => <button key={option.value} data-value={option.value} type="button" onClick={chart.selectView} aria-pressed={chart.viewValue === option.value} className="flex items-center gap-1">
+            <span className={`size-2 rounded-full border ${chart.viewValue === option.value ? "border-[#25C269] bg-[#25C269]" : "border-[#737774]"}`} />{option.label}
+          </button>)}
+        </div>}
+        {report.currencyOptions && <div role="group" aria-label="Report currency" className="mb-3 flex flex-wrap gap-4 text-[10px] text-[#555B57]">
+          {report.currencyOptions.map((value) => <button key={value} data-value={value} type="button" onClick={chart.selectCurrency} aria-pressed={currency === value} className="flex items-center gap-1">
+            <span className={`size-2 rounded-full border ${currency === value ? "border-[#25C269] bg-[#25C269]" : "border-[#737774]"}`} />{value}
+          </button>)}
+        </div>}
+        {chart.hasRecords ? <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-center">
+          <DonutChart segments={chart.segments} centerValue={chart.centerValue} centerLabel={chart.centerLabel} ariaLabel={`${report.title} report: ${report.subtitle}`} />
+          <ReportLegendGrid items={chart.legends} />
+        </div> : <div className="flex flex-col items-center gap-5 py-6 text-center"><InsightEmptyState /><strong className="font-exo text-sm text-[#474C48]">No records found</strong></div>}
       </div>
     </ReportCard>
   );
 };
-
 export default ChartReportCard;

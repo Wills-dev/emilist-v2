@@ -1,42 +1,18 @@
-import { ReportTargets } from "../../types";
+import type { ReportTarget } from "../../types/api";
+import { formatReportCurrency } from "../../utils/currency";
 import ReportCard from "../ReportCard/ReportCard";
 import ReportLegendGrid from "../ReportLegendGrid/ReportLegendGrid";
-
-const TargetsCard = ({
-  targets,
-  onEdit,
-}: {
-  targets: ReportTargets;
-  onEdit: () => void;
-}) => (
-  <ReportCard
-    title="Targets"
-    subtitle="18% Goal Completion"
-    periodLabel="2026"
-    actionLabel="Edit Targets"
-    onAction={onEdit}
-  >
-    <ReportLegendGrid
-      items={[
-        { label: "Jobs done", value: targets.jobsDone, color: "#9EF769" },
-        {
-          label: "Amount Earned",
-          value: `₦ ${Number(targets.amountEarned || 0).toLocaleString()}`,
-          color: "#25C269",
-        },
-        {
-          label: "Referrals",
-          value: targets.referralsMade,
-          color: "#B9BDBC",
-        },
-        {
-          label: "Friends Invited",
-          value: targets.friendsInvited,
-          color: "#FF5D7A",
-        },
-      ]}
-    />
+const TargetsCard = ({ target, label, onEdit }: { target: ReportTarget; label: string; onEdit: () => void }) => (
+  <ReportCard title="Targets" subtitle={label} periodLabel={target.duration === "yearly" ? "Annual" : "Monthly"} actionLabel={target.configured ? "Edit Targets" : "Set Targets"} onAction={onEdit}>
+    <div className="w-full space-y-5">
+      <p className="text-center text-sm text-[#667085]">{target.configured ? `${target.progress.overall.toLocaleString()}% Goal Completion` : "Set targets to track your progress"}</p>
+      <ReportLegendGrid items={[
+        { label: "Jobs done", value: `${target.actual.jobs.toLocaleString()} / ${target.goals.jobs.toLocaleString()}`, color: "#9EF769" },
+        { label: "Amount Earned", value: `${formatReportCurrency(target.actual.amount, target.currency)} / ${formatReportCurrency(target.goals.amount, target.currency)}`, color: "#25C269" },
+        { label: "Referrals", value: `${target.actual.referrals.toLocaleString()} / ${target.goals.referrals.toLocaleString()}`, color: "#B9BDBC" },
+        { label: "Friends Invited", value: `${target.actual.invites.toLocaleString()} / ${target.goals.invites.toLocaleString()}`, color: "#FF5D7A" },
+      ]} />
+    </div>
   </ReportCard>
 );
-
 export default TargetsCard;

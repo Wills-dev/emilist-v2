@@ -1,3 +1,4 @@
+import { trackReportEvent } from "@/features/reports/api/recordReportEvent";
 import { useState } from "react";
 import { useStore } from "@/store/authStore";
 import { readCookie } from "@/lib/helpers/cookie";
@@ -11,6 +12,7 @@ export const useMessageDialog = (recipient?: MessageRecipient, onOpen?: () => vo
   const show = () => {
     if (disabled) return;
     if (!readCookie("emilistToken")) { openAuth("login"); return; }
+    if (recipient) trackReportEvent("contact", recipient.businessId ? { resourceType: "business", resourceId: recipient.businessId } : { resourceType: "profile", subjectUserId: recipient.userId });
     onOpen?.();
     setOpen(true);
   };

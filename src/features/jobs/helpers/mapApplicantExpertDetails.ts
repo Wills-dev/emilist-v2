@@ -30,7 +30,7 @@ export const mapApplicantExpertDetails = (applicant: JobApplicant, profile: Busi
       galleryImages: mapped.businessImages, about: [],
     },
     aboutHtml: mapped.businessDescription,
-    recipient: { userId: applicant.applicantUserId ?? "", name: mapped.businessName, image: mapped.image || applicant.image },
+    recipient: { businessId: business._id, userId: applicant.applicantUserId ?? "", name: mapped.businessName, image: mapped.image || applicant.image },
     reviews: {
       totalReviews: count, totalComments: reviewSummary?.totalComments ?? reviews.length,
       averageRating: rating, ratingDistribution: reviewSummary?.ratingDistribution, reviews,

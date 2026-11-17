@@ -1,3 +1,6 @@
+"use client";
+
+import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import type { JobListApplicationDto } from "../../types/listJobs";
 import JobCardActions from "../JobCardActions/JobCardActions";
 import JobCardDetails from "../JobCardDetails/JobCardDetails";
@@ -53,8 +56,9 @@ const JobCard = ({
   compareHref,
   reviewsHref,
 }: JobCardProps) => {
+  const { ref: impressionRef, click: trackClick } = useResourceTracking({ resourceType: "job", resourceId: id });
   return (
-    <div className="max-w-[375.5px] w-full sm:min-w-[375.5px] min-w-75 p-4 bg-[#F9F9F9] rounded-[8px] space-y-8">
+    <div ref={impressionRef} onClickCapture={trackClick} className="max-w-[375.5px] w-full sm:min-w-[375.5px] min-w-75 p-4 bg-[#F9F9F9] rounded-[8px] space-y-8">
       <div className="pb-2.5 border-b border-[#ECECEC] flex items-end justify-between">
         <JobCategory category={category} />
         <JobImagePreview imgUrl={imageUrl} />
