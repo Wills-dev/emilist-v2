@@ -1,4 +1,5 @@
 "use client";
+import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import { usePathname } from "next/navigation";
 import { routes } from "@/lib/helpers/routes";
 
@@ -33,6 +34,7 @@ const MaterialMainInfo = ({
 }: {
   material: ProductReviewResponse;
 }) => {
+  const { ref: impressionRef } = useResourceTracking({ resourceType: "material", resourceId: material.product._id });
   const pathname = usePathname();
   const { product, isLiked, averageRating, numberOfRatings } = material;
   const location = product.deliveryLocations[0];
@@ -73,7 +75,7 @@ const MaterialMainInfo = ({
   );
 
   return (
-    <div className="flex-1 w-full">
+    <div ref={impressionRef} className="flex-1 w-full">
       {" "}
       <div className="flex items-center justify-between space-y-4">
         <BackButton />

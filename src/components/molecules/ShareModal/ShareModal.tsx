@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useShareActions } from "@/features/reports/hooks/useShareActions";
 
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
 import SocialIconBtn from "@/components/atoms/SocialIconBtn/SocialIconBtn";
 
-import { routes } from "@/lib/helpers/routes";
-import { openShare } from "@/lib/helpers/shareInfo";
 import { Copy, Share2 } from "lucide-react";
 
 const ShareModal = ({
@@ -22,77 +20,26 @@ const ShareModal = ({
   type: "user" | "expert" | "job" | "material";
   name: string;
 }) => {
-  const [copied, setCopied] = useState(false);
-
-  const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
-
-  const shareTemplates = {
-    job: {
-      title: "Job Opportunity on Emilist",
-      link: `${webUrl}${routes?.marketplace?.jobInfo(id)}`,
-      shareText: `Check out this job: "${name}" on Emilist. Explore and apply now before it's closed.`,
-    },
-    material: {
-      title: "Checkout Product on Emilist",
-      link: `${webUrl}${routes?.marketplace?.materialInfo(id)}`,
-      shareText: `I found this material "${name}" on Emilist. You might find it useful too.`,
-    },
-    expert: {
-      title: "Expert Profile on Emilist",
-      link: `${webUrl}${routes.profiles.artisan(id)}`,
-      shareText: `Discover ${name} on Emilist. Connect and explore their services and experience.`,
-    },
-    user: {
-      title: "Profile on Emilist",
-      link: `${webUrl}${routes?.profile?.(id)}`,
-      shareText: `Check out ${name}'s profile on Emilist. You might want to connect or collaborate.`,
-    },
-  };
-
-  const shareConfig = shareTemplates[type];
-
-  const copyLink = async () => {
-    await navigator.clipboard.writeText(shareConfig.link);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const nativeShare = async () => {
-    if (navigator.share) {
-      await navigator.share({
-        title: shareConfig.title,
-        text: shareConfig.shareText,
-        url: shareConfig.link,
-      });
-    } else {
-      await copyLink();
-    }
-  };
+  const { title, link, copied, copyLink, nativeShare, whatsapp, shareX, facebook } = useShareActions(id, type, name);
 
   return (
-    <ModalWrapper title={shareConfig?.title} open={isOpen} onClose={onClose}>
+    <ModalWrapper title={title} open={isOpen} onClose={onClose}>
       <p className="text-sm text-gray-400 uppercase tracking-wider mb-3">
         Share via
       </p>
       <div className="grid grid-cols-3 gap-2 mb-5">
         <SocialIconBtn
-          onClick={() =>
-            openShare("whatsapp", shareConfig.link, shareConfig?.shareText)
-          }
+          onClick={whatsapp}
           imgUrl="/assets/images/wa-whatsapp-icon.svg"
           type="whatsapp"
         />
         <SocialIconBtn
-          onClick={() =>
-            openShare("X", shareConfig.link, shareConfig?.shareText)
-          }
+          onClick={shareX}
           imgUrl="/assets/images/x-social-media-logo-icon.svg"
           type="X"
         />
         <SocialIconBtn
-          onClick={() =>
-            openShare("facebook", shareConfig.link, shareConfig?.shareText)
-          }
+          onClick={facebook}
           imgUrl="/assets/images/facebook-square-icon.svg"
           type="facebook"
         />
@@ -103,7 +50,7 @@ const ShareModal = ({
       <div className="mb-3">
         <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 flex-wrap">
           <span className="flex-1 text-xs text-gray-400 truncate">
-            {shareConfig.link}
+            {link}
           </span>
           <button
             onClick={copyLink}

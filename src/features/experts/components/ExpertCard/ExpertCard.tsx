@@ -1,3 +1,6 @@
+"use client";
+
+import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import DotInfoItem from "@/components/atoms/DotInfoItem/DotInfoItem";
 import ItemImage from "@/components/atoms/ItemImage/ItemImage";
 import ItemName from "@/components/atoms/ItemName/ItemName";
@@ -46,12 +49,13 @@ const ExpertCard = ({
   compareHref?: string;
   reviewsHref?: string;
 }) => {
+  const { ref: impressionRef, click: trackClick } = useResourceTracking({ resourceType: "business", resourceId: id });
   const jobType = noOfCompletedJobs < 2 ? "job" : "jobs";
 
   const toggleLike = () => {};
 
   return (
-    <div className="max-w-[375.5px] w-full min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
+    <div ref={impressionRef} onClickCapture={trackClick} className="max-w-[375.5px] w-full min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
       <div className="space-y-4">
         <div className="p-2.5 bg-white rounded-[12px]">
           <ItemImage src={imgUrl} alt={busniessName} />

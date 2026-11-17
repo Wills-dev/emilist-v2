@@ -1,5 +1,6 @@
 "use client";
 
+import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import DatedPosted from "@/components/atoms/DatedPosted/DatedPosted";
 import ItemImage from "@/components/atoms/ItemImage/ItemImage";
 import ItemName from "@/components/atoms/ItemName/ItemName";
@@ -48,6 +49,7 @@ const MaterialCard = ({
   merchantDetail?: string;
   reviewsHref?: string;
 }) => {
+  const { ref: impressionRef, click: trackClick } = useResourceTracking({ resourceType: "material", resourceId: id });
   const currentUser = useStore((state) => state.currentUser);
   const isSeller = Boolean(sellerId && currentUser?._id === sellerId);
   const { quantity, increment, decrement } = useQuantity();
@@ -62,7 +64,7 @@ const MaterialCard = ({
   });
 
   return (
-    <div className="max-w-[375.5px]  w-full sm:min-w-[375.5px] min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
+    <div ref={impressionRef} onClickCapture={trackClick} className="max-w-[375.5px]  w-full sm:min-w-[375.5px] min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
       <div className="space-y-4">
         <div className="p-2.5 bg-white rounded-[12px]">
           <ItemImage src={imgUrl} alt={productName} />

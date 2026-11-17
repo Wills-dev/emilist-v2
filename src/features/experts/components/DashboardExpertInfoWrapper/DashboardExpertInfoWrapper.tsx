@@ -1,5 +1,6 @@
 "use client";
 
+import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import BusinessLikeButton from "@/features/businesses/components/BusinessLikeButton/BusinessLikeButton";
 import MessageButton from "@/features/messages/components/MessageButton/MessageButton";
 import type { ExpertDetailsData } from "../../types/expertDetails";
@@ -50,6 +51,7 @@ const DashboardExpertInfoWrapper = ({
   profilePage?: boolean;
   jobContext?: { jobId: string; tab: string };
 }) => {
+  const { ref: impressionRef } = useResourceTracking({ resourceType: "business", resourceId: expertId }, Boolean(details));
   const profile = details?.profile ?? dashboardExpertProfile;
   const expert = details?.expert ??
     dashboardExperts.find((item) => item.id === expertId) ??
@@ -114,6 +116,7 @@ const DashboardExpertInfoWrapper = ({
           }
         >
           <motion.main
+            ref={impressionRef}
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.08, ease: "easeOut" }}

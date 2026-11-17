@@ -1,7 +1,6 @@
 import { DonutSegment } from "@/components/molecules/DonutChart/DonutChart";
 
 export type ReportTab = "jobs" | "finance" | "trade" | "insights";
-export type TargetDuration = "monthly" | "annual";
 
 export interface ReportLegendItem {
   label: string;
@@ -20,6 +19,8 @@ export interface ChartReportData {
   centerLabel?: string;
   legends: ReportLegendItem[];
   actionLabel?: string;
+  actionHref?: string;
+  hasRecords?: boolean;
   currencyOptions?: string[];
   views?: ReportChartView[];
 }
@@ -31,12 +32,4 @@ export interface ReportChartView {
   centerLabel?: string;
   segments: DonutSegment[];
   legends: ReportLegendItem[];
-}
-
-export interface ReportTargets {
-  duration: TargetDuration;
-  referralsMade: string;
-  friendsInvited: string;
-  jobsDone: string;
-  amountEarned: string;
 }

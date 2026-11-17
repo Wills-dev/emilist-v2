@@ -1,5 +1,6 @@
 "use client";
 
+import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import Link from "next/link";
 import JobMessageButton from "../../JobMessageButton/JobMessageButton";
 import {
@@ -53,6 +54,7 @@ export default function ManagedJobSummary({
   onAction: (action: JobAction, milestoneId?: string) => void;
   onReviewApplicants: () => void;
 }) {
+  const { ref: impressionRef } = useResourceTracking<HTMLElement>({ resourceType: "job", resourceId: job.id });
   const status = normalizeJobStatus(job.status);
   const meta = resolveJobStatusMeta(status);
   const inProgress = isManagedJobInProgress(status);
@@ -79,7 +81,7 @@ export default function ManagedJobSummary({
             ? `Paused at Milestone ${pausedIndex + 1}`
             : applicationMessage || getJobStatusMessage(status, isOwner);
   return (
-    <article className="space-y-6 rounded-xl border border-[#ECECEC] bg-[#F9F9F9] px-3 py-5 sm:p-7">
+    <article ref={impressionRef} className="space-y-6 rounded-xl border border-[#ECECEC] bg-[#F9F9F9] px-3 py-5 sm:p-7">
       <div className="flex items-center justify-between gap-4">
         <JobCategory category={job.category} variant="secondary" />
         <StatusBadge label={meta.label} tone={meta.tone} />

@@ -1,4 +1,5 @@
 "use client";
+import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import FlagActionBtn from "@/components/atoms/FlagActionBtn/FlagActionBtn";
@@ -44,6 +45,7 @@ const JobMainInfo = ({
   showDashboardActions?: boolean;
   job: JobDetailsViewModel;
 }) => {
+  const { ref: impressionRef } = useResourceTracking({ resourceType: "job", resourceId: job.id });
   const currentUserId = useStore((state) => state.currentUser?._id);
   const isOwner = Boolean(currentUserId && currentUserId === job.ownerId);
   const statusMeta = resolveJobStatusMeta(job.status);
@@ -53,7 +55,7 @@ const JobMainInfo = ({
   });
 
   return (
-    <div className="flex-1 w-full">
+    <div ref={impressionRef} className="flex-1 w-full">
       <div className="flex items-center justify-between space-y-4">
         <BackButton />
         <FlagActionBtn onClick={() => {}} actionTitle="Flag Job" />

@@ -39,8 +39,12 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Layout-matched overview loading skeletons and staggered card animations
 - Filterable, animated weekly, monthly, and yearly job-completion doughnut reports with accessible percentage callouts
 - Responsive dashboard Reports with Jobs, Finance, Trade, and Insights views, interactive doughnut charts, CSV exports, and target management
-- Responsive dashboard messaging with searchable conversations, local sending, attachment controls, an emoji picker, and populated and empty states
-- Responsive notification modal with populated and empty states, sorting, action links, and clear-all handling
+- API-backed messaging with Socket.IO updates, conversation modals, immediate outgoing messages, delivery icons, voice recording, attachments, read receipts, presence, typing indicators, and incoming-message sounds
+- API-backed notification modal with pagination, read status, deletion, loading and empty states
+- Wallet overview, currency wallets, funding, payout accounts, withdrawal requests, and transaction history
+- Milestone payments through Wallet or Paystack, invoice/receipt downloads, and payment-return confirmation
+- API-backed job analytics with reusable month/year and date-range filters
+- Applicant business profiles and optimistic business likes, with business IDs kept separate from messaging user IDs
 - Responsive dashboard drawer with grouped navigation, Pro plan access, user identity, and active-route styling
 - Responsive dashboard support page with direct contact actions, categorized FAQs, the supplied support artwork, and staggered animations
 - Reusable segmented tabs with desktop pill and mobile select presentations
@@ -57,6 +61,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Tailwind CSS 4 and shadcn/ui primitives
 - TanStack Query for server-state fetching and caching
 - Axios for API requests
+- Socket.IO client for real-time messaging
 - Zustand for client-side/auth flow state
 - Radix UI, Lucide icons, Sonner, Framer Motion, and date-fns
 - Tiptap for document-style material, business-description, and profile-bio editing and rendering
@@ -74,6 +79,7 @@ src/
 │   └── ui/       # shadcn/ui primitives
 ├── features/     # Domain modules: API, hooks, types, and UI
 │   ├── auth/
+│   ├── businesses/
 │   ├── experts/
 │   ├── jobs/
 │   ├── materials/
@@ -81,8 +87,11 @@ src/
 │   ├── notifications/
 │   ├── overview/
 │   ├── orders/
+│   ├── payments/
+│   ├── profiles/
 │   ├── reports/
 │   ├── settings/
+│   ├── subscriptions/
 │   └── support/
 ├── lib/          # Shared helpers, hooks, constants, and API utilities
 └── store/        # Zustand stores and store types
@@ -106,10 +115,11 @@ cd emilist-v2
 npm install
 ```
 
-Create a `.env.local` file in the project root:
+Copy `.env.example` to `.env.local` in the project root and set the values for your environment:
 
 ```bash
-NEXT_PUBLIC_BACKEND_BASE_URL=https://your-api.example.com
+NEXT_PUBLIC_BACKEND_BASE_URL=https://your-api.example.com/api/v1
+NEXT_PUBLIC_SOCKET_URL=https://your-api.example.com
 NEXT_PUBLIC_WEB_URL=http://localhost:3000
 
 # Optional. Set when cookies need to work across subdomains in production.
@@ -151,7 +161,7 @@ Next.js route conventions (`page.tsx`, `layout.tsx`, and `loading.tsx`) and non-
 
 ### Hooks separate behaviour from presentation
 
-Put request state, form state, mutations, validation, and submit handlers in hooks. Components should primarily render the UI and connect inputs to a hook's returned values and handlers.
+Put request state, form state, mutations, validation, and submit handlers in hooks. Components should primarily render the UI and connect inputs to a hook's returned values and handlers. Keep business logic and event-handler implementations in `.ts` hooks and helpers, and reuse existing dashboard components before introducing another layout.
 
 The material editing flow follows this separation explicitly: modal composition, form fields, form state and payload normalization, image state, image presentation, and API mutations are maintained as focused modules.
 
@@ -258,13 +268,13 @@ Bank Details uses a two-column field grid on larger screens and a single column 
 
 `useBankDetailsForm` owns the temporary multi-account form state. Passwords are maintained separately from bank-detail values and cleared after a save. The Add another bank action appears only after an existing account has been saved, and another account cannot be added while the current one is incomplete or unsaved. This state is currently client-side only and is structured for the future fetch, create, update, and delete bank-detail endpoints.
 
-No universal provider-neutral bank-account ownership lookup is integrated. Available services have regional constraints—for example, Paystack account resolution targets supported African markets, Plaid ownership products cover supported banking regions, and Stripe Financial Connections focuses on US bank accounts—so verification should be connected through the future backend based on the product's supported countries.
+The settings bank-detail drafts are separate from wallet payout accounts. Wallet payout accounts use the connected NGN bank lookup and account-resolution endpoints described under Wallets, payments, and receipts.
 
-Services supports users with more than one expert business. The selector changes the active service without turning display values into inputs. The tab is composed from focused profile, description, photo, and business-detail cards so editing responsibilities remain isolated and readable. These flows handle business details, description, display image, business photos, formatted currency pricing, and certificate, membership, and insurance arrays. Credential management uses the shared segmented control to switch between Certificates, Memberships, and Insurance, while retaining the collapsible form patterns from service registration. Mutations submit nested `FormData` to `PATCH /business/update-business/:id`. Until a business-list endpoint is available, typed expert fixtures live in `src/features/settings/constants/expertServices.ts`.
+Services supports users with more than one expert business. The selector changes the active service without turning display values into inputs. The tab is composed from focused profile, description, photo, and business-detail cards so editing responsibilities remain isolated and readable. These flows handle business details, description, display image, business photos, formatted currency pricing, and certificate, membership, and insurance arrays. Credential management uses the shared segmented control to switch between Certificates, Memberships, and Insurance, while retaining the collapsible form patterns from service registration. Mutations submit nested `FormData` to `PATCH /business/update-business/:id`. Services are loaded from `GET /business/fetch-user-business` through the shared businesses feature.
 
-Security provides password fields and a confirmed account-deactivation flow. Deactivation calls `PATCH /auth/deactivate-user`, then clears the local session and cached authenticated data. Notification preferences currently use local state and are ready to be replaced by notification-settings endpoints.
+Security provides password fields and a confirmed account-deactivation flow. Deactivation calls `PATCH /auth/deactivate-user`, then clears the local session and cached authenticated data. Notification preferences are persisted per user in browser storage through `notificationPreferencesStore`. The existing Allow new message notification setting controls incoming-message sounds; preference synchronization with the backend is not connected.
 
-Subscriptions presents responsive plan summaries and a TanStack Table billing history with the shared pagination controls. Each history row can print a receipt containing its transaction ID, amount, issue date, payment date, description, and status. Plan and billing records currently come from `src/features/settings/constants/subscriptions.ts`; plan activation, renewal, and remote subscription retrieval remain integration points for their future endpoints.
+Subscriptions uses `GET /subscription/get-plans`, with `duration=monthly` or `duration=yearly`, plus `GET /subscription/get-user-subscription` and `GET /subscription/get-all-user-subscriptions` for the current plan and history. Activation uses `POST /subscription/subscribe-plan` from a reusable payment modal with Wallet and Paystack options; Paystack sends `paymentMethod: "Card"`. Basic is free and displays “Doesn’t expire.” The selected settings tab persists in the URL, including after refresh. Paid yearly activation remains dependent on the backend billing-duration contract.
 
 ### Dashboard overview
 
@@ -323,7 +333,13 @@ Leads require an active subscription on a non-basic plan. The client sends only 
 
 **Leads contract assumptions:** the adapter currently expects the shared `{ message, data: { jobs, currentPage, totalPages, totalJobs } }` envelope and treats HTTP 402/403 as subscription restrictions. Confirm these against a real endpoint response. Other failures show an error with retry; malformed successful responses are rejected rather than displayed as empty results.
 
-Editing is API-backed. Other job actions without mutation endpoints currently display availability feedback. Applicant, invoice, and payment collections use separate view models and should be connected when their response contracts are available; rendering these panels does not imply that hiring, payment, or milestone mutations are integrated.
+Applicants are loaded from `GET /jobs/fetch-applicants`. Regular-job application acceptance/rejection and job pause/unpause use `PATCH /jobs/update-application-status/{projectId}`; despite the parameter name, `projectId` is an **application ID**. An accepted applicant is labelled accordingly, while competing applications are dimmed and response actions are restricted until cancellation. Biddable jobs retain their offer/history actions.
+
+Applicant details reuse the existing expert profile and review layouts. `GET /business/fetch-single-business/{businessId}` fetches the business used in the application and includes the **logged-in viewer’s user ID** as the `userId` query parameter for personalized like state. Business likes use `PATCH /business/like-business/{businessId}` and `PATCH /business/unlike-business/{businessId}` with optimistic updates and rollback on failure. Messaging targets the **applicant’s user ID**, never the business ID or application ID. The compact message icon appears beside Share on expert details, not on application cards.
+
+Job analytics uses `GET /jobs/user-job-analytics` with optional `year`, `month`, `startDate`, and `endDate` parameters. Cards show `totalJobs`, `totalActiveJobs`, `totalOverdueJobs`, and `totalCompletedJobs`, with matching loading skeletons and retry handling. The reusable `DateFilter` combines searchable month/year dropdowns, a validated date range, and Clear filters for all-time results; a date range replaces month/year parameters.
+
+Invoice and milestone-payment details use real payment status, actual amount paid, payment method, and payment date. Paid documents download as receipts; unpaid documents download as invoices. Invoice identifiers are shortened and copyable. Dispute actions remain placeholders until the dispute endpoint is supplied. Other actions without confirmed mutation contracts continue to show availability feedback.
 
 ### Role-specific profiles
 
@@ -335,7 +351,7 @@ Editing is API-backed. Other job actions without mutation endpoints currently di
 | `/dashboard/profiles/[kind]/[id]/reviews` | Profile reviews within the dashboard. |
 | `/profile/[id]` | Compatibility destination for older links that contain only a user ID. |
 
-Employer and merchant pages share `PersonProfileView`; artisans reuse the expert profile and review components. Employer summaries resolve through `?jobId=...`, and merchant summaries through `?materialId=...`, verifying that the source record belongs to the requested user. Full profile/review APIs are not yet connected. Missing sources show an unavailable state; product ratings are not used as merchant ratings. Artisan profiles continue to use the existing expert fixtures.
+Employer and merchant pages share `PersonProfileView`; artisans reuse the expert profile and review components. Employer summaries resolve through `?jobId=...`, and merchant summaries through `?materialId=...`, verifying that the source record belongs to the requested user. Full profile/review APIs are not yet connected. Missing sources show an unavailable state; product ratings are not used as merchant ratings. Applicant-context artisan profiles fetch the application’s business and reuse the expert presentation. General artisan marketplace/profile routes still use the existing expert fixtures where remote listing/profile lookup is not connected.
 
 The singular `/profile/[id]` route cannot resolve a generic user without a lookup API and currently shows an unavailable state. It is not the current user's settings page; that remains `/dashboard/settings`.
 
@@ -376,27 +392,73 @@ Public and dashboard expert profiles reuse the same profile and review component
 
 ### Dashboard messages
 
-The authenticated messaging page is available at `/dashboard/messages`. The desktop sidebar, mobile dashboard drawer, and dashboard header message icon all navigate to this route. The page follows the dashboard `Container` structure and separates inbox search, conversation rows, chat headers, message bubbles, the composer, the empty state, and state management into focused Atomic Design and feature modules.
+The authenticated message center is at `/dashboard/messages`. The desktop sidebar, mobile drawer, and header message icon navigate to this full page. Desktop keeps the inbox and chat side by side; mobile retains the original animated transitions between them. Contact previews truncate to one line, and message sections show Today, Yesterday, or the existing date format for older days.
 
-Typed temporary conversations live in `src/features/messages/constants/dummyMessages.ts` until the messaging endpoint is available. `messageThreads` renders the populated inbox and active conversation, while `emptyMessageThreads` can be passed to `MessagesWrapper` to test the supplied `Message-emptystate.svg` state. The `useMessages` hook owns search, conversation selection, unread clearing, responsive panel state, and locally sent messages so endpoint integration can replace the data source without restructuring the UI.
+Messaging lives under `src/features/messages`: `api/` owns HTTP requests, `queries/` user-scoped cache keys, `hooks/` state and event handlers, `helpers/` mapping/validation/cache updates, `audio/` incoming chimes, and `components/` presentation. It uses the shared authenticated Axios client and `socket.io-client`; temporary message fixtures have been removed.
 
-On small screens, selecting a conversation slides the chat in from the right, while returning to the inbox reverses the transition. Desktop retains both panels side by side. The composer uses separate document and image inputs: the file control accepts common document, spreadsheet, presentation, text, and archive formats, while the image control accepts `image/*` only. The shared `EmojiPicker` provides grouped emoji selection and closes on outside click or Escape. The chat body uses the `GrayedLogo` message variant as a low-opacity blurred watermark.
+| Endpoint | Usage |
+| --- | --- |
+| `GET /chat/fetch-all-chat` | Paginated inbox, optional search, conversation unread counts, and global unread count. |
+| `GET /chat/fetch-message/{otherUserId}` | Message history for the other participant’s **user ID**, with `page` and `limit`. |
+| `POST /chat/send-message/{receiverId}` | Multipart message creation using `content` and repeated `attachments` fields. |
+| `PATCH /chat/chats/{chatId}/read` | Mark a conversation read using its **chat ID**. |
+
+Page 1 contains the newest history page; older pages are prepended in chronological order. Messages are deduplicated by `_id` so HTTP responses and socket echoes appear once. Outgoing messages appear immediately, with a clock while pending, one tick when sent, two ticks when read, and a red failure icon. The send button keeps its normal icon. Failed sends remain visible and preserve the draft for retry. Confirmed messages update cached history directly without a full history refetch.
+
+Socket authentication uses `auth: { token }`. The client handles `newMessage`, `messageSent`, `messagesRead`, `getOnlineUsers`, `typing`, and `stopTyping`; typing events sent to the server contain `receiverId` and `chatId`. Reconnection refreshes the inbox and active history. Online badges are green and Offline badges are red. Opening a visible conversation, receiving an active message, or returning to a visible browser tab synchronizes read status.
+
+The shared composer supports text up to 5,000 characters and up to ten image, document, or audio attachments, each at most 15 MB. File and image controls remain separate. Voice recording includes Stop, Cancel, and an audio preview before sending; it requires microphone permission and HTTPS or localhost. The browser sets the multipart boundary; do not manually set the FormData Content-Type. Emoji selection reuses the shared `EmojiPicker`.
+
+`MessageButton` opens the narrower 80vh `MessageModal` for starting or continuing a conversation outside the full message center. Pass a `MessageRecipient` containing the recipient’s **user ID**, name, and optional image. Existing history loads automatically; a new conversation shows the shared empty state and composer. The server creates the chat ID on the first send. Modal content mounts only while open, and closing it releases its socket listeners and typing timers.
+
+Incoming `newMessage` events play a short chime automatically when the user’s general message-notification preference is enabled. Own messages, outgoing `messageSent` echoes, history fetches, duplicate events, and ordinary clicks do not play a chime. There is no separate Inbox sound toggle or test chime. Audio unlocks silently during normal page interaction, resumes after interruption, and retains the unlocked context across navigation. Browser autoplay restrictions and device/browser volume settings still apply. Notification preferences are stored per user locally, not synchronized across devices.
+
+### Wallets, payments, and receipts
+
+`/dashboard/payments` uses the wallet overview endpoint for the selected balance, currency selector, wallet list, and default payout bank account. Wallet loading uses a skeleton matching the card. Amount inputs display commas and API payloads use numbers; wallet payments require a wallet matching the payment currency.
+
+| Endpoint | Usage |
+| --- | --- |
+| `GET /wallet/fetch-wallet-overview` | Selected wallet, all currency wallets, and default payout account; accepts `walletId` or `currency`. |
+| `GET /wallet/fetch-wallets` | Available wallets for payment forms. |
+| `POST /wallet/create-wallet` | Create a wallet for a currency. |
+| `PATCH /wallet/set-default-wallet/{walletId}` | Set the default wallet after confirmation. |
+| `POST /wallet/initiate-wallet-funding` | Paystack card funding or bank-transfer funding with proof of payment. |
+| `GET /wallet/fetch-banks` | Banks displayed in the searchable, scrollable bank selector. |
+| `POST /wallet/add-bank-account` | Resolve and save an NGN payout account. |
+| `POST /wallet/withdraw-funds` | Request a withdrawal for admin approval. |
+| `GET /transaction/fetch-all-user-transactions` | Paginated transaction history with references and related identifiers. |
+| `GET /transaction/fetch-my-transaction/{transactionId}` | Transaction details/status. |
+| `GET /transaction/verify-paystack-payment/{reference}` | Verify a returning Paystack payment. |
+| `POST /jobs/pay-for-job` | Pay a milestone through Wallet or Paystack. |
+
+Milestone payments always include the milestone amount; additional invoice cost is optional. Paystack appears as the option label while requests send `paymentMethod: "Card"`. Checkout redirects accept `data.paymentLink` and the supported authorization URL fields. A redirect alone does not establish payment success: return handling verifies the reference, polls transaction status, refreshes related data, and shows confirmation for wallet, job, and subscription payments.
+
+Payment return URLs use `NEXT_PUBLIC_WEB_URL`, falling back to the browser origin when unset. Wallet funding returns to `/dashboard/payments`, job payments to the originating job path/section, and subscriptions to `/dashboard/settings?tab=subscriptions`. Keep the checkout reference and transaction context intact when verifying a return.
 
 ### Dashboard reports
 
-The authenticated Reports page is available at `/dashboard/reports`. It provides Jobs and Applications, Earnings and Expenses, Orders and Sales, and Insights and Targets views. Report search, type tabs, month and year selectors, per-card period filters, and CSV exports are composed from focused feature components rather than a single route-level implementation.
+`/dashboard/reports` uses the existing Reports and Insights cards, doughnut charts, legends, tabs, target modal, and empty-state artwork with API-backed data. Request clients, types, query keys, state hooks, validation, and chart mapping live separately under `src/features/reports`. Requests reuse the authenticated Axios client and `NEXT_PUBLIC_BACKEND_BASE_URL`; no second API base URL is required.
 
-The generic `DonutChart` molecule accepts arbitrary labelled segments, centre content, colors, and display values. Segment proportions come directly from their numeric values, animate without modifying their SVG dash lengths, and expose accessible mouse-hover and keyboard-focus tooltips. The Jobs centre value represents the sum of active, pending, completed, and overdue jobs. Applications can switch between Applicants and My Applications datasets, while Finance cards can convert totals and legend values between NGN, USD, EUR, and CAD using temporary development rates.
+| Endpoint | Usage |
+| --- | --- |
+| `GET /reports` | Jobs, applicants/my applications, finance, orders/sales, insights, and target progress. |
+| `GET /reports/export` | Download the backend-generated CSV with the same filters. |
+| `GET /reports/targets` | Load the target for the selected monthly or annual period and currency. |
+| `PUT /reports/targets` | Create or update targets for that period and currency. |
+| `POST /reports/events` | Record actual impressions, clicks, shares, and contacts. |
 
-Every populated report card has a functional period dropdown. Changing the period updates its date range, chart dataset, centre value, and legend values. Insights use yearly filters, while the other report groups use 7-day, 30-day, and 90-day periods. Report fixtures live in `src/features/reports/constants/dummyReports.ts` and filtering helpers live under `src/features/reports/utils` pending API integration.
+Month selection sends only `year`, `month`, and `currency`. Year selection sends `year`, `range=year`, and `currency`; rolling ranges send `range=last7days`, `last30days`, or `last90days`. Custom dates send `startDate`, `endDate`, and `currency` after Apply range. Clear filters resets the date drafts, selected period, currency, and report search to the current month and NGN. Date-range controls expand and collapse smoothly, respect reduced-motion preferences, and leave calendar popovers unclipped after opening. The displayed date label comes from `report.filters.label`. Card period controls share this filter state. Changing currency refetches backend aggregates; there are no frontend exchange rates or simulated period scaling. CSV export uses the same normalized parameters and never recalculates the report locally.
 
-The shared targets modal supports both a blank Set Targets state and a prefilled Review Targets state for monthly or annual goals. Saving updates the local Targets card and displays confirmation feedback. `ReportsWrapper` accepts `hasData={false}` to render reusable Job Summary and Application Summary empty cards with the existing `InsightEmptyState` illustration.
+The search box filters the four local report categories and is not sent to the aggregate API. Skeletons match the report cards. Empty sections show No records found. Flagged application metrics are hidden when `flaggedTrackingAvailable` is false, and remaining-click metrics are hidden when the API returns a null limit. Promotion duration, clicks, and target completion use server values, including a configured/unconfigured target state and the backend tracking note.
+
+Target forms preserve the existing layout, format amounts with commas, and send numeric `job`, `amount`, `referrals`, and `invites` fields. Annual maps to `duration: "yearly"` and omits `month`; Monthly maps to `duration: "monthly"` with the selected year/month. The endpoint upserts by period/currency. Successful saves refresh the user’s report and target queries; failed saves keep the modal open for retry.
+
+Tracking records impressions when real job, material, business, or profile content becomes visible, clicks on resource-detail links, successful share actions, and authenticated contact actions that open messaging. Visibility observers disconnect after recording. Fixture resources are excluded, repeated visibility callbacks for the same element/resource are deduplicated, and tracking failures do not block navigation or messaging. Resource events send only `resourceId` and `resourceType`; the backend resolves ownership. Profile events send `subjectUserId` instead. Saves and invitations remain backend-tracked through their existing mutations. Unrecorded historical activity is not reconstructed.
 
 ### Notifications
 
-The dashboard notification bell opens the responsive notification modal from `src/features/notifications`. The modal supports latest/oldest sorting, action links, a scrollable populated state, and a clear action that reveals the `NotificationEmpty` state.
-
-Typed development fixtures live in `src/features/notifications/constants/testNotifications.ts`. The exported `testNotifications` collection opens the populated state with ten records, while `emptyNotifications` can be supplied to render the empty state directly. During manual testing, selecting **Clear Notifications** also transitions from populated to empty without changing code.
+The dashboard notification bell opens the responsive, API-backed modal in `src/features/notifications`. Notifications use `GET /notification/fetch-user-notification` with `page` and `limit`; marking read uses `PATCH /notification/mark-as-read/{notificationId}`, and deletion uses `DELETE /notification/clear-notification/{notificationId}`. The feature separates response normalization, queries, mutations, and presentation, with loading, empty, and error states. General message/email notification preferences live under Settings → Notifications; the message preference also controls incoming chat sounds.
 
 ### Dashboard support
 
@@ -434,11 +496,12 @@ Use Tailwind utilities and the theme tokens defined in `src/app/globals.css`. Pr
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_BACKEND_BASE_URL` | Yes | Base URL used by the Axios API client. |
+| `NEXT_PUBLIC_BACKEND_BASE_URL` | Yes | REST base URL used by Axios, including `/api/v1`. |
+| `NEXT_PUBLIC_SOCKET_URL` | Yes for messaging | Socket.IO server origin, without `/api/v1` (for example, `https://be.emilist.com`). |
 | `NEXT_PUBLIC_WEB_URL` | Recommended | Public application base URL used for payment return URLs, referrals, and QR-code download links. Payment return URLs fall back to the browser origin if unset. |
 | `NEXT_PUBLIC_COOKIE_DOMAIN` | Optional | Cookie domain for multi-subdomain production deployments. |
 
-Set `NEXT_PUBLIC_WEB_URL` to the frontend address for each environment (for example, `http://localhost:3000` locally). Wallet funding returns to `/dashboard/payments`; job payments return to the current Job Info path and section. Restart the development server after changing this variable; production builds require rebuilding because `NEXT_PUBLIC_` values are bundled at build time.
+Set `NEXT_PUBLIC_WEB_URL` to the frontend address for each environment (for example, `http://localhost:3000` locally). Wallet funding returns to `/dashboard/payments`; job payments return to the current Job Info path and section. Restart the development server after changing environment variables. Set deployment values before building; production changes require rebuilding because `NEXT_PUBLIC_` values are bundled at build time. Use `.env.example` as the template and keep local environment files out of commits.
 
 ## License
 
