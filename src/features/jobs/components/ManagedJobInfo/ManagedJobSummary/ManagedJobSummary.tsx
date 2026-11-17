@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import JobMessageButton from "../../JobMessageButton/JobMessageButton";
 import {
   Pencil,
   Trash2,
-  MessageSquare,
   CircleHelp,
   MoreVertical,
 } from "lucide-react";
@@ -209,13 +209,7 @@ export default function ManagedJobSummary({
           )}
           {inProgress && (
             <>
-              <Link
-                href={routes.dashboardLinks.messages}
-                aria-label="Messages"
-                className={iconButton}
-              >
-                <MessageSquare className="size-4" />
-              </Link>
+              <JobMessageButton job={job} isOwner={isOwner} className={iconButton} />
               <Link
                 href={routes.dashboardLinks.support}
                 aria-label="Get support"

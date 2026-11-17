@@ -1,5 +1,8 @@
 "use client";
 
+import BusinessLikeButton from "@/features/businesses/components/BusinessLikeButton/BusinessLikeButton";
+import MessageButton from "@/features/messages/components/MessageButton/MessageButton";
+import type { ExpertDetailsData } from "../../types/expertDetails";
 import { toast } from "sonner";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import { motion } from "framer-motion";
@@ -39,13 +42,16 @@ const DashboardExpertInfoWrapper = ({
   publicPage = false,
   profilePage = false,
   jobContext,
+  details,
 }: {
+  details?: ExpertDetailsData;
   expertId: string;
   publicPage?: boolean;
   profilePage?: boolean;
   jobContext?: { jobId: string; tab: string };
 }) => {
-  const expert =
+  const profile = details?.profile ?? dashboardExpertProfile;
+  const expert = details?.expert ??
     dashboardExperts.find((item) => item.id === expertId) ??
     (jobContext || profilePage ? undefined : dashboardExperts[0]);
 
@@ -131,7 +137,7 @@ const DashboardExpertInfoWrapper = ({
                 <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#ECECEC] pb-4">
                   <div className="space-y-2">
                     <p className="text-xs italic text-[#707471]">
-                      {dashboardExpertProfile.availability}
+                      {profile.availability}
                     </p>
                     <div className="flex flex-wrap items-center gap-3">
                       <ItemName
@@ -157,7 +163,7 @@ const DashboardExpertInfoWrapper = ({
                         icon={<LocationIcon />}
                       />{" "}
                       <InfoItem
-                        value={dashboardExpertProfile.noticePeriod}
+                        value={profile.noticePeriod}
                         icon={<ClockIcon />}
                       />
                       <InfoItem
@@ -179,14 +185,12 @@ const DashboardExpertInfoWrapper = ({
                       type="expert"
                       name={expert.businessName}
                     />
-                    <LikeButton
-                      isLiked={expert.isLiked}
-                      onToggleLike={() => {}}
-                    />
+                    {details?.recipient && <MessageButton recipient={details.recipient} compact />}
+                    {details ? <BusinessLikeButton businessId={expert.id} liked={expert.isLiked} /> : <LikeButton isLiked={expert.isLiked} onToggleLike={() => {}} />}
                   </div>
                 </div>
                 <ImageSliderWrapper
-                  images={dashboardExpertProfile.galleryImages}
+                  images={profile.galleryImages}
                   productName={expert.businessName}
                   imageClassName={
                     jobContext
@@ -205,7 +209,7 @@ const DashboardExpertInfoWrapper = ({
                 />
                 <div className="rounded-lg bg-white p-4 text-sm leading-6 text-[#5E625F]">
                   <RichTextContent
-                    value={dashboardExpertProfile.about
+                    value={details?.aboutHtml ?? profile.about
                       .map((paragraph) => `<p>${paragraph}</p>`)
                       .join("")}
                   />
@@ -240,6 +244,7 @@ const DashboardExpertInfoWrapper = ({
             }
           >
             <ExpertReviewSummary
+              data={details?.reviews}
               expertId={expert.id}
               publicPage={publicPage}
               reviewsHref={reviewsHref}
