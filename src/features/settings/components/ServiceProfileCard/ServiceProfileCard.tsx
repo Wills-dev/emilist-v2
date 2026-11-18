@@ -1,3 +1,4 @@
+import DeleteBusinessButton from "../DeleteBusinessButton/DeleteBusinessButton";
 import { formatNoticePeriod } from "../../helpers/formatNoticePeriod";
 import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
@@ -29,7 +30,10 @@ const ServiceProfileCard = ({
 }) => (
   <div className="rounded-lg bg-[#F4F7F5] p-3">
     <div className="mb-4 space-y-2">
-      <label htmlFor="profile-business-selector" className="block text-sm font-medium text-[#303632]">Business / service</label>
+      <div className="flex items-center justify-between gap-3">
+        <label htmlFor="profile-business-selector" className="block text-sm font-medium text-[#303632]">Business / service</label>
+        <DeleteBusinessButton key={expert.id} businessId={expert.id} businessName={expert.businessName} />
+      </div>
       <div className="rounded-lg bg-white px-2">
       <select
         id="profile-business-selector"
