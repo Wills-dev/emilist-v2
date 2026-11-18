@@ -26,7 +26,7 @@ export const mapBusiness = (business: BusinessDto): UserExpertService => ({
   reviews: Array.isArray(business.reviews) ? business.reviews.length : business.reviews ?? 0,
   level: business.level ?? "",
   isVerified: business.isVerified ?? false,
-  certifications: business.certifications ?? business.certification ?? [],
-  memberships: business.memberships ?? business.membership ?? [],
-  insurances: business.insurances ?? business.insurance ?? [],
+  certifications: (business.certifications ?? business.certification ?? []).map((item) => ({ ...item, id: item._id ?? item.id ?? "" })),
+  memberships: (business.memberships ?? business.membership ?? []).map((item) => ({ ...item, id: item._id ?? item.id ?? "" })),
+  insurances: (business.insurances ?? business.insurance ?? []).map((item) => ({ ...item, id: item._id ?? item.id ?? "" })),
 });

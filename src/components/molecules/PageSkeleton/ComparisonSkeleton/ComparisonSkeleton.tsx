@@ -1,31 +1,19 @@
 import Container from "@/components/atoms/Container/Container";
 import { Skeleton } from "@/components/ui/skeleton/skeleton";
-import { SkeletonLines } from "../SkeletonSections/SkeletonSections";
-export default function ComparisonSkeleton() {
+import CompareMaterialCardSkeleton from "@/features/materials/components/CompareMaterialCard/CompareMaterialCardSkeleton/CompareMaterialCardSkeleton";
+import ComparisonProfileCardSkeleton from "./ComparisonProfileCardSkeleton";
+
+export default function ComparisonSkeleton({ variant = "job" }: { variant?: "job" | "expert" | "material" }) {
   return (
     <Container variant="small" className="py-4">
-      <div role="status" aria-busy="true" aria-label="Loading comparison">
-        <div aria-hidden="true" className="space-y-5">
-          <div className="flex justify-between">
+      <div role="status" aria-busy="true" aria-label={`Loading compared ${variant === "expert" ? "experts" : variant === "material" ? "materials" : "jobs"}`}>
+        <div aria-hidden="true">
+          <div className="mb-4 flex items-center justify-between gap-4">
             <Skeleton className="h-8 w-20" />
-            <Skeleton className="h-6 w-40" />
+            <div className="flex gap-3">{variant === "job" && <Skeleton className="h-9 w-32" />}<Skeleton className="h-5 w-40" /></div>
           </div>
-          <div className="flex gap-4 overflow-hidden">
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="min-w-72 flex-1 space-y-6 rounded-lg border border-[#ECECEC] p-4"
-              >
-                <Skeleton className="h-40 w-full" />
-                <Skeleton className="h-6 w-3/4" />
-                {[0, 1, 2, 3].map((j) => (
-                  <div key={j} className="border-t py-4">
-                    <SkeletonLines />
-                  </div>
-                ))}
-                <Skeleton className="h-10 w-full" />
-              </div>
-            ))}
+          <div className="flex w-full gap-3 overflow-hidden pb-4">
+            {[0, 1, 2, 3].map((index) => variant === "material" ? <CompareMaterialCardSkeleton key={index} /> : <ComparisonProfileCardSkeleton key={index} expert={variant === "expert"} />)}
           </div>
         </div>
       </div>

@@ -137,6 +137,7 @@ export const mapJobDetails = (job: JobDetailsDto): JobDetailsViewModel => {
     applications: job.applications,
     applicationId: job.applicationId,
     acceptedApplicationId: job.acceptedApplicationId,
+    hasReviewedJobOwner: job.hasReviewedJobOwner === true,
     applicationStatus: job.applicationStatus,
     type: resolveJobApplicationType(job) ?? job.type,
     status: job.status || "listed",

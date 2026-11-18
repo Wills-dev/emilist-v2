@@ -36,6 +36,7 @@ export interface JobMilestoneDto {
 }
 
 export interface JobDetailsDto extends FetchAllJobsItemDto {
+  hasReviewedJobOwner?: boolean;
   disputeSummary?: { canCloseContract?: boolean };
   acceptedApplicationId?: string;
   maximumPrice?: number;
@@ -65,6 +66,7 @@ export interface FetchJobByIdQuery {
 }
 
 export interface JobDetailsViewModel {
+  hasReviewedJobOwner?: boolean;
   canCloseContract?: boolean;
   acceptedApplicationId?: string;
   applications?: import("./listJobs").JobListApplicationDto[];

@@ -8,6 +8,7 @@ import { useExpertServicesSettings } from "../../hooks/useExpertServicesSettings
 import { useProfileImageUpload } from "../../hooks/useProfileImageUpload";
 import EditExpertServiceModal from "../EditExpertServiceModal/EditExpertServiceModal";
 import ManageExpertCredentialsModal from "../ManageExpertCredentialsModal/ManageExpertCredentialsModal";
+import ServiceCredentials from "../ServiceCredentials/ServiceCredentials";
 import ServiceBusinessDetails from "../ServiceBusinessDetails/ServiceBusinessDetails";
 import ServiceDescriptionCard from "../ServiceDescriptionCard/ServiceDescriptionCard";
 import ServicePhotosCard from "../ServicePhotosCard/ServicePhotosCard";
@@ -69,6 +70,8 @@ const ServicesTab = () => {
         onEdit={() => setEditOpen(true)}
         onManageCredentials={() => setCredentialsOpen(true)}
       />
+
+      <ServiceCredentials key={`credentials-${expert.id}`} expert={expert} onUpdate={settings.updateExpertLocally} />
 
       {editOpen && (
         <EditExpertServiceModal

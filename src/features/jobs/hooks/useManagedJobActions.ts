@@ -12,9 +12,11 @@ import { jobActionLabels } from "../helpers/jobManagement";
 import type { JobAction } from "../types/jobManagement";
 import type { JobDetailsViewModel } from "../types/jobDetails";
 
-export const useManagedJobActions = (job: JobDetailsViewModel | undefined, originTab: string) => {
+export const useManagedJobActions = (job: JobDetailsViewModel | undefined) => {
   const router = useRouter();
   const userId = useStore((state) => state.currentUser?._id);
+  const [reviewOwnerOpen, setReviewOwnerOpen] = useState(false);
+  const closeOwnerReview = () => setReviewOwnerOpen(false);
   const [milestoneId, setMilestoneId] = useState<string | null>(null);
   const [playbackAction, setPlaybackAction] = useState<"pause" | "resume" | null>(null);
   const changingPlayback = useRef(false);
@@ -68,13 +70,13 @@ export const useManagedJobActions = (job: JobDetailsViewModel | undefined, origi
       return;
     }
     if (action === "rate-employer") {
-      if (!userId || userId === job.ownerId || normalizeJobStatus(job.status) !== "completed") return;
-      router.push(routes.dashboardLinks.employerProfile(job.ownerId, job.id, originTab, true));
+      if (!userId || userId === job.ownerId || job.hasReviewedJobOwner === true || normalizeJobStatus(job.status) !== "completed") return;
+      setReviewOwnerOpen(true);
     } else if (action === "edit") {
       router.push(routes.dashboardLinks.editJob(job.id));
     } else {
       toast.info(`${jobActionLabels[action]} is not available yet.`);
     }
   };
-  return { handleAction, completionMilestone, closeCompleteMilestone, playbackAction, confirmPlayback, closePlaybackConfirmation, isUpdatingPlayback: playbackMutation.isPending };
+  return { reviewOwnerOpen, closeOwnerReview, handleAction, completionMilestone, closeCompleteMilestone, playbackAction, confirmPlayback, closePlaybackConfirmation, isUpdatingPlayback: playbackMutation.isPending };
 };

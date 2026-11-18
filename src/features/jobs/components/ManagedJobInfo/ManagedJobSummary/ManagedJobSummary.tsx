@@ -139,7 +139,7 @@ export default function ManagedJobSummary({
                         ]
                       : inProgress
                         ? [
-                            ...(status === "completed" ? ["rate-employer"] : []),
+                            ...(status === "completed" && !job.hasReviewedJobOwner ? ["rate-employer"] : []),
                             ...(status === "overdue" ? ["cancel"] : []),
                           ]
                         : status === "applied"

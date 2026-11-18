@@ -10,6 +10,7 @@ import { useStore } from "@/store/authStore";
 import { useApplicationDetails } from "../../hooks/useApplicationDetails";
 import { getApplicationAttention } from "../../helpers/applicationAttention";
 import { useManagedJobActions } from "../../hooks/useManagedJobActions";
+import ReviewJobOwnerModal from "../ReviewJobOwnerModal/ReviewJobOwnerModal";
 import JobPaymentModal from "../JobPaymentModal/JobPaymentModal";
 import JobPlaybackConfirmation from "../JobPlaybackConfirmation/JobPlaybackConfirmation";
 import CompleteMilestoneModal from "../CompleteMilestoneModal/CompleteMilestoneModal";
@@ -125,7 +126,7 @@ export function ManagedJobInfoView({
                 </button>
               ))}
             </nav>
-            {normalizeJobStatus(job.status) === "completed" && !isOwner && tab === "details" && (
+            {normalizeJobStatus(job.status) === "completed" && !job.hasReviewedJobOwner && !isOwner && tab === "details" && (
               <button
                 type="button"
                 onClick={() => onAction("rate-employer")}
@@ -228,7 +229,7 @@ export default function ManagedJobInfo({ jobId }: { jobId: string }) {
   };
   const tab = resolveManageJobsTab(searchParams.get("tab"));
   const backHref = routes.dashboardLinks.jobsTab(tab);
-  const jobActions = useManagedJobActions(job, tab);
+  const jobActions = useManagedJobActions(job);
   if (isPending) return <ManagedJobSkeleton section={selectedSection} />;
   if (isError || !job)
     return (
@@ -258,6 +259,7 @@ export default function ManagedJobInfo({ jobId }: { jobId: string }) {
       backHref={backHref}
       onAction={jobActions.handleAction}
     />
+    {jobActions.reviewOwnerOpen && <ReviewJobOwnerModal key={`owner-review-${job.id}`} job={job} onClose={jobActions.closeOwnerReview} />}
     {jobActions.playbackAction && <JobPlaybackConfirmation action={jobActions.playbackAction} jobTitle={job.title} busy={jobActions.isUpdatingPlayback} onConfirm={jobActions.confirmPlayback} onClose={jobActions.closePlaybackConfirmation} />}
     {jobActions.completionMilestone && (
       <CompleteMilestoneModal
