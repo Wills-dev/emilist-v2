@@ -64,7 +64,7 @@ const CommentWrapper = ({
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-4">
           <h6 className={clsx(styles.title, "font-semibold font-exo")}>
-            {totalComments} {totalComments > 1 ? "Comments" : "Comment"}
+            {totalComments} {totalComments === 1 ? "Comment" : "Comments"}
           </h6>
           {link !== undefined && <SeeAllBtn link={link} />}
         </div>

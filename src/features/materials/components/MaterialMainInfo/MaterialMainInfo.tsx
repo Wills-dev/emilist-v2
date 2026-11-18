@@ -20,7 +20,6 @@ import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
 import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
 
 import { ProductReviewResponse } from "../../types";
-import { useCompareMaterial } from "../../hooks/useCompareMaterial";
 import { useAddToCart } from "../../hooks/useAddToCart";
 import { useStore } from "@/store/authStore";
 import { useQuantity } from "@/lib/hooks/useQuantity";
@@ -42,7 +41,6 @@ const MaterialMainInfo = ({
     .filter(Boolean)
     .join(", ");
   const currentUser = useStore((state) => state.currentUser);
-  const { handleCompare, isComparing } = useCompareMaterial();
   const { handleAddToCart, isAddingToCart } = useAddToCart();
   const {
     isLiked: isMaterialLiked,
@@ -131,10 +129,7 @@ const MaterialMainInfo = ({
                   />
                 </div>
                 <div className="flex items-center gap-6 flex-wrap">
-                  <CompareBtn
-                    onClick={() => handleCompare(product._id)}
-                    loading={isComparing}
-                  />
+                  <CompareBtn type="material" item={{ id: product._id, name: product.name }} />
                   {isMaterialOwner && <PromoteBtn />}
                 </div>
               </div>

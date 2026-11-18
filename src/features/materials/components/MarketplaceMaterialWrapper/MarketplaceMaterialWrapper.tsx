@@ -1,5 +1,7 @@
 "use client";
 
+import { publicFilterSidebar } from "@/lib/constants/marketplaceLayout";
+
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import Container from "@/components/atoms/Container/Container";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
@@ -52,7 +54,7 @@ const MarketplaceMaterialWrapper = () => {
       <Container>
         <div className="sm:pt-10 pt-5">
           <div className="flex max-xl:flex-col justify-between xl:gap-10 gap-2">
-            <div className="max-w-96.75 w-full min-w-72.5 space-y-6">
+            <div className={`max-w-96.75 w-full min-w-72.5 space-y-6 ${publicFilterSidebar}`}>
               <MarketplaceTab tabContent={marketplaceTabs} />
               <MarketplaceFilterBtns
                 onReset={resetFilters}

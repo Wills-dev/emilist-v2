@@ -1,18 +1,10 @@
-import Link from "next/link";
+"use client";
+import { useComparisonModal } from "@/features/comparison/hooks/useComparisonModal";
+import ComparisonModal from "@/features/comparison/components/ComparisonModal";
+import type { ComparisonItem, ComparisonType } from "@/features/comparison/types";
 
-const CompareBtn = ({
-  onClick,
-  href,
-  disabled = false,
-  loading = false,
-  label = "Compare prices",
-}: {
-  onClick?: () => void;
-  href?: string;
-  disabled?: boolean;
-  loading?: boolean;
-  label?: string;
-}) => {
+const CompareBtn = ({ type, item, label = "Compare prices" }: { type: ComparisonType; item: ComparisonItem; label?: string }) => {
+  const modal = useComparisonModal(type, item);
   const content = (
     <>
       <span>
@@ -31,7 +23,7 @@ const CompareBtn = ({
           <path d="M7.00521 1.66797V12.168M11.0885 4.58464L12.8385 9.2513C12.3337 9.62995 11.7196 9.83464 11.0885 9.83464C10.4575 9.83464 9.84341 9.62995 9.33854 9.2513L11.0885 4.58464ZM11.0885 4.58464V4.0013M1.75521 4.0013H2.33854C3.96627 4.0013 5.56898 3.60063 7.00521 2.83464C8.44144 3.60063 10.0441 4.0013 11.6719 4.0013H12.2552M2.92188 4.58464L4.67188 9.2513C4.16701 9.62995 3.55295 9.83464 2.92188 9.83464C2.2908 9.83464 1.67674 9.62995 1.17188 9.2513L2.92188 4.58464ZM2.92188 4.58464V4.0013M4.08854 12.168H9.92188" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </span>
-      <span>{loading ? "Adding..." : label}</span>
+      <span>{label}</span>
       <span>
         <svg className="h-[1em] w-[1em]" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M6.18182 11.022L5.01136 9.86293L8.51705 6.35724H0V4.66406H8.51705L5.01136 1.16406L6.18182 -0.000710487L11.6932 5.51065L6.18182 11.022Z" fill="currentColor" />
@@ -42,20 +34,10 @@ const CompareBtn = ({
 
   const className = "flex items-center gap-1 text-[#18A154] font-medium underline text-xs cursor-pointer disabled:cursor-not-allowed disabled:opacity-50";
 
-  if (href) {
-    return <Link href={href} className={className}>{content}</Link>;
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled || loading}
-      className={className}
-    >
-      {content}
-    </button>
-  );
+  return <>
+    <button type="button" onClick={modal.show} className={className}>{content}</button>
+    <ComparisonModal type={type} item={item} modal={modal} />
+  </>;
 };
 
 export default CompareBtn;

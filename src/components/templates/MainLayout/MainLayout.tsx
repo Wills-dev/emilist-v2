@@ -9,7 +9,7 @@ const MainLayout = ({
   variant?: "primary" | "secondary";
 }) => {
   return (
-    <div className="min-h-screen h-full w-full overflow-hidden text-gray-700 bg-white">
+    <div className="min-h-screen h-full w-full overflow-x-clip text-gray-700 bg-white">
       <Navbar />
       <main>{children}</main>
       <Footer variant={variant} />

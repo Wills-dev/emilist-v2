@@ -1,5 +1,8 @@
 "use client";
 
+import { useExpertDetails } from "@/features/businesses/hooks/useExpertDetails";
+import ExpertDetailsState from "../ExpertDetailsState/ExpertDetailsState";
+
 import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import BusinessLikeButton from "@/features/businesses/components/BusinessLikeButton/BusinessLikeButton";
 import MessageButton from "@/features/messages/components/MessageButton/MessageButton";
@@ -23,7 +26,6 @@ import LocationIcon from "@/components/atoms/icons/LocationIcon/LocationIcon";
 import UserIcon from "@/components/atoms/icons/UserIcon/UserIcon";
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 
-import LikeButton from "@/components/molecules/LikeButton/LikeButton";
 import MarketplaceTab from "@/components/molecules/MarketplaceTab/MarketplaceTab";
 import PriceWrapper from "@/components/molecules/PriceWrapper/PriceWrapper";
 import ShareButton from "@/components/molecules/ShareButton/ShareButton";
@@ -32,13 +34,9 @@ import RichTextContent from "@/components/atoms/RichTextContent/RichTextContent"
 import JobCategory from "@/features/jobs/components/JobCategory/JobCategory";
 import { dashbaordMarketplaceTabs, marketplaceTabs } from "@/lib/constants";
 import { routes } from "@/lib/helpers/routes";
-import {
-  dashboardExpertProfile,
-  dashboardExperts,
-} from "../../constants/dummy";
 import ExpertReviewSummary from "../ExpertReviewSummary/ExpertReviewSummary";
 
-const DashboardExpertInfoWrapper = ({
+const DashboardExpertInfoWrapperView = ({
   expertId,
   publicPage = false,
   profilePage = false,
@@ -52,10 +50,8 @@ const DashboardExpertInfoWrapper = ({
   jobContext?: { jobId: string; tab: string };
 }) => {
   const { ref: impressionRef } = useResourceTracking({ resourceType: "business", resourceId: expertId }, Boolean(details));
-  const profile = details?.profile ?? dashboardExpertProfile;
-  const expert = details?.expert ??
-    dashboardExperts.find((item) => item.id === expertId) ??
-    (jobContext || profilePage ? undefined : dashboardExperts[0]);
+  const profile = details!.profile;
+  const expert = details!.expert;
 
   const backHref = jobContext
     ? routes.dashboardLinks.jobApplicants(jobContext.jobId, jobContext.tab)
@@ -177,7 +173,7 @@ const DashboardExpertInfoWrapper = ({
                     </div>
                     {!jobContext && !profilePage && (
                       <div className="flex flex-wrap items-center gap-6">
-                        <CompareBtn />
+                        <CompareBtn type="expert" item={{ id: expert.id, name: expert.businessName }} />
                         <PromoteBtn />
                       </div>
                     )}
@@ -189,7 +185,7 @@ const DashboardExpertInfoWrapper = ({
                       name={expert.businessName}
                     />
                     {details?.recipient && <MessageButton recipient={details.recipient} compact />}
-                    {details ? <BusinessLikeButton businessId={expert.id} liked={expert.isLiked} /> : <LikeButton isLiked={expert.isLiked} onToggleLike={() => {}} />}
+                    <BusinessLikeButton businessId={expert.id} liked={expert.isLiked} />
                   </div>
                 </div>
                 <ImageSliderWrapper
@@ -257,6 +253,13 @@ const DashboardExpertInfoWrapper = ({
       </motion.div>
     </Container>
   );
+};
+
+const DashboardExpertInfoWrapper = (props: Parameters<typeof DashboardExpertInfoWrapperView>[0]) => {
+  const query = useExpertDetails(props.expertId, !props.details);
+  if (props.details) return <DashboardExpertInfoWrapperView {...props} />;
+  if (!query.details) return <ExpertDetailsState error={query.isError} retry={query.retry} />;
+  return <DashboardExpertInfoWrapperView key={props.expertId} {...props} details={query.details} />;
 };
 
 export default DashboardExpertInfoWrapper;

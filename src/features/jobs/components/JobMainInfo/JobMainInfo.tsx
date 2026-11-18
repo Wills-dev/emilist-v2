@@ -124,7 +124,7 @@ const JobMainInfo = ({
                 </div>
                 {showDashboardActions && (
                   <div className="flex flex-wrap items-center gap-6">
-                    <CompareBtn href={routes.dashboardLinks.compareJobs} />
+                    <CompareBtn type="job" item={{ id: job.id, name: job.title }} />
                     <PromoteBtn label="Promote job" />
                   </div>
                 )}

@@ -1,5 +1,7 @@
 "use client";
 
+import { dashboardFilterSidebar } from "@/lib/constants/marketplaceLayout";
+
 import { motion } from "framer-motion";
 
 import Container from "@/components/atoms/Container/Container";
@@ -106,7 +108,7 @@ const DashboardExpertsWrapper = ({ saved = false }: { saved?: boolean }) => {
           initial={{ opacity: 0, x: 12 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4, delay: 0.16, ease: "easeOut" }}
-          className="w-full max-w-68 space-y-6 max-xl:hidden"
+          className={`w-full max-w-68 space-y-6 max-xl:hidden ${dashboardFilterSidebar}`}
         >
           <MarketplaceFilterBtns
             onReset={resetFilters}

@@ -93,6 +93,7 @@ export interface DashboardExpertFixture {
 }
 
 export interface CompareExpertItem {
+  image?: string;
   id: string;
   name: string;
   price: number;

@@ -14,6 +14,7 @@ const DashboardExpertsFilter = (props: DashboardExpertsFilterProps) => (
     priceTitle="Payment"
     showLocation
     locations={countriesAndStates}
+    showNoticePeriod
     showLevel
     showRating
     variant="tertiary"

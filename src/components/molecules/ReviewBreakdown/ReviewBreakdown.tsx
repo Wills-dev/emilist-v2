@@ -27,7 +27,7 @@ const ReviewBreakdown = ({
         <h6
           className={`text-[#030A05] font-semibold font-exo ${titleClassName}`}
         >
-          {totalReviews} Reviews
+          {totalReviews} {totalReviews === 1 ? "Review" : "Reviews"}
         </h6>
       </div>
       <div className="space-y-6">

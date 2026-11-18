@@ -21,13 +21,13 @@ const CompareRow = ({ icon, label, value }: { icon: React.ReactNode; label: stri
 const CompareExpertCard = ({ expert, index }: { expert: CompareExpertItem; index: number }) => (
   <motion.article initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: index * 0.07, ease: "easeOut" }} className="w-58 shrink-0 space-y-3 sm:w-60">
     <section className="space-y-4 rounded-md bg-[#F9F9F9] p-3">
-      <ProfileAvatar variant="small" />
+      <ProfileAvatar variant="small" profileImage={expert.image} />
       <div className="flex items-end justify-between gap-2">
         <p className="truncate text-xs font-semibold">{expert.name}</p>
         <PriceWrapper price={expert.price} currency={expert.currency} unit={expert.period} />
       </div>
-      <div className="flex items-center gap-2 text-[10px]"><Rating rating={expert.rating} className="text-xs" /><span>({expert.reviewCount} reviews)</span></div>
-      <ul className="min-h-31 space-y-3 rounded-md bg-white p-3 text-[10px] text-[#5E625F]">{expert.credentials.map((credential) => <li key={credential}>• {credential}</li>)}</ul>
+      <div className="flex items-center gap-2 text-[10px]"><Rating rating={expert.rating} className="text-xs" /><span>({expert.reviewCount} {expert.reviewCount === 1 ? "review" : "reviews"})</span></div>
+      <ul className="min-h-31 space-y-3 rounded-md bg-white p-3 text-[10px] text-[#5E625F]">{expert.credentials.map((credential, credentialIndex) => <li key={`${credential}-${credentialIndex}`}>• {credential}</li>)}</ul>
       <Button href={routes.dashboardLinks.marketplaceExpertInfo(expert.id)} variant="default" className="h-8 w-full text-xs">View Profile</Button>
     </section>
     <section className="min-h-32 border-y border-[#ECECEC] bg-white p-4 shadow-[0_8px_16px_rgba(27,49,37,0.06)]">
