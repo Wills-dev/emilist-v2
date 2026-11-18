@@ -3,6 +3,7 @@ export const routes = {
   joinExpert: "/become-expert",
   congrats: "/become-expert/congratulations",
   postJob: "/post-job",
+  hireExpert: (expertId: string) => `/post-job?expertId=${encodeURIComponent(expertId)}`,
   postJobCongrats: "/post-job/congratulations",
   postMaterial: "/post-material",
   cart: "/cart",

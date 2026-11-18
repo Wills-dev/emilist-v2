@@ -26,7 +26,6 @@ export const useExpertReviewsPage = (expertId: string, initialReviews: Review[],
   const onNext = () => setPage(currentPage + 1);
   const onPrev = () => setPage(Math.max(1, currentPage - 1));
   const onAddComment = () => setIsModalOpen(true);
-  const flag = () => toast.info("Reporting experts is not available yet.");
   return { ...list, currentPage, isModalOpen, setIsModalOpen, rating, comment, setRating, setComment,
-    resetForm, handleAddReview, onSearch, onNext, onPrev, onAddComment, flag };
+    resetForm, handleAddReview, onSearch, onNext, onPrev, onAddComment };
 };

@@ -13,7 +13,7 @@ import BackButton from "@/components/atoms/BackButton/BackButton";
 import Container from "@/components/atoms/Container/Container";
 import FilterSectionWrapper from "@/components/atoms/FilterSectionWrapper/FilterSectionWrapper";
 import FilterTitle from "@/components/atoms/FilterTilte/FilterTilte";
-import FlagActionBtn from "@/components/atoms/FlagActionBtn/FlagActionBtn";
+import BusinessFlagButton from "@/features/businesses/components/BusinessFlagButton/BusinessFlagButton";
 import CommentWrapper from "@/components/molecules/CommentWrapper/CommentWrapper";
 import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
 import ReviewBreakdown from "@/components/molecules/ReviewBreakdown/ReviewBreakdown";
@@ -38,7 +38,7 @@ const DashboardExpertReviewsView = ({
   const {
     submittedQuery, visibleReviews, currentPage, isModalOpen, setIsModalOpen,
     rating, comment, setRating, setComment, resetForm, handleAddReview,
-    onSearch, setSearch, onAddComment, onNext, onPrev, flag,
+    onSearch, setSearch, onAddComment, onNext, onPrev,
   } = useExpertReviewsPage(expertId, details!.reviews.reviews, Boolean(details));
 
   const profileHref = jobContext
@@ -71,7 +71,7 @@ const DashboardExpertReviewsView = ({
       >
         <div className="flex items-center justify-between">
           <BackButton href={profileHref} isDashboard={Boolean(jobContext)} />
-          <FlagActionBtn onClick={flag} actionTitle="Flag expert" />
+          <BusinessFlagButton businessId={expertId} muted={details?.muted} />
         </div>
         <div
           className={

@@ -7,7 +7,6 @@ import { useResourceTracking } from "@/features/reports/hooks/useResourceTrackin
 import BusinessLikeButton from "@/features/businesses/components/BusinessLikeButton/BusinessLikeButton";
 import MessageButton from "@/features/messages/components/MessageButton/MessageButton";
 import type { ExpertDetailsData } from "../../types/expertDetails";
-import { toast } from "sonner";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import { motion } from "framer-motion";
 
@@ -15,7 +14,7 @@ import BackButton from "@/components/atoms/BackButton/BackButton";
 import Button from "@/components/atoms/Button/Button";
 import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
 import Container from "@/components/atoms/Container/Container";
-import FlagActionBtn from "@/components/atoms/FlagActionBtn/FlagActionBtn";
+import BusinessFlagButton from "@/features/businesses/components/BusinessFlagButton/BusinessFlagButton";
 import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import ItemName from "@/components/atoms/ItemName/ItemName";
@@ -127,7 +126,7 @@ const DashboardExpertInfoWrapperView = ({
             <div className="flex items-center justify-between pb-4">
               <BackButton href={backHref} isDashboard={Boolean(jobContext)} />
               {!jobContext && !profilePage && (
-                <FlagActionBtn onClick={() => {}} actionTitle="Flag expert" />
+                <BusinessFlagButton businessId={expertId} muted={details?.muted} />
               )}
             </div>
             <div className="space-y-8 rounded-[11.33px] border border-[#F1F2F9] bg-[#F9F9F9] px-2 pb-6 pt-8 sm:px-5 md:px-11">
@@ -217,14 +216,7 @@ const DashboardExpertInfoWrapperView = ({
               <Button
                 variant="primary"
                 className="h-11 w-full"
-                onClick={
-                  jobContext
-                    ? () =>
-                        toast.info(
-                          `Hiring ${expert.businessName} is not available yet.`,
-                        )
-                    : undefined
-                }
+                href={routes.hireExpert(expert.id)}
               >
                 Hire Expert
               </Button>

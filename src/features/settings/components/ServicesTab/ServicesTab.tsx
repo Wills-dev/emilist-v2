@@ -1,5 +1,6 @@
 "use client";
 
+import ServicesTabSkeleton from "./ServicesTabSkeleton";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -28,7 +29,7 @@ const ServicesTab = () => {
     close: (open: boolean) => void,
   ) => settings.saveExpert(updated, { onSuccess: () => close(false) });
 
-  if (settings.isLoading) return <p role="status">Loading your businesses…</p>;
+  if (settings.isLoading) return <ServicesTabSkeleton />;
   if (settings.isError) return <div role="alert">Unable to load your businesses. <button type="button" onClick={() => void settings.refetch()}>Try again</button></div>;
   if (!expert) return <p>You haven’t added a business or service yet. <a className="text-[#18A154] underline" href="/become-expert">Add a business</a></p>;
 

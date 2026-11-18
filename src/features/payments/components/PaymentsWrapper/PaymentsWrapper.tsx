@@ -8,6 +8,7 @@ import { useStore } from "@/store/authStore";
 import { buildTransactionChart } from "../../helpers/buildTransactionChart";
 import { getStoredWalletFundingSnapshot, parseStoredWalletFunding, subscribeWalletFundingStorage } from "../../helpers/walletFundingStorage";
 import { useWalletTransactions } from "../../hooks/useWalletTransactions";
+import StatementModal from "../StatementModal/StatementModal";
 import TransactionStatusModal from "../TransactionStatusModal/TransactionStatusModal";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -99,9 +100,10 @@ const PaymentsWrapper = () => {
           </motion.div>
           <motion.div variants={cardAnimation}>{walletQuery.isPending || (walletId && transactionsQuery.isPending) ? <Skeleton className="h-72 w-full" /> : transactionsQuery.isError ? <p className="bg-white p-5 text-sm text-[#737774]">Transaction chart unavailable.</p> : <TransactionChart data={chartData} count={transactions.length} />}</motion.div>
         </div>
-        <motion.div variants={cardAnimation}>{walletQuery.isPending || (walletId && transactionsQuery.isPending) ? <div role="status" aria-label="Loading transactions"><Skeleton className="h-64 w-full" /></div> : transactionsQuery.isError ? <div role="alert" className="space-y-2 bg-white p-5 text-sm text-[#737774]"><p>Unable to load transactions.</p><button type="button" onClick={() => void transactionsQuery.refetch()} className="text-[#18A154] underline">Retry</button></div> : <TransactionHistory data={transactions} onFund={openFunding} onStatement={() => toast.info("Account statements are not available yet.")} onViewStatus={setTransactionId} hasMore={transactionsQuery.hasNextPage} loadingMore={transactionsQuery.isFetchingNextPage} onLoadMore={() => void transactionsQuery.fetchNextPage()} />}</motion.div>
+        <motion.div variants={cardAnimation}>{walletQuery.isPending || (walletId && transactionsQuery.isPending) ? <div role="status" aria-label="Loading transactions"><Skeleton className="h-64 w-full" /></div> : transactionsQuery.isError ? <div role="alert" className="space-y-2 bg-white p-5 text-sm text-[#737774]"><p>Unable to load transactions.</p><button type="button" onClick={() => void transactionsQuery.refetch()} className="text-[#18A154] underline">Retry</button></div> : <TransactionHistory data={transactions} onFund={openFunding} onStatement={() => setModal("statement")} onViewStatus={setTransactionId} hasMore={transactionsQuery.hasNextPage} loadingMore={transactionsQuery.isFetchingNextPage} onLoadMore={() => void transactionsQuery.fetchNextPage()} />}</motion.div>
       </motion.main>
 
+      {modal === "statement" && <StatementModal wallets={wallets} selectedWalletId={walletId} onClose={() => setModal(null)} />}
       {transactionId && <TransactionStatusModal transactionId={transactionId} onClose={() => setTransactionId("")} />}
       {modal === "add-bank-account" && <AddBankAccountModal onClose={() => setModal(null)} />}
       {modal === "withdraw" && selectedWallet && bankAccount && <WithdrawFundsModal key={`${selectedWallet.id}-${bankAccount.bankAccountId}`} wallet={selectedWallet} bankAccount={bankAccount} onClose={() => setModal(null)} />}

@@ -59,7 +59,7 @@ export const transactionColumns = (onStatus?: (id: string) => void): ColumnDef<T
     cell: ({ row }) => (
       <div className="flex items-center justify-end gap-5 text-[#737774]">
         <button type="button" aria-label={`Print transaction ${row.original.id}`} disabled={row.original.status !== "successful"} className="disabled:opacity-30" onClick={() => printTransactionReceipt(row.original)}><Printer className="size-4" /></button>
-        <button type="button" aria-label={`Check status of transaction ${row.original.id}`} onClick={() => onStatus?.(row.original.id)}><MoreVertical className="size-4" /></button>
+        <button type="button" aria-label={`View details of transaction ${row.original.id}`} onClick={() => onStatus?.(row.original.id)}><MoreVertical className="size-4" /></button>
       </div>
     ),
   },

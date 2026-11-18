@@ -43,7 +43,7 @@ const CompareExpertCard = ({ expert, index }: { expert: CompareExpertItem; index
       <CompareRow icon={<MapPin />} label="Location" value={expert.location} />
       <CompareRow icon={<Languages />} label="Language" value={expert.languages} />
       <CompareRow icon={<ShieldCheck />} label="Insurance" value={expert.insurance} />
-      <div className="border-t border-[#ECECEC] pt-4"><Button variant="primary" className="h-8 w-full text-xs">Hire Expert</Button></div>
+      <div className="border-t border-[#ECECEC] pt-4"><Button href={routes.hireExpert(expert.id)} variant="primary" className="h-8 w-full text-xs">Hire Expert</Button></div>
     </section>
   </motion.article>
 );

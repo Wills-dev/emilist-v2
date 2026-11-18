@@ -34,6 +34,7 @@ export const mapBusinessExpertDetails = (profile: BusinessProfile, applicant: Ex
       galleryImages: mapped.businessImages, about: [],
     },
     aboutHtml: mapped.businessDescription,
+    muted: business.isMuted ?? business.muted ?? false,
     recipient: { businessId: business._id, userId: applicant.applicantUserId ?? (typeof business.userId === "string" ? business.userId : business.userId?._id) ?? "", name: mapped.businessName, image: mapped.image || applicant.image },
     reviews: {
       totalReviews: count, totalComments: reviewSummary?.totalComments ?? reviews.length,

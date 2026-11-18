@@ -3,6 +3,8 @@ import type { Review, RatingDistribution } from "@/lib/types/review";
 
 export interface BusinessProfileDto extends BusinessDto {
   userId?: string | { _id: string; level?: string };
+  isMuted?: boolean;
+  muted?: boolean;
   liked?: boolean;
   isLiked?: boolean;
   completedJobs?: number;
