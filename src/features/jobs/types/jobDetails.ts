@@ -5,6 +5,8 @@ import type {
 } from "./listJobs";
 
 export interface JobMilestoneInvoiceDto {
+  disputeTicketId?: string;
+  disputeStatus?: string;
   reviewStatus?: string;
   invoiceId?: string;
   additionalAmount?: number | string;
@@ -18,6 +20,7 @@ export interface JobMilestoneInvoiceDto {
 }
 
 export interface JobMilestoneDto {
+  hasUnresolvedDispute?: boolean;
   datePaid?: string;
   paymentInfo?: { reference?: string; amountPaid?: number | string; paymentMethod?: string; date?: string };
   invoice?: JobMilestoneInvoiceDto;

@@ -10,6 +10,7 @@ import { useStore } from "@/store/authStore";
 import { useApplicationDetails } from "../../hooks/useApplicationDetails";
 import { getApplicationAttention } from "../../helpers/applicationAttention";
 import { useManagedJobActions } from "../../hooks/useManagedJobActions";
+import DisputeModal from "@/features/support/components/DisputeModal/DisputeModal";
 import ReviewJobOwnerModal from "../ReviewJobOwnerModal/ReviewJobOwnerModal";
 import JobPaymentModal from "../JobPaymentModal/JobPaymentModal";
 import JobPlaybackConfirmation from "../JobPlaybackConfirmation/JobPlaybackConfirmation";
@@ -60,6 +61,7 @@ export function ManagedJobInfoView({
   const applicationMessage = trackApplication
     ? applicationQuery.isPending ? "Checking application updates…" : applicationQuery.isError ? "Application updates unavailable. Open My Application to retry." : applicationAttention.message
     : undefined;
+  const [disputeInvoice, setDisputeInvoice] = useState<JobInvoice | null>(null);
   const [paymentInvoice, setPaymentInvoice] = useState<JobInvoice | null>(null);
   const [localTab, setLocalTab] = useState<JobInfoTab>("details");
   const selectedTab = selectedSection ?? localTab;
@@ -90,6 +92,7 @@ export function ManagedJobInfoView({
     : "details";
   return (
     <Container variant="small" className="py-4">
+      {disputeInvoice && <DisputeModal key={`dispute-${disputeInvoice.id}`} jobId={job.id} invoice={disputeInvoice} isOwner={isOwner} onClose={() => setDisputeInvoice(null)} />}
       {isOwner && paymentInvoice && (
         <JobPaymentModal key={paymentInvoice.id} jobId={job.id} invoice={paymentInvoice} onClose={() => setPaymentInvoice(null)} />
       )}
@@ -171,8 +174,8 @@ export function ManagedJobInfoView({
             />
           )}
           {tab === "application" && <MyApplicationPanel job={job} />}
-          {tab === "invoices" && <JobInvoicesPanel invoices={job.invoices} canPay={isOwner} onMakePayment={isOwner ? setPaymentInvoice : undefined} />}
-          {tab === "payments" && <JobPaymentsPanel payments={job.payments} invoices={job.invoices} canPay={isOwner} onMakePayment={isOwner ? setPaymentInvoice : undefined} />}
+          {tab === "invoices" && <JobInvoicesPanel onRaiseDispute={setDisputeInvoice} invoices={job.invoices} canPay={isOwner} onMakePayment={isOwner ? setPaymentInvoice : undefined} />}
+          {tab === "payments" && <JobPaymentsPanel onRaiseDispute={setDisputeInvoice} payments={job.payments} invoices={job.invoices} canPay={isOwner} onMakePayment={isOwner ? setPaymentInvoice : undefined} />}
         </main>
         {tab === "details" && (
           <aside className="min-w-0">

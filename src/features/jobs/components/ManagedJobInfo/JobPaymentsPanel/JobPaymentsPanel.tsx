@@ -80,11 +80,13 @@ export default function JobPaymentsPanel({
   invoices = [],
   canPay = false,
   onMakePayment,
+  onRaiseDispute,
 }: {
   payments?: JobPayment[];
   invoices?: JobInvoice[];
   canPay?: boolean;
   onMakePayment?: (invoice: JobInvoice) => void;
+  onRaiseDispute?: (invoice: JobInvoice) => void;
 }) {
   const payments = useMemo(() => paymentData ?? [], [paymentData]);
   const [page, setPage] = useState(1);
@@ -172,7 +174,7 @@ export default function JobPaymentsPanel({
                 )}
                 {payable && !onMakePayment && <p className="max-w-52 px-3 py-2 text-xs text-[#768592]">Invoice payments are not available yet.</p>}
                 {invoice && <DropdownMenu.Item className={itemClassName} onSelect={() => { void downloadInvoice(invoice).catch(() => toast.error("Unable to download invoice. Please try again.")); }}>{payment.status === "paid" ? "Download Receipt" : "Download Invoice"}</DropdownMenu.Item>}
-                {invoice && <DropdownMenu.Item className={cn(itemClassName, "text-[#E84F6A] data-[highlighted]:bg-[#FFF0F3]")} onSelect={() => toast.info("Dispute submission is not available yet.")}><ShieldAlert className="size-4" />Raise Dispute</DropdownMenu.Item>}
+                {invoice && <DropdownMenu.Item className={cn(itemClassName, "text-[#E84F6A] data-[highlighted]:bg-[#FFF0F3]")} disabled={!onRaiseDispute} onSelect={() => onRaiseDispute?.(invoice)}><ShieldAlert className="size-4" />Raise Dispute</DropdownMenu.Item>}
                 {payment.receiptUrl && (
                   <DropdownMenu.Item asChild>
                     <a href={payment.receiptUrl} target="_blank" rel="noopener noreferrer" className={itemClassName}><Printer className="size-4" />Open Receipt</a>

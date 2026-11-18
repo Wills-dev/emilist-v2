@@ -30,11 +30,13 @@ export function JobInvoiceCard({
   index,
   canPay = false,
   onMakePayment,
+  onRaiseDispute,
 }: {
   invoice: JobInvoice;
   index: number;
   canPay?: boolean;
   onMakePayment?: (invoice: JobInvoice) => void;
+  onRaiseDispute?: (invoice: JobInvoice) => void;
 }) {
   const invoiceDisplay = getInvoiceDisplay(invoice);
   const [downloading, setDownloading] = useState(false);
@@ -136,7 +138,7 @@ export function JobInvoiceCard({
           <ReceiptText className="size-4 shrink-0" />
           {downloading ? "Preparing PDF…" : invoiceDisplay.paid ? "Download Receipt" : "Download Invoice"}
         </button>
-        <Button type="button" variant="danger" onClick={() => toast.info("Dispute submission is not available yet.")} className="w-full py-2.5 text-sm">
+        <Button type="button" variant="danger" disabled={!onRaiseDispute} onClick={() => onRaiseDispute?.(invoice)} className="w-full py-2.5 text-sm">
           <ShieldAlert className="size-4 shrink-0" />Raise Dispute
         </Button>
         {canPay && !invoiceDisplay.paid && invoice.status !== "pending" && (
@@ -163,10 +165,12 @@ export default function JobInvoicesPanel({
   invoices,
   canPay = false,
   onMakePayment,
+  onRaiseDispute,
 }: {
   invoices?: JobInvoice[];
   canPay?: boolean;
   onMakePayment?: (invoice: JobInvoice) => void;
+  onRaiseDispute?: (invoice: JobInvoice) => void;
 }) {
   const [page, setPage] = useState(1);
   if (!invoices)
@@ -194,6 +198,7 @@ export default function JobInvoicesPanel({
             invoice={invoice}
             canPay={canPay}
             onMakePayment={onMakePayment}
+            onRaiseDispute={onRaiseDispute}
             index={(page - 1) * 6 + index}
           />
         ))}

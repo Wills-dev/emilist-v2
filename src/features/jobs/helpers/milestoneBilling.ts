@@ -29,6 +29,9 @@ export const mapMilestoneBilling = (job: JobDetailsDto, ownerName: string, curre
     const paymentMethod = milestone.paymentInfo?.paymentMethod;
     const milestoneLabel = `Milestone ${index + 1}: ${milestone.achievement || milestone.title || ""}`.trim();
     invoices.push({
+      disputeTicketId: invoice.disputeTicketId,
+      disputeStatus: invoice.disputeStatus,
+      hasUnresolvedDispute: milestone.hasUnresolvedDispute,
       id,
       jobId: job._id,
       jobTitle: job.title,
