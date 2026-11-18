@@ -5,7 +5,7 @@ import { ArrowRight, Download } from "lucide-react";
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import CompareMaterialCard from "../CompareMaterialCard/CompareMaterialCard";
-import CompareMaterialCardSkeleton from "../CompareMaterialCard/CompareMaterialCardSkeleton/CompareMaterialCardSkeleton";
+import ComparisonSkeleton from "@/components/molecules/PageSkeleton/ComparisonSkeleton/ComparisonSkeleton";
 import { useGetComparedMaterials } from "../../hooks/useGetComparedMaterials";
 import Container from "@/components/atoms/Container/Container";
 import { mapComparedMaterial } from "./mapComparedMaterial";
@@ -18,6 +18,7 @@ const CompareMaterialsWrapper = () => {
   const { downloadReport, canDownload } =
     useDownloadComparisonReport(comparedProducts);
 
+  if (isLoading) return <ComparisonSkeleton variant="material" />;
   return (
     <Container variant="small">
       <main className="w-full py-4">
@@ -35,13 +36,7 @@ const CompareMaterialsWrapper = () => {
           </button>
         </div>
 
-        {isLoading ? (
-          <div className="flex w-full gap-3 overflow-hidden pb-4">
-            {[1, 2, 3].map((item) => (
-              <CompareMaterialCardSkeleton key={item} />
-            ))}
-          </div>
-        ) : isError ? (
+        {isError ? (
           <EmptyState
             title="Unable to load compared materials"
             description="Please refresh the page and try again."

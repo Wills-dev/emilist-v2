@@ -1,5 +1,6 @@
 "use client";
 
+import ComparisonSkeleton from "@/components/molecules/PageSkeleton/ComparisonSkeleton/ComparisonSkeleton";
 import { ArrowRight, Download } from "lucide-react";
 
 import BackButton from "@/components/atoms/BackButton/BackButton";
@@ -10,6 +11,7 @@ import CompareExpertCard from "../CompareExpertCard/CompareExpertCard";
 const CompareExpertsWrapper = () => {
   const { experts: comparedExperts, downloadReport, retry, loading, error } = useComparedExperts();
 
+  if (loading) return <ComparisonSkeleton variant="expert" />;
   return (
     <Container variant="small">
       <main className="w-full py-4">
@@ -17,7 +19,6 @@ const CompareExpertsWrapper = () => {
           <BackButton isDashboard />
           <button type="button" disabled={loading || error || !comparedExperts.length} onClick={downloadReport} className="flex items-center gap-1 text-xs text-[#18A154] underline sm:text-sm"><Download className="size-4 sm:hidden" /><span>Download Comparison Report</span><ArrowRight className="size-4" /></button>
         </div>
-        {loading && <p role="status">Loading compared experts…</p>}
         {error && <button type="button" onClick={retry}>Unable to load experts. Try again</button>}
         {!loading && !error && !comparedExperts.length && <p>No compared experts found.</p>}
         <div className="w-full overflow-x-auto overscroll-x-contain pb-4" aria-label="Compared experts"><div className="flex w-max gap-3">{comparedExperts.map((expert, index) => <CompareExpertCard key={expert.id} expert={expert} index={index} />)}</div></div>

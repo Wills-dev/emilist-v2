@@ -3,7 +3,7 @@ import ComparisonSkeleton from "@/components/molecules/PageSkeleton/ComparisonSk
 export default function Loading() {
   return (
     <DashboardLayout>
-      <ComparisonSkeleton />
+      <ComparisonSkeleton variant="job" />
     </DashboardLayout>
   );
 }
