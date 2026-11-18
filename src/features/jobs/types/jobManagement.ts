@@ -44,6 +44,9 @@ export interface JobApplicant {
   reviewCount: number;
 }
 export interface JobInvoice {
+  disputeTicketId?: string;
+  disputeStatus?: string;
+  hasUnresolvedDispute?: boolean;
   jobId?: string;
   jobTitle?: string;
   paymentReference?: string;

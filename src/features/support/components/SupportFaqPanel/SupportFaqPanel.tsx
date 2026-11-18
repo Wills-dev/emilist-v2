@@ -1,24 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useSupportFaq } from "../../hooks/useSupportFaq";
 
 import FaqCard from "@/components/molecules/FaqCard/FaqCard";
 import SegmentedTabs from "@/components/molecules/SegmentedTabs/SegmentedTabs";
 
 import {
-  SupportFaqCategory,
   supportFaqCategories,
   supportFaqs,
 } from "../../constants/supportFaqs";
 
 const SupportFaqPanel = () => {
-  const [category, setCategory] = useState<SupportFaqCategory>("general");
-  const [openId, setOpenId] = useState<number | null>(null);
-
-  const handleCategoryChange = (nextCategory: SupportFaqCategory) => {
-    setCategory(nextCategory);
-    setOpenId(null);
-  };
+  const { category, openId, changeCategory, toggleFaq } = useSupportFaq();
 
   return (
     <aside className="flex h-full min-h-0 flex-col bg-white px-4 py-5" aria-labelledby="support-faq-title">
@@ -32,7 +25,7 @@ const SupportFaqPanel = () => {
         <SegmentedTabs
           options={supportFaqCategories}
           value={category}
-          onChange={handleCategoryChange}
+          onChange={changeCategory}
           ariaLabel="FAQ categories"
           responsive={false}
           size="compact"
@@ -48,9 +41,7 @@ const SupportFaqPanel = () => {
             question={faq.question}
             answer={faq.answer}
             openId={openId}
-            toggleFaq={(id) =>
-              setOpenId((current) => (current === id ? null : id))
-            }
+            toggleFaq={toggleFaq}
             variant="compact"
           />
         ))}
