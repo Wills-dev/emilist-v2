@@ -22,6 +22,7 @@ Emilist is a marketplace and project-management platform for finding work, hirin
 - Shared owner/artisan job-information layouts with applicants, milestones, invoices, payments, and status-specific actions
 - Dashboard job editing with reused creation steps, existing attachment removal, and multipart updates
 - Role-specific public and dashboard profiles for artisans, employers, and merchants
+- API-backed expert listings on the home page and public/dashboard marketplaces, with signed-in viewer IDs, server-side filters, paginated loading, and optimistic business likes
 - Responsive dashboard expert marketplace with service filters, saved experts, profile details, full review pages, and animated infinite-scroll listings
 - Responsive public expert marketplace with the dedicated expert banner, search, sorting, service filters, public profiles, rating summaries, and full review pages
 - Swipeable expert comparison with reusable comparison cards and downloadable comparison reports
@@ -508,3 +509,7 @@ Set `NEXT_PUBLIC_WEB_URL` to the frontend address for each environment (for exam
 ## License
 
 This repository is private. All rights reserved.
+
+Expert listings use `GET /business/fetch-all-experts`; shared business queries keep the viewer ID in the cache key and omit it for anonymous requests. Detail and review routes use `GET /business/fetch-single-business/{businessId}`. Cards and detail views share the like/unlike PATCH mutations. Price and rating sorts apply to loaded results because the listing API does not document a sort parameter. Saved listings filter loaded businesses using `liked` and keep pagination available. Expert comparisons load the authenticated user’s complete list from `GET /business/fetch-compared-business`. Computed server filters can produce an empty page before the final page; pagination follows `totalPages`, rather than stopping at an empty result.
+
+Compare buttons open a shared modal with separate add and view-list actions. Materials use the existing compare-product API and refresh the user-scoped compared-material query. Experts use `PATCH /business/compare-business/{businessId}` to toggle server-side membership and refresh business queries. Job selections remain local per signed-in user because no job comparison API is integrated; their comparison page fetches current job details rather than showing sample data.

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 
+import { materialReviewStats } from "../../helpers/materialReviewStats";
 import MaterialCard from "../MaterialCard/MaterialCard";
 import MaterialCardSkeleton from "../MaterialCard/MaterialCardSkeleton/MaterialCardSkeleton";
 import { OtherSellerProduct, SimilarProduct } from "../../types";
@@ -51,15 +52,7 @@ const SellersMaterialCardWrap = ({
             <MaterialCardSkeleton key={index} />
           ))
         : materials.map((material) => {
-            const isSimilarProduct = "averageRating" in material;
-            const averageRating = isSimilarProduct
-              ? material.averageRating ?? 0
-              : material.reviews.length > 0
-                ? material.reviews.reduce(
-                    (total, review) => total + review.rating,
-                    0,
-                  ) / material.reviews.length
-                : 0;
+            const { averageRating, noOfReviews } = materialReviewStats(material);
             const storeName =
               "storeName" in material &&
               material.storeName !== material.merchantName
@@ -79,8 +72,8 @@ const SellersMaterialCardWrap = ({
               unit={material.priceMetric}
               location={
                 [
-                  material.deliveryLocations[0]?.lga,
-                  material.deliveryLocations[0]?.state,
+                  material.deliveryLocations?.[0]?.lga,
+                  material.deliveryLocations?.[0]?.state,
                 ]
                   .filter(Boolean)
                   .join(", ") || "Delivery location not specified"
@@ -89,8 +82,8 @@ const SellersMaterialCardWrap = ({
               isLiked={"liked" in material ? material.liked : false}
               currency={material.currency}
               imgUrl={
-                material.images.find((image) => image.isPrimary)?.imageUrl ||
-                material.images[0]?.imageUrl ||
+                material.images?.find((image) => image.isPrimary)?.imageUrl ||
+                material.images?.[0]?.imageUrl ||
                 "/assets/images/default-job-image.svg"
               }
               fullName={
@@ -98,13 +91,9 @@ const SellersMaterialCardWrap = ({
                 ("storeName" in material ? material.storeName : "Merchant")
               }
               rating={averageRating}
-              noOfReviews={
-                isSimilarProduct
-                  ? material.numberOfRatings
-                  : material.reviews.length
-              }
+              noOfReviews={noOfReviews}
               sellerId={
-                "user" in material ? material.user._id : material.userId._id
+                "user" in material ? material.user?._id : material.userId?._id
               }
               reviewsHref={routes.marketplace.materialInfoReviews(material._id)}
               merchantDetail={merchantDetail}

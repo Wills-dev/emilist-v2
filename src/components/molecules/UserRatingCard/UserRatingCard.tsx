@@ -62,7 +62,7 @@ const UserRatingCard = ({
                 href={reviewsHref}
                 className="block text-[9.45px] font-exo underline hover:text-[#25C269]"
               >
-                ({noOfReviews} reviews)
+                ({noOfReviews} {noOfReviews === 1 ? "review" : "reviews"})
               </Link>
             ) : (
               <span className="block text-[9.45px] font-exo">

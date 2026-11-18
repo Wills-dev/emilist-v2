@@ -3,7 +3,7 @@ import DashboardSidebar from "@/components/organisms/DashboardSidebar/DashboardS
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen h-full w-full overflow-hidden text-gray-700 bg-[#F4F7F5]">
+    <div className="min-h-screen h-full w-full overflow-x-clip text-gray-700 bg-[#F4F7F5]">
       <DashboardNav />
       <DashboardSidebar />
       <div className="flex pt-20">

@@ -6,10 +6,6 @@ import type { ExpertDetailsData } from "../../types/expertDetails";
 import CommentWrapper from "@/components/molecules/CommentWrapper/CommentWrapper";
 import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
 import ReviewBreakdown from "@/components/molecules/ReviewBreakdown/ReviewBreakdown";
-import {
-  dashboardExpertReviews,
-  dashboardExpertReviewSummary,
-} from "../../constants/dummy";
 import { routes } from "@/lib/helpers/routes";
 
 const ExpertReviewSummary = ({
@@ -23,8 +19,8 @@ const ExpertReviewSummary = ({
   publicPage?: boolean;
   reviewsHref?: string;
 }) => {
-  const summary = data ?? dashboardExpertReviewSummary;
-  const { submittedQuery, setSubmittedQuery, setSearch, visibleReviews: reviews } = useExpertReviewList(data?.reviews ?? dashboardExpertReviews);
+  const summary = data ?? { totalReviews: 0, totalComments: 0, averageRating: 0, reviews: [] };
+  const { submittedQuery, setSubmittedQuery, setSearch, visibleReviews: reviews } = useExpertReviewList(data?.reviews ?? []);
 
   return (
     <div id="expert-reviews" className="w-full space-y-6">

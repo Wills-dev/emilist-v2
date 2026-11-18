@@ -1,5 +1,8 @@
 "use client";
 
+import { useExpertDetails } from "@/features/businesses/hooks/useExpertDetails";
+import ExpertDetailsState from "../ExpertDetailsState/ExpertDetailsState";
+
 import { useExpertReviewsPage } from "../../hooks/useExpertReviewsPage";
 import type { ExpertDetailsData } from "../../types/expertDetails";
 import { routes } from "@/lib/helpers/routes";
@@ -16,13 +19,8 @@ import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
 import ReviewBreakdown from "@/components/molecules/ReviewBreakdown/ReviewBreakdown";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 import { ReviewModal } from "@/features/materials/components/MaterialReviewModal/MaterialReviewModal";
-import {
-  dashboardExpertReviews,
-  dashboardExpertReviewSummary,
-  dashboardExperts,
-} from "../../constants/dummy";
 
-const DashboardExpertReviews = ({
+const DashboardExpertReviewsView = ({
   expertId,
   publicPage = false,
   profilePage = false,
@@ -35,15 +33,13 @@ const DashboardExpertReviews = ({
   profilePage?: boolean;
   jobContext?: { jobId: string; tab: string };
 }) => {
-  const expert = details?.expert ??
-    dashboardExperts.find((item) => item.id === expertId) ??
-    (jobContext || profilePage ? undefined : dashboardExperts[0]);
-  const summary = details?.reviews ?? dashboardExpertReviewSummary;
+  const expert = details!.expert;
+  const summary = details!.reviews;
   const {
     submittedQuery, visibleReviews, currentPage, isModalOpen, setIsModalOpen,
     rating, comment, setRating, setComment, resetForm, handleAddReview,
     onSearch, setSearch, onAddComment, onNext, onPrev, flag,
-  } = useExpertReviewsPage(expertId, details?.reviews.reviews ?? dashboardExpertReviews, Boolean(details));
+  } = useExpertReviewsPage(expertId, details!.reviews.reviews, Boolean(details));
 
   const profileHref = jobContext
     ? routes.dashboardLinks.jobApplicantInfo(
@@ -107,7 +103,7 @@ const DashboardExpertReviews = ({
             </FilterSectionWrapper>
             <FilterSectionWrapper variant={publicPage ? "primary" : "tertiary"}>
               <FilterTitle
-                title={`${expert.noOfCompletedJobs} jobs completed`}
+                title={`${expert.noOfCompletedJobs} ${expert.noOfCompletedJobs === 1 ? "job" : "jobs"} completed`}
               />
             </FilterSectionWrapper>
             <RatingSummary
@@ -155,6 +151,13 @@ const DashboardExpertReviews = ({
       />
     </Container>
   );
+};
+
+const DashboardExpertReviews = (props: Parameters<typeof DashboardExpertReviewsView>[0]) => {
+  const query = useExpertDetails(props.expertId, !props.details);
+  if (props.details) return <DashboardExpertReviewsView {...props} />;
+  if (!query.details) return <ExpertDetailsState error={query.isError} retry={query.retry} />;
+  return <DashboardExpertReviewsView key={props.expertId} {...props} details={query.details} />;
 };
 
 export default DashboardExpertReviews;

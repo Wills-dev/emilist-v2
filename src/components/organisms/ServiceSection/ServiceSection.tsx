@@ -5,8 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import Container from "@/components/atoms/Container/Container";
 import SectionTitle from "@/components/atoms/SectionTitle/SectionTitle";
 import ServiceSectionAction from "@/components/molecules/ServiceSectionActions/ServiceSectionAction/ServiceSectionAction";
-import SectionWrapper from "@/components/molecules/SectionWrapper/SectionWrapper";
-import ExpertCard from "@/features/experts/components/ExpertCard/ExpertCard";
+import HomeExpertSection from "@/features/experts/components/HomeExpertSection/HomeExpertSection";
 import HomeJobSection from "@/features/jobs/components/HomeJobSection/HomeJobSection";
 import HomeMaterialSection from "@/features/materials/components/HomeMaterialSection/HomeMaterialSection";
 import { useServiceSection } from "./useServiceSection";
@@ -28,24 +27,7 @@ const ServiceSection = () => {
       <div className="min-h-90.5">
         <AnimatePresence mode="wait">
           {currentService === "experts" && (
-            <SectionWrapper className="no-scrollbar ">
-              <ExpertCard
-                id="1"
-                imgUrl="/assets/dummyImages/pipe.svg"
-                busniessName="Olawale Pipes & Fittings"
-                isVerified={true}
-                rating={2}
-                noOfReviews={25}
-                price={50000}
-                period="day"
-                currency="NGN"
-                location="Lagos, Nigeria helloooooooooooodhdh yest I dont"
-                noOfCompletedJobs={28}
-                serviceType="Plumber"
-                level="Senior"
-                isLiked={false}
-              />
-            </SectionWrapper>
+            <HomeExpertSection />
           )}
           {currentService === "jobs" && <HomeJobSection />}
           {currentService === "materials" && <HomeMaterialSection />}

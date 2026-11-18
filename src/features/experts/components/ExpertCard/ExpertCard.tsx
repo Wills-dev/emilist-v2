@@ -4,7 +4,7 @@ import { useResourceTracking } from "@/features/reports/hooks/useResourceTrackin
 import DotInfoItem from "@/components/atoms/DotInfoItem/DotInfoItem";
 import ItemImage from "@/components/atoms/ItemImage/ItemImage";
 import ItemName from "@/components/atoms/ItemName/ItemName";
-import LikeButton from "@/components/molecules/LikeButton/LikeButton";
+import BusinessLikeButton from "@/features/businesses/components/BusinessLikeButton/BusinessLikeButton";
 import PriceWrapper from "@/components/molecules/PriceWrapper/PriceWrapper";
 import Rating from "@/components/molecules/Rating/Rating";
 import ShareButton from "@/components/molecules/ShareButton/ShareButton";
@@ -52,16 +52,15 @@ const ExpertCard = ({
   const { ref: impressionRef, click: trackClick } = useResourceTracking({ resourceType: "business", resourceId: id });
   const jobType = noOfCompletedJobs < 2 ? "job" : "jobs";
 
-  const toggleLike = () => {};
 
   return (
-    <div ref={impressionRef} onClickCapture={trackClick} className="max-w-[375.5px] w-full min-w-72.5 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
-      <div className="space-y-4">
+    <div ref={impressionRef} onClickCapture={trackClick} className="h-full w-full min-w-0 max-w-[375.5px] shrink-0 px-2 pt-2 pb-3 bg-[#F9F9F9] rounded-[8px]">
+      <div className="flex h-full flex-col gap-4">
         <div className="p-2.5 bg-white rounded-[12px]">
           <ItemImage src={imgUrl} alt={busniessName} />
         </div>
-        <div className="flex justify-between items-end  border-b border-[#ECECEC] pb-2 flex-wrap gap-2">
-          <div className="space-y-1.5">
+        <div className="flex min-h-22 flex-col items-start justify-between gap-2 border-b border-[#ECECEC] pb-2">
+          <div className="w-full min-w-0 space-y-1.5">
             <ItemName title={busniessName} isVerified={isVerified} />
             <div className="flex items-center gap-[6.88px]">
               <Rating rating={rating} />{" "}
@@ -70,18 +69,18 @@ const ExpertCard = ({
                   href={reviewsHref}
                   className="block text-[9.45px] font-exo underline underline-offset-2 transition-colors hover:text-[#009F4D]"
                 >
-                  ({noOfReviews} reviews)
+                  ({noOfReviews} {noOfReviews === 1 ? "review" : "reviews"})
                 </Link>
               ) : (
                 <span className="block text-[9.45px] font-exo">
-                  ({noOfReviews} reviews)
+                  ({noOfReviews} {noOfReviews === 1 ? "review" : "reviews"})
                 </span>
               )}
             </div>
           </div>
           <PriceWrapper price={price} currency={currency} unit={period} />
         </div>
-        <div className="flex justify-between gap-4 flex-wrap">
+        <div className="flex min-h-32 flex-wrap items-start justify-between gap-4">
           <div className="max-w-56.25 w-full bg-linear-to-b from-0% from-white to-100% to-[#FBFBFB] sm:p-3 p-1.5 border border-[#F1F2F9] rounded-[8px]">
             <div className="space-y-2.5">
               <div className="flex items-center gap-4">
@@ -103,15 +102,15 @@ const ExpertCard = ({
                 />
                 <DotInfoItem desc={level} variant="secondary" />
               </div>
-              {compareHref && <CompareBtn href={compareHref} />}
+              {compareHref && <CompareBtn type="expert" item={{ id, name: busniessName }} />}
             </div>
           </div>
           <div className="flex items-center gap-2">
             <ShareButton id={id} type="expert" name={busniessName} />
-            <LikeButton isLiked={isLiked} onToggleLike={toggleLike} />
+            <BusinessLikeButton businessId={id} liked={isLiked} />
           </div>
         </div>
-        <ExpertCardActions expertId={id} profileHref={profileHref} />
+        <div className="mt-auto"><ExpertCardActions expertId={id} profileHref={profileHref} /></div>
       </div>
     </div>
   );

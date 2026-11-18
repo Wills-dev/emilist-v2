@@ -1,5 +1,7 @@
 "use client";
 
+import { dashboardFilterSidebar } from "@/lib/constants/marketplaceLayout";
+
 import Container from "@/components/atoms/Container/Container";
 import MarketplaceMaterialCardWrap from "../MarketplaceMaterialCardWrap/MarketplaceMaterialCardWrap";
 import MarketplaceFilterBtns from "@/components/molecules/MarketplaceFilterBtns/MarketplaceFilterBtns";
@@ -84,7 +86,7 @@ const SavedMaterialWrapper = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-68 w-full max-xl:hidden space-y-6">
+        <div className={`max-w-68 w-full max-xl:hidden space-y-6 ${dashboardFilterSidebar}`}>
           <MarketplaceFilterBtns
             onReset={resetFilters}
             hasFilter={hasFilters}

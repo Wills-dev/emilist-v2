@@ -16,7 +16,7 @@ const ReviewCard = ({
       className={`flex items-center justify-between sm:gap-4 gap-2 ${rating < 1 ? "opacity-50" : ""}`}
     >
       <p className="text-sm font-medium text-[#5E625F] flex items-center whitespace-nowrap">
-        {starNumber} Stars
+        {starNumber} {starNumber === 1 ? "Star" : "Stars"}
       </p>
       <div
         className={`h-2.5 w-full rounded-[10px]  overflow-hidden ${variant === "tertiary" ? "bg-white" : "bg-[#F1F2F9]"}`}

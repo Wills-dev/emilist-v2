@@ -133,7 +133,7 @@ const ServiceProfileCard = ({
       <div className="mt-2 flex items-center gap-2">
         <Rating rating={expert.rating} />
         <span className="text-xs text-[#737774]">
-          ({expert.reviews} reviews)
+          ({expert.reviews} {expert.reviews === 1 ? "review" : "reviews"})
         </span>
       </div>
     </div>
@@ -148,7 +148,7 @@ const ServiceProfileCard = ({
         />
         <InfoItem value={formatNoticePeriod(expert.noticePeriod)} icon={<ClockIcon />} />
         <InfoItem
-          value={`${expert.numberOfEmployee} employees`}
+          value={`${expert.numberOfEmployee} ${Number(expert.numberOfEmployee) === 1 ? "employee" : "employees"}`}
           icon={<UserIcon />}
         />
       </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { publicFilterSidebar } from "@/lib/constants/marketplaceLayout";
+
 import Container from "@/components/atoms/Container/Container";
 import SavedFilterBtn from "@/components/atoms/SavedFilterBtn/SavedFilterBtn";
 import MarketplaceActionBtns from "@/components/molecules/MarketplaceActionBtns/MarketplaceActionBtns";
@@ -66,7 +68,7 @@ const MarketplaceExpertWrapper = () => {
       <Container>
         <div className="pb-20 pt-5 sm:pt-10">
           <div className="flex justify-between gap-2 max-xl:flex-col xl:gap-10">
-            <aside className="w-full min-w-72.5 max-w-96.75 space-y-6">
+            <aside className={`w-full min-w-72.5 max-w-96.75 space-y-6 ${publicFilterSidebar}`}>
               <MarketplaceTab tabContent={marketplaceTabs} />
               <MarketplaceFilterBtns
                 onReset={resetFilters}

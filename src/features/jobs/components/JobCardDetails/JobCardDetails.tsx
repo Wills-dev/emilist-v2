@@ -109,7 +109,7 @@ const JobCardDetails = ({
         />
         <div className="flex items-center justify-between gap-3">
           {date ? <DatedPosted date={date} /> : <span />}
-          {compareHref && <CompareBtn href={compareHref} />}
+          {compareHref && <CompareBtn type="job" item={{ id, name: title }} />}
         </div>
       </div>
     </div>
