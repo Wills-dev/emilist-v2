@@ -10,6 +10,7 @@ export interface ExpertDetailsData {
     galleryImages: string[];
     about: string[];
   };
+  muted?: boolean;
   aboutHtml?: string;
   recipient?: MessageRecipient;
   reviews: {

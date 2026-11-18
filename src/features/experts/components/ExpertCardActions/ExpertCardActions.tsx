@@ -21,7 +21,7 @@ const ExpertCardActions = ({
         </Button>
       </div>
       <div className="flex-1">
-        <Button variant="secondary" className="w-full flex-1 h-8 text-xs">
+        <Button href={routes.hireExpert(expertId)} variant="secondary" className="w-full flex-1 h-8 text-xs">
           Hire Expert
         </Button>
       </div>
