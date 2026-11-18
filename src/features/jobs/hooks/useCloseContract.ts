@@ -7,7 +7,6 @@ import { useStore } from "@/store/authStore";
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { closeContract } from "../api/closeContract";
 import { jobKeys } from "../queries/jobKeys";
-import { normalizeJobStatus } from "../helpers/manageJobs";
 import type { JobDetailsViewModel } from "../types/jobDetails";
 
 export const useCloseContract = (job: JobDetailsViewModel) => {
@@ -19,7 +18,7 @@ export const useCloseContract = (job: JobDetailsViewModel) => {
   const [note, setNote] = useState("");
   const [isRecommendVendor, setRecommendVendor] = useState(true);
   const submitting = useRef(false);
-  const eligible = Boolean(userId && userId === job.ownerId && job.canCloseContract === true && normalizeJobStatus(job.status) !== "completed");
+  const eligible = Boolean(userId && userId === job.ownerId && job.canCloseContract === true);
   const mutation = useMutation({
     mutationFn: closeContract,
     onSuccess: async () => {

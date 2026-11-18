@@ -21,6 +21,7 @@ export const mapBusiness = (business: BusinessDto): UserExpertService => ({
   businessImages: (business.businessImages ?? [])
     .map((image) => typeof image === "string" ? image : image.imageUrl)
     .filter(Boolean),
+  businessImageIds: (business.businessImages ?? []).filter((image) => typeof image === "string" ? Boolean(image) : Boolean(image.imageUrl)).map((image) => typeof image === "string" ? undefined : image._id),
   rating: business.rating ?? 0,
   reviews: Array.isArray(business.reviews) ? business.reviews.length : business.reviews ?? 0,
   level: business.level ?? "",
