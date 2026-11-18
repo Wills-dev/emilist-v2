@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/lib/axiosInstance";
-import { normalizeTransactionPage, transactionRecord, normalizeTransactionStatus } from "../helpers/normalizeTransactions";
+import { normalizeTransaction, normalizeTransactionPage, transactionRecord, normalizeTransactionStatus } from "../helpers/normalizeTransactions";
 
 export const fetchWalletTransactions = async (walletId: string, currency: string, page: number, limit = 20, signal?: AbortSignal) => {
   const { data } = await axiosInstance.get<unknown>("/transaction/fetch-all-user-transactions", { params: { walletId, page, limit }, signal });
@@ -15,4 +15,11 @@ export const verifyPaystackPayment = async (reference: string) => {
   const result = data as { success?: boolean; status?: boolean | string; message?: string };
   if (result.success === false || result.status === false || result.status === "error" || result.status === "failed") throw new Error(result.message || "Unable to verify this payment.");
   return data;
+};
+
+export const fetchTransactionDetails = async (transactionId: string, signal?: AbortSignal) => {
+  const { data } = await axiosInstance.get<unknown>(`/transaction/fetch-my-transaction/${encodeURIComponent(transactionId)}`, { signal });
+  const transaction = normalizeTransaction(transactionRecord(data), "");
+  if (transaction.id !== transactionId) throw new Error("The transaction response did not match the selected transaction.");
+  return transaction;
 };
