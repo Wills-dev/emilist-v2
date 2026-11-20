@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import {
+  clearCart,
   increaseCartQuantity,
   reduceCartQuantity,
   removeFromCart,
@@ -10,16 +11,25 @@ import {
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { ApiErrorResponse } from "@/lib/types/error";
 import { useStore } from "@/store/authStore";
+import { useCartStore } from "@/store/cart/cartStore";
+import type { Cart } from "../types";
 
 export const useCartItemActions = () => {
   const queryClient = useQueryClient();
   const currentUser = useStore((state) => state.currentUser);
   const openModal = useStore((state) => state.openModal);
   const setIsModalFlow = useStore((state) => state.setIsModalFlow);
+  const cart = useCartStore((state) => state.cart);
+  const setCart = useCartStore((state) => state.setCart);
+  const isCartLocked = cart?.status === "checkedOut";
 
-  const handleSuccess = useCallback(() => {
-    queryClient.invalidateQueries({ queryKey: ["cart"] });
-  }, [queryClient]);
+  const handleSuccess = useCallback(
+    (updatedCart: Cart | null) => {
+      queryClient.setQueryData(["cart"], updatedCart);
+      setCart(updatedCart);
+    },
+    [queryClient, setCart],
+  );
 
   const handleError = useCallback((error: ApiErrorResponse) => {
     promiseErrorFunction(error);
@@ -49,20 +59,30 @@ export const useCartItemActions = () => {
     variables: removingProductId,
   } = useMutation({
     mutationFn: removeFromCart,
-    onSuccess: () => {
-      handleSuccess();
+    onSuccess: (updatedCart) => {
+      handleSuccess(updatedCart);
       toast.success("Material removed from cart.");
     },
     onError: handleError,
   });
+  const { mutate: clearCartItems, isPending: isClearingCart } = useMutation({
+    mutationFn: clearCart,
+    onSuccess: handleSuccess,
+    onError: handleError,
+  });
 
   const canManageCart = useCallback(() => {
+    if (isCartLocked) {
+      toast.error("This cart has been checked out and can no longer be changed.");
+      return false;
+    }
+
     if (currentUser) return true;
 
     setIsModalFlow(true);
     openModal("login");
     return false;
-  }, [currentUser, openModal, setIsModalFlow]);
+  }, [currentUser, isCartLocked, openModal, setIsModalFlow]);
 
   const handleIncreaseQuantity = useCallback(
     (productId: string) => {
@@ -85,6 +105,10 @@ export const useCartItemActions = () => {
     [canManageCart, removeCartItem],
   );
 
+  const handleClearCart = useCallback(() => {
+    if (canManageCart()) clearCartItems();
+  }, [canManageCart, clearCartItems]);
+
   const isCartItemUpdating = useCallback(
     (productId: string) =>
       (isIncreasingQuantity && increasingProductId === productId) ||
@@ -104,6 +128,9 @@ export const useCartItemActions = () => {
     handleIncreaseQuantity,
     handleReduceQuantity,
     handleRemoveFromCart,
+    handleClearCart,
+    isClearingCart,
+    isCartLocked,
     isCartItemUpdating,
   };
 };

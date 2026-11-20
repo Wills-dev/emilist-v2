@@ -3,137 +3,170 @@
 import { useState } from "react";
 
 import ItemActionButton from "@/components/atoms/ItemActionButton/ItemActionButton";
+import { ReviewModal } from "@/features/materials/components/MaterialReviewModal/MaterialReviewModal";
 import CancelOrderModal from "../CancelOrderModal/CancelOrderModal";
-import { useCancelOrder } from "../../hooks/useCancelOrder";
 import ReturnItemModal from "../ReturnItemModal/ReturnItemModal";
-import { useReturnItem } from "../../hooks/useReturnItem";
 import TrackOrderModal from "../TrackOrderModal/TrackOrderModal";
-import {
-  OrderTrackingStatus,
-  useTrackOrder,
-} from "../../hooks/useTrackOrder";
-import OrderAgainModal from "../OrderAgainModal/OrderAgainModal";
-import RateMerchantModal from "../RateMerchantModal/RateMerchantModal";
-import {
-  OrderAgainProduct,
-  useOrderAgain,
-} from "../../hooks/useOrderAgain";
+import { useCancelOrder } from "../../hooks/useCancelOrder";
+import { useOrderActions } from "../../hooks/useOrderActions";
+import { useReturnItem } from "../../hooks/useReturnItem";
+import { useTrackOrder } from "../../hooks/useTrackOrder";
+import type { CustomerOrder } from "../../types/order";
 
-const OrderCardActionBtns = ({
-  orderId,
-  orderNumber,
-  trackingStatus,
-  product,
-  merchantId,
-}: {
-  orderId: string;
-  orderNumber: string;
-  trackingStatus: OrderTrackingStatus;
-  product: OrderAgainProduct;
-  merchantId: string;
-}) => {
-  const [isRateMerchantOpen, setIsRateMerchantOpen] = useState(false);
-  const {
-    reason,
-    setReason,
-    isOpen,
-    isSubmitting,
-    openModal,
-    handleModalChange,
-    handleSubmit,
-    canSubmit,
-  } = useCancelOrder({ orderId });
-  const {
-    reason: returnReason,
-    setReason: setReturnReason,
-    isOpen: isReturnModalOpen,
-    isSubmitting: isReturning,
-    openModal: openReturnModal,
-    handleModalChange: handleReturnModalChange,
-    handleSubmit: handleReturnSubmit,
-    canSubmit: canSubmitReturn,
-  } = useReturnItem({ orderId });
-  const {
-    isOpen: isTrackModalOpen,
-    openModal: openTrackModal,
-    handleModalChange: handleTrackModalChange,
-  } = useTrackOrder();
-  const orderAgain = useOrderAgain({ product });
-  const isDelivered = trackingStatus === "delivered";
+const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [reviewProductId, setReviewProductId] = useState("");
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const actions = useOrderActions(order);
+  const tracking = useTrackOrder(order._id);
+
+  const cancel = useCancelOrder({
+    orderId: order._id,
+    onCancelOrder: async ({ reason }) => {
+      await actions.cancel(reason);
+    },
+  });
+  const returnRequest = useReturnItem({
+    orderId: order._id,
+    onReturnItem: async ({ reason }) => {
+      await actions.returnOrder(reason);
+    },
+  });
+
+  const openReview = (productId: string) => {
+    setReviewProductId(productId);
+    setIsReviewOpen(true);
+  };
+
+  const submitReview = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!reviewProductId || !rating || !comment.trim()) return;
+
+    try {
+      await actions.rateProduct({
+        productId: reviewProductId,
+        rating,
+        comment: comment.trim(),
+      });
+      setRating(0);
+      setComment("");
+      setIsReviewOpen(false);
+    } catch {
+      return;
+    }
+  };
+
+  const reviewForm = {
+    rating,
+    comment,
+    setRating,
+    setComment,
+    handleSubmit: submitReview,
+    resetForm: () => {
+      setRating(0);
+      setComment("");
+      setReviewProductId("");
+    },
+    isPending: actions.isRating,
+  };
+
+  const trackingError =
+    tracking.error instanceof Error ? tracking.error.message : undefined;
 
   return (
     <>
       <div className="flex flex-wrap items-center gap-2">
-        {!isDelivered && (
-          <ItemActionButton title="Cancel Order" onClick={openModal} />
+        {actions.actions.canPay && (
+          <>
+            <ItemActionButton
+              title="Pay by card"
+              onClick={() => actions.pay("Card")}
+              disabled={actions.isPaying}
+              className="text-[#25C269]"
+            />
+            <ItemActionButton
+              title="Pay with wallet"
+              onClick={() => actions.pay("Wallet")}
+              disabled={actions.isPaying}
+              className="text-[#25C269]"
+            />
+          </>
         )}
-        {isDelivered && (
-          <ItemActionButton title="Return Item" onClick={openReturnModal} />
+        {actions.actions.canCancel && (
+          <ItemActionButton
+            title="Cancel Order"
+            onClick={cancel.openModal}
+            className="text-[#FF5D7A]"
+          />
         )}
-        {!isDelivered && (
+        {actions.actions.canTrack && (
           <ItemActionButton
             title="Track Order"
-            onClick={openTrackModal}
+            onClick={tracking.openModal}
             className="text-[#6667FF]"
           />
         )}
-        <ItemActionButton
-          title="Rate Merchant"
-          onClick={() => setIsRateMerchantOpen(true)}
-        />
-        {isDelivered && (
+        {actions.actions.canReturn && (
           <ItemActionButton
-            title="Order Again"
-            onClick={orderAgain.openModal}
+            title="Return Order"
+            onClick={returnRequest.openModal}
+            className="text-[#FF5D7A]"
+          />
+        )}
+        {actions.actions.canReorder && (
+          <ItemActionButton
+            title="Reorder"
+            onClick={() => actions.reorder()}
+            disabled={actions.isReordering}
             className="text-[#6667FF]"
           />
         )}
+        {actions.actions.canReview &&
+          order.products.map((product) => (
+            <ItemActionButton
+              key={product.productId}
+              title={`Review ${product.productName}`}
+              onClick={() => openReview(product.productId)}
+              className="text-[#6667FF]"
+            />
+          ))}
       </div>
       <CancelOrderModal
-        open={isOpen}
-        onClose={handleModalChange}
-        orderNumber={orderNumber}
-        reason={reason}
-        setReason={setReason}
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-        canSubmit={canSubmit}
+        open={cancel.isOpen}
+        onClose={cancel.handleModalChange}
+        orderNumber={order._id}
+        reason={cancel.reason}
+        setReason={cancel.setReason}
+        onSubmit={cancel.handleSubmit}
+        isSubmitting={actions.isCanceling || cancel.isSubmitting}
+        canSubmit={cancel.canSubmit}
       />
       <ReturnItemModal
-        open={isReturnModalOpen}
-        onClose={handleReturnModalChange}
-        reason={returnReason}
-        setReason={setReturnReason}
-        onSubmit={handleReturnSubmit}
-        isSubmitting={isReturning}
-        canSubmit={canSubmitReturn}
+        open={returnRequest.isOpen}
+        onClose={returnRequest.handleModalChange}
+        reason={returnRequest.reason}
+        setReason={returnRequest.setReason}
+        onSubmit={returnRequest.handleSubmit}
+        isSubmitting={actions.isReturning || returnRequest.isSubmitting}
+        canSubmit={returnRequest.canSubmit}
       />
       <TrackOrderModal
-        open={isTrackModalOpen}
-        onClose={handleTrackModalChange}
-        orderNumber={orderNumber}
-        status={trackingStatus}
-        confirmedDate="February 16, 2026"
-        deliveryDate="February 18, 2026"
-        expectedDeliveryDate="February 19, 2026"
-        onCancelOrder={openModal}
-        onReturnItem={openReturnModal}
+        open={tracking.isOpen}
+        onClose={tracking.handleModalChange}
+        orderNumber={order._id}
+        tracking={tracking.data}
+        isLoading={tracking.isLoading}
+        error={trackingError}
       />
-      <OrderAgainModal
-        product={product}
-        quantity={orderAgain.quantity}
-        open={orderAgain.isOpen}
-        onClose={orderAgain.handleModalChange}
-        onIncrement={orderAgain.increment}
-        onDecrement={orderAgain.decrement}
-        onPurchase={orderAgain.handlePurchase}
-        isSubmitting={orderAgain.isSubmitting}
-      />
-      {isRateMerchantOpen && (
-        <RateMerchantModal
-          merchantId={merchantId}
-          open={isRateMerchantOpen}
-          onClose={setIsRateMerchantOpen}
+      {reviewProductId && (
+        <ReviewModal
+          open={isReviewOpen}
+          onClose={setIsReviewOpen}
+          title="Review product"
+          description="Share your experience with this product."
+          submitLabel="Submit review"
+          form={reviewForm}
         />
       )}
     </>

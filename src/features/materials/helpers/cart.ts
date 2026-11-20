@@ -29,14 +29,13 @@ export const getCartCurrency = (cart: Cart | null) => {
 
 export const getCartOrderSummary = (cart: Cart | null): CartOrderSummary => {
   const summary = cart?.orderSummary;
-  const totalAmount = cart?.totalAmount ?? 0;
 
   return {
-    subtotalAmount: summary?.subtotalAmount ?? totalAmount,
+    subtotalAmount: summary?.subtotalAmount ?? 0,
     discountAmount: summary?.discountAmount ?? 0,
     taxAmount: summary?.taxAmount ?? 0,
     shippingAmount: summary?.shippingAmount ?? 0,
-    totalAmount: summary?.totalAmount ?? totalAmount,
+    totalAmount: summary?.totalAmount ?? 0,
   };
 };
 

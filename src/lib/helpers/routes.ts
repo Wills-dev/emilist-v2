@@ -100,6 +100,7 @@ export const routes = {
     dashboardCart: "/dashboard/marketplace/cart",
     dashboardCheckout: "/dashboard/marketplace/checkout",
     orders: "/dashboard/marketplace/orders",
+    paymentCallback: "/dashboard/orders/payment-callback",
     listedMaterials: "/dashboard/marketplace/materials/listed",
     materialsCompare: "/dashboard/marketplace/materials/compare",
     reports: "/dashboard/reports",

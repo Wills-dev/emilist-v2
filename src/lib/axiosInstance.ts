@@ -3,7 +3,9 @@ import { handleExpiredSession } from "./helpers/handleExpiredSession";
 
 import { readCookie } from "./helpers/cookie";
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+const baseUrl =
+  process.env.NEXT_PUBLIC_API_URL ??
+  process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
 export const axiosInstance = axios.create({
   baseURL: baseUrl,

@@ -1,97 +1,54 @@
-import Truck2 from "@/components/atoms/icons/Truck2/Truck2";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
-import { OrderTrackingStatus } from "../../hooks/useTrackOrder";
+import { getCurrencySign } from "@/lib/helpers/currencySign";
+import { numberWithCommas } from "@/lib/helpers/formatNumbers";
+import type { CustomerOrder } from "../../types/order";
 
-const OrderInfoWrapper = ({
-  trackingStatus,
-}: {
-  trackingStatus: OrderTrackingStatus;
-}) => {
-  const statusConfig: Record<
-    OrderTrackingStatus,
-    { label: string; color: string; iconColor: string }
-  > = {
-    confirmed: {
-      label: "Confirmed",
-      color: "text-[#1D2939]",
-      iconColor: "#1D2939",
-    },
-    out_for_delivery: {
-      label: "Out for Delivery",
-      color: "text-[#FF9933]",
-      iconColor: "#FF9933",
-    },
-    delivered: {
-      label: "Delivered",
-      color: "text-[#25C269]",
-      iconColor: "#25C269",
-    },
-  };
-  const orderStatus = statusConfig[trackingStatus];
-
-  return (
-    <div className="py-2 border-y border-[#F1F2F9] flex flex-wrap space-y-2">
-      {" "}
-      <InfoItem
-        label="Order date:"
-        value={"February 17, 2026"}
-        variant="xs"
-        labelClass="text-[#707471]"
-        className="text-[#1D2939] border-r border-[#D0D5DD] px-2"
-      />{" "}
-      <InfoItem
-        label="Order quantity:"
-        value={"15 bags"}
-        variant="xs"
-        labelClass="text-[#707471]"
-        className="text-[#1D2939] border-r border-[#D0D5DD] px-2"
-      />
-      <InfoItem
-        label="Payment status:"
-        value={"Paid"}
-        variant="xs"
-        labelClass="text-[#707471]"
-        className="text-[#1D2939] border-r border-[#D0D5DD] px-2"
-      />
-      <InfoItem
-        label="Delivery date:"
-        value={"February 19, 2026"}
-        icon={<Truck2 size="14" />}
-        variant="xs"
-        labelClass="text-[#707471]"
-        className="text-[#1D2939] border-r border-[#D0D5DD] px-2"
-      />
-      <InfoItem
-        label="Delivery Status:"
-        icon={<Truck2 currentColor={orderStatus.iconColor} size="14" />}
-        value={orderStatus.label}
-        variant="xs"
-        labelClass="text-[#707471]"
-        className={`${orderStatus.color} border-r border-[#D0D5DD] px-2`}
-      />
-      <InfoItem
-        label="Product name:"
-        value={"Cement"}
-        variant="xs"
-        labelClass="text-[#707471]"
-        className="text-[#1D2939] border-r border-[#D0D5DD] px-2"
-      />
-      <InfoItem
-        label="Brand:"
-        value={"Dangote"}
-        variant="xs"
-        labelClass="text-[#707471]"
-        className="text-[#1D2939] border-r border-[#D0D5DD] px-2"
-      />
-      <InfoItem
-        label="Category:"
-        value={"Building Materials"}
-        variant="xs"
-        labelClass="text-[#707471]"
-        className="text-[#1D2939] border-r border-[#D0D5DD] px-2"
-      />
-    </div>
-  );
+const deliveryLabels: Record<CustomerOrder["deliveryStatus"], string> = {
+  orderConfirmed: "Order confirmed",
+  outForDelivery: "Out for delivery",
+  delivered: "Delivered",
+  canceled: "Canceled",
+  returned: "Returned",
 };
+
+const OrderInfoWrapper = ({ order }: { order: CustomerOrder }) => (
+  <div className="flex flex-wrap gap-y-2 border-y border-[#F1F2F9] py-2">
+    <InfoItem
+      label="Order date:"
+      value={new Date(order.createdAt).toLocaleDateString()}
+      variant="xs"
+      labelClass="text-[#707471]"
+      className="border-r border-[#D0D5DD] px-2 text-[#1D2939]"
+    />
+    <InfoItem
+      label="Items:"
+      value={String(order.products.reduce((count, item) => count + item.quantity, 0))}
+      variant="xs"
+      labelClass="text-[#707471]"
+      className="border-r border-[#D0D5DD] px-2 text-[#1D2939]"
+    />
+    <InfoItem
+      label="Payment:"
+      value={order.paymentStatus}
+      variant="xs"
+      labelClass="text-[#707471]"
+      className="border-r border-[#D0D5DD] px-2 capitalize text-[#1D2939]"
+    />
+    <InfoItem
+      label="Delivery:"
+      value={deliveryLabels[order.deliveryStatus]}
+      variant="xs"
+      labelClass="text-[#707471]"
+      className="border-r border-[#D0D5DD] px-2 text-[#1D2939]"
+    />
+    <InfoItem
+      label="Total:"
+      value={`${getCurrencySign("NGN")}${numberWithCommas(order.totalAmount)}`}
+      variant="xs"
+      labelClass="text-[#707471]"
+      className="px-2 text-[#1D2939]"
+    />
+  </div>
+);
 
 export default OrderInfoWrapper;
