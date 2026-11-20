@@ -33,6 +33,8 @@ export const useCancelOrder = ({
       await onCancelOrder({ orderId, reason: normalizedReason });
       resetForm();
       setIsOpen(false);
+    } catch {
+      return;
     } finally {
       setIsSubmitting(false);
     }

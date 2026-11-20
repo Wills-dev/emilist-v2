@@ -50,6 +50,24 @@ export interface ApplyDiscountCodePayload {
   code: string;
 }
 
+export interface CartPromoProduct {
+  productId: string;
+  productName: string;
+  quantity: number;
+  unitPrice: number;
+  lineTotal: number;
+  discountAmount: number;
+}
+
+export interface AppliedCartPromo {
+  code: string;
+  discountPercentage: number;
+  discountAmount: number;
+  expiryDate?: string;
+  sellerId?: string;
+  products?: CartPromoProduct[];
+}
+
 export interface CartProduct {
   _id: string;
   name: string;
@@ -68,6 +86,8 @@ export interface CartItem {
   price: number;
   productId: CartProduct | string;
   quantity: number;
+  promoDiscountAmount?: number;
+  taxAmount?: number;
 }
 
 export interface CartOrderSummary {
@@ -80,10 +100,46 @@ export interface CartOrderSummary {
 
 export interface Cart {
   _id: string;
+  status?: string;
   cartQuantity?: number;
+  appliedPromos?: AppliedCartPromo[];
+  promoDiscountAmount?: number;
   orderSummary?: CartOrderSummary;
   products?: CartItem[];
   totalAmount?: number;
+}
+
+export interface CheckoutCartPayload {
+  shippingAddress?: string;
+  orderNote?: string;
+}
+
+export interface CheckoutOrderProduct {
+  productId: string;
+  quantity: number;
+  price: number;
+  productName: string;
+  merchantId: string;
+  merchantName: string;
+  discountAmount: number;
+  promoCode?: string;
+  taxPercentage: number;
+  taxAmount: number;
+}
+
+export interface CheckoutOrder {
+  _id: string;
+  cartId: string;
+  products: CheckoutOrderProduct[];
+  subtotalAmount: number;
+  discountAmount: number;
+  taxAmount: number;
+  shippingAmount: number;
+  totalAmount: number;
+  discountApplied: boolean;
+  promoCodes: string[];
+  paymentStatus: "unpaid" | "paid" | "failed" | "pending";
+  status: string;
 }
 
 export interface ProductReviewResponse {

@@ -67,7 +67,10 @@ const CartBreakdown = ({ isDashboard }: { isDashboard?: boolean }) => {
           <div
             className={`w-full space-y-8 ${isDashboard ? "max-w-95" : "max-w-96.75"}`}
           >
-            <PromoCode variant={isDashboard ? "tertiary" : "primary"} />
+            <PromoCode
+              variant={isDashboard ? "tertiary" : "primary"}
+              appliedPromos={cart?.appliedPromos}
+            />
             <OrderSummary
               href={
                 isDashboard

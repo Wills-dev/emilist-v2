@@ -37,7 +37,9 @@ export const getPaymentCheckoutUrl = (response: PaymentCheckoutResponse) => {
 
 export const getPaymentReturnUrl = (path?: string) => {
   const appBaseUrl =
-    process.env.NEXT_PUBLIC_WEB_URL?.trim() || window.location.origin;
+    process.env.NEXT_PUBLIC_APP_URL?.trim() ||
+    process.env.NEXT_PUBLIC_WEB_URL?.trim() ||
+    window.location.origin;
   const currentPath = `${window.location.pathname}${window.location.search}`;
   const url = new URL(path ?? currentPath, appBaseUrl);
   // Do not reuse identifiers from an earlier checkout when starting another one.

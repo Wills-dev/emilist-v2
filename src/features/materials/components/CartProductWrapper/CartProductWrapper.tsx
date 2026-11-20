@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 
 import CartCard from "../CartCard/CartCard";
 import { CartItem } from "../../types";
@@ -26,6 +26,9 @@ const CartProductWrapper = ({
     handleIncreaseQuantity,
     handleReduceQuantity,
     handleRemoveFromCart,
+    handleClearCart,
+    isClearingCart,
+    isCartLocked,
     isCartItemUpdating,
   } = useCartItemActions();
 
@@ -71,11 +74,17 @@ const CartProductWrapper = ({
               </div>
               <button
                 type="button"
-                disabled
-                title="Clearing cart items will be available soon"
-                className="text-[#FF5D7A]/50 text-sm flex items-center gap-1 bg-[#F9F9F9] py-0.5 px-3 rounded-full cursor-not-allowed"
+                onClick={handleClearCart}
+                disabled={isClearingCart || isCartLocked}
+                className="text-[#FF5D7A] text-sm flex items-center gap-1 bg-[#F9F9F9] py-0.5 px-3 rounded-full disabled:text-[#FF5D7A]/50 disabled:cursor-not-allowed"
               >
-                Clear <X className="w-[1em] h-[1em]" />
+                {isClearingCart ? (
+                  <Loader2 className="w-[1em] h-[1em] animate-spin" />
+                ) : (
+                  <>
+                    Clear <X className="w-[1em] h-[1em]" />
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -89,7 +98,7 @@ const CartProductWrapper = ({
                 key={item._id}
                 item={item}
                 variant={variant}
-                isUpdating={isCartItemUpdating(productId)}
+                isUpdating={isCartLocked || isCartItemUpdating(productId)}
                 onIncreaseQuantity={handleIncreaseQuantity}
                 onReduceQuantity={handleReduceQuantity}
                 onRemoveFromCart={handleRemoveFromCart}
@@ -98,24 +107,6 @@ const CartProductWrapper = ({
           })}
         </div>
       </div>
-      {variant === "primary" && (
-        <div className="bg-[#F9F9F9] py-4 border border-[#F1F2F9] rounded-[12.75px]">
-          <div className="sm:px-5.25 px-2 pb-5.25 space-y-4 flex flex-col">
-            <label
-              htmlFor="note"
-              className="text-xs text-[#8A8D8B] font-medium"
-            >
-              Add a note to your order (optional)
-            </label>
-            <textarea
-              name="note"
-              id="note"
-              className="bg-white rounded-[6.75px] p-2 text-xs sm:h-34.5 h-20"
-              placeholder="Examples: Please gift wrap this item, This is a gift for my mother, Handle with extra care"
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

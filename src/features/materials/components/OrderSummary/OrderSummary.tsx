@@ -14,6 +14,8 @@ const OrderSummary = ({
   productCount = 0,
   orderSummary,
   currency = "NGN",
+  isLoading = false,
+  disabled = false,
 }: {
   href?: string;
   actionTitle: string;
@@ -22,6 +24,8 @@ const OrderSummary = ({
   productCount?: number;
   orderSummary?: CartOrderSummary;
   currency?: string;
+  isLoading?: boolean;
+  disabled?: boolean;
 }) => {
   const currencySign = getCurrencySign(currency);
   const summary = orderSummary ?? {
@@ -84,7 +88,9 @@ const OrderSummary = ({
           href={href}
           onClick={handlePayment}
           variant="primary"
-          type="submit"
+          type="button"
+          loading={isLoading}
+          disabled={disabled}
           className="w-full h-8.75"
         >
           <span>
