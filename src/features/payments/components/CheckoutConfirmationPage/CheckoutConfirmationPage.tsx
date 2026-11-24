@@ -63,6 +63,7 @@ function ConfirmationContent({ kind, userId, initialContext, returnedReference, 
     queryFn: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: kind === "job" ? jobKeys.all : subscriptionKeys.all }),
+        ...(kind === "subscription" ? [queryClient.invalidateQueries({ queryKey: ["dashboard-overview", userId] })] : []),
         queryClient.invalidateQueries({ queryKey: walletKeys.all }),
         queryClient.invalidateQueries({ queryKey: [...transactionKeys.all, "list"] }),
       ]);

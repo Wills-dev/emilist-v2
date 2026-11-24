@@ -1,15 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
 import InsightEmptyState from "@/components/atoms/icons/InsightEmptyState/InsightEmptyState";
 import { routes } from "@/lib/helpers/routes";
-import {
-  InsightReportData,
-  InsightReportPeriod,
-} from "../../types";
+import type { DashboardOverview, DashboardPeriod } from "../../types/api";
 
 import ChartLegend from "../ChartLegend/ChartLegend";
 import JobCompletionChart, {
@@ -17,38 +13,23 @@ import JobCompletionChart, {
 } from "../JobCompletionChart/JobCompletionChart";
 
 const PERIOD_OPTIONS: Array<{
-  value: InsightReportPeriod;
+  value: DashboardPeriod;
   label: string;
 }> = [
   { value: "week", label: "This week" },
   { value: "month", label: "This month" },
   { value: "year", label: "This year" },
+  { value: "all", label: "All time" },
 ];
 
-const JobCompletionCard = ({
-  dataByPeriod,
-  emptyTitle = "No data reports yet",
-}: {
-  dataByPeriod?: InsightReportData;
-  emptyTitle?: string;
+const JobCompletionCard = ({ data, period, onPeriodChange, loading }: {
+  data: DashboardOverview["jobCompletion"];
+  period: DashboardPeriod;
+  onPeriodChange: (period: DashboardPeriod) => void;
+  loading: boolean;
 }) => {
-  const [period, setPeriod] = useState<InsightReportPeriod>("week");
-
-  if (!dataByPeriod) {
-    return (
-      <section className="flex min-h-66.75 flex-col items-center bg-white p-6 text-center">
-        <h2 className="font-exo font-semibold max-sm:text-sm">{emptyTitle}</h2>
-        <div className="flex h-full flex-1 items-center justify-center">
-          <InsightEmptyState />
-        </div>
-      </section>
-    );
-  }
-
-  const data = dataByPeriod[period];
-
   return (
-    <section className="bg-white">
+    <section className="bg-white" aria-busy={loading}>
       <div className="px-7 pb-6 pt-5">
         <div className="flex items-center justify-between gap-4">
           <h2 className="font-exo font-semibold">Job Completion</h2>
@@ -56,7 +37,7 @@ const JobCompletionCard = ({
             <select
               value={period}
               onChange={(event) =>
-                setPeriod(event.target.value as InsightReportPeriod)
+                onPeriodChange(event.target.value as DashboardPeriod)
               }
               aria-label="Filter job completion report by period"
               className="h-12 appearance-none rounded-2xl border-0 bg-[#FAFAFA] py-2 pl-4 pr-11 text-sm text-[#737774] outline-none focus-visible:ring-2 focus-visible:ring-[#18A154]"
@@ -72,7 +53,7 @@ const JobCompletionCard = ({
         </div>
 
         <div className="mt-5">
-          <JobCompletionChart data={data} />
+          {loading ? <p role="status" className="py-12 text-center text-sm">Loading report…</p> : data.counts.total === 0 ? <div className="flex flex-col items-center gap-3 py-6"><InsightEmptyState /><p className="text-sm">No jobs in this period.</p></div> : <JobCompletionChart data={data} />}
         </div>
 
         <div className="space-y-2 text-sm text-[#667085]">
@@ -80,7 +61,7 @@ const JobCompletionCard = ({
             <ChartLegend
               key={segment.key}
               color={segment.color}
-              label={segment.label}
+              label={`${segment.label} (${data.counts[segment.key]})`}
             />
           ))}
         </div>

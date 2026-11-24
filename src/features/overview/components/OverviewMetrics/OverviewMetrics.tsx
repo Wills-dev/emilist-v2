@@ -27,12 +27,20 @@ const metrics: DashboardMetric[] = [
   },
 ];
 
-const OverviewMetrics = () => (
+const OverviewMetrics = ({ data }: { data: import("../../types/api").DashboardOverview }) => {
+  const payments = Object.entries(data.upcomingPayments.totalsByCurrency);
+  const values: Partial<DashboardMetric>[] = [
+    { value: String(data.newJobApplications.count) },
+    { value: (payments.length ? payments : [[data.upcomingPayments.currency, data.upcomingPayments.amount] as const]).map(([currency, amount]) => new Intl.NumberFormat("en-NG", { style: "currency", currency }).format(amount)).join(" / "), context: data.upcomingPayments.period },
+    { value: String(data.jobCompletionRate.rate) },
+  ];
+  return (
   <section className="grid gap-3 sm:grid-cols-3">
-    {metrics.map((metric) => (
-      <DashboardMetricCard key={metric.id} metric={metric} />
+    {metrics.map((metric, index) => (
+      <DashboardMetricCard key={metric.id} metric={{ ...metric, ...values[index] }} />
     ))}
   </section>
 );
+};
 
 export default OverviewMetrics;

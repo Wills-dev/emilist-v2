@@ -1,15 +1,12 @@
 import CalendarIcon from "@/components/atoms/icons/CalendarIcon/CalendarIcon";
 
-const DashboardDateCard = ({ compact = false }: { compact?: boolean }) => {
-  const date = new Date();
-  const month = date.toLocaleDateString("en-GB", { month: "long" });
-  const day = date.getDate();
-  const year = date.getFullYear();
-  const fullDate = date.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+const DashboardDateCard = ({ compact = false, generatedAt }: { compact?: boolean; generatedAt: string }) => {
+  const date = new Date(generatedAt);
+  const format = (options: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat("en-NG", { ...options, timeZone: "Africa/Lagos" }).format(date);
+  const month = format({ month: "long" });
+  const day = format({ day: "numeric" });
+  const year = format({ year: "numeric" });
+  const fullDate = format({ day: "numeric", month: "long", year: "numeric" });
 
   return (
     <div

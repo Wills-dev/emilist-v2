@@ -7,6 +7,7 @@ import ItemActionButton from "@/components/atoms/ItemActionButton/ItemActionButt
 import MessageButton from "@/features/messages/components/MessageButton/MessageButton";
 import { ReviewModal } from "@/features/materials/components/MaterialReviewModal/MaterialReviewModal";
 import CancelOrderModal from "../CancelOrderModal/CancelOrderModal";
+import ConfirmOrderActionModal from "../ConfirmOrderActionModal/ConfirmOrderActionModal";
 import OrderDetailsModal from "../OrderDetailsModal/OrderDetailsModal";
 import ReturnItemModal from "../ReturnItemModal/ReturnItemModal";
 import TrackOrderModal from "../TrackOrderModal/TrackOrderModal";
@@ -17,6 +18,8 @@ import { useTrackOrder } from "../../hooks/useTrackOrder";
 import type { CustomerOrder } from "../../types/order";
 
 const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
+  const [isReceiveOpen, setIsReceiveOpen] = useState(false);
+  const [isReorderOpen, setIsReorderOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [reviewProductId, setReviewProductId] = useState("");
@@ -77,6 +80,12 @@ const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
 
   const trackingError =
     tracking.error instanceof Error ? tracking.error.message : undefined;
+  const trackingData = tracking.data && {
+    ...tracking.data,
+    deliveryStatusUpdatedAt: tracking.data.deliveryStatusUpdatedAt ?? (
+      tracking.data.deliveryStatus === order.deliveryStatus ? order.deliveryStatusUpdatedAt : undefined
+    ),
+  };
   const sellers = [
     ...new Map(
       order.products.map((product) => [
@@ -90,7 +99,7 @@ const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
     <>
       <div className="flex flex-wrap items-center gap-2">
         <ItemActionButton
-          title="View details"
+          title="View Order"
           icon={<Eye size={14} />}
           onClick={() => setIsDetailsOpen(true)}
           className="text-[#25C269]"
@@ -99,8 +108,9 @@ const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
           <MessageButton
             key={seller.userId}
             recipient={seller}
-            label={`Message ${seller.name}`}
-            className="inline-flex size-7 items-center justify-center rounded-[6.75px] bg-[#F6F7F9] text-[#6667FF] hover:bg-[#E1E4E2]"
+            label={sellers.length > 1 ? `Contact Seller: ${seller.name}` : "Contact Seller"}
+            showLabel
+            className="inline-flex h-7 items-center justify-center rounded-[6.75px] bg-[#F6F7F9] px-2 text-[#6667FF] hover:bg-[#E1E4E2]"
           />
         ))}
         {actions.actions.canPay && (
@@ -133,17 +143,18 @@ const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
             className="text-[#6667FF]"
           />
         )}
+        {actions.actions.canReceive && <ItemActionButton title="Confirm Package Received" onClick={() => setIsReceiveOpen(true)} className="text-[#18A154]" disabled={actions.isReceiving} />}
         {actions.actions.canReturn && (
           <ItemActionButton
-            title="Return Order"
+            title="Return Item"
             onClick={returnRequest.openModal}
             className="text-[#FF5D7A]"
           />
         )}
         {actions.actions.canReorder && (
           <ItemActionButton
-            title="Reorder"
-            onClick={() => actions.reorder()}
+            title="Order Again"
+            onClick={() => setIsReorderOpen(true)}
             disabled={actions.isReordering}
             className="text-[#6667FF]"
           />
@@ -152,12 +163,14 @@ const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
           order.products.map((product) => (
             <ItemActionButton
               key={product.productId}
-              title={`Review ${product.productName}`}
+              title={order.products.length > 1 ? `Rate Merchant: ${product.merchantName}` : "Rate Merchant"}
               onClick={() => openReview(product.productId)}
               className="text-[#6667FF]"
             />
           ))}
       </div>
+      <ConfirmOrderActionModal open={isReceiveOpen} onClose={setIsReceiveOpen} title="Confirm Package Received" description="Confirm that you have received this package. The order will be marked as received." onConfirm={() => actions.receive()} disabled={!actions.actions.canReceive} />
+      <ConfirmOrderActionModal open={isReorderOpen} onClose={setIsReorderOpen} title="Order Again" description="Add this order’s items to your cart at current prices?" confirmLabel="Add to cart" onConfirm={() => actions.reorder()} disabled={!actions.actions.canReorder} />
       <CancelOrderModal
         open={cancel.isOpen}
         onClose={cancel.handleModalChange}
@@ -186,7 +199,8 @@ const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
         open={tracking.isOpen}
         onClose={tracking.handleModalChange}
         orderNumber={order._id}
-        tracking={tracking.data}
+        tracking={trackingData}
+        onCancel={actions.actions.canCancel ? () => { tracking.handleModalChange(false); cancel.openModal(); } : undefined}
         isLoading={tracking.isLoading}
         error={trackingError}
       />
@@ -194,8 +208,8 @@ const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
         <ReviewModal
           open={isReviewOpen}
           onClose={setIsReviewOpen}
-          title="Review product"
-          description="Share your experience with this product."
+          title="Rate Merchant"
+          description="Share your experience with the merchant and this purchase."
           submitLabel="Submit review"
           form={reviewForm}
         />

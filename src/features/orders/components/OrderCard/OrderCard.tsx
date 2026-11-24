@@ -5,8 +5,10 @@ import Image from "next/image";
 import { getCurrencySign } from "@/lib/helpers/currencySign";
 import { numberWithCommas } from "@/lib/helpers/formatNumbers";
 import OrderCardActionBtns from "../OrderCardActionBtns/OrderCardActionBtns";
+import OrderStatusUpdate from "../OrderStatusUpdate/OrderStatusUpdate";
 import OrderInfoWrapper from "../OrderInfoWrapper/OrderInfoWrapper";
 import MerchantsInfo from "../MerchantsInfo/MerchantsInfo";
+import { displayOrderValue } from "../../helpers/orderDisplay";
 import type { CustomerOrder } from "../../types/order";
 
 const OrderCard = ({
@@ -38,13 +40,12 @@ const OrderCard = ({
           <div className="w-full flex-1 space-y-2">
             <div className="flex w-full justify-between max-lg:flex-col lg:items-center">
               <p className="font-exo font-semibold max-sm:text-sm">
-                Order #{order._id}
+                Order #{displayOrderValue(order._id)}
               </p>
               <div className="flex items-center justify-between gap-1">
                 <span className="text-xs text-[#707471]">Total cost:</span>
                 <span className="font-exo font-semibold max-sm:text-sm">
-                  {getCurrencySign("NGN")}
-                  {numberWithCommas(order.totalAmount)}
+                  {Number.isFinite(order.totalAmount) ? `${getCurrencySign("NGN")}${numberWithCommas(order.totalAmount)}` : "N/A"}
                 </span>
               </div>
             </div>
@@ -70,6 +71,7 @@ const OrderCard = ({
             <MerchantsInfo product={primaryProduct} />
           </div>
         )}
+        <OrderStatusUpdate status={order.deliveryStatus} updatedAt={order.deliveryStatusUpdatedAt} />
       </div>
     </div>
   );
