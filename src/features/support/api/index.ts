@@ -14,7 +14,17 @@ export const fetchSupportTicket = async (requestId: string, signal?: AbortSignal
   return ticket;
 };
 export const createSupportTicket = async (payload: CreateTicketPayload) => {
-  const { data } = await axiosInstance.post("/support/requests", payload);
+  const attachments = payload.attachments ?? [];
+  validateSupportFiles(attachments);
+  const body = new FormData();
+  body.append("subject", payload.subject.trim());
+  body.append("description", payload.description.trim());
+  body.append("category", payload.category);
+  body.append("priority", payload.priority);
+  if (payload.linkedType) body.append("linkedType", payload.linkedType);
+  if (payload.linkedRecordId) body.append("linkedRecordId", payload.linkedRecordId);
+  attachments.forEach((file) => body.append("attachments", file));
+  const { data } = await axiosInstance.post("/support/requests", body);
   return normalizeTicket(supportPayload(data));
 };
 export const replyToSupportTicket = async ({ requestId, message, attachments }: { requestId: string; message: string; attachments: File[] }) => {

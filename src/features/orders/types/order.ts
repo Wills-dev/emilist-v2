@@ -14,6 +14,7 @@ export type OrderSort =
   | "total_low_high";
 
 export interface OrderProduct {
+  _id?: string;
   productId: string;
   quantity: number;
   price: number;
@@ -21,10 +22,12 @@ export interface OrderProduct {
   brand?: string;
   categoryName?: string;
   thumbnail?: string;
+  quantityMetric?: string;
   merchantId: string;
   merchantName: string;
   merchantRating?: number;
   merchantReviewCount?: number;
+  totalUnitsSoldAtPurchase?: number;
   discountAmount: number;
   promoCode?: string;
   taxPercentage: number;
@@ -43,6 +46,7 @@ export interface CustomerOrder {
   totalAmount: number;
   discountApplied: boolean;
   promoCodes: string[];
+  originalTotalAmount?: number;
   status: OrderStatus;
   paymentStatus: OrderPaymentStatus;
   deliveryStatus: OrderDeliveryStatus;
@@ -54,7 +58,13 @@ export interface CustomerOrder {
   returnedAt?: string | null;
   cancellationReason?: string;
   returnReason?: string;
+  deliverySteps?: Array<{
+    status: OrderDeliveryStatus;
+    timestamp: string;
+    note?: string;
+  }>;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface OrdersPagination {

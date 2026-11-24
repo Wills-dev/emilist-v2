@@ -9,6 +9,6 @@ export interface SupportTicket {
 }
 export interface TicketListQuery { page: number; limit: number; status?: string; category?: string; }
 export interface TicketList { requests: SupportTicket[]; page: number; pages: number; total: number; }
-export interface CreateTicketPayload { subject: string; description: string; category: string; priority: string; linkedType?: string; linkedRecordId?: string; }
+export interface CreateTicketPayload { subject: string; description: string; category: string; priority: string; linkedType?: string; linkedRecordId?: string; attachments?: File[]; }
 export type DisputeType = "owner_unsatisfied_work" | "owner_additional_cost_reason" | "artisan_additional_cost_unpaid" | "artisan_invoice_unpaid_overdue";
 export interface DisputePayload { jobId: string; milestoneId: string; invoiceId?: string; disputeType: DisputeType; subject?: string; reason: string; attachments: File[]; }
