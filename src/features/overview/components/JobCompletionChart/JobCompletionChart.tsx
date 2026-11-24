@@ -24,6 +24,9 @@ const polarPoint = (angle: number, radius: number) => {
 };
 
 const getDonutSegmentPath = (startAngle: number, endAngle: number) => {
+  if (endAngle - startAngle >= 359.999) {
+    return "M 160 58 A 92 92 0 1 0 160 242 A 92 92 0 1 0 160 58 Z M 160 103 A 47 47 0 1 1 160 197 A 47 47 0 1 1 160 103 Z";
+  }
   const outerStart = polarPoint(endAngle, 92);
   const outerEnd = polarPoint(startAngle, 92);
   const innerStart = polarPoint(startAngle, 47);
@@ -128,7 +131,7 @@ const JobCompletionChart = ({ data }: { data: JobCompletionData }) => {
           transition={{ duration: reduceMotion ? 0 : 0.38, ease: "easeOut" }}
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
         >
-          {chartSegments.map((segment) => (
+          {chartSegments.filter((segment) => data[segment.key] > 0).map((segment) => (
             <g key={segment.key}>
               <path
                 d={getDonutSegmentPath(segment.startAngle, segment.endAngle)}

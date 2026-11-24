@@ -1,17 +1,9 @@
-import { routes } from "@/lib/helpers/routes";
 import { Megaphone } from "lucide-react";
 import UserRatingCard from "@/components/molecules/UserRatingCard/UserRatingCard";
 
-const spotlightUser = {
-  id: "richard-cole-e",
-  fullName: "Richard Cole E.",
-  detail: "Furniture Maker",
-  rating: 4,
-  noOfReviews: 380,
-  imgUrl: "/assets/images/profile-view2.svg",
-};
+import type { DashboardOverview } from "../../types/api";
 
-const SpotlightCard = () => (
+const SpotlightCard = ({ spotlight }: { spotlight: DashboardOverview["spotlight"] }) => (
   <section className="bg-white">
     <h2 className="flex items-center gap-2 border-b border-[#ECECEC] p-4 font-exo font-semibold">
       <Megaphone className="size-4" />
@@ -21,16 +13,17 @@ const SpotlightCard = () => (
       </span>
     </h2>
     <div className="p-6">
-      <UserRatingCard
-        id={spotlightUser.id}
-        profileHref={routes.profiles.artisan(spotlightUser.id)}
-        fullName={spotlightUser.fullName}
-        detail={spotlightUser.detail}
-        rating={spotlightUser.rating}
-        noOfReviews={spotlightUser.noOfReviews}
-        imgUrl={spotlightUser.imgUrl}
+      {spotlight ? <div className="space-y-3"><UserRatingCard
+        id={spotlight.businessId}
+        profileHref={`/dashboard/marketplace/experts/${encodeURIComponent(spotlight.businessId)}`}
+        fullName={spotlight.user.fullName || spotlight.user.userName || spotlight.businessName}
+        detail={spotlight.services[0] || spotlight.businessName}
+        rating={spotlight.averageRating}
+        noOfReviews={spotlight.totalReviews}
+        imgUrl={spotlight.user.displayImage || undefined}
         avatarVariant="large"
-      />
+        isVerified={spotlight.expertType.toLowerCase() === "verified"}
+      /><p className="text-xs text-[#737774]">{spotlight.businessName}</p><p className="text-xs text-[#737774]">{spotlight.averageRating} / 5 · {spotlight.totalReviews} reviews</p></div> : <p className="text-sm text-[#737774]">No spotlight provider available.</p>}
     </div>
   </section>
 );
