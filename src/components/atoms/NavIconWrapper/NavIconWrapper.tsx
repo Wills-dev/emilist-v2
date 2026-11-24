@@ -1,15 +1,20 @@
+"use client";
+
 import Link from "next/link";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip/tooltip";
 
 const NavIconWrapper = ({
   children,
   onClick,
   href,
   ariaLabel,
+  tooltip,
 }: {
   children: React.ReactNode;
   onClick?: () => void;
   href?: string;
   ariaLabel?: string;
+  tooltip?: string;
 }) => {
   const element =
     href !== undefined ? (
@@ -30,7 +35,13 @@ const NavIconWrapper = ({
         {children}
       </button>
     );
-  return <>{element}</>;
+  if (!tooltip) return element;
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{element}</TooltipTrigger>
+      <TooltipContent side="bottom" sideOffset={8}>{tooltip}</TooltipContent>
+    </Tooltip>
+  );
 };
 
 export default NavIconWrapper;

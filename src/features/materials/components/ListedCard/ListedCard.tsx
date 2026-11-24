@@ -6,6 +6,7 @@ import Link from "next/link";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import PriceWrapper from "@/components/molecules/PriceWrapper/PriceWrapper";
 import QuantityControl from "@/components/molecules/QuantityControl/QuantityControl";
+import ProductPromoActions from "@/features/promos/components/ProductPromoActions/ProductPromoActions";
 import ListedCardActionBtns from "../ListedCardActionBtns/ListedCardActionBtns";
 import { routes } from "@/lib/helpers/routes";
 import { OtherSellerProduct } from "../../types";
@@ -107,6 +108,7 @@ const ListedCard = ({
               />
               <div className="max-md:hidden">
                 <ListedCardActionBtns
+                  promoActions={<ProductPromoActions product={{ id: material._id, name: material.name, status: material.status }} ownerId={material.userId?._id} />}
                   onEditListing={() => setEditListingOpen(true)}
                   onArchiveListing={() => setArchiveListingOpen(true)}
                 />
@@ -117,6 +119,7 @@ const ListedCard = ({
       </div>
       <div className="border-t border-[#F1F2F9] pt-3.5 md:hidden">
         <ListedCardActionBtns
+                  promoActions={<ProductPromoActions product={{ id: material._id, name: material.name, status: material.status }} ownerId={material.userId?._id} />}
           onEditListing={() => setEditListingOpen(true)}
           onArchiveListing={() => setArchiveListingOpen(true)}
         />

@@ -1,24 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports -- This test uses Node’s CommonJS test runner. */
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const { readFileSync } = require("node:fs");
-const path = require("node:path");
-const ts = require("typescript");
-
-// Run the TypeScript domain helpers with Node's built-in test runner.
-function loadSource(relative, imports = {}) {
-  const filename = path.resolve(__dirname, "..", relative);
-  const source = ts.transpileModule(readFileSync(filename, "utf8"), {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX },
-    fileName: filename,
-  }).outputText;
-  const loadedModule = { exports: {} };
-  new Function("require", "module", "exports", source)((id) => {
-    if (id in imports) return imports[id];
-    throw new Error(`Unexpected runtime import: ${id}`);
-  }, loadedModule, loadedModule.exports);
-  return loadedModule.exports;
-}
+const loadSource = require("./helpers/loadSource.cjs");
 const { getOrderActions, getSaleActions, getTrackingSteps, formatDeliveryDate } = loadSource("src/features/orders/helpers/orderDelivery.ts");
 
 test("buyer actions follow all six delivery states, independently of payment status", () => {
