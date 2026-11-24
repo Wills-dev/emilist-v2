@@ -19,29 +19,13 @@ import {
   rateOrderedProduct,
   reorderOrder,
   returnOrder,
+  updateOrderDeliveryStatus,
 } from "../api/orders";
 import type { CustomerOrder } from "../types/order";
 import { orderKeys } from "../queries/orderKeys";
 
-const isReturnWindowOpen = (order: CustomerOrder) => {
-  if (order.deliveryStatus !== "delivered" || !order.deliveredAt) return false;
-  const deliveredAt = new Date(order.deliveredAt).getTime();
-  return (
-    Number.isFinite(deliveredAt) &&
-    Date.now() <= deliveredAt + 7 * 24 * 60 * 60 * 1000
-  );
-};
-
-export const getOrderActions = (order: CustomerOrder) => ({
-  canPay: order.paymentStatus === "unpaid" || order.paymentStatus === "failed",
-  canCancel:
-    order.deliveryStatus === "orderConfirmed" &&
-    order.paymentStatus === "paid",
-  canTrack: !["canceled", "returned"].includes(order.deliveryStatus),
-  canReturn: isReturnWindowOpen(order),
-  canReorder: order.deliveryStatus === "delivered",
-  canReview: order.deliveryStatus === "delivered",
-});
+import { getOrderActions } from "../helpers/orderDelivery";
+export { getOrderActions } from "../helpers/orderDelivery";
 
 export const useOrderActions = (order: CustomerOrder) => {
   const queryClient = useQueryClient();
@@ -54,7 +38,7 @@ export const useOrderActions = (order: CustomerOrder) => {
     if (userId) {
       queryClient.setQueryData(orderKeys.detail(userId, order._id), updated);
     }
-    await queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
+    await queryClient.invalidateQueries({ queryKey: orderKeys.all });
     return updated;
   }, [order._id, queryClient, userId]);
 
@@ -69,6 +53,16 @@ export const useOrderActions = (order: CustomerOrder) => {
       return refreshOrder();
     },
     onSuccess: () => toast.success("Order canceled and status refreshed."),
+    onError: handleError,
+  });
+
+  const receipt = useMutation({
+    mutationFn: async () => {
+      if (order.deliveryStatus !== "delivered") throw new Error("Only delivered orders can be confirmed as received.");
+      await updateOrderDeliveryStatus({ orderId: order._id, status: "received", note: "Package received successfully" });
+      return refreshOrder();
+    },
+    onSuccess: () => toast.success("Package marked as received."),
     onError: handleError,
   });
 
@@ -149,7 +143,9 @@ export const useOrderActions = (order: CustomerOrder) => {
     isCanceling: cancellation.isPending,
     returnOrder: returnRequest.mutateAsync,
     isReturning: returnRequest.isPending,
-    reorder: reorder.mutate,
+    reorder: reorder.mutateAsync,
+    receive: receipt.mutateAsync,
+    isReceiving: receipt.isPending,
     isReordering: reorder.isPending,
     rateProduct: rating.mutateAsync,
     isRating: rating.isPending,

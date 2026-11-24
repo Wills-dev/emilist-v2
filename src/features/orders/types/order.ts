@@ -3,7 +3,8 @@ export type OrderDeliveryStatus =
   | "outForDelivery"
   | "delivered"
   | "canceled"
-  | "returned";
+  | "returned"
+  | "received";
 
 export type OrderPaymentStatus = "unpaid" | "pending" | "paid" | "failed";
 export type OrderStatus = "pending" | "completed" | "canceled";
@@ -14,6 +15,7 @@ export type OrderSort =
   | "total_low_high";
 
 export interface OrderProduct {
+  currency?: string;
   _id?: string;
   productId: string;
   quantity: number;
@@ -50,6 +52,9 @@ export interface CustomerOrder {
   status: OrderStatus;
   paymentStatus: OrderPaymentStatus;
   deliveryStatus: OrderDeliveryStatus;
+  deliveryStatusUpdatedAt?: string | null;
+  orderSteps?: OrderStep[];
+  allowedDeliveryStatusUpdates?: OrderDeliveryStatus[];
   shippingAddress?: string;
   orderNote?: string;
   deliveryDate?: string | null;
@@ -89,9 +94,12 @@ export interface OrdersQuery {
 
 export interface OrderTracking {
   deliveryStatus: OrderDeliveryStatus;
+  deliveryStatusUpdatedAt?: string | null;
+  orderSteps?: OrderStep[];
+  allowedDeliveryStatusUpdates?: OrderDeliveryStatus[];
   deliveryDate: string | null;
   deliveredAt: string | null;
-  timeline: Array<{
+  timeline?: Array<{
     status: OrderDeliveryStatus;
     timestamp: string;
     note?: string;
@@ -102,4 +110,40 @@ export interface BulkCancelResult {
   orderId: string;
   success: boolean;
   message: string;
+}
+
+
+export interface OrderStep {
+  status: OrderDeliveryStatus;
+  label?: string;
+  isCompleted?: boolean;
+  isCurrent?: boolean;
+  activatedAt?: string | null;
+  timestamp?: string | null;
+  note?: string;
+}
+
+export interface Sale {
+  saleId: string;
+  orderId: string;
+  orderNumber: string;
+  orderDate: string;
+  quantity: number;
+  quantityMetric?: string;
+  paymentStatus: OrderPaymentStatus;
+  deliveryStatus: OrderDeliveryStatus;
+  deliveryStatusUpdatedAt?: string | null;
+  deliveryDate?: string | null;
+  deliveredAt?: string | null;
+  deliveryAddress?: string;
+  allowedDeliveryStatusUpdates?: OrderDeliveryStatus[];
+  latestStep?: OrderStep | null;
+  orderSteps?: OrderStep[];
+  product: { id: string; name: string; brand?: string; category?: string; thumbnail?: string };
+  buyer: { id: string; name: string; email?: string };
+  pricing: { currency: string; totalAmount: number };
+}
+export interface SalesPage {
+  sales: Sale[];
+  pagination: { total: number; currentPage: number; totalPages: number; hasNextPage?: boolean; hasPreviousPage?: boolean; hasNext?: boolean; hasPrevious?: boolean };
 }

@@ -1,14 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useDashboardOverview } from "@/features/overview/hooks/useDashboardOverview";
 import ProIcon from "../icons/ProIcon/ProIcon";
 
 const JoinPro = () => {
-  const { data } = useDashboardOverview("week");
-  const subscription = data?.subscription;
-  if (!subscription || subscription.isPro || subscription.planName.trim().toLowerCase() !== "basic") return null;
-
   return (
     <>
       <Link href="/dashboard/settings?tab=subscriptions" className="bg-[#F0FDF5] border border-[#F1F2F9] flex items-center gap-2 py-2 px-3 rounded-[24px] text-[#176439]">

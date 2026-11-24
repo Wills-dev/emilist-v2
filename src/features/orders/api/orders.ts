@@ -99,3 +99,13 @@ export const rateOrderedProduct = async ({
     { productId, rating, ...(comment ? { comment } : {}) },
   );
 };
+
+
+export const fetchSales = async (query: OrdersQuery, signal?: AbortSignal): Promise<import("../types/order").SalesPage> => {
+  const { data } = await axiosInstance.get<ApiResponse<import("../types/order").SalesPage>>("/orders/sales", { params: query, signal });
+  return data.data;
+};
+export const updateOrderDeliveryStatus = async ({ orderId, status, note }: { orderId: string; status: import("../types/order").OrderDeliveryStatus; note?: string }) => {
+  const { data } = await axiosInstance.patch(`/orders/${encodeURIComponent(orderId)}/status`, { status, ...(note ? { note } : {}) });
+  return data;
+};

@@ -7,6 +7,7 @@ import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
 import Price from "@/components/atoms/Price/Price";
 import QuantityControl from "@/components/molecules/QuantityControl/QuantityControl";
+import { displayOrderValue } from "../../helpers/orderDisplay";
 import { OrderAgainProduct } from "../../hooks/useOrderAgain";
 
 const OrderAgainModal = ({
@@ -51,7 +52,7 @@ const OrderAgainModal = ({
         </div>
         <div className="min-w-0 flex-1 space-y-4">
           <div className="flex flex-wrap justify-between gap-2">
-            <p className="min-w-0 font-exo font-semibold">{product.name}</p>
+            <p className="min-w-0 font-exo font-semibold">{displayOrderValue(product.name)}</p>
             <Price
               price={product.price}
               currency={product.currency}
@@ -60,8 +61,8 @@ const OrderAgainModal = ({
             />
           </div>
           <div className="space-y-1">
-            <InfoItem label="Brand:" value={product.brand} variant="sm" />
-            <InfoItem label="Category:" value={product.category} variant="sm" />
+            <InfoItem label="Brand:" value={displayOrderValue(product.brand)} variant="sm" />
+            <InfoItem label="Category:" value={displayOrderValue(product.category)} variant="sm" />
           </div>
           <QuantityControl
             quantity={quantity}
