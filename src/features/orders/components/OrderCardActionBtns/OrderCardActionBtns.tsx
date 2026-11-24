@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { Eye } from "lucide-react";
 
 import ItemActionButton from "@/components/atoms/ItemActionButton/ItemActionButton";
+import MessageButton from "@/features/messages/components/MessageButton/MessageButton";
 import { ReviewModal } from "@/features/materials/components/MaterialReviewModal/MaterialReviewModal";
 import CancelOrderModal from "../CancelOrderModal/CancelOrderModal";
+import OrderDetailsModal from "../OrderDetailsModal/OrderDetailsModal";
 import ReturnItemModal from "../ReturnItemModal/ReturnItemModal";
 import TrackOrderModal from "../TrackOrderModal/TrackOrderModal";
 import { useCancelOrder } from "../../hooks/useCancelOrder";
@@ -14,6 +17,7 @@ import { useTrackOrder } from "../../hooks/useTrackOrder";
 import type { CustomerOrder } from "../../types/order";
 
 const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [reviewProductId, setReviewProductId] = useState("");
   const [rating, setRating] = useState(0);
@@ -73,10 +77,32 @@ const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
 
   const trackingError =
     tracking.error instanceof Error ? tracking.error.message : undefined;
+  const sellers = [
+    ...new Map(
+      order.products.map((product) => [
+        product.merchantId,
+        { userId: product.merchantId, name: product.merchantName },
+      ]),
+    ).values(),
+  ];
 
   return (
     <>
       <div className="flex flex-wrap items-center gap-2">
+        <ItemActionButton
+          title="View details"
+          icon={<Eye size={14} />}
+          onClick={() => setIsDetailsOpen(true)}
+          className="text-[#25C269]"
+        />
+        {sellers.map((seller) => (
+          <MessageButton
+            key={seller.userId}
+            recipient={seller}
+            label={`Message ${seller.name}`}
+            className="inline-flex size-7 items-center justify-center rounded-[6.75px] bg-[#F6F7F9] text-[#6667FF] hover:bg-[#E1E4E2]"
+          />
+        ))}
         {actions.actions.canPay && (
           <>
             <ItemActionButton
@@ -141,6 +167,11 @@ const OrderCardActionBtns = ({ order }: { order: CustomerOrder }) => {
         onSubmit={cancel.handleSubmit}
         isSubmitting={actions.isCanceling || cancel.isSubmitting}
         canSubmit={cancel.canSubmit}
+      />
+      <OrderDetailsModal
+        orderId={order._id}
+        open={isDetailsOpen}
+        onClose={setIsDetailsOpen}
       />
       <ReturnItemModal
         open={returnRequest.isOpen}
