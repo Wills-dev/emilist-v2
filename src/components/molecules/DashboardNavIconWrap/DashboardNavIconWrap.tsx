@@ -4,17 +4,20 @@ import { useState } from "react";
 
 import MessageIcon from "@/components/atoms/icons/MessageIcon/MessageIcon";
 import NotificationIcon from "@/components/atoms/icons/NotificationIcon/NotificationIcon";
-import WarningIcon from "@/components/atoms/icons/WarningIcon/WarningIcon";
+import CartIcon from "@/components/atoms/icons/CartIcon/CartIcon";
 import NavIconWrapper from "@/components/atoms/NavIconWrapper/NavIconWrapper";
 import NotificationModal from "@/features/notifications/components/NotificationModal/NotificationModal";
 import { routes } from "@/lib/helpers/routes";
+import { useGetCartItems } from "@/features/materials/hooks/useGetCartItems";
 
 const DashboardNavIconWrap = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const { cart } = useGetCartItems();
+  const itemCount = cart?.products?.reduce((total, item) => total + item.quantity, 0) ?? cart?.cartQuantity ?? 0;
 
   return (
     <div className="flex items-center gap-3 sm:gap-5">
-      <NavIconWrapper>
+      <NavIconWrapper href={routes.dashboardLinks.jobs} ariaLabel="Open jobs" tooltip="Jobs">
         <svg
           width="24"
           height="24"
@@ -34,14 +37,18 @@ const DashboardNavIconWrap = () => {
       <NavIconWrapper
         href={routes.dashboardLinks.messages}
         ariaLabel="Open messages"
+        tooltip="Messages"
       >
         <MessageIcon />
       </NavIconWrapper>
-      <NavIconWrapper>
-        <WarningIcon />
-      </NavIconWrapper>
-      <NavIconWrapper ariaLabel="Open notifications" onClick={() => setNotificationsOpen(true)}>
+      <NavIconWrapper ariaLabel="Open notifications" tooltip="Notifications" onClick={() => setNotificationsOpen(true)}>
         <NotificationIcon />
+      </NavIconWrapper>
+      <NavIconWrapper href={routes.dashboardLinks.dashboardCart} ariaLabel={`Open cart${itemCount > 0 ? ` (${itemCount} ${itemCount === 1 ? "item" : "items"})` : ""}`} tooltip="Cart">
+        <span className="relative inline-flex size-6 items-center justify-center">
+          <CartIcon />
+          {itemCount > 0 && <span aria-hidden="true" className="absolute -right-2 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#25C269] px-1 text-[9px] font-semibold leading-none text-white">{itemCount > 99 ? "99+" : itemCount}</span>}
+        </span>
       </NavIconWrapper>
       <NotificationModal
         open={notificationsOpen}
