@@ -25,6 +25,7 @@ export const createCookie = (
       domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
     }),
   });
+  notifyAuthCookieChange();
 };
 
 export const readCookie = (cookieName: string) => {

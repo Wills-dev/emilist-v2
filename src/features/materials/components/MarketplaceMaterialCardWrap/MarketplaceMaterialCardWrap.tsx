@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 
 import MaterialCard from "../MaterialCard/MaterialCard";
 import MaterialCardSkeleton from "../MaterialCard/MaterialCardSkeleton/MaterialCardSkeleton";
@@ -111,14 +112,7 @@ const MarketplaceMaterialCardWrap = ({
           })}
 
       {!isLoading && materials.length === 0 && (
-        <div className="w-full rounded-lg bg-[#F9F9F9] px-6 py-12 text-center">
-          <p className="font-exo font-semibold text-[#303431]">
-            {emptyTitle}
-          </p>
-          <p className="mt-1 text-sm text-[#737774]">
-            {emptyDescription}
-          </p>
-        </div>
+        <EmptyState title={emptyTitle} description={emptyDescription} />
       )}
 
       {materials.length > 0 && (

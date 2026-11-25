@@ -1,8 +1,13 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import { use } from "react";
-
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import RelatedMaterialsPageWrapper from "@/features/materials/components/RelatedMaterialsPageWrapper/RelatedMaterialsPageWrapper";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const values = await params;
+  return createPageMetadata({"title": "Seller Materials", "description": "Seller Materials on Emilist.", "index": true, "path": `/marketplace/materials/seller/${encodeURIComponent(values.id)}`});
+}
 
 const SellerMaterialsPage = ({
   params,

@@ -39,12 +39,11 @@ export const useToggleMaterialLike = ({
 
       return { previousMaterialInfo };
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["materials"] });
-      queryClient.invalidateQueries({
-        queryKey: ["material info", materialId],
-      });
-    },
+    onSuccess: () => Promise.all([
+      queryClient.invalidateQueries({ queryKey: ["materials"] }),
+      queryClient.invalidateQueries({ queryKey: ["material info", materialId] }),
+      queryClient.invalidateQueries({ queryKey: ["saved-materials"] }),
+    ]),
     onError: (error: ApiErrorResponse, _shouldLike, context) => {
       context?.previousMaterialInfo.forEach(([queryKey, data]) => {
         queryClient.setQueryData(queryKey, data);

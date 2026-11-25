@@ -1,6 +1,12 @@
+import { expertMetadata } from "@/lib/seo/resourceMetadata";
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import DashboardExpertInfoWrapper from "@/features/experts/components/DashboardExpertInfoWrapper/DashboardExpertInfoWrapper";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return expertMetadata(id);
+}
 
 const PublicExpertInfoPage = async ({
   params,

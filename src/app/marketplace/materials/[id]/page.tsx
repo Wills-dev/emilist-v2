@@ -1,9 +1,14 @@
+import { materialMetadata } from "@/lib/seo/resourceMetadata";
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import PublicMaterialInfoWrapper from "@/features/materials/components/PublicMaterialInfoWrapper/PublicMaterialInfoWrapper";
 import PublicSimilarMaterials from "@/features/materials/components/PublicSimilarMaterials/PublicSimilarMaterials";
-
 import { use } from "react";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return materialMetadata(id);
+}
 
 const GeneralMaterialInfoPage = ({
   params,

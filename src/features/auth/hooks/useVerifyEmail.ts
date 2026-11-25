@@ -1,41 +1,34 @@
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { toast } from "sonner";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { useStore } from "@/store/authStore";
 import { verifyEmail } from "../api";
-import { routes } from "@/lib/helpers/routes";
+import { safeAuthDestination } from "@/lib/helpers/authRedirect";
+import { useSaveAuthSession } from "./useSaveAuthSession";
+import { useLoginContinuation } from "./useLoginContinuation";
 import { useShallow } from "zustand/react/shallow";
 import { ApiErrorResponse } from "@/lib/types/error";
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 
 export const useVerifyEmail = () => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
+  const saveSession = useSaveAuthSession();
+  const continueLogin = useLoginContinuation();
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
-  const { pendingFlow, redirectPath, isModalFlow, otpEmail, otpCountDown } =
+  const { redirectPath, otpEmail, otpCountDown } =
     useStore(
       useShallow((state) => ({
-        pendingFlow: state.pendingFlow,
         redirectPath: state.redirectPath,
-        isModalFlow: state.isModalFlow,
         otpEmail: state.otpEmail,
         otpCountDown: state.otpCountDown,
       })),
     );
 
-  const setCurrentUser = useStore((state) => state.setCurrentUser);
-  const setIsAuthInitialized = useStore(
-    (state) => state.setIsAuthInitialized,
-  );
-  const openModal = useStore((state) => state.openModal);
-  const closeAllModals = useStore((state) => state.closeAllModals);
   const clearOtpEmail = useStore((state) => state.clearOtpEmail);
   const setOtpCountDown = useStore((state) => state.setOtpCountDown);
 
@@ -84,47 +77,17 @@ export const useVerifyEmail = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: verifyEmail,
-    onSuccess: (data) => {
-      toast.success("Email successfully verified!", {
-        description:
-          "Please complete your profile to enjoy full access to Emilist services.",
-      });
-
-      setCurrentUser(data.user);
-      setIsAuthInitialized(true);
-
-      queryClient.setQueryData(["currentUser"], data.user);
+    onSuccess: async (data) => {
+      let user;
+      try { user = await saveSession(data, true); }
+      catch (error) { toast.error((error as Error).message); return; }
+      toast.success("Email successfully verified!");
       clearOtpEmail();
+      setOtpCountDown(0);
       setOtp(["", "", "", "", "", ""]);
-
-      //modal flow
-      if (isModalFlow) {
-        if (pendingFlow === "register-expert") {
-          closeAllModals();
-          return;
-        }
-
-        openModal("complete-profile");
-        return;
-      }
-
-      //page flow
-      if (pendingFlow === "register-expert" && redirectPath) {
-        router.push(redirectPath);
-        return;
-      }
-
-      if (redirectPath) {
-        router.push(
-          `${routes.completeProfile}?redirect=${encodeURIComponent(redirectPath)}`,
-        );
-        return;
-      }
-
-      router.push(`${routes?.completeProfile}?redirect=${routes?.dashboard}`);
+      continueLogin(user, safeAuthDestination(redirectPath));
     },
     onError: (error: ApiErrorResponse) => {
-      console.log("error verifying email", error);
       promiseErrorFunction(error);
     },
   });

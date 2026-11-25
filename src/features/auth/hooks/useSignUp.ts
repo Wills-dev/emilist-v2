@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { useShallow } from "zustand/react/shallow";
 import { useMutation } from "@tanstack/react-query";
 
+import { useSaveAuthSession } from "./useSaveAuthSession";
+import { safeAuthDestination } from "@/lib/helpers/authRedirect";
 import { useAuthState } from "./useAuthState";
 import { register } from "../api";
 import { ApiErrorResponse } from "@/lib/types/error";
@@ -13,6 +15,7 @@ import { useStore } from "@/store/authStore";
 
 export const useSignUp = () => {
   const router = useRouter();
+  const saveSession = useSaveAuthSession();
   const searchParams = useSearchParams();
 
   const { redirectPath, isModalFlow, termsAccepted } = useStore(
@@ -33,18 +36,21 @@ export const useSignUp = () => {
 
   const { mutate, isPending: isRegistering } = useMutation({
     mutationFn: register,
-    onSuccess: (data, variables) => {
+    onSuccess: async (data) => {
+      let user;
+      try { user = await saveSession(data); }
+      catch (error) { toast.error((error as Error).message); return; }
       toast.success("Sign up successful!", {
         description:
           "An OTP was sent to your email, enter the OTP to verify your email address.",
       });
-      setOtpEmail(variables.email);
+      setOtpEmail(user.email);
       setOtpCountDown(300);
 
       const queryRedirect = searchParams.get("redirect");
 
       if (queryRedirect && !redirectPath) {
-        setPendingFlow(null, {}, queryRedirect);
+        setPendingFlow(null, {}, safeAuthDestination(queryRedirect), isModalFlow);
       }
 
       if (isModalFlow) {
@@ -52,13 +58,12 @@ export const useSignUp = () => {
         return;
       }
 
-      const destination = redirectPath || queryRedirect || routes.dashboard;
+      const destination = safeAuthDestination(redirectPath || queryRedirect);
       router.push(
         `${routes.verifyEmail}?redirect=${encodeURIComponent(destination)}`,
       );
     },
     onError: (error: ApiErrorResponse) => {
-      console.log("error signing up", error);
       promiseErrorFunction(error);
     },
   });
@@ -77,6 +82,7 @@ export const useSignUp = () => {
         description:
           "Please review and accept the Terms & Conditions and Privacy Policy before creating your account.",
       });
+      return;
     }
 
     mutate({ email, password });

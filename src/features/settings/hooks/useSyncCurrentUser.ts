@@ -17,6 +17,7 @@ export const useSyncCurrentUser = () => {
     const nextUser = { ...currentUser, ...fallback, ...responseUser } as User;
 
     setCurrentUser(nextUser);
+    queryClient.setQueriesData({ queryKey: ["currentUser"] }, nextUser);
     queryClient.setQueryData(["currentUser"], nextUser);
   };
 

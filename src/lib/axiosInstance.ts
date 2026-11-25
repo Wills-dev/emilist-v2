@@ -1,6 +1,7 @@
 import axios from "axios";
 import { handleExpiredSession } from "./helpers/handleExpiredSession";
 
+import { getBrowserAuthMode, usesCookieSession } from "./helpers/authSession";
 import { readCookie } from "./helpers/cookie";
 
 const baseUrl =
@@ -21,8 +22,11 @@ axiosInstance.interceptors.request.use(
     if (typeof FormData !== "undefined" && config.data instanceof FormData) {
       config.headers.delete("Content-Type");
     }
-    const token = readCookie("emilistToken");
-    config.headers.Authorization = token ? `Bearer ${token}` : "";
+    const sessionAuth = usesCookieSession(getBrowserAuthMode());
+    config.withCredentials = sessionAuth;
+    const token = sessionAuth ? undefined : readCookie("emilistToken");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    else config.headers.delete("Authorization");
     return config;
   },
   (err) => {

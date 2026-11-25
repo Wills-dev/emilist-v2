@@ -67,9 +67,22 @@ test("sales fetch uses sale filters; delivery updates use the parent order ID", 
   const signal = new AbortController().signal;
   assert.deepEqual(await api.fetchSales(query, signal), { sales: [] });
   assert.deepEqual(calls.pop(), ["/orders/sales", { params: query, signal }]);
-  for (const status of ["outForDelivery", "delivered", "received"]) {
+  for (const status of ["outForDelivery", "received"]) {
     await api.updateOrderDeliveryStatus({ orderId: "parent/order", status, note: "Confirmed" });
     assert.deepEqual(calls.pop(), ["/orders/parent%2Forder/status", { status, note: "Confirmed" }]);
+  }
+  await assert.rejects(api.updateOrderDeliveryStatus({ orderId: "parent/order", status: "delivered" }), /attach delivery evidence/);
+  assert.equal(calls.length, 0);
+  for (const [name, type] of [["receipt.png", "image/png"], ["receipt.pdf", "application/pdf"]]) {
+    const deliveryImage = new File(["delivery evidence"], name, { type });
+    await api.updateOrderDeliveryStatus({ orderId: "parent/order", status: "delivered", note: "Confirmed", deliveryImage });
+    const [url, body] = calls.pop();
+    assert.equal(url, "/orders/parent%2Forder/status");
+    assert.ok(body instanceof FormData);
+    assert.equal(body.get("status"), "delivered");
+    assert.equal(body.get("note"), "Confirmed");
+    assert.equal(body.get("deliveryImage").name, name);
+    assert.equal(await body.get("deliveryImage").text(), "delivery evidence");
   }
 });
 

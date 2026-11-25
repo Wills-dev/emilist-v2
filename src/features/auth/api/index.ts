@@ -1,3 +1,4 @@
+import { googleAuthStartUrl } from "../helpers/googleAuth";
 import { axiosInstance } from "@/lib/axiosInstance";
 import { AuthType, OtpType, ResetPasswordType } from "../types";
 
@@ -99,20 +100,14 @@ export const changePassword = async ({
   }
 };
 
-export const getGoogleAuthUrl = async () => {
-  try {
-    const url = `/auth/google`;
-    const { data } = await axiosInstance.post(url);
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
+// OAuth begins with a browser navigation so Google redirects and session cookies
+// are handled by the browser, rather than an AJAX request.
+export const getGoogleAuthUrl = () => googleAuthStartUrl(axiosInstance.defaults.baseURL);
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = async (signal?: AbortSignal) => {
   try {
     const url = `/auth/current-user`;
-    const { data } = await axiosInstance.get(url);
+    const { data } = await axiosInstance.get(url, { signal });
     return data?.data;
   } catch (error) {
     throw error;

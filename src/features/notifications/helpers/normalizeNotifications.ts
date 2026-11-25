@@ -3,6 +3,7 @@ import type { NotificationData } from "../types";
 export interface NotificationPage {
   notifications: NotificationData[];
   totalNotifications?: number;
+  unreadCount?: number;
   totalPages?: number;
   hasMore: boolean;
 }
@@ -37,6 +38,7 @@ export const normalizeNotifications = (response: unknown, page: number, limit: n
   return {
     notifications: [...new Map(notifications.map((item) => [item.id, item])).values()],
     totalNotifications,
+    unreadCount: count(metadata.unreadCount) ?? count(record(response).unreadCount),
     totalPages,
     hasMore: totalPages !== undefined ? page < totalPages : items.length === limit,
   };

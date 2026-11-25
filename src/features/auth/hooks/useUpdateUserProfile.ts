@@ -12,11 +12,13 @@ import { useStore } from "@/store/authStore";
 import { updateProfileRequest } from "../api/user";
 import { validateProfileForm } from "../helpers/validateProfileForm";
 import { useUpdateUserProfileState } from "./useUpdateUserProfileState";
+import { useSyncCurrentUser } from "@/features/settings/hooks/useSyncCurrentUser";
 
 export const useUpdateUserProfile = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
+  const { syncCurrentUser } = useSyncCurrentUser();
 
   const {
     handleImageChange,
@@ -61,7 +63,8 @@ export const useUpdateUserProfile = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateProfileRequest,
-    onSuccess: () => {
+    onSuccess: (response) => {
+      syncCurrentUser(response, {});
       toast.success("Profile updated successfully.");
 
       queryClient.invalidateQueries({

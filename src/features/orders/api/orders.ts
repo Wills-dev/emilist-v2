@@ -105,7 +105,15 @@ export const fetchSales = async (query: OrdersQuery, signal?: AbortSignal): Prom
   const { data } = await axiosInstance.get<ApiResponse<import("../types/order").SalesPage>>("/orders/sales", { params: query, signal });
   return data.data;
 };
-export const updateOrderDeliveryStatus = async ({ orderId, status, note }: { orderId: string; status: import("../types/order").OrderDeliveryStatus; note?: string }) => {
-  const { data } = await axiosInstance.patch(`/orders/${encodeURIComponent(orderId)}/status`, { status, ...(note ? { note } : {}) });
+export const updateOrderDeliveryStatus = async ({ orderId, status, note, deliveryImage }: { orderId: string; status: import("../types/order").OrderDeliveryStatus; note?: string; deliveryImage?: File }) => {
+  if (status === "delivered" && !deliveryImage) throw new Error("Please attach delivery evidence.");
+  let payload: FormData | { status: typeof status; note?: string } = { status, ...(note ? { note } : {}) };
+  if (status === "delivered") {
+    payload = new FormData();
+    payload.append("status", status);
+    if (note) payload.append("note", note);
+    payload.append("deliveryImage", deliveryImage!);
+  }
+  const { data } = await axiosInstance.patch(`/orders/${encodeURIComponent(orderId)}/status`, payload);
   return data;
 };

@@ -1,8 +1,13 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import { use } from "react";
-
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import RelatedMaterialsPageWrapper from "@/features/materials/components/RelatedMaterialsPageWrapper/RelatedMaterialsPageWrapper";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const values = await params;
+  return createPageMetadata({"title": "Similar Materials", "description": "Similar Materials on Emilist.", "index": false, "path": `/marketplace/materials/similar/${encodeURIComponent(values.id)}`});
+}
 
 const SimilarMaterialsPage = ({
   params,

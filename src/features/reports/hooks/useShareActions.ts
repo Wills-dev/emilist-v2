@@ -1,9 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { toast } from "sonner";
+import { DEFAULT_SITE_URL, resolveShareOrigin } from "@/lib/seo/site";
 import { openShare } from "@/lib/helpers/shareInfo";
 import { routes } from "@/lib/helpers/routes";
 import { trackReportEvent } from "../api/recordReportEvent";
 import type { ReportSubject } from "../helpers/reportEvents";
+const subscribeToOrigin = () => () => {};
+const browserOrigin = () => window.location.origin;
+const serverOrigin = () => process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
+
 export type ShareResourceType = "user" | "expert" | "job" | "material";
 export const useShareActions = (id: string, type: ShareResourceType, name: string) => {
   const [copied, setCopied] = useState(false);
@@ -11,7 +16,8 @@ export const useShareActions = (id: string, type: ShareResourceType, name: strin
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
   const subject: ReportSubject = type === "user" ? { resourceType: "profile", subjectUserId: id } : { resourceType: type === "expert" ? "business" : type, resourceId: id };
   const path = type === "job" ? routes.marketplace.jobInfo(id) : type === "material" ? routes.marketplace.materialInfo(id) : type === "expert" ? routes.profiles.artisan(id) : routes.profile(id);
-  const link = `${process.env.NEXT_PUBLIC_WEB_URL?.replace(/\/$/, "") ?? ""}${path}`;
+  const origin = useSyncExternalStore(subscribeToOrigin, browserOrigin, serverOrigin);
+  const link = new URL(path, resolveShareOrigin(origin, process.env.NEXT_PUBLIC_SITE_URL)).href;
   const title = type === "job" ? "Job Opportunity on Emilist" : type === "material" ? "Checkout Product on Emilist" : type === "expert" ? "Expert Profile on Emilist" : "Profile on Emilist";
   const text = {
     job: `Check out this job: "${name}" on Emilist. Explore and apply now before it's closed.`,

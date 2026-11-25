@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
-
+import { createPageMetadata } from "@/lib/seo/metadata";
 import CenteredFormLayout from "@/components/templates/CenteredFormLayout/CenteredFormLayout";
 import PostJobForm from "@/features/jobs/components/PostJobForm/PostJobForm";
 
-export const metadata: Metadata = {
-  title: "Post a job",
-  description: "Post a job and connect with skilled experts on Emilist.",
-};
+export const metadata = createPageMetadata({"title": "Post a Job", "description": "Post a Job on Emilist.", "index": false, "path": "/post-job"});
+
 
 const PostJobPage = async ({
   searchParams,
