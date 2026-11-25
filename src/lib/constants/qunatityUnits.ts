@@ -1,3 +1,5 @@
+import { pluralizeQuantityMetric } from "@/lib/helpers/pluralizeQuantityMetric";
+
 export const quantityMetrics = [
   { label: "Bag", value: "Bag" },
   { label: "Bale", value: "Bale" },
@@ -49,3 +51,8 @@ export const quantityMetrics = [
   { label: "Unit", value: "Unit" },
   { label: "Yard", value: "Yard" },
 ];
+
+export const quantityMetricOptions = (quantity: number) => quantityMetrics.map((option) => ({
+  ...option,
+  label: pluralizeQuantityMetric(quantity, option.label),
+}));

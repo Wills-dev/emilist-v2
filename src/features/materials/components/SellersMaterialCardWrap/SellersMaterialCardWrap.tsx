@@ -1,4 +1,5 @@
 "use client";
+import { pluralizeQuantityMetric } from "@/lib/helpers/pluralizeQuantityMetric";
 
 import { motion } from "framer-motion";
 
@@ -58,7 +59,7 @@ const SellersMaterialCardWrap = ({
               material.storeName !== material.merchantName
                 ? material.storeName
                 : "";
-            const availability = `${material.availableQuantity} ${material.quantityMetric} available`;
+            const availability = `${material.availableQuantity} ${pluralizeQuantityMetric(material.availableQuantity, material.quantityMetric)} available`;
             const merchantDetail = [storeName, availability]
               .filter(Boolean)
               .join(" • ");

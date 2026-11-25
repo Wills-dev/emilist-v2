@@ -86,6 +86,7 @@ export const routes = {
     offerService: "/dashboard/offer-service",
     settings: "/dashboard/settings",
     materials: "/dashboard/marketplace/materials",
+    postMaterial: "/dashboard/marketplace/materials/post",
     materialInfo: (materialId: string) =>
       `/dashboard/marketplace/materials/${materialId}`,
     materialInfoReviews: (materialId: string) =>

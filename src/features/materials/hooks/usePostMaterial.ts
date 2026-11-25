@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { toast } from "sonner";
 import { useShallow } from "zustand/react/shallow";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { postMaterial } from "../api";
 import { ApiErrorResponse } from "@/lib/types/error";
@@ -22,6 +22,7 @@ import { validateImage } from "@/lib/helpers/imageValidation";
 export const usePostMaterial = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
 
   const { getPayload, resetForm, setImages } = useMaterialStore(
     useShallow((state) => ({
@@ -62,11 +63,15 @@ export const usePostMaterial = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: postMaterial,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["materials"] }),
+        queryClient.invalidateQueries({ queryKey: ["other seller materials"] }),
+      ]);
       resetForm();
       clearPendingFlow();
       toast.success("Material posted successfully!");
-      router.push(routes.postMaterialCongrats);
+      router.push(pathname.startsWith("/dashboard/") ? routes.dashboardLinks.listedMaterials : routes.postMaterialCongrats);
     },
     onError: (error: ApiErrorResponse) => {
       console.log("Failed to post material", error);

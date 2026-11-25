@@ -1,6 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
+import { routes } from "@/lib/helpers/routes";
+import PlusIcon from "@/components/atoms/icons/PlusIcon/PlusIcon";
 
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import Container from "@/components/atoms/Container/Container";
@@ -61,7 +64,12 @@ const ListedMaterialsWrapper = () => {
     <Container variant="small">
       <div className="pt-6 pb-15 space-y-10">
         <DashboardTitle title="Listed Items" icon={<Clipboard />} />
-        <BackButton isDashboard />
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <BackButton isDashboard />
+          <Link href={routes.dashboardLinks.postMaterial} className="inline-flex items-center gap-2 rounded-lg bg-[#25C269] px-4 py-2.5 font-exo text-sm font-semibold text-white transition-colors hover:bg-[#18A154]">
+            <PlusIcon /> Post material
+          </Link>
+        </div>
         <div className="bg-linear-to-b from-0% from-white to-100% to-[#FBFBFB] border border-[#F1F2F9] rounded-[12.75px] space-y-5 px-5 py-6">
           <ListHeader
             title={`${totalProducts} Listed ${

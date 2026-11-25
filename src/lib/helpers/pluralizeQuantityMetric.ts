@@ -63,11 +63,14 @@ const matchMetricCasing = (metric: string, value: string) => {
 export const pluralizeQuantityMetric = (quantity: number, metric: string) => {
   const trimmedMetric = metric.trim();
 
-  if (!trimmedMetric || Math.abs(quantity) === 1) return trimmedMetric;
+  if (!trimmedMetric) return trimmedMetric;
+  const lower = trimmedMetric.toLowerCase();
+  const singular = Object.keys(pluralQuantityMetrics).find((key) => pluralQuantityMetrics[key] === lower) ?? lower;
+  if (!Number.isFinite(quantity) || quantity <= 1) return matchMetricCasing(trimmedMetric, singular);
 
-  const pluralMetric = pluralQuantityMetrics[trimmedMetric.toLowerCase()];
+  const pluralMetric = pluralQuantityMetrics[singular];
 
   return pluralMetric
     ? matchMetricCasing(trimmedMetric, pluralMetric)
-    : `${trimmedMetric}s`;
+    : /s$/i.test(trimmedMetric) || /^(kg|g|mg|ml|l|mm|cm|m|ft|in|m²|m³)$/i.test(trimmedMetric) ? trimmedMetric : `${trimmedMetric}s`;
 };

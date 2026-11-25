@@ -4,7 +4,7 @@ import Select from "@/components/atoms/Select/Select";
 import RichTextArea from "@/components/molecules/RichTextArea/RichTextArea";
 import { countriesAndStates } from "@/lib/constants/countries";
 import { currencies } from "@/lib/constants/currencies";
-import { quantityMetrics } from "@/lib/constants/qunatityUnits";
+import { quantityMetrics, quantityMetricOptions } from "@/lib/constants/qunatityUnits";
 import {
   formatInputTextNumber,
   formatInputTextNumberWithCommas,
@@ -66,7 +66,7 @@ const EditListingFields = ({
         <Select
           value={form.quantityMetric}
           onChange={(event) => setField("quantityMetric", event.target.value)}
-          options={quantityMetrics}
+          options={quantityMetricOptions(Number(String(form.availableQuantity).replaceAll(",", "")))}
         />
       </Field>
     </div>

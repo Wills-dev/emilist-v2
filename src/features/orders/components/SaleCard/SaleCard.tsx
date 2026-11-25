@@ -1,4 +1,5 @@
 "use client";
+import { pluralizeQuantityMetric } from "@/lib/helpers/pluralizeQuantityMetric";
 import { useState } from "react";
 import Image from "next/image";
 import ItemActionButton from "@/components/atoms/ItemActionButton/ItemActionButton";
@@ -27,7 +28,7 @@ export default function SaleCard({ sale }: { sale: Sale }) {
         <div className="flex flex-wrap justify-between gap-2"><h2 className="break-all font-exo font-semibold">Order #{displayOrderValue(sale.orderNumber?.replace(/^#/, ""))}</h2><p className="text-sm"><span className="text-[#737774]">Total cost: </span><strong>{total}</strong></p></div>
         <div className="flex flex-wrap gap-x-5 gap-y-2 border-y border-[#F1F2F9] py-3 text-xs text-[#737774]">
           <span>Order date: <span className="text-[#172033]">{displayOrderDate(sale.orderDate)}</span></span>
-          <span>Order quantity: <span className="text-[#172033]">{displayOrderValue(sale.quantity)} {displayOrderValue(sale.quantityMetric)}</span></span>
+          <span>Order quantity: <span className="text-[#172033]">{displayOrderValue(sale.quantity)} {displayOrderValue(sale.quantityMetric ? pluralizeQuantityMetric(sale.quantity, sale.quantityMetric) : undefined)}</span></span>
           <span>Payment status: <span className="capitalize text-[#172033]">{displayOrderValue(sale.paymentStatus)}</span></span>
           <span>Delivery date: <span className="text-[#172033]">{displayOrderDate(sale.deliveryDate)}</span></span>
           <span>Status: <span className={deliveryTone(sale.deliveryStatus)}>{displayOrderValue(deliveryLabels[sale.deliveryStatus])}</span></span>
