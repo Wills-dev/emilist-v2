@@ -16,7 +16,7 @@ import MultiImageInput from "../../MultiImageInput/MultiImageInput";
 
 import { currencies } from "@/lib/constants/currencies";
 import { countriesAndStates } from "@/lib/constants/countries";
-import { quantityMetrics } from "@/lib/constants/qunatityUnits";
+import { quantityMetrics, quantityMetricOptions } from "@/lib/constants/qunatityUnits";
 import { productCategories } from "@/features/materials/constants";
 import { usePostMaterial } from "@/features/materials/hooks/usePostMaterial";
 import { useMaterialStore } from "@/store/material/materialStore";
@@ -27,7 +27,7 @@ import {
   formatInputTextNumberWithCommas,
 } from "@/lib/helpers/formatNumbers";
 
-const PostMaterialForm = () => {
+const PostMaterialForm = ({ dashboard = false }: { dashboard?: boolean }) => {
   const { isPending, handleSubmit, handleImageChange } = usePostMaterial();
 
   const { getPayload, setField, updateDeliveryLocation, removeImage } =
@@ -68,7 +68,7 @@ const PostMaterialForm = () => {
 
   return (
     <div className="">
-      <div className="h-20 w-full" />
+      {!dashboard && <div className="h-20 w-full" />}
       <form onSubmit={handleSubmit} className="w-full space-y-12 pt-10 pb-16">
         {" "}
         <div className="space-y-4 w-full border-b border-[#E5E5E5] sm:pb-4 pb-2">
@@ -134,7 +134,7 @@ const PostMaterialForm = () => {
               name="quantityMetric"
               value={quantityMetric}
               onChange={(e) => setField("quantityMetric", e.target.value)}
-              options={quantityMetrics}
+              options={quantityMetricOptions(Number(String(availableQuantity).replaceAll(",", "")))}
             />
           </div>
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">

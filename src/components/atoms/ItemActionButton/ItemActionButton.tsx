@@ -24,17 +24,20 @@ const ItemActionButton = ({
   onClick,
   className = "text-[#737774]",
   disabled = false,
+  tooltip,
 }: {
   title: string;
   icon?: ReactNode;
   className?: string;
   onClick: () => void;
   disabled?: boolean;
+  tooltip?: string;
 }) => (
   <button
     type="button"
     onClick={onClick}
     disabled={disabled}
+    title={tooltip}
     className={`flex h-7 items-center gap-1 rounded-[6.75px] bg-[#F6F7F9] px-[8.75px] text-[10px] font-medium disabled:cursor-not-allowed disabled:opacity-50 sm:text-xs ${className}`}
   >
     {icon && <span className="shrink-0">{icon}</span>}

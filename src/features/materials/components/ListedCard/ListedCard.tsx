@@ -27,6 +27,8 @@ const ListedCard = ({
   const [editListingOpen, setEditListingOpen] = useState(false);
   const [editPriceOpen, setEditPriceOpen] = useState(false);
   const [archiveListingOpen, setArchiveListingOpen] = useState(false);
+  const status = material.status?.trim().toLowerCase();
+  const statusColor = status === "active" ? "text-[#18A154]" : status === "pending" ? "text-[#B7791F]" : "text-[#737774]";
   const image =
     material.images.find((item) => item.isPrimary)?.imageUrl ||
     material.images[0]?.imageUrl ||
@@ -74,6 +76,13 @@ const ListedCard = ({
                       value={material.subCategory || material.category || "N/A"}
                       variant="xs"
                       className="font-medium text-[#474C48]"
+                      labelClass="font-normal text-[#707471]"
+                    />
+                    <InfoItem
+                      label="Status:"
+                      value={status ? status.replace(/[_-]/g, " ") : "N/A"}
+                      variant="xs"
+                      className={`font-medium ${status ? "capitalize" : ""} ${statusColor}`}
                       labelClass="font-normal text-[#707471]"
                     />
                   </div>

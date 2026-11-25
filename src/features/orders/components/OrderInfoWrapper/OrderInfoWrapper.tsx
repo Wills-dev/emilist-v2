@@ -1,3 +1,4 @@
+import { pluralizeQuantityMetric } from "@/lib/helpers/pluralizeQuantityMetric";
 import Truck2 from "@/components/atoms/icons/Truck2/Truck2";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import { displayOrderDate, displayOrderValue } from "../../helpers/orderDisplay";
@@ -11,7 +12,7 @@ export default function OrderInfoWrapper({ order }: { order: CustomerOrder }) {
   const quantityLabel = !order.products.length || !Number.isFinite(quantity)
     ? "N/A"
     : unit
-      ? `${quantity} ${unit}${quantity === 1 || unit.endsWith("s") ? "" : "s"}`
+      ? `${quantity} ${pluralizeQuantityMetric(quantity, unit)}`
       : `${quantity} ${quantity === 1 ? "item" : "items"}`;
   const fields = [
     { label: "Order date:", value: displayOrderDate(order.createdAt) },

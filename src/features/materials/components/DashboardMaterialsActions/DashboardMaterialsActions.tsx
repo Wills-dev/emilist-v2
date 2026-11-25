@@ -52,7 +52,7 @@ const DashboardMaterialsActions = ({
           title="Manage listed items"
           link={routes.dashboardLinks.listedMaterials}
         />
-        <MarketplaceActionTitle title="Post material" link="" />
+        <MarketplaceActionTitle title="Post material" link={routes.dashboardLinks.postMaterial} />
       </div>
     </div>
   );

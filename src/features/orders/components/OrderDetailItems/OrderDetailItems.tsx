@@ -1,3 +1,4 @@
+import { pluralizeQuantityMetric } from "@/lib/helpers/pluralizeQuantityMetric";
 import Image from "next/image";
 import { Package } from "lucide-react";
 import type { CustomerOrder, OrderProduct, Sale } from "../../types/order";
@@ -25,7 +26,7 @@ function DetailItem({ product, sale }: { product?: OrderProduct; sale?: Sale }) 
           <p className="text-sm font-semibold text-[#474C48]">{formatOrderMoney(amount, currency)}</p>
         </div>
         <p className="text-xs text-[#737774]">{displayOrderValue(metadata)}</p>
-        <p className="text-xs text-[#474C48]">Quantity: {displayOrderValue(quantity)} {unit || ""}</p>
+        <p className="text-xs text-[#474C48]">Quantity: {displayOrderValue(quantity)} {unit ? pluralizeQuantityMetric(quantity ?? 1, unit) : ""}</p>
         {product && <p className="text-xs text-[#737774]">{formatOrderMoney(product.price, currency)} per {unit || "item"}</p>}
         {!sale && <p className="text-xs text-[#737774]">Seller: <span className="text-[#474C48]">{displayOrderValue(product?.merchantName)}</span></p>}
         {product?.promoCode && <p className="text-xs text-[#18A154]">Promo: {product.promoCode}</p>}
