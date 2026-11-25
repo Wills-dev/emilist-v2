@@ -1,59 +1,56 @@
-import { useState } from "react";
+"use client";
 
-import { useShallow } from "zustand/react/shallow";
-import { useMutation } from "@tanstack/react-query";
-
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { useStore } from "@/store/authStore";
 import { getGoogleAuthUrl } from "../api";
+import { GOOGLE_AUTH_CONTEXT_KEY, googleAuthDestination } from "../helpers/googleAuth";
 
 export const useGoogleAuth = () => {
   const [showTerms, setShowTerms] = useState(false);
-
-  const { termsAccepted, isModalFlow, pendingFlow, redirectPath } = useStore(
-    useShallow((state) => ({
-      termsAccepted: state.termsAccepted,
-      isModalFlow: state.isModalFlow,
-      pendingFlow: state.pendingFlow,
-      redirectPath: state.redirectPath,
-    })),
-  );
-
+  const [isPending, setIsPending] = useState(false);
+  const pending = useRef(false);
+  const termsAccepted = useStore((state) => state.termsAccepted);
   const setTermsAccepted = useStore((state) => state.setTermsAccepted);
 
-  const { mutate: fetchAndRedirect, isPending } = useMutation({
-    mutationFn: getGoogleAuthUrl,
-    onSuccess: (data) => {
-      // All state (pendingFlow, pendingFormData, redirectPath, isModalFlow)
-      // is already in localStorage via Zustand persist.
-      // Nothing extra needed — just redirect.
-      //   window.location.href = data?.url;
-    },
-  });
+  useEffect(() => {
+    const reset = () => { pending.current = false; setIsPending(false); };
+    window.addEventListener("pageshow", reset);
+    return () => window.removeEventListener("pageshow", reset);
+  }, []);
 
-  const initiateGoogleAuth = () => {
-    if (!termsAccepted) {
-      setShowTerms(true);
-      return;
+  const redirectToGoogle = () => {
+    if (pending.current) return;
+    pending.current = true;
+    setIsPending(true);
+    try {
+      const url = getGoogleAuthUrl();
+      const { redirectPath, isModalFlow } = useStore.getState();
+      const destination = googleAuthDestination(
+        new URLSearchParams(window.location.search).get("redirect"),
+        redirectPath,
+        `${window.location.pathname}${window.location.search}`,
+        isModalFlow,
+      );
+      // Pending forms remain in the existing persisted auth store. Keep the
+      // page destination separately for the return from Google.
+      sessionStorage.setItem(GOOGLE_AUTH_CONTEXT_KEY, JSON.stringify({ destination, startedAt: Date.now() }));
+      window.location.assign(url);
+    } catch (error) {
+      pending.current = false;
+      setIsPending(false);
+      toast.error(error instanceof Error ? error.message : "Unable to start Google sign-in.");
     }
-    fetchAndRedirect();
   };
 
+  const initiateGoogleAuth = () => {
+    if (!termsAccepted) { setShowTerms(true); return; }
+    redirectToGoogle();
+  };
   const handleAcceptTerms = () => {
     setTermsAccepted(true);
     setShowTerms(false);
-    fetchAndRedirect();
+    redirectToGoogle();
   };
-
-  const handleDeclineTerms = () => {
-    setShowTerms(false);
-  };
-
-  return {
-    initiateGoogleAuth,
-    handleAcceptTerms,
-    handleDeclineTerms,
-    showTerms,
-    termsAccepted,
-    isPending,
-  };
+  return { initiateGoogleAuth, handleAcceptTerms, handleDeclineTerms: () => setShowTerms(false), showTerms, termsAccepted, isPending };
 };

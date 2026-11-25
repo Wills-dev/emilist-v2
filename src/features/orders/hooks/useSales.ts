@@ -15,5 +15,5 @@ export const useSaleActions = (orderId: string) => {
   const client = useQueryClient();
   const update = useMutation({ mutationFn: updateOrderDeliveryStatus, onSuccess: async () => { await client.invalidateQueries({ queryKey: orderKeys.all }); toast.success("Delivery status updated."); }, onError: promiseErrorFunction });
   const cancel = useMutation({ mutationFn: (reason: string) => cancelOrder({ orderId, reason }), onSuccess: async () => { await client.invalidateQueries({ queryKey: orderKeys.all }); toast.success("Order canceled."); }, onError: promiseErrorFunction });
-  return { update: (status: "outForDelivery" | "delivered") => update.mutateAsync({ orderId, status, note: status === "outForDelivery" ? "Package dispatched by seller" : "Delivery confirmed by seller" }), cancel: cancel.mutateAsync, busy: update.isPending || cancel.isPending };
+  return { update: (status: "outForDelivery" | "delivered", deliveryImage?: File) => update.mutateAsync({ orderId, status, deliveryImage, note: status === "outForDelivery" ? "Package dispatched by seller" : "Delivery confirmed by seller" }), cancel: cancel.mutateAsync, busy: update.isPending || cancel.isPending };
 };

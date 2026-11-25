@@ -1,5 +1,10 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import FormNav from "@/components/molecules/FormNav/FormNav";
 import ExpertFormWrapper from "@/features/experts/components/ExpertFormWrapper/ExpertFormWrapper";
+
+export const metadata = createPageMetadata({"title": "Offer a Service", "description": "Offer a Service on Emilist.", "index": false});
+
+
 
 const DashboardOfferServicePage = () => (
   <main className="min-h-screen bg-white">

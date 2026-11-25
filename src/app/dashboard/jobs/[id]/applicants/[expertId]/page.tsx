@@ -1,6 +1,11 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
 import ApplicantProfilePage from "@/features/jobs/components/ApplicantProfilePage/ApplicantProfilePage";
 import { resolveManageJobsTab } from "@/features/jobs/helpers/manageJobs";
+
+export const metadata = createPageMetadata({"title": "Applicant Details", "description": "Applicant Details on Emilist.", "index": false});
+
+
 
 export default async function JobApplicantPage({
   params,

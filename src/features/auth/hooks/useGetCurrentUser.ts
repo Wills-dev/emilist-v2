@@ -1,77 +1,56 @@
+"use client";
 import { useEffect, useSyncExternalStore } from "react";
-
-import { useQuery } from "@tanstack/react-query";
-
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useStore } from "@/store/authStore";
-import {
-  AUTH_COOKIE_CHANGE_EVENT,
-  readCookie,
-} from "@/lib/helpers/cookie";
+import { AUTH_COOKIE_CHANGE_EVENT, clearClear, createCookie } from "@/lib/helpers/cookie";
+import { getBrowserAuthMode, SESSION_AUTH_COOKIE } from "@/lib/helpers/authSession";
 import { getCurrentUser } from "../api";
 import { getUserFromResponse } from "../helpers/getUserFromResponse";
 
-const subscribeToCookie = (onStoreChange: () => void) => {
-  if (typeof window === "undefined") return () => {};
-
-  window.addEventListener(AUTH_COOKIE_CHANGE_EVENT, onStoreChange);
-  return () =>
-    window.removeEventListener(AUTH_COOKIE_CHANGE_EVENT, onStoreChange);
+const subscribe = (onChange: () => void) => {
+  window.addEventListener(AUTH_COOKIE_CHANGE_EVENT, onChange);
+  return () => window.removeEventListener(AUTH_COOKIE_CHANGE_EVENT, onChange);
 };
-const getClientSnapshot = () => true;
-const getServerSnapshot = () => false;
+const clientReady = () => true;
+const serverReady = () => false;
+const serverMode = () => "" as const;
 
 export const useGetCurrentUser = () => {
+  const client = useQueryClient();
+  const isSigningOut = useStore((state) => state.isSigningOut);
   const setCurrentUser = useStore((state) => state.setCurrentUser);
   const clearCurrentUser = useStore((state) => state.clearCurrentUser);
-  const setIsAuthInitialized = useStore(
-    (state) => state.setIsAuthInitialized,
-  );
-  const hasCheckedToken = useSyncExternalStore(
-    subscribeToCookie,
-    getClientSnapshot,
-    getServerSnapshot,
-  );
-  const token = useSyncExternalStore(
-    subscribeToCookie,
-    () => readCookie("emilistToken"),
-    () => undefined,
-  );
-
+  const setIsAuthInitialized = useStore((state) => state.setIsAuthInitialized);
+  const ready = useSyncExternalStore(subscribe, clientReady, serverReady);
+  const authMode = useSyncExternalStore(subscribe, getBrowserAuthMode, serverMode);
   const query = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: getCurrentUser,
-    enabled: hasCheckedToken && Boolean(token),
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
+    queryKey: ["currentUser", authMode],
+    queryFn: async ({ signal }) => {
+      const user = getUserFromResponse(await getCurrentUser(signal));
+      if (!user) throw new Error("Unable to verify your login session.");
+      return user;
+    },
+    enabled: ready && Boolean(authMode) && !isSigningOut,
+    staleTime: authMode === "google" ? 0 : 5 * 60 * 1000,
+    retry: false,
   });
 
   useEffect(() => {
-    if (hasCheckedToken && !token) {
-      clearCurrentUser();
-      setIsAuthInitialized(true);
-      return;
+    if (!ready || isSigningOut) return;
+    if (!authMode) { clearCurrentUser(); setIsAuthInitialized(true); return; }
+    if (query.isSuccess) {
+      if (authMode === "google") {
+        // Cache before writing the routing hint so the session observer can reuse
+        // the verified user. The backend session cookie remains the credential.
+        client.setQueryData(["currentUser", "session"], query.data);
+        createCookie(SESSION_AUTH_COOKIE, "session");
+        clearClear("emilistToken");
+      }
+      setCurrentUser(query.data);
     }
+    if (query.isError) clearCurrentUser();
+    if (query.isSuccess || query.isError) setIsAuthInitialized(true);
+  }, [ready, isSigningOut, authMode, query.isSuccess, query.isError, query.data, client, setCurrentUser, clearCurrentUser, setIsAuthInitialized]);
 
-    if (query.isSuccess && query.data) {
-      const currentUser = getUserFromResponse(query.data);
-      if (currentUser) setCurrentUser(currentUser);
-    }
-    if (query.isError) {
-      clearCurrentUser();
-    }
-    if (query.isSuccess || query.isError) {
-      setIsAuthInitialized(true);
-    }
-  }, [
-    clearCurrentUser,
-    hasCheckedToken,
-    query.data,
-    query.isError,
-    query.isSuccess,
-    setCurrentUser,
-    setIsAuthInitialized,
-    token,
-  ]);
-
-  return query;
+  return { ...query, authMode, ready };
 };

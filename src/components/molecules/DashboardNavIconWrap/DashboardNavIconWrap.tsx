@@ -9,10 +9,14 @@ import NavIconWrapper from "@/components/atoms/NavIconWrapper/NavIconWrapper";
 import NotificationModal from "@/features/notifications/components/NotificationModal/NotificationModal";
 import { routes } from "@/lib/helpers/routes";
 import { useGetCartItems } from "@/features/materials/hooks/useGetCartItems";
+import { useNotifications } from "@/features/notifications/hooks/useNotifications";
+import NavCountBadge from "@/components/atoms/NavCountBadge/NavCountBadge";
 
 const DashboardNavIconWrap = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const { cart } = useGetCartItems();
+  const notifications = useNotifications(1, 10, true);
+  const unreadCount = notifications.data?.unreadCount ?? 0;
   const itemCount = cart?.products?.reduce((total, item) => total + item.quantity, 0) ?? cart?.cartQuantity ?? 0;
 
   return (
@@ -41,13 +45,16 @@ const DashboardNavIconWrap = () => {
       >
         <MessageIcon />
       </NavIconWrapper>
-      <NavIconWrapper ariaLabel="Open notifications" tooltip="Notifications" onClick={() => setNotificationsOpen(true)}>
-        <NotificationIcon />
+      <NavIconWrapper ariaLabel={`Open notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`} tooltip="Notifications" onClick={() => setNotificationsOpen(true)}>
+        <span className="relative inline-flex size-6 items-center justify-center">
+          <NotificationIcon />
+          <NavCountBadge count={unreadCount} tone="pink" />
+        </span>
       </NavIconWrapper>
       <NavIconWrapper href={routes.dashboardLinks.dashboardCart} ariaLabel={`Open cart${itemCount > 0 ? ` (${itemCount} ${itemCount === 1 ? "item" : "items"})` : ""}`} tooltip="Cart">
         <span className="relative inline-flex size-6 items-center justify-center">
           <CartIcon />
-          {itemCount > 0 && <span aria-hidden="true" className="absolute -right-2 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#25C269] px-1 text-[9px] font-semibold leading-none text-white">{itemCount > 99 ? "99+" : itemCount}</span>}
+          <NavCountBadge count={itemCount} />
         </span>
       </NavIconWrapper>
       <NotificationModal

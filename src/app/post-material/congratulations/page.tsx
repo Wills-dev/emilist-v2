@@ -1,6 +1,9 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import CongratsContent from "@/components/molecules/CongratsContent/CongratsContent";
 import FormNav from "@/components/molecules/FormNav/FormNav";
 import { routes } from "@/lib/helpers/routes";
+
+export const metadata = createPageMetadata({"title": "Confirmation", "description": "Confirmation on Emilist.", "index": false, "path": "/post-material/congratulations"});
 
 const page = () => {
   return (

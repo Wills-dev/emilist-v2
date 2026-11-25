@@ -1,23 +1,6 @@
-"use client";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import BecomeExpertPage from "@/features/experts/components/BecomeExpertPage/BecomeExpertPage";
 
-import ExpertFormWrapper from "@/features/experts/components/ExpertFormWrapper/ExpertFormWrapper";
-import NewExeprtLayout from "@/features/experts/components/NewExeprtLayout/NewExeprtLayout";
-
-import { expertTabs } from "@/features/experts/constants";
-import { useExpertTabs } from "@/features/experts/hooks/useExpertTabs";
-
-const BecomeExpertPage = () => {
-  const { tab } = useExpertTabs();
-
-  const currentTab = expertTabs.find((item) => {
-    return item.id === tab;
-  });
-
-  return (
-    <NewExeprtLayout imgUrl={currentTab?.bgImg}>
-      <ExpertFormWrapper />
-    </NewExeprtLayout>
-  );
-};
+export const metadata = createPageMetadata({"title": "Offer Your Services", "description": "Join Emilist as an expert, create your service profile and connect with customers looking for your skills.", "index": true, "path": "/become-expert"});
 
 export default BecomeExpertPage;

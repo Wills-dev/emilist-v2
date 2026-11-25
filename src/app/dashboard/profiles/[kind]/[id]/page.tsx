@@ -1,9 +1,14 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import ProfileSkeleton from "@/features/profiles/components/ProfileSkeleton/ProfileSkeleton";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
 import PersonProfilePage from "@/features/profiles/components/PersonProfilePage/PersonProfilePage";
 import DashboardExpertInfoWrapper from "@/features/experts/components/DashboardExpertInfoWrapper/DashboardExpertInfoWrapper";
+
+export const metadata = createPageMetadata({"title": "Profile Details", "description": "Profile Details on Emilist.", "index": false});
+
+
 
 export default async function ProfilePage({
   params,

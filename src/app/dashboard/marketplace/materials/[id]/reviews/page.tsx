@@ -1,6 +1,11 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
 import MaterialReviewInfoWrapper from "@/features/materials/components/MaterialReviewInfoWrapper/MaterialReviewInfoWrapper";
 import { use } from "react";
+
+export const metadata = createPageMetadata({"title": "Material Reviews", "description": "Material Reviews on Emilist.", "index": false});
+
+
 
 const DashboardMaterialReviewsPage = ({
   params,

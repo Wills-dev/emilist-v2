@@ -1,6 +1,9 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import Container from "@/components/atoms/Container/Container";
 import FormNav from "@/components/molecules/FormNav/FormNav";
 import PostMaterialForm from "@/components/molecules/forms/PostMaterialForm/PostMaterialForm";
+
+export const metadata = createPageMetadata({"title": "List a Material", "description": "List a Material on Emilist.", "index": false, "path": "/post-material"});
 
 const PostMaterialPage = () => {
   return (

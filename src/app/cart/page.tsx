@@ -1,6 +1,9 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import MarketplaceBanner from "@/components/molecules/MarketplaceBanner/MarketplaceBanner";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import CartBreakdown from "@/features/materials/components/CartBreakdown/CartBreakdown";
+
+export const metadata = createPageMetadata({"title": "Cart", "description": "Cart on Emilist.", "index": false, "path": "/cart"});
 
 const CartPage = () => {
   return (

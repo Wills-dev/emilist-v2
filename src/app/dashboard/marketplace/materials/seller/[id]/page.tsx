@@ -1,7 +1,11 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
 import { use } from "react";
-
 import DashboardLayout from "@/components/templates/DashboardLayout/DashboardLayout";
 import RelatedMaterialsPageWrapper from "@/features/materials/components/RelatedMaterialsPageWrapper/RelatedMaterialsPageWrapper";
+
+export const metadata = createPageMetadata({"title": "Seller Materials", "description": "Seller Materials on Emilist.", "index": false});
+
+
 
 const SellerMaterialsPage = ({
   params,

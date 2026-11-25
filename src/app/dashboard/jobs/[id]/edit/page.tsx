@@ -1,12 +1,11 @@
-import type { Metadata } from "next";
-
+import { createPageMetadata } from "@/lib/seo/metadata";
 import CenteredFormLayout from "@/components/templates/CenteredFormLayout/CenteredFormLayout";
 import EditJobForm from "@/features/jobs/components/EditJobForm/EditJobForm";
 
-export const metadata: Metadata = {
-  title: "Edit job",
-  description: "Update your job details on Emilist.",
-};
+export const metadata = createPageMetadata({"title": "Edit Job", "description": "Edit Job on Emilist.", "index": false});
+
+
+
 
 const EditJobPage = async ({
   params,

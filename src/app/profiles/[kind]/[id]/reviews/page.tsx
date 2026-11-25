@@ -1,9 +1,15 @@
+import { profileMetadata } from "@/lib/seo/resourceMetadata";
 import ProfileSkeleton from "@/features/profiles/components/ProfileSkeleton/ProfileSkeleton";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import MainLayout from "@/components/templates/MainLayout/MainLayout";
 import PersonProfilePage from "@/features/profiles/components/PersonProfilePage/PersonProfilePage";
 import DashboardExpertReviews from "@/features/experts/components/DashboardExpertReviews/DashboardExpertReviews";
+
+export async function generateMetadata({ params }: { params: Promise<{ kind: string; id: string }> }) {
+  const { kind, id } = await params;
+  return profileMetadata(kind, id, true);
+}
 
 export default async function ProfilePage({
   params,

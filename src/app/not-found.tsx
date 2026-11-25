@@ -1,3 +1,6 @@
+import { createPageMetadata } from "@/lib/seo/metadata";
+export const metadata = createPageMetadata({ title: "Page Not Found", index: false });
+
 import Image from "next/image";
 
 import Button from "@/components/atoms/Button/Button";

@@ -87,6 +87,8 @@ interface AuthFlowSlice {
 }
 
 interface UserSlice {
+  isSigningOut: boolean;
+  setIsSigningOut: (value: boolean) => void;
   currentUser: User | null;
   isAuthInitialized: boolean;
   setCurrentUser: (user: User) => void;
@@ -99,6 +101,8 @@ type StoreState = AuthFlowSlice & UserSlice;
 export const useStore = create<StoreState>()(
   persist(
     (set) => ({
+      isSigningOut: false,
+      setIsSigningOut: (value) => set({ isSigningOut: value }),
       currentUser: null,
       isAuthInitialized: false,
       setCurrentUser: (user) =>

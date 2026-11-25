@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
-
+import { createPageMetadata } from "@/lib/seo/metadata";
 import CongratsContent from "@/components/molecules/CongratsContent/CongratsContent";
 import FormNav from "@/components/molecules/FormNav/FormNav";
 import { routes } from "@/lib/helpers/routes";
 
-export const metadata: Metadata = {
-  title: "Job posted",
-};
+export const metadata = createPageMetadata({"title": "Confirmation", "description": "Confirmation on Emilist.", "index": false, "path": "/post-job/congratulations"});
+
 
 const PostJobCongratulationsPage = () => {
   return (

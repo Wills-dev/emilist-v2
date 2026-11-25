@@ -2,7 +2,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { toast } from "sonner";
 import { useShallow } from "zustand/react/shallow";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { login } from "../api";
 import { routes } from "@/lib/helpers/routes";
@@ -11,107 +11,48 @@ import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { useStore } from "@/store/authStore";
 import { useAuthState } from "./useAuthState";
 import { safeAuthDestination } from "@/lib/helpers/authRedirect";
-import { createCookie } from "@/lib/helpers/cookie";
-import { getUserFromResponse } from "../helpers/getUserFromResponse";
+import { clearClear } from "@/lib/helpers/cookie";
+import { clearGoogleAuthContext, SESSION_AUTH_COOKIE } from "@/lib/helpers/authSession";
+import { useLoginContinuation } from "./useLoginContinuation";
+import { useSaveAuthSession } from "./useSaveAuthSession";
 
 export const useLogin = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const queryClient = useQueryClient();
+  const continueLogin = useLoginContinuation();
+  const saveSession = useSaveAuthSession();
 
   const { inputType, userInfo, handleChange, toggleInputType, resetForm } =
     useAuthState();
 
-  const { pendingFlow, redirectPath, isModalFlow } = useStore(
+  const { redirectPath, isModalFlow } = useStore(
     useShallow((state) => ({
-      pendingFlow: state.pendingFlow,
       redirectPath: state.redirectPath,
       isModalFlow: state.isModalFlow,
     })),
   );
 
-  const setCurrentUser = useStore((state) => state.setCurrentUser);
   const setOtpEmail = useStore((state) => state.setOtpEmail);
   const setOtpCountDown = useStore((state) => state.setOtpCountDown);
   const openModal = useStore((state) => state.openModal);
-  const closeAllModals = useStore((state) => state.closeAllModals);
-  const clearPendingFlow = useStore((state) => state.clearPendingFlow);
 
   const queryRedirect = searchParams.get("redirect");
 
   const destination = safeAuthDestination(queryRedirect || redirectPath);
 
   const { mutate, isPending: isLogging } = useMutation({
-    mutationFn: login,
-    onSuccess: (data) => {
+    mutationFn: (credentials: Parameters<typeof login>[0]) => {
+      clearGoogleAuthContext();
+      clearClear(SESSION_AUTH_COOKIE);
+      return login(credentials);
+    },
+    onSuccess: async (data) => {
+      let user;
+      try { user = await saveSession(data); }
+      catch (error) { toast.error((error as Error).message); return; }
       toast.success("Login successful!");
-
-      createCookie("emilistToken", data.token);
-      const loginUser = getUserFromResponse(data);
-
-      const isEmailVerified =
-        loginUser?.emailVerified ??
-        data?.userData?.isEmailVerified ??
-        data?.user?.isEmailVerified;
-
-      if (isEmailVerified === false) {
-        setOtpEmail(loginUser?.email ?? data.userData.email);
-        if (isModalFlow) {
-          openModal("verify-otp");
-        } else {
-          router.push(
-            `${routes.verifyEmail}?redirect=${encodeURIComponent(destination)}`,
-          );
-        }
-        return;
-      }
-
-      if (loginUser) {
-        setCurrentUser(loginUser);
-        queryClient.setQueryData(["currentUser"], loginUser);
-      }
-
       resetForm();
-
-      const bypassProfileCompletionFlows = ["register-expert"];
-
-      //modal flow
-      if (isModalFlow) {
-        if (
-          !loginUser?.isProfileComplete &&
-          pendingFlow !== "register-expert"
-        ) {
-          openModal("complete-profile");
-          return;
-        }
-        // Profile complete or expert flow — close modals, form auto-submits via useEffect
-        closeAllModals();
-        if (pendingFlow) return;
-        if (redirectPath) {
-          clearPendingFlow();
-          router.push(redirectPath);
-        }
-        return;
-      }
-
-      //page flow
-
-      if (!loginUser?.isProfileComplete) {
-        if (
-          pendingFlow &&
-          bypassProfileCompletionFlows.includes(pendingFlow) &&
-          redirectPath
-        ) {
-          router.push(redirectPath);
-          return;
-        }
-
-        router.push(
-          `${routes.completeProfile}?redirect=${encodeURIComponent(destination)}`,
-        );
-        return;
-      }
-      router.push(destination);
+      continueLogin(user, destination);
     },
     onError: (error: ApiErrorResponse, variables) => {
       const message = error.response?.data?.message;
