@@ -51,7 +51,7 @@ const MembershipForm = ({
               <div className="sm:col-span-1 col-span-2">
                 <InputWrapper
                   title="Organisation name"
-                  name="organisation"
+                  name={`membership-${index}-organisation`}
                   value={membership.organisation}
                   onChange={(e) =>
                     updateMembership(index, "organisation", e.target.value)
@@ -62,7 +62,7 @@ const MembershipForm = ({
               <div className="sm:col-span-1 col-span-2">
                 <InputWrapper
                   title="Position held"
-                  name="positionHeld"
+                  name={`membership-${index}-positionHeld`}
                   value={membership.positionHeld}
                   onChange={(e) =>
                     updateMembership(index, "positionHeld", e.target.value)
@@ -74,7 +74,7 @@ const MembershipForm = ({
                 <InputWrapper
                   type="date"
                   title="Start date"
-                  name="startDate"
+                  name={`membership-${index}-startDate`}
                   value={membership.startDate}
                   onChange={(e) =>
                     updateMembership(index, "startDate", e.target.value)
@@ -85,7 +85,7 @@ const MembershipForm = ({
                 <InputWrapper
                   type="date"
                   title="End date"
-                  name="endDate"
+                  name={`membership-${index}-endDate`}
                   value={membership.endDate}
                   onChange={(e) =>
                     updateMembership(index, "endDate", e.target.value)

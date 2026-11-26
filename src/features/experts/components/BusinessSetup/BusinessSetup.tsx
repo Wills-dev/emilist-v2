@@ -110,7 +110,7 @@ const BusinessSetup = () => {
       </div>
       <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
         <Label htmlFor="services" title=" Select your main service" />
-        <MultiSelect
+        <div data-validation-field="services"><MultiSelect
           options={expertServices}
           value={business.services}
           onChange={toggleService}
@@ -118,11 +118,11 @@ const BusinessSetup = () => {
           showSearch
           allowOthers
           customPlaceholder="Enter your service"
-        />
+        /></div>
       </div>
       <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
         <Label htmlFor="services" title=" Select your main service" />
-        <MultiSelect
+        <div data-validation-field="coverageArea"><MultiSelect
           options={stateOptions}
           value={business.coverageArea}
           onChange={toggleCoverage}
@@ -130,7 +130,7 @@ const BusinessSetup = () => {
           showSearch
           allowOthers
           customPlaceholder="Enter your coverage area"
-        />
+        /></div>
       </div>
       <div className="sm:col-span-1 col-span-2 flex flex-col gap-2">
         <Label htmlFor="startingPrice" title=" Starting price" />
@@ -218,11 +218,11 @@ const BusinessSetup = () => {
           <Label htmlFor="images" title="Add Images" />
           <p className="text-sm text-[#737774]">add up to 5</p>
         </div>
-        <MultiImageInput
+        <div data-validation-field="businessImages"><MultiImageInput
           preview={businessPreviews}
           addImage={handleBusinessImages}
           removeImage={removeBusinessImage}
-        />
+        /></div>
       </div>
     </div>
   );

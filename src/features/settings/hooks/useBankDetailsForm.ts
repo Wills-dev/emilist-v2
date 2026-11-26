@@ -1,7 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
+import { updateAccountDetails } from "../api/updateAccountDetails";
+import { bankDetailsError, bankDetailsPayload } from "../helpers/bankDetails";
+import { reportFormError } from "@/lib/helpers/formValidation";
+import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 
 import { BankDetailsFormValues } from "../types/bank";
 
@@ -14,6 +20,9 @@ const createBankDetails = (): BankDetailsFormValues => ({
 });
 
 export const useBankDetailsForm = () => {
+  const client = useQueryClient();
+  const saving = useRef(false);
+  const [savingAccountId, setSavingAccountId] = useState<string | null>(null);
   const [accounts, setAccounts] = useState<BankDetailsFormValues[]>(() => [
     createBankDetails(),
   ]);
@@ -53,27 +62,28 @@ export const useBankDetailsForm = () => {
     });
   };
 
-  const saveAccount = (id: string) => {
+  const saveAccount = async (id: string) => {
+    if (saving.current) return;
     const account = accounts.find((item) => item.id === id);
-    const isComplete =
-      account &&
-      Object.entries(account).every(
-        ([key, value]) => key === "id" || Boolean(value.trim()),
-      );
-
-    if (!isComplete) {
-      toast.error("Complete all bank details before saving.");
-      return;
+    if (!account) return;
+    const password = passwords[id] ?? "";
+    const error = bankDetailsError(account, password);
+    if (error) { reportFormError(`bank-${id}-${error.field}`, error.message); return; }
+    saving.current = true;
+    setSavingAccountId(id);
+    try {
+      await updateAccountDetails(bankDetailsPayload(account, password));
+      setSavedAccountIds((current) => current.includes(id) ? current : [...current, id]);
+      toast.success("Bank details saved successfully.");
+      void client.invalidateQueries({ queryKey: ["currentUser"] });
+    } catch (error) {
+      if (isAxiosError(error)) promiseErrorFunction(error);
+      else toast.error(error instanceof Error ? error.message : "Unable to save bank details.");
+    } finally {
+      setPasswords((current) => ({ ...current, [id]: "" }));
+      saving.current = false;
+      setSavingAccountId(null);
     }
-    if (!passwords[id]?.trim()) {
-      toast.error("Enter your Emilist password to save this bank account.");
-      return;
-    }
-
-    setSavedAccountIds((current) =>
-      current.includes(id) ? current : [...current, id],
-    );
-    setPasswords((current) => ({ ...current, [id]: "" }));
   };
 
   const hasExistingBankDetails = savedAccountIds.length > 0;
@@ -83,6 +93,7 @@ export const useBankDetailsForm = () => {
 
   return {
     accounts,
+    savingAccountId,
     updateAccount,
     addAccount,
     removeAccount,

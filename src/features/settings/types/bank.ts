@@ -5,3 +5,10 @@ export interface BankDetailsFormValues {
   accountNumber: string;
   country: string;
 }
+
+export interface UpdateAccountDetailsPayload {
+  password: string;
+  number: string;
+  bank: string;
+  holdersName: string;
+}

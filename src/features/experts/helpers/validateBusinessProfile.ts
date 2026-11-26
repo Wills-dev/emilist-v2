@@ -1,104 +1,26 @@
-import { toast } from "sonner";
+import { reportFormError, hasRichText } from "@/lib/helpers/formValidation";
 import { BusinessProfileState } from "@/features/experts/types";
 
-export const validateBusinessProfile = (
-  form: BusinessProfileState,
-  images: File[],
-) => {
-  if (form.services.length === 0) {
-    toast.error("Please select at least one service.");
-    return false;
-  }
-
-  if (form.coverageArea.length === 0) {
-    toast.error("Please select at least one coverage area.");
-    return false;
-  }
-
-  if (!form.businessName.trim()) {
-    toast.error("Business name is required.");
-    return false;
-  }
-
-  if (!form.yearFounded.trim()) {
-    toast.error("Year founded is required.");
-    return false;
-  }
-
-  if (!form.numberOfEmployee.trim()) {
-    toast.error("Number of employees is required.");
-    return false;
-  }
-
-  if (!form.businessAddress.trim()) {
-    toast.error("Business address is required.");
-    return false;
-  }
-
-  if (!form.businessState.trim()) {
-    toast.error("Business state is required.");
-    return false;
-  }
-
-  if (!form.businessCountry.trim()) {
-    toast.error("Business country is required.");
-    return false;
-  }
-
-  if (!form.startingPrice.trim()) {
-    toast.error("Starting price is required.");
-    return false;
-  }
-
-  if (!form.currency.trim()) {
-    toast.error("Currency is required.");
-    return false;
-  }
-
-  if (!form.rateUnit.trim()) {
-    toast.error("Rate unit is required.");
-    return false;
-  }
-
-  if (!form.noticePeriod.trim()) {
-    toast.error("Notice period is required.");
-    return false;
-  }
-
-  if (!form.businessDescription.trim()) {
-    toast.error("Business description is required.");
-    return false;
-  }
-
-  if (images.length === 0) {
-    toast.error("Please select at least one business image.");
-    return false;
-  }
-
-  return true;
+export const getBusinessProfileError = (form: BusinessProfileState, images: File[]) => {
+  if (!form.businessName.trim()) return { field: "businessName", message: "Business name is required." };
+  if (!form.yearFounded.trim()) return { field: "yearFounded", message: "Year founded is required." };
+  if (!form.numberOfEmployee.trim()) return { field: "numberOfEmployee", message: "Number of employees is required." };
+  if (!form.businessCountry.trim()) return { field: "businessCountry", message: "Business country is required." };
+  if (!form.businessState.trim()) return { field: "businessState", message: "Business state is required." };
+  if (!form.businessAddress.trim()) return { field: "businessAddress", message: "Business address is required." };
+  if (!form.services.length) return { field: "services", message: "Please select at least one service." };
+  if (!form.coverageArea.length) return { field: "coverageArea", message: "Please select at least one coverage area." };
+  if (!form.currency.trim()) return { field: "currency", message: "Currency is required." };
+  if (!form.startingPrice.trim()) return { field: "startingPrice", message: "Starting price is required." };
+  if (!form.rateUnit.trim()) return { field: "rateUnit", message: "Rate unit is required." };
+  if (!form.noticePeriod.trim()) return { field: "noticePeriod", message: "Notice period is required." };
+  if (!hasRichText(form.businessDescription)) return { field: "businessDescription", message: "Business description is required." };
+  if (!images.length) return { field: "businessImages", message: "Please select at least one business image." };
 };
 
-export const isBusinessTabComplete = (
-  form: BusinessProfileState,
-  images: File[],
-): boolean => {
-  if (
-    form.services.length > 0 &&
-    form.coverageArea.length > 0 &&
-    form.businessName.trim() &&
-    form.yearFounded.trim() &&
-    form.numberOfEmployee.trim() &&
-    form.businessAddress.trim() &&
-    form.businessState.trim() &&
-    form.businessCountry.trim() &&
-    form.currency.trim() &&
-    form.startingPrice.trim() &&
-    form.rateUnit.trim() &&
-    form.noticePeriod.trim() &&
-    form.businessDescription.trim() &&
-    images.length > 0
-  ) {
-    return true;
-  }
-  return false;
+export const validateBusinessProfile = (form: BusinessProfileState, images: File[]) => {
+  const error = getBusinessProfileError(form, images);
+  return error ? reportFormError(error.field, error.message) : true;
 };
+
+export const isBusinessTabComplete = (form: BusinessProfileState, images: File[]) => !getBusinessProfileError(form, images);

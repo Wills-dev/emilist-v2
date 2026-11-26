@@ -18,6 +18,8 @@ import { PostJobStep, PostJobWriteDto } from "../types/postJob";
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { routes } from "@/lib/helpers/routes";
 import { validateImage } from "@/lib/helpers/imageValidation";
+import { focusValidationTarget } from "@/lib/helpers/formValidation";
+import { firstJobDetailsError, firstJobMilestoneError } from "../helpers/firstJobFormError";
 import { useProtectedSubmit } from "@/lib/hooks/useProtectedSubmit";
 import { ApiErrorResponse } from "@/lib/types/error";
 import { useStore } from "@/store/authStore";
@@ -145,7 +147,9 @@ export const usePostJob = (initialExpertId?: string) => {
     );
     setDetailsAttempted(true);
     if (!validation.isValid) {
-      toast.error(validation.firstError);
+      const error = firstJobDetailsError(validation);
+      toast.error(error?.message ?? validation.firstError);
+      if (error) focusValidationTarget(error.selector);
       return false;
     }
 
@@ -197,6 +201,7 @@ export const usePostJob = (initialExpertId?: string) => {
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isPending) return;
     if (usePostJobStore.getState().step === 1) {
       continueToMilestones();
       return;
@@ -210,13 +215,16 @@ export const usePostJob = (initialExpertId?: string) => {
     setMilestonesAttempted(true);
 
     if (!nextDetailsValidation.isValid) {
-      toast.error(nextDetailsValidation.firstError);
-      goToStep(1);
+      const error = firstJobDetailsError(nextDetailsValidation);
+      toast.error(error?.message ?? nextDetailsValidation.firstError);
+      storeState.setStep(1);
+      if (error) focusValidationTarget(error.selector);
       return;
     }
 
     if (!nextMilestonesValidation.isValid) {
-      Object.keys(nextMilestonesValidation.errors).forEach((milestoneId) => {
+      const error = firstJobMilestoneError(draft, nextMilestonesValidation);
+      draft.milestones.map((item) => item.id).forEach((milestoneId) => {
         const milestone = usePostJobStore
           .getState()
           .milestones.find((item) => item.id === milestoneId);
@@ -224,7 +232,8 @@ export const usePostJob = (initialExpertId?: string) => {
           usePostJobStore.getState().toggleMilestone(milestoneId);
         }
       });
-      toast.error(nextMilestonesValidation.firstError);
+      toast.error(error.message);
+      focusValidationTarget(error.selector);
       return;
     }
 

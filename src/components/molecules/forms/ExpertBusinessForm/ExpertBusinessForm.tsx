@@ -6,14 +6,12 @@ import Button from "@/components/atoms/Button/Button";
 import BusinessSetup from "@/features/experts/components/BusinessSetup/BusinessSetup";
 
 import { useExpertTabs } from "@/features/experts/hooks/useExpertTabs";
-import { useBusinessProfileState } from "@/features/experts/hooks/useBusinessProfileState";
 import Link from "next/link";
 import { routes } from "@/lib/helpers/routes";
 import { ArrowLeft } from "lucide-react";
 
 const ExpertBusinessForm = ({ dashboard = false }: { dashboard?: boolean }) => {
   const { switchTab } = useExpertTabs({ skipProfile: dashboard });
-  const { isBusinessFormFilled } = useBusinessProfileState();
 
   return (
     <motion.div
@@ -40,7 +38,6 @@ const ExpertBusinessForm = ({ dashboard = false }: { dashboard?: boolean }) => {
           type="button"
           onClick={() => switchTab("experiences")}
           className="w-full h-11"
-          disabled={!isBusinessFormFilled}
         >
           Proceed
         </Button>

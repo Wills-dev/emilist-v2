@@ -5,15 +5,13 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Button from "@/components/atoms/Button/Button";
-import Input from "@/components/atoms/Input/Input";
-import Label from "@/components/atoms/Label/Label";
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
-import Textarea from "@/components/atoms/TextArea/Textarea/Textarea";
 import SegmentedTabs from "@/components/molecules/SegmentedTabs/SegmentedTabs";
 import ExpertiseFormAction from "@/features/experts/components/ExpertiseFormAction/ExpertiseFormAction";
 import { UserExpertService } from "../../types/expertService";
 
-type CredentialTab = "certifications" | "memberships" | "insurances";
+import CredentialFields, { type CredentialTab } from "./CredentialFields";
+import { credentialFormDraft } from "../../helpers/credentialForm";
 
 interface ManageExpertCredentialsModalProps {
   open: boolean;
@@ -72,11 +70,6 @@ const createCredential = (tab: CredentialTab) => {
   };
 };
 
-const formatFieldLabel = (field: string) =>
-  field
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, (letter) => letter.toUpperCase());
-
 const ManageExpertCredentialsModal = ({
   open,
   onClose,
@@ -85,10 +78,10 @@ const ManageExpertCredentialsModal = ({
   loading,
 }: ManageExpertCredentialsModalProps) => {
   const [tab, setTab] = useState<CredentialTab>("certifications");
-  const [draft, setDraft] = useState(expert);
+  const [draft, setDraft] = useState(() => credentialFormDraft(expert));
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const items = draft[tab];
-  const singularLabel = labels[tab].replace(/s$/, "");
+  const singularLabel = { certifications: "Certificate", memberships: "Membership", insurances: "Insurance" }[tab];
 
   const addItem = () => {
     setDraft((current) => ({
@@ -97,7 +90,7 @@ const ManageExpertCredentialsModal = ({
     }));
   };
 
-  const updateItem = (index: number, field: string, value: string) => {
+  const updateItem = (index: number, field: string, value: string | boolean) => {
     setDraft((current) => ({
       ...current,
       [tab]: current[tab].map((item, itemIndex) =>
@@ -116,7 +109,8 @@ const ManageExpertCredentialsModal = ({
   return (
     <ModalWrapper
       open={open}
-      onClose={onClose}
+      onClose={(nextOpen) => { if (!loading) onClose(nextOpen); }}
+      showCloseButton={!loading}
       title="Manage Expert Credentials"
       className="max-w-3xl!"
       headerClassName="border-b border-[#ECECEC] pb-4"
@@ -147,6 +141,7 @@ const ManageExpertCredentialsModal = ({
         </div>
         <button
           type="button"
+          disabled={loading}
           onClick={addItem}
           className="shrink-0 text-sm text-[#6667FF]"
         >
@@ -154,14 +149,14 @@ const ManageExpertCredentialsModal = ({
         </button>
       </div>
 
-      <AnimatePresence mode="wait">
+      <fieldset disabled={loading}><AnimatePresence mode="wait">
         <motion.div
           key={tab}
           initial={{ opacity: 0, x: 8 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -8 }}
           transition={{ duration: 0.25 }}
-          className="max-h-[55vh] space-y-6 overflow-y-auto py-5"
+          className="space-y-6 py-5"
         >
           {items.map((item, index) => {
             const key = `${tab}-${index}`;
@@ -189,52 +184,9 @@ const ManageExpertCredentialsModal = ({
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="grid grid-cols-2 gap-4 overflow-hidden max-sm:grid-cols-1"
+                      className="grid grid-cols-1 gap-4 overflow-hidden sm:grid-cols-2"
                     >
-                      {Object.entries(item)
-                        .filter(
-                          ([field]) =>
-                            field !== "id" && !field.startsWith("is"),
-                        )
-                        .map(([field, value]) =>
-                          field === "description" ? (
-                            <div
-                              key={field}
-                              className="col-span-2 space-y-2 max-sm:col-span-1"
-                            >
-                              <Label
-                                htmlFor={`${tab}-${index}-${field}`}
-                                title="Description"
-                              />
-                              <Textarea
-                                id={`${tab}-${index}-${field}`}
-                                value={String(value)}
-                                onChange={(event) =>
-                                  updateItem(index, field, event.target.value)
-                                }
-                              />
-                            </div>
-                          ) : (
-                            <div key={field} className="space-y-2">
-                              <Label
-                                htmlFor={`${tab}-${index}-${field}`}
-                                title={formatFieldLabel(field)}
-                              />
-                              <Input
-                                id={`${tab}-${index}-${field}`}
-                                type={
-                                  field.toLowerCase().includes("date")
-                                    ? "date"
-                                    : "text"
-                                }
-                                value={String(value)}
-                                onChange={(event) =>
-                                  updateItem(index, field, event.target.value)
-                                }
-                              />
-                            </div>
-                          ),
-                        )}
+                      <CredentialFields tab={tab} item={item} index={index} onChange={(field, value) => updateItem(index, field, value)} />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -242,12 +194,13 @@ const ManageExpertCredentialsModal = ({
             );
           })}
         </motion.div>
-      </AnimatePresence>
+      </AnimatePresence></fieldset>
 
       <div className="flex gap-3">
         <Button
           variant="default"
           className="h-11 flex-1"
+          disabled={loading}
           onClick={() => onClose(false)}
         >
           Cancel

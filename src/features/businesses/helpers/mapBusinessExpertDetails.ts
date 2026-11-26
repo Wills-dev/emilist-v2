@@ -18,6 +18,7 @@ export const mapBusinessExpertDetails = (profile: BusinessProfile, applicant: Ex
   const rating = finiteNumber(reviewSummary?.averageRating ?? business.averageRating ?? business.rating, applicant.rating ?? 0);
   const count = finiteNumber(reviewSummary?.totalReviews ?? reviewSummary?.numberOfRatings ?? business.totalReviews ?? (typeof business.reviews === "number" ? business.reviews : undefined), applicant.reviewCount ?? 0);
   return {
+    ownerId: typeof business.userId === "string" ? business.userId : business.userId?._id,
     expert: {
       id: business._id, imgUrl: mapped.image || applicant.image || "", businessName: mapped.businessName,
       isVerified: mapped.isVerified, rating, noOfReviews: count,

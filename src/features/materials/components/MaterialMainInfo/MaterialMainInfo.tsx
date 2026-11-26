@@ -18,7 +18,7 @@ import OtherMaterialInfo from "../OtherMaterialInfo/OtherMaterialInfo";
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
 import ProductPromoActions from "@/features/promos/components/ProductPromoActions/ProductPromoActions";
-import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
+import PromotionAction from "@/features/promotions/components/PromotionAction/PromotionAction";
 
 import { ProductReviewResponse } from "../../types";
 import { useAddToCart } from "../../hooks/useAddToCart";
@@ -131,7 +131,7 @@ const MaterialMainInfo = ({
                 </div>
                 <div className="flex items-center gap-6 flex-wrap">
                   <CompareBtn type="material" item={{ id: product._id, name: product.name }} />
-                  {isMaterialOwner && <><PromoteBtn /><ProductPromoActions product={{ id: product._id, name: product.name, status: product.status, isDeleted: product.isDeleted }} ownerId={product.userId._id} /></>}
+                  {isMaterialOwner && <><PromotionAction id={product._id} type="material" ownerId={product.userId._id} /><ProductPromoActions product={{ id: product._id, name: product.name, status: product.status, isDeleted: product.isDeleted }} ownerId={product.userId._id} /></>}
                 </div>
               </div>
               <div className="flex items-center gap-3.25">

@@ -18,7 +18,7 @@ import BusinessFlagButton from "@/features/businesses/components/BusinessFlagBut
 import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge";
 import InfoItem from "@/components/atoms/InfoItem/InfoItem";
 import ItemName from "@/components/atoms/ItemName/ItemName";
-import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
+import PromotionAction from "@/features/promotions/components/PromotionAction/PromotionAction";
 import ClockIcon from "@/components/atoms/icons/ClockIcon/ClockIcon";
 import LevelIcon from "@/components/atoms/icons/LevelIcon/LevelIcon";
 import LocationIcon from "@/components/atoms/icons/LocationIcon/LocationIcon";
@@ -170,10 +170,10 @@ const DashboardExpertInfoWrapperView = ({
                       />
                       <InfoItem value={expert.level} icon={<LevelIcon />} />
                     </div>
+                    <PromotionAction id={expert.id} type="business" ownerId={details?.ownerId} />
                     {!jobContext && !profilePage && (
                       <div className="flex flex-wrap items-center gap-6">
                         <CompareBtn type="expert" item={{ id: expert.id, name: expert.businessName }} />
-                        <PromoteBtn />
                       </div>
                     )}
                   </div>

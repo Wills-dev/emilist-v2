@@ -20,7 +20,6 @@ const ExpertProfileForm = () => {
     updateProfile,
     profile,
     profilePreview,
-    isProfileFill,
   } = useUpdateUserProfileState();
 
   return (
@@ -45,7 +44,6 @@ const ExpertProfileForm = () => {
         type="button"
         onClick={() => switchTab("business-profile")}
         className="w-full h-11"
-        disabled={!isProfileFill}
       >
         Proceed
       </Button>
