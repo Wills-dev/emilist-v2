@@ -111,7 +111,7 @@ const UserProfileSummary = ({
 
       <div className="mt-3 flex w-full flex-wrap gap-2">
         <IdentifierBadge
-          label="Email"
+          label="Email" shorten={false}
           value={user?.email || "Not provided"}
           maxWidth="max-w-[150px]"
         />

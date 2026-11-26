@@ -59,7 +59,7 @@ export const usePostJob = (initialExpertId?: string) => {
       usePostJobStore.getState().resetForm();
       clearPendingFlow();
       toast.success("Job posted successfully!");
-      router.push(routes.postJobCongrats);
+      router.push(pathname.startsWith("/dashboard/") ? routes.dashboardLinks.jobs : routes.postJobCongrats);
     },
     onError: (error: ApiErrorResponse) => {
       promiseErrorFunction(error);

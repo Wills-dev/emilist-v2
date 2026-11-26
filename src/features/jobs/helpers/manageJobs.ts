@@ -16,6 +16,13 @@ import type {
 } from "../types/manageJobs";
 import { formatDuration } from "./jobList";
 
+
+const mapListingTarget = (job: FetchAllJobsItemDto) => ({
+  id: job._id, title: job.title,
+  ownerId: typeof job.userId === "string" ? job.userId : job.userId?._id,
+  isListed: job.isListed, acceptedApplicationId: job.acceptedApplicationId, applications: job.applications,
+});
+
 const CURRENCY_SYMBOLS: Record<string, string> = {
   NGN: "₦",
   USD: "$",
@@ -149,6 +156,7 @@ export const mapListedJobRow = (
   const isOwner = resolveIsJobOwner(job, currentUserId);
 
   return {
+    listing: mapListingTarget(job),
     requiresAttention: job.attention?.requiresAttention === true,
     id: job._id,
     date: formatListDate(job.createdAt),
@@ -193,7 +201,8 @@ export const resolveMilestoneProgressLabel = (job: JobsByStatusItemDto) => {
 };
 
 export const mapOverdueJobRow = (job: JobsByStatusItemDto): OverdueJobRow => ({
-  requiresAttention: job.attention?.requiresAttention === true,
+  listing: mapListingTarget(job),
+    requiresAttention: job.attention?.requiresAttention === true,
   id: job._id,
   startDate: formatListDate(job.dueDate ?? resolveJobStartDate(job)),
   jobId: resolveShortJobId(job._id),
@@ -203,7 +212,8 @@ export const mapOverdueJobRow = (job: JobsByStatusItemDto): OverdueJobRow => ({
 });
 
 export const mapPausedJobRow = (job: JobsByStatusItemDto): PausedJobRow => ({
-  requiresAttention: job.attention?.requiresAttention === true,
+  listing: mapListingTarget(job),
+    requiresAttention: job.attention?.requiresAttention === true,
   id: job._id,
   dateCreated: formatListDate(job.createdAt),
   jobId: resolveShortJobId(job._id),
@@ -214,7 +224,8 @@ export const mapPausedJobRow = (job: JobsByStatusItemDto): PausedJobRow => ({
 
 export const mapActiveJobRow = (job: JobsByStatusItemDto): ActiveJobRow => ({
   canCloseContract: job.disputeSummary?.canCloseContract === true,
-  requiresAttention: job.attention?.requiresAttention === true,
+  listing: mapListingTarget(job),
+    requiresAttention: job.attention?.requiresAttention === true,
   id: job._id,
   startDate: formatListDate(resolveJobStartDate(job)),
   jobId: resolveShortJobId(job._id),
@@ -226,7 +237,8 @@ export const mapActiveJobRow = (job: JobsByStatusItemDto): ActiveJobRow => ({
 export const mapCompletedJobRow = (
   job: JobsByStatusItemDto,
 ): CompletedJobRow => ({
-  requiresAttention: job.attention?.requiresAttention === true,
+  listing: mapListingTarget(job),
+    requiresAttention: job.attention?.requiresAttention === true,
   id: job._id,
   completedDate: formatListDate(job.completedAt ?? job.createdAt),
   jobId: resolveShortJobId(job._id),

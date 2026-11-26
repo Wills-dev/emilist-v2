@@ -66,7 +66,7 @@ const PostMaterialForm = ({ dashboard = false }: { dashboard?: boolean }) => {
   return (
     <div className="">
       {!dashboard && <div className="h-20 w-full" />}
-      <form noValidate onSubmit={handleSubmit} className="w-full space-y-12 pt-10 pb-16">
+      <form noValidate onSubmit={handleSubmit} className={`w-full space-y-12 pb-16 ${dashboard ? "" : "pt-10"}`}>
         {" "}
         <div className="space-y-4 w-full border-b border-[#E5E5E5] sm:pb-4 pb-2">
           <FormTitleWrapper

@@ -42,6 +42,7 @@ export const activeJobsColumns: ColumnDef<ActiveJobRow>[] = [
     header: "",
     cell: ({ row }) => (
       <JobActionsMenu
+          listingJob={row.original.listing}
         jobTitle={row.original.jobTitle}
         viewHref={routes.dashboardLinks.jobInfo(row.original.id, "active")}
         actions={row.original.canCloseContract ? [] : [

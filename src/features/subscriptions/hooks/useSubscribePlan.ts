@@ -21,6 +21,7 @@ export const useSubscribePlan = (isFree: boolean, onClose: () => void) => {
     onSuccess: async (response, payload) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: subscriptionKeys.all }),
+        queryClient.invalidateQueries({ queryKey: ["jobs", "leads"] }),
         queryClient.invalidateQueries({ queryKey: ["dashboard-overview", userId] }),
         queryClient.invalidateQueries({ queryKey: walletKeys.all }),
         queryClient.invalidateQueries({ queryKey: transactionKeys.all }),

@@ -5,8 +5,13 @@ import type { FetchAllJobsPage } from "../types/listJobs";
 
 export const FETCH_JOB_LEADS_ENDPOINT = "/jobs/leads";
 
-export const isJobLeadsSubscriptionError = (error: unknown) =>
-  isAxiosError(error) && [402, 403].includes(error.response?.status ?? 0);
+export const isJobLeadsSubscriptionError = (error: unknown) => {
+  if (!isAxiosError(error)) return false;
+  const status = error.response?.status;
+  if (status === 402 || status === 403) return true;
+  const message = error.response?.data?.message;
+  return status === 400 && typeof message === "string" && /^basic subscription does not include the ability to fetch leads\.?$/i.test(message.trim());
+};
 
 export const serializeJobLeadsQuery = ({ page, limit }: JobLeadsQuery) => ({
   page: Number.isFinite(page) && page >= 1 ? Math.trunc(page) : 1,

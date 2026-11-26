@@ -61,6 +61,8 @@ export interface JobListMediaDto {
  * may already return the corresponding create-job fields.
  */
 export interface FetchAllJobsItemDto {
+  isListed?: boolean;
+  acceptedApplicationId?: string | null;
   applications?: JobListApplicationDto[];
   allowBidding?: boolean;
   _id: string;

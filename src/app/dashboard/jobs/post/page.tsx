@@ -1,0 +1,19 @@
+import CenteredFormLayout from "@/components/templates/CenteredFormLayout/CenteredFormLayout";
+import PostJobForm from "@/features/jobs/components/PostJobForm/PostJobForm";
+import { createPageMetadata } from "@/lib/seo/metadata";
+
+export const metadata = createPageMetadata({
+  title: "Post a Job",
+  description: "Post a job and find experts on Emilist.",
+  index: false,
+});
+
+export default async function PostJobPage({ searchParams }: { searchParams: Promise<{ expertId?: string | string[] }> }) {
+  const params = await searchParams;
+  const expertId = Array.isArray(params.expertId) ? params.expertId[0] : params.expertId;
+  return (
+    <CenteredFormLayout>
+      <PostJobForm initialExpertId={expertId} />
+    </CenteredFormLayout>
+  );
+}

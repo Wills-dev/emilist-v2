@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { MoreVertical } from "lucide-react";
 import { DropdownMenu } from "radix-ui";
+import { useJobListingActions } from "../../hooks/useJobListingActions";
+import JobListingConfirmation from "../JobListingConfirmation/JobListingConfirmation";
+import type { JobListingTarget } from "../../helpers/jobListingActions";
 
 type JobMenuAction = {
   label: string;
@@ -19,12 +22,18 @@ export default function JobActionsMenu({
   jobTitle,
   viewHref,
   actions = [],
+  listingJob,
 }: {
   jobTitle: string;
   viewHref: string;
   actions?: JobMenuAction[];
+  listingJob?: JobListingTarget;
 }) {
+  const listing = useJobListingActions(listingJob);
+  const menuActions: JobMenuAction[] = [...actions, ...listing.menuActions];
   return (
+    <>
+    {listing.action && <JobListingConfirmation action={listing.action} title={listingJob?.title ?? jobTitle} busy={listing.busy} onConfirm={() => void listing.confirm()} onClose={listing.close} />}
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <button
@@ -41,7 +50,7 @@ export default function JobActionsMenu({
           sideOffset={4}
           className="z-50 min-w-44 rounded-lg border border-[#F1F2F9] bg-white p-1 shadow-lg"
         >
-          {actions.map((action) =>
+          {menuActions.map((action) =>
             action.href && !action.disabled ? (
               <DropdownMenu.Item key={action.label} asChild>
                 <Link href={action.href} className={itemClassName}>
@@ -67,5 +76,6 @@ export default function JobActionsMenu({
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
+    </>
   );
 }

@@ -55,7 +55,7 @@ const WalletSummary = ({ wallets, selectedId, onSelect, onAdd, onFund, onWithdra
               {bankAccount?.currency === wallet.currency ? <>
                 <p className="font-medium text-[#303632] wrap-anywhere">{bankAccount.accountName}</p>
                 <p>{bankAccount.bankName}</p>
-                <IdentifierBadge label="A/C No" value={bankAccount.accountNumber} maxWidth="max-w-full" />
+                <IdentifierBadge label="A/C No" shorten={false} value={bankAccount.accountNumber} maxWidth="max-w-full" />
               </> : <p>Add a bank account before requesting a withdrawal.</p>}
             </>
           )}

@@ -72,6 +72,7 @@ export type JobsByStatusQuery = Pick<
 export type JobsByStatusListQuery = Omit<JobsByStatusQuery, "page" | "status">;
 
 export interface ListedJobRow {
+  listing?: import("../helpers/jobListingActions").JobListingTarget;
   requiresAttention?: boolean;
   id: string;
   date: string;
@@ -85,6 +86,7 @@ export interface ListedJobRow {
 }
 
 export interface OverdueJobRow {
+  listing?: import("../helpers/jobListingActions").JobListingTarget;
   requiresAttention?: boolean;
   id: string;
   startDate: string;
@@ -95,6 +97,7 @@ export interface OverdueJobRow {
 }
 
 export interface PausedJobRow {
+  listing?: import("../helpers/jobListingActions").JobListingTarget;
   requiresAttention?: boolean;
   id: string;
   dateCreated: string;
@@ -105,6 +108,7 @@ export interface PausedJobRow {
 }
 
 export interface ActiveJobRow {
+  listing?: import("../helpers/jobListingActions").JobListingTarget;
   canCloseContract?: boolean;
   requiresAttention?: boolean;
   id: string;
@@ -116,6 +120,7 @@ export interface ActiveJobRow {
 }
 
 export interface CompletedJobRow {
+  listing?: import("../helpers/jobListingActions").JobListingTarget;
   requiresAttention?: boolean;
   id: string;
   completedDate: string;

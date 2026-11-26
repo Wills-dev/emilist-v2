@@ -28,7 +28,7 @@ const JobsPageHeader = ({
         Hire experts directly <ArrowRight className="size-3" />
       </Link>
       <Link
-        href={routes.postJob}
+        href={routes.dashboardLinks.postJob}
         className="flex items-center gap-1 border-b border-[#18A154] font-medium text-[#18A154]"
       >
         Post a job <ArrowRight className="size-3" />

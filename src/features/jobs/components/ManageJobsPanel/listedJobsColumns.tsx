@@ -72,6 +72,7 @@ export const listedJobsColumns: ColumnDef<ListedJobRow>[] = [
           : resolvedAction;
       return (
         <JobActionsMenu
+          listingJob={row.original.listing}
           jobTitle={row.original.jobTitle}
           viewHref={routes.dashboardLinks.jobInfo(row.original.id)}
           actions={

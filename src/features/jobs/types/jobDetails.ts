@@ -69,6 +69,7 @@ export interface FetchJobByIdQuery {
 }
 
 export interface JobDetailsViewModel {
+  isListed?: boolean;
   hasReviewedJobOwner?: boolean;
   canCloseContract?: boolean;
   acceptedApplicationId?: string;
