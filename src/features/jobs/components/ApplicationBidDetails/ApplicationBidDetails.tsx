@@ -32,7 +32,7 @@ export default function ApplicationBidDetails({ application, currency, counterAl
   const counterLimitReached = eligibility.counterLimitReached;
   const showCounter = !readOnly && !counterLimitReached && (canRespond || counterAllowed);
   const actionCount = (canRespond ? 2 : 0) + (showCounter ? 1 : 0);
-  const offerKey = JSON.stringify([application._id, application.currentBid, application.latestCounterOffer, application.bidHistory]);
+  const offerKey = JSON.stringify([application._id, application.currentBid, application.latestCounterOffer, application.bidHistory, application.counterOffers, application.counterOfferSummary]);
   const requestResponse = (action: BidResponseAction) => setConfirmation({ action, offerKey });
   const confirmResponse = () => {
     if (!confirmation || mutation.isPending || busy) return;
@@ -41,9 +41,9 @@ export default function ApplicationBidDetails({ application, currency, counterAl
       toast.info("This offer has changed. Review the latest terms before responding.");
       return;
     }
-    mutation.mutate({ projectId: application._id, action: confirmation.action });
+    mutation.mutate({ projectId: application._id, action: confirmation.action, hasCounterOffer: eligibility.hasCounterOffer });
   };
-  const confirmationModal = confirmation && current ? <BidResponseConfirmation action={confirmation.action} amount={current.maximumPrice} currency={currency} isOwner={isOwner} busy={mutation.isPending} disabled={busy || !canRespond} onCancel={() => setConfirmation(null)} onConfirm={confirmResponse} /> : null;
+  const confirmationModal = confirmation && current ? <BidResponseConfirmation hasCounterOffer={eligibility.hasCounterOffer} action={confirmation.action} amount={current.maximumPrice} currency={currency} isOwner={isOwner} busy={mutation.isPending} disabled={busy || !canRespond} onCancel={() => setConfirmation(null)} onConfirm={confirmResponse} /> : null;
   return <div className="space-y-6 pt-5 text-[#303632]">
     {readOnly && readOnlyReason && <p role="status" className="rounded-lg bg-[#F4F7F5] p-3 text-sm text-[#707471]">{readOnlyReason}</p>}
     <section className="space-y-4" aria-label="Current offer">

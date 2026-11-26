@@ -15,6 +15,9 @@ import ReviewJobOwnerModal from "../ReviewJobOwnerModal/ReviewJobOwnerModal";
 import JobPaymentModal from "../JobPaymentModal/JobPaymentModal";
 import JobPlaybackConfirmation from "../JobPlaybackConfirmation/JobPlaybackConfirmation";
 import CompleteMilestoneModal from "../CompleteMilestoneModal/CompleteMilestoneModal";
+import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
+import Button from "@/components/atoms/Button/Button";
+import { jobOwnerReviewAction, removeJobOwnerReviewAction } from "../../helpers/jobOwnerReviewAction";
 import { useGetJobById } from "../../hooks/useGetJobById";
 import {
   resolveManageJobsTab,
@@ -212,9 +215,10 @@ export function ManagedJobInfoView({
 }
 
 export default function ManagedJobInfo({ jobId }: { jobId: string }) {
-  const { data: job, isPending, isError, refetch } = useGetJobById(jobId);
-  const currentUserId = useStore((state) => state.currentUser?._id);
   const searchParams = useSearchParams();
+  const reviewQuery = searchParams.get("action") === "job-owner-review";
+  const { data: job, isPending, isError, isFetchedAfterMount, refetch } = useGetJobById(jobId, { refreshOnMount: reviewQuery });
+  const currentUserId = useStore((state) => state.currentUser?._id);
   const router = useRouter();
   const pathname = usePathname();
   const section = searchParams.get("section");
@@ -233,6 +237,17 @@ export default function ManagedJobInfo({ jobId }: { jobId: string }) {
   const tab = resolveManageJobsTab(searchParams.get("tab"));
   const backHref = routes.dashboardLinks.jobsTab(tab);
   const jobActions = useManagedJobActions(job);
+  const [dismissedReviewAction, setDismissedReviewAction] = useState<{ key: string; params: typeof searchParams } | null>(null);
+  const reviewActionKey = `${jobId}:${currentUserId}:${searchParams.toString()}`;
+  const dismissed = dismissedReviewAction?.key === reviewActionKey && dismissedReviewAction.params === searchParams;
+  const queryReview = isFetchedAfterMount && !dismissed ? jobOwnerReviewAction(searchParams.get("action"), job, currentUserId) : null;
+  const closeOwnerReview = () => {
+    jobActions.closeOwnerReview();
+    if (reviewQuery) {
+      setDismissedReviewAction({ key: reviewActionKey, params: searchParams });
+      router.replace(removeJobOwnerReviewAction(window.location.href), { scroll: false });
+    }
+  };
   if (isPending) return <ManagedJobSkeleton section={selectedSection} />;
   if (isError || !job)
     return (
@@ -262,7 +277,10 @@ export default function ManagedJobInfo({ jobId }: { jobId: string }) {
       backHref={backHref}
       onAction={jobActions.handleAction}
     />
-    {jobActions.reviewOwnerOpen && <ReviewJobOwnerModal key={`owner-review-${job.id}`} job={job} onClose={jobActions.closeOwnerReview} />}
+    {(queryReview === "review" || (jobActions.reviewOwnerOpen && queryReview !== "already-reviewed")) && <ReviewJobOwnerModal key={`owner-review-${job.id}`} job={job} onClose={closeOwnerReview} />}
+    {queryReview === "already-reviewed" && <ModalWrapper open title="Review Already Submitted" description="You’ve already sent a review for this job owner. Thank you for sharing your experience." onClose={(open) => { if (!open) closeOwnerReview(); }} className="max-w-md!">
+      <div className="flex justify-end pt-5"><Button variant="primary" className="h-11" onClick={closeOwnerReview}>Close</Button></div>
+    </ModalWrapper>}
     {jobActions.playbackAction && <JobPlaybackConfirmation action={jobActions.playbackAction} jobTitle={job.title} busy={jobActions.isUpdatingPlayback} onConfirm={jobActions.confirmPlayback} onClose={jobActions.closePlaybackConfirmation} />}
     {jobActions.completionMilestone && (
       <CompleteMilestoneModal

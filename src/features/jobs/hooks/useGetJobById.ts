@@ -7,7 +7,7 @@ import { jobKeys } from "../queries/jobKeys";
 
 export const useGetJobById = (
   jobId: string,
-  { reviewsPage = 1, reviewsLimit = 5 } = {},
+  { reviewsPage = 1, reviewsLimit = 5, refreshOnMount = false } = {},
 ) => {
   const userId = useStore((state) => state.currentUser?._id);
   const isAuthInitialized = useStore((state) => state.isAuthInitialized);
@@ -18,6 +18,7 @@ export const useGetJobById = (
     select: mapJobDetails,
     enabled: isAuthInitialized && Boolean(jobId.trim()),
     staleTime: 5 * 60 * 1000,
+    refetchOnMount: refreshOnMount ? "always" : true,
     retry: 1,
   });
 };
