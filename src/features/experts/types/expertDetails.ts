@@ -3,6 +3,7 @@ import type { MessageRecipient } from "@/features/messages/types/recipient";
 import type { DashboardExpertFixture } from "./index";
 
 export interface ExpertDetailsData {
+  ownerId?: string;
   expert: DashboardExpertFixture;
   profile: {
     availability: string;

@@ -9,6 +9,7 @@ import type { BankDetailsFormController } from "../../hooks/useBankDetailsForm";
 const BankDetailsTab = ({ form }: { form: BankDetailsFormController }) => {
   const {
     accounts,
+    savingAccountId,
     updateAccount,
     addAccount,
     removeAccount,
@@ -31,6 +32,8 @@ const BankDetailsTab = ({ form }: { form: BankDetailsFormController }) => {
             removable={accounts.length > 1}
             password={passwords[account.id] ?? ""}
             isSaved={savedAccountIds.includes(account.id)}
+            isSaving={savingAccountId === account.id}
+            disabled={Boolean(savingAccountId)}
             onChange={updateAccount}
             onRemove={removeAccount}
             onPasswordChange={updatePassword}
@@ -43,7 +46,7 @@ const BankDetailsTab = ({ form }: { form: BankDetailsFormController }) => {
             <Button
               variant="secondary"
               onClick={addAccount}
-              disabled={!canAddAccount}
+              disabled={!canAddAccount || Boolean(savingAccountId)}
               className="h-10 py-2"
             >
               <Plus className="size-4" />

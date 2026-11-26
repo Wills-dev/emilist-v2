@@ -21,7 +21,7 @@ import IdentifierBadge from "@/components/atoms/IdentifierBadge/IdentifierBadge"
 import ImageSliderWrapper from "@/components/molecules/ImageSliderWrapper/ImageSliderWrapper";
 import ArrowRight from "@/components/atoms/icons/ArrowRight/ArrowRight";
 import CompareBtn from "@/components/atoms/CompareBtn/CompareBtn";
-import PromoteBtn from "@/components/atoms/PromoteBtn/PromoteBtn";
+import PromotionAction from "@/features/promotions/components/PromotionAction/PromotionAction";
 import { routes } from "@/lib/helpers/routes";
 import type { JobDetailsViewModel } from "../../types";
 import { useToggleLike } from "../../hooks/useToggleLike";
@@ -122,10 +122,10 @@ const JobMainInfo = ({
                     )}
                   </div>
                 </div>
-                {showDashboardActions && (
+                {(showDashboardActions || isOwner) && (
                   <div className="flex flex-wrap items-center gap-6">
-                    <CompareBtn type="job" item={{ id: job.id, name: job.title }} />
-                    <PromoteBtn label="Promote job" />
+                    {showDashboardActions && <CompareBtn type="job" item={{ id: job.id, name: job.title }} />}
+                    <PromotionAction id={job.id} type="job" ownerId={job.ownerId} label="Promote job" />
                   </div>
                 )}
               </div>

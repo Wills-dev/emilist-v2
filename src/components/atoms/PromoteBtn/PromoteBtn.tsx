@@ -1,6 +1,6 @@
-const PromoteBtn = ({ label = "Promote" }: { label?: string }) => {
+const PromoteBtn = ({ label = "Promote", onClick }: { label?: string; onClick: () => void }) => {
   return (
-    <button className="flex items-center gap-1 text-[#FF9933] font-medium underline text-xs">
+    <button type="button" onClick={onClick} className="flex items-center gap-1 text-[#FF9933] font-medium underline text-xs">
       <span>
         <svg
           width="14"

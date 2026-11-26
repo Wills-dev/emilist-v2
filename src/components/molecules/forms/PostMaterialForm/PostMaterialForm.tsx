@@ -20,7 +20,6 @@ import { quantityMetrics, quantityMetricOptions } from "@/lib/constants/qunatity
 import { productCategories } from "@/features/materials/constants";
 import { usePostMaterial } from "@/features/materials/hooks/usePostMaterial";
 import { useMaterialStore } from "@/store/material/materialStore";
-import { isMaterialFormComplete } from "@/features/materials/helpers/validateMaterialForm";
 import { routes } from "@/lib/helpers/routes";
 import {
   formatInputTextNumber,
@@ -30,13 +29,12 @@ import {
 const PostMaterialForm = ({ dashboard = false }: { dashboard?: boolean }) => {
   const { isPending, handleSubmit, handleImageChange } = usePostMaterial();
 
-  const { getPayload, setField, updateDeliveryLocation, removeImage } =
+  const { setField, updateDeliveryLocation, removeImage } =
     useMaterialStore(
       useShallow((state) => ({
         setField: state.setField,
         updateDeliveryLocation: state.updateDeliveryLocation,
         removeImage: state.removeImage,
-        getPayload: state.getPayload,
       })),
     );
 
@@ -64,12 +62,11 @@ const PostMaterialForm = ({ dashboard = false }: { dashboard?: boolean }) => {
 
   const stateOptions = selectedCountry?.states ?? [];
 
-  const payload = getPayload();
 
   return (
     <div className="">
       {!dashboard && <div className="h-20 w-full" />}
-      <form onSubmit={handleSubmit} className="w-full space-y-12 pt-10 pb-16">
+      <form noValidate onSubmit={handleSubmit} className="w-full space-y-12 pt-10 pb-16">
         {" "}
         <div className="space-y-4 w-full border-b border-[#E5E5E5] sm:pb-4 pb-2">
           <FormTitleWrapper
@@ -227,7 +224,7 @@ const PostMaterialForm = ({ dashboard = false }: { dashboard?: boolean }) => {
             type="submit"
             className="w-full h-11"
             loading={isPending}
-            disabled={isMaterialFormComplete(payload)}
+            disabled={isPending}
           >
             Proceed
           </Button>

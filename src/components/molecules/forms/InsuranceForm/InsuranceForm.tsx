@@ -49,7 +49,7 @@ const InsuranceForm = ({
               <div className="sm:col-span-1 col-span-2">
                 <InputWrapper
                   title="Issuing organization"
-                  name="issuingOrganisation"
+                  name={`insurance-${index}-issuingOrganisation`}
                   value={insurance.issuingOrganisation}
                   onChange={(e) =>
                     updateInsurance(
@@ -64,7 +64,7 @@ const InsuranceForm = ({
               <div className="sm:col-span-1 col-span-2">
                 <SelectWrapper
                   title="Type of coverage"
-                  name="coverage"
+                  name={`insurance-${index}-coverage`}
                   value={insurance.coverage}
                   onChange={(e) =>
                     updateInsurance(index, "coverage", e.target.value)
@@ -78,6 +78,7 @@ const InsuranceForm = ({
                   title="Short description of what is covered"
                 />
                 <Textarea
+                  name={`insurance-${index}-description`}
                   rows={5}
                   value={insurance.description}
                   onChange={(e) =>

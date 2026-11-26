@@ -58,7 +58,7 @@ const CertificateForm = ({
               <div className="sm:col-span-1 col-span-2">
                 <InputWrapper
                   title="Issuing organisation"
-                  name="issuingOrganisation"
+                  name={`certificate-${index}-issuingOrganisation`}
                   value={certification.issuingOrganisation}
                   onChange={(e) =>
                     updateCertification(
@@ -73,7 +73,7 @@ const CertificateForm = ({
               <div className="sm:col-span-1 col-span-2">
                 <InputWrapper
                   title="Verification Number"
-                  name="verificationNumber"
+                  name={`certificate-${index}-verificationNumber`}
                   value={certification.verificationNumber}
                   onChange={(e) =>
                     updateCertification(
@@ -89,7 +89,7 @@ const CertificateForm = ({
                 <InputWrapper
                   type="date"
                   title="Issuing date"
-                  name="issuingDate"
+                  name={`certificate-${index}-issuingDate`}
                   value={certification.issuingDate}
                   onChange={(e) =>
                     updateCertification(index, "issuingDate", e.target.value)
@@ -100,7 +100,7 @@ const CertificateForm = ({
                 <InputWrapper
                   type="date"
                   title="Expiry date"
-                  name="expiringDate"
+                  name={`certificate-${index}-expiringDate`}
                   value={certification.expiringDate}
                   onChange={(e) =>
                     updateCertification(index, "expiringDate", e.target.value)

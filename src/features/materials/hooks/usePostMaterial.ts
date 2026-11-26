@@ -14,7 +14,6 @@ import { useStore } from "@/store/authStore";
 import { useProtectedSubmit } from "@/lib/hooks/useProtectedSubmit";
 import { PostMaterialPayload } from "../types";
 import {
-  isMaterialFormComplete,
   validateMaterialForm,
 } from "../helpers/validateMaterialForm";
 import { validateImage } from "@/lib/helpers/imageValidation";
@@ -108,9 +107,8 @@ export const usePostMaterial = () => {
     e.preventDefault();
     const payload = getPayload();
 
-    validateMaterialForm(payload);
-
-    if (isMaterialFormComplete(payload)) {
+    if (isPending) return;
+    if (!validateMaterialForm(payload)) {
       return;
     }
 

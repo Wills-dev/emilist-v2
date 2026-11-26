@@ -89,11 +89,11 @@ const ProfileSetup = ({
       </div>
       <div className="sm:col-span-1 col-span-2 w-full flex flex-col gap-2">
         <Label htmlFor="language" title="Language" />
-        <MultiSelect
+        <div data-validation-field="languages"><MultiSelect
           value={form.languages}
           onChange={toggleLanguage}
           options={LANGUAGES}
-        />
+        /></div>
       </div>
       <div className="sm:col-span-1 col-span-2">
         <SelectWrapper

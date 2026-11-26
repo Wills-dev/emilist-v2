@@ -13,11 +13,11 @@ import { useMembershipState } from "./useMembershipState";
 import { ApiErrorResponse } from "@/lib/types/error";
 import { promiseErrorFunction } from "@/lib/helpers/promiseError";
 import { createExpert } from "../api";
-import { validateProfileForm } from "@/features/auth/helpers/validateProfileForm";
-import { validateBusinessProfile } from "../helpers/validateBusinessProfile";
-import { validateCertifications } from "../helpers/validateCertifications";
-import { validateMemberships } from "../helpers/validateMemberships";
-import { validateInsurances } from "../helpers/validateInsurances";
+import { getProfileFormError } from "@/features/auth/helpers/validateProfileForm";
+import { getBusinessProfileError } from "../helpers/validateBusinessProfile";
+import { getExperienceError } from "../helpers/expertExperienceValidation";
+import { reportFormError } from "@/lib/helpers/formValidation";
+import { useExpertStore } from "@/store/expert/expertStore";
 import { useStore } from "@/store/authStore";
 import { useProtectedSubmit } from "@/lib/hooks/useProtectedSubmit";
 import { BusinessPayloadType, NewExpertFormType } from "../types";
@@ -54,7 +54,6 @@ export const useCreateExpert = () => {
     certificate,
     certificationsPayload,
     resetCertification,
-    validCertifications,
   } = useCertificationState();
 
   const { guardedSubmit } = useProtectedSubmit("register-expert", pathname, {
@@ -104,15 +103,21 @@ export const useCreateExpert = () => {
   ]);
 
   const handleSubmit = () => {
-    const certValid = validateCertifications(validCertifications);
-    const membValid = validateMemberships(validMemberships);
-    const insurValid = validateInsurances(validInsurances);
-
-    const isProfileValid = validateProfileForm(profilePayload);
-    const isBusinessValid = validateBusinessProfile(business, businessImages);
-
-    if (!isProfileValid || !isBusinessValid) return;
-    if (certValid !== true || membValid !== true || insurValid !== true) return;
+    if (isPending) return;
+    const state = useExpertStore.getState();
+    const profileError = pathname.startsWith("/dashboard/") && currentUser?.isProfileComplete ? undefined : getProfileFormError(profilePayload);
+    if (profileError) { state.setTab("profile"); reportFormError(profileError.field, profileError.message); return; }
+    const businessError = getBusinessProfileError(business, businessImages);
+    if (businessError) { state.setTab("business-profile"); reportFormError(businessError.field, businessError.message); return; }
+    const experienceError = getExperienceError(state.certifications, state.memberships, state.insurances);
+    if (experienceError) {
+      const { kind, index } = experienceError;
+      if (kind === "certificate" && !state.certificationView[index]) state.toggleCertificationView(index);
+      if (kind === "membership" && !state.membershipView[index]) state.toggleMembershipView(index);
+      if (kind === "insurance" && !state.insuranceView[index]) state.toggleInsuranceView(index);
+      reportFormError(experienceError.field, experienceError.message);
+      return;
+    }
 
     const {
       services,
@@ -144,9 +149,9 @@ export const useCreateExpert = () => {
       rateUnit,
       noticePeriod,
       businessDescription,
-      ...(certValid === true && { certifications: certificationsPayload }),
-      ...(membValid === true && { memberships: validMemberships }),
-      ...(insurValid === true && { insurances: validInsurances }),
+      certifications: certificationsPayload,
+      memberships: validMemberships,
+      insurances: validInsurances,
     };
 
     const payload: NewExpertFormType = {

@@ -1,7 +1,8 @@
 import { useRouter } from "next/navigation";
 import { useExpertStore } from "@/store/expert/expertStore";
-import { validateBusinessProfile } from "@/features/experts/helpers/validateBusinessProfile";
-import { validateProfileForm } from "@/features/auth/helpers/validateProfileForm";
+import { getBusinessProfileError } from "@/features/experts/helpers/validateBusinessProfile";
+import { getProfileFormError } from "@/features/auth/helpers/validateProfileForm";
+import { reportFormError } from "@/lib/helpers/formValidation";
 
 export const useExpertTabs = ({
   skipProfile = false,
@@ -16,19 +17,14 @@ export const useExpertTabs = ({
   const businessImages = useExpertStore((s) => s.businessImages);
 
   const switchTab = (next: "business-profile" | "profile" | "experiences") => {
-    if (
-      next === "business-profile" &&
-      !skipProfile &&
-      !validateProfileForm(profile)
-    )
-      return;
-
-    if (
-      next === "experiences" &&
-      ((!skipProfile && !validateProfileForm(profile)) ||
-        !validateBusinessProfile(business, businessImages))
-    )
-      return;
+    if (next !== "profile" && !skipProfile) {
+      const error = getProfileFormError(profile);
+      if (error) { setTab("profile"); reportFormError(error.field, error.message); return; }
+    }
+    if (next === "experiences") {
+      const error = getBusinessProfileError(business, businessImages);
+      if (error) { setTab("business-profile"); reportFormError(error.field, error.message); return; }
+    }
 
     setTab(next);
     router.replace(`?tab=${next}`);
