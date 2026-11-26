@@ -48,6 +48,7 @@ export const routes = {
     marketplace: "/dashboard/marketplace/jobs",
     payments: "/dashboard/payments",
     jobs: "/dashboard/jobs",
+    postJob: "/dashboard/jobs/post",
     employerProfile: (
       id: string,
       jobId: string,

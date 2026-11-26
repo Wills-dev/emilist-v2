@@ -120,7 +120,7 @@ const DashboardJobsWrapper = ({ saved = false }: { saved?: boolean }) => {
                   <div className="max-sm:hidden">
                     <MarketplaceActionTitle title="Offer a service" link={routes.dashboardLinks.offerService} />
                   </div>
-                  <MarketplaceActionTitle title="Post a job" link={routes.postJob} />
+                  <MarketplaceActionTitle title="Post a job" link={routes.dashboardLinks.postJob} />
                 </div>
               </div>
               {saved ? (

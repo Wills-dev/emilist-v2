@@ -21,7 +21,7 @@ export interface QuickAction {
 }
 
 export const quickActions: QuickAction[] = [
-  { id: "post-job", label: "Post a job", href: routes.postJob, icon: <BadgePlus /> },
+  { id: "post-job", label: "Post a job", href: routes.dashboardLinks.postJob, icon: <BadgePlus /> },
   {
     id: "hire-expert",
     label: "Hire expert directly",
@@ -43,7 +43,7 @@ export const quickActions: QuickAction[] = [
   {
     id: "sell-materials",
     label: "Sell materials",
-    href: routes.postMaterial,
+    href: routes.dashboardLinks.postMaterial,
     icon: <Store />,
   },
   {

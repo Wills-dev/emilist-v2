@@ -2,17 +2,20 @@
 
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
+import { shortenIdentifier } from "@/lib/helpers/shortenIdentifier";
 
 type IdentifierBadgeProps = {
   label?: string;
   value: string;
   maxWidth?: string;
+  shorten?: boolean;
 };
 
 const IdentifierBadge = ({
   label = "ID",
   value,
   maxWidth = "max-w-sm",
+  shorten = true,
 }: IdentifierBadgeProps) => {
   const [copied, setCopied] = useState(false);
 
@@ -39,10 +42,11 @@ const IdentifierBadge = ({
         title={value}
         className="min-w-0 flex-1 truncate text-sm font-semibold text-[#474C48]"
       >
-        {value}
+        {shorten ? shortenIdentifier(value) : value}
       </p>
 
       <button
+        type="button"
         onClick={handleCopy}
         className="ml-1 flex shrink-0 items-center gap-1 text-[#25C269] transition-opacity hover:opacity-80"
         aria-label={`Copy ${label}`}

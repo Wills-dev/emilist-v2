@@ -173,7 +173,7 @@ export default function PersonProfileView({
               <div className="min-w-0 flex-1 space-y-2">
                 <ItemName title={profile.name} isVerified={profile.verified} />
                 {profile.username && (
-                  <IdentifierBadge label="Username" value={profile.username} />
+                  <IdentifierBadge label="Username" shorten={false} value={profile.username} />
                 )}
               </div>
               <div className="space-y-3">

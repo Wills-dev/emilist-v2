@@ -48,6 +48,7 @@ export const overdueJobsColumns: ColumnDef<OverdueJobRow>[] = [
     header: "",
     cell: ({ row }) => (
       <JobActionsMenu
+          listingJob={row.original.listing}
         jobTitle={row.original.jobTitle}
         viewHref={routes.dashboardLinks.jobInfo(row.original.id, "overdue")}
         actions={[

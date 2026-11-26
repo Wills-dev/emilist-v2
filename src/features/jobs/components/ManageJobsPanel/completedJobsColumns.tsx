@@ -42,6 +42,7 @@ export const completedJobsColumns: ColumnDef<CompletedJobRow>[] = [
     header: "",
     cell: ({ row }) => (
       <JobActionsMenu
+          listingJob={row.original.listing}
         jobTitle={row.original.jobTitle}
         viewHref={routes.dashboardLinks.jobInfo(row.original.id, "completed")}
         actions={[

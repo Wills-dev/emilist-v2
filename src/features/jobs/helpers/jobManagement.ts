@@ -48,12 +48,13 @@ export const getJobPrimaryAction = (
   status: string,
   isOwner: boolean,
   canCloseContract = false,
+  milestones: Array<{ status?: string }> = [],
 ): JobAction | null => {
   const key = normalizeJobStatus(status);
   if (!isOwner) {
     if (key === "applied") return "withdraw";
     if (key === "in-review") return "accept";
-    if (key === "active") return "complete-milestone";
+    if (key === "active" && milestones.some((milestone) => ["active", "in-progress"].includes(normalizeJobStatus(milestone.status ?? "")))) return "complete-milestone";
     if (key === "overdue") return "cancel";
     return null;
   }

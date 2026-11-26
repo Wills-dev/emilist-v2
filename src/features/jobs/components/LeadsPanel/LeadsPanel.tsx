@@ -49,17 +49,17 @@ const LeadsPanel = ({
             alt="job empty state"
           />
         </div>
-        <h3 className="font-exo text-xl font-semibold">Subscribe to Emilist</h3>
+        <h3 className="font-exo text-xl font-semibold">Upgrade to view job leads</h3>
         <p className="mt-2 max-w-90 w-full text-xs text-[#707471] leading-5">
-          Access recommended jobs for your business with an active non-basic
-          plan.
+          Your Basic plan doesn’t include job leads. Upgrade your plan to see
+          recommended jobs for your business.
         </p>
         <Button
           variant="primary"
-          className="mt-6 max-w-90 w-full h-8 rounded-none"
+          className="mt-6 h-11 w-full max-w-90"
           onClick={onSubscribe}
         >
-          Subscribe
+          Upgrade Plan
         </Button>
       </div>
     );

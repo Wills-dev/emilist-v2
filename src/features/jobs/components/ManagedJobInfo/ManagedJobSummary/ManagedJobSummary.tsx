@@ -2,11 +2,13 @@
 
 import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useJobListingActions } from "../../../hooks/useJobListingActions";
+import JobListingConfirmation from "../../JobListingConfirmation/JobListingConfirmation";
 import CloseContract from "../../CloseContract/CloseContract";
 import JobMessageButton from "../../JobMessageButton/JobMessageButton";
 import {
   Pencil,
-  Trash2,
   CircleHelp,
   MoreVertical,
 } from "lucide-react";
@@ -56,10 +58,24 @@ export default function ManagedJobSummary({
   onReviewApplicants: () => void;
 }) {
   const { ref: impressionRef } = useResourceTracking<HTMLElement>({ resourceType: "job", resourceId: job.id });
+  const router = useRouter();
+  const listing = useJobListingActions(job, () => router.replace(routes.dashboardLinks.jobs));
   const status = normalizeJobStatus(job.status);
   const meta = resolveJobStatusMeta(status);
   const inProgress = isManagedJobInProgress(status);
-  const primaryAction = getJobPrimaryAction(status, isOwner, job.canCloseContract === true);
+  const primaryAction = getJobPrimaryAction(status, isOwner, job.canCloseContract === true, job.milestones);
+  const optionActions: JobAction[] = isOwner
+    ? ["convert", ...(status !== "completed" ? ["cancel" as const] : [])]
+    : inProgress
+      ? [
+          ...(status === "completed" && !job.hasReviewedJobOwner ? ["rate-employer" as const] : []),
+          ...(status === "overdue" ? ["cancel" as const] : []),
+        ]
+      : status === "applied"
+        ? ["withdraw"]
+        : status === "in-review"
+          ? ["counter-offer", "accept"]
+          : [];
   const reviewIndex = job.milestones.findIndex(
     (milestone) => normalizeJobStatus(milestone.status ?? "") === "in-review",
   );
@@ -83,6 +99,7 @@ export default function ManagedJobSummary({
             : applicationMessage || getJobStatusMessage(status, isOwner);
   return (
     <article ref={impressionRef} className="space-y-6 rounded-xl border border-[#ECECEC] bg-[#F9F9F9] px-3 py-5 sm:p-7">
+      {listing.action && <JobListingConfirmation action={listing.action} title={job.title} busy={listing.busy} onConfirm={() => void listing.confirm()} onClose={listing.close} />}
       <div className="flex items-center justify-between gap-4">
         <JobCategory category={job.category} variant="secondary" />
         <StatusBadge label={meta.label} tone={meta.tone} />
@@ -111,15 +128,12 @@ export default function ManagedJobSummary({
               title={inProgress ? "agreed amount" : "budget starts from"}
             />
           )}
-          {(inProgress ||
-            (!isOwner &&
-              ["applied", "in-review", "rejected"].includes(status))) && (
+          {optionActions.length > 0 && (!isOwner || inProgress) && (
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
                 <button
                   type="button"
                   aria-label="Job options"
-                  disabled={status === "rejected"}
                   className={`${iconButton} disabled:opacity-40`}
                 >
                   <MoreVertical className="size-4" />
@@ -131,23 +145,7 @@ export default function ManagedJobSummary({
                   sideOffset={5}
                   className="z-50 min-w-44 rounded-lg border border-[#ECECEC] bg-white p-1 shadow-lg"
                 >
-                  {(
-                    (isOwner
-                      ? [
-                          "convert",
-                          ...(status !== "completed" ? ["cancel"] : []),
-                        ]
-                      : inProgress
-                        ? [
-                            ...(status === "completed" && !job.hasReviewedJobOwner ? ["rate-employer"] : []),
-                            ...(status === "overdue" ? ["cancel"] : []),
-                          ]
-                        : status === "applied"
-                          ? ["withdraw"]
-                          : status === "in-review"
-                            ? ["counter-offer", "accept"]
-                            : []) as JobAction[]
-                  ).map((action) => (
+                  {optionActions.map((action) => (
                     <DropdownMenu.Item
                       key={action}
                       onSelect={() => onAction(action)}
@@ -188,17 +186,10 @@ export default function ManagedJobSummary({
             </a>
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
+          {listing.menuActions.map((action) => <button key={action.label} type="button" disabled={action.disabled} onClick={action.onSelect} className="rounded-md bg-[#EDEEF0] px-3 py-2 text-xs text-[#737774] disabled:opacity-50">{action.label}</button>)}
           {isOwner && !inProgress && (
             <>
-              <button
-                type="button"
-                aria-label="Remove job listing"
-                className={iconButton}
-                onClick={() => onAction("remove")}
-              >
-                <Trash2 className="size-4" />
-              </button>
               <button
                 type="button"
                 aria-label="Edit job"
@@ -292,15 +283,6 @@ export default function ManagedJobSummary({
       ) : (
         primaryAction && (
           <div className="flex flex-col-reverse gap-4 sm:flex-row">
-            {isOwner && status === "listed" && (
-              <button
-                type="button"
-                className="h-11 flex-1 rounded-lg border border-[#FF5D7A] text-sm text-[#FF5D7A] hover:bg-[#FFF0F3]"
-                onClick={() => onAction("remove")}
-              >
-                Remove Job Listing
-              </button>
-            )}
             {!isOwner && status === "in-review" && (
               <button
                 type="button"
