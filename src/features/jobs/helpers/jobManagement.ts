@@ -16,6 +16,7 @@ export const jobActionLabels: Record<JobAction, string> = {
   accept: "Accept Job Offer",
   withdraw: "Withdraw Application",
   convert: "Convert to recurring job",
+  renew: "Renew recurring job",
   "counter-offer": "Suggest Counter-Offer",
   "complete-milestone": "Complete Milestone",
   "rate-employer": "Rate job owner",

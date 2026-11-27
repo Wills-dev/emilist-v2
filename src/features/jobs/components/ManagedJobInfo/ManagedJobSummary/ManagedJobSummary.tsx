@@ -3,6 +3,7 @@
 import { useResourceTracking } from "@/features/reports/hooks/useResourceTracking";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { recurringJobAction } from "../../../helpers/recurringJobAction";
 import { useJobListingActions } from "../../../hooks/useJobListingActions";
 import JobListingConfirmation from "../../JobListingConfirmation/JobListingConfirmation";
 import CloseContract from "../../CloseContract/CloseContract";
@@ -64,8 +65,9 @@ export default function ManagedJobSummary({
   const meta = resolveJobStatusMeta(status);
   const inProgress = isManagedJobInProgress(status);
   const primaryAction = getJobPrimaryAction(status, isOwner, job.canCloseContract === true, job.milestones);
+  const recurrenceAction = recurringJobAction(job);
   const optionActions: JobAction[] = isOwner
-    ? ["convert", ...(status !== "completed" ? ["cancel" as const] : [])]
+    ? [...(recurrenceAction ? [recurrenceAction] : []), ...(status !== "completed" ? ["cancel" as const] : [])]
     : inProgress
       ? [
           ...(status === "completed" && !job.hasReviewedJobOwner ? ["rate-employer" as const] : []),
@@ -128,7 +130,7 @@ export default function ManagedJobSummary({
               title={inProgress ? "agreed amount" : "budget starts from"}
             />
           )}
-          {optionActions.length > 0 && (!isOwner || inProgress) && (
+          {optionActions.length > 0 && (!isOwner || inProgress || recurrenceAction === "renew") && (
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
                 <button

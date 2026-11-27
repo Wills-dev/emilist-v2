@@ -11,6 +11,7 @@ export type JobAction =
   | "accept"
   | "withdraw"
   | "convert"
+  | "renew"
   | "counter-offer"
   | "complete-milestone"
   | "rate-employer";
