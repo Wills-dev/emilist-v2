@@ -15,6 +15,7 @@ import RatingSummary from "@/components/molecules/RatingSummary/RatingSummary";
 import ReviewBreakdown from "@/components/molecules/ReviewBreakdown/ReviewBreakdown";
 import CommentWrapper from "@/components/molecules/CommentWrapper/CommentWrapper";
 import type { PersonProfile } from "../../types/index";
+import RichTextContent from "@/components/atoms/RichTextContent/RichTextContent";
 
 export default function PersonProfileView({
   profile,
@@ -68,17 +69,17 @@ export default function PersonProfileView({
         </Link>
       )}
       <div className="bg-white p-5 text-xs uppercase text-[#8A8D8B]">
-        {profile.activityCount ?? "—"}{" "}
+        {profile.activityCount ?? "N/A"}{" "}
         {profile.kind === "merchant" ? "Products listed" : "Jobs posted"}
       </div>
-      <RatingSummary
+      {profile.rating === undefined ? <div className="bg-white p-5 text-xs text-[#8A8D8B]">{role} rating: N/A</div> : <RatingSummary
         title={`${role} rating`}
         rating={profile.rating ?? 0}
         variant="tertiary"
-      />
+      />}
     </div>
   );
-  const breakdown = (
+  const breakdown = profile.reviewCount === undefined ? <div className="bg-white p-5 text-sm text-[#8A8D8B]">Review statistics are unavailable.</div> : (
     <div className="bg-white p-5 sm:p-6">
       <ReviewBreakdown
         totalReviews={profile.reviewCount ?? 0}
@@ -212,9 +213,9 @@ export default function PersonProfileView({
               </div>
             </header>
             <div className="bg-[#EDEEF0] p-2">
-              <p className="rounded-lg bg-white p-3 text-sm text-[#707471]">
-                {profile.bio || "No bio provided."}
-              </p>
+              <div className="rounded-lg bg-white p-3 text-sm text-[#707471]">
+                <RichTextContent value={profile.bio || "No bio provided."} />
+              </div>
             </div>
             {statistics}
             {breakdown}

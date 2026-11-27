@@ -4,11 +4,10 @@ import { useSearchParams } from "next/navigation";
 import BackButton from "@/components/atoms/BackButton/BackButton";
 import EmptyState from "@/components/molecules/EmptyState/EmptyState";
 import Container from "@/components/atoms/Container/Container";
-import { useGetJobById } from "@/features/jobs/hooks/useGetJobById";
-import { useGetMaterialInfo } from "@/features/materials/hooks/useGetMaterialInfo";
+import { usePublicUserProfile } from "../../hooks/usePublicUserProfile";
 import { resolveManageJobsTab } from "@/features/jobs/helpers/manageJobs";
 import { routes } from "@/lib/helpers/routes";
-import type { PersonProfile, ProfileKind } from "../../types/index";
+import type { ProfileKind } from "../../types/index";
 import ProfileSkeleton from "../ProfileSkeleton/ProfileSkeleton";
 import PersonProfileView from "../PersonProfileView/PersonProfileView";
 
@@ -27,30 +26,8 @@ export default function PersonProfilePage({
   const jobId = kind === "employer" ? (query.get("jobId") ?? "") : "";
   const materialId = kind === "merchant" ? (query.get("materialId") ?? "") : "";
   const tab = resolveManageJobsTab(query.get("tab"));
-  const jobQuery = useGetJobById(jobId);
-  const materialQuery = useGetMaterialInfo(materialId);
-  const job = jobQuery.data;
-  const product = materialQuery.data?.product;
-  const profile: PersonProfile | undefined =
-    job && job.ownerId === id && kind === "employer"
-      ? {
-          id,
-          kind,
-          name: job.ownerName,
-          image: job.ownerImage,
-          username: job.ownerUsername,
-          bio: job.ownerBio,
-          verified: job.ownerVerified,
-          rating: job.ownerRating,
-          reviewCount: job.ownerReviewCount,
-        }
-      : product && product.userId._id === id && kind === "merchant"
-        ? {
-            id,
-            kind,
-            name: product.merchantName || product.storeName,
-          }
-        : undefined;
+  const profileQuery = usePublicUserProfile(id, kind);
+  const profile = profileQuery.data;
   const params = new URLSearchParams();
   if (jobId) params.set("jobId", jobId);
   if (materialId) params.set("materialId", materialId);
@@ -67,15 +44,17 @@ export default function PersonProfilePage({
         ? routes.dashboardLinks.materialInfo(materialId)
         : routes.marketplace.materialInfo(materialId)
       : undefined;
-  if ((jobId && jobQuery.isPending) || (materialId && materialQuery.isLoading))
+  if (profileQuery.isPending)
     return <ProfileSkeleton dashboard={dashboard} reviewsPage={reviewsPage} />;
-  if (!profile)
+  if (profileQuery.isError || !profile)
     return (
       <Container variant="small" className="space-y-4 py-6">
         <BackButton href={backHref} isDashboard={dashboard} />
         <EmptyState
           title="Profile unavailable"
           description="This profile could not be loaded."
+          actionLabel="Try again"
+          onAction={() => void profileQuery.refetch()}
         />
       </Container>
     );
