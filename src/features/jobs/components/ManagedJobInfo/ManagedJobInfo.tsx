@@ -18,6 +18,7 @@ import CompleteMilestoneModal from "../CompleteMilestoneModal/CompleteMilestoneM
 import ModalWrapper from "@/components/atoms/ModalWrapper/ModalWrapper";
 import Button from "@/components/atoms/Button/Button";
 import { jobOwnerReviewAction, removeJobOwnerReviewAction } from "../../helpers/jobOwnerReviewAction";
+import { recurringJobAction } from "../../helpers/recurringJobAction";
 import { useGetJobById } from "../../hooks/useGetJobById";
 import {
   resolveManageJobsTab,
@@ -25,6 +26,7 @@ import {
 } from "../../helpers/manageJobs";
 import {
   isManagedJobInProgress,
+  jobActionLabels,
 } from "../../helpers/jobManagement";
 import type {
   JobInvoice,
@@ -73,6 +75,7 @@ export function ManagedJobInfoView({
     onSectionChange?.(tab);
   };
   const inProgress = isManagedJobInProgress(job.status);
+  const recurrenceAction = recurringJobAction(job);
   const tabs: { id: JobInfoTab; label: string }[] = [
     {
       id: "details",
@@ -141,14 +144,14 @@ export function ManagedJobInfoView({
                 Rate job owner →
               </button>
             )}
-            {inProgress && isOwner && tab === "details" && (
+            {inProgress && isOwner && tab === "details" && recurrenceAction && (
               <div className="hidden gap-4 py-2 text-xs xl:flex">
                 <button
                   type="button"
-                  onClick={() => onAction("convert")}
+                  onClick={() => onAction(recurrenceAction)}
                   className="text-[#6667FF] underline"
                 >
-                  Convert to recurring job →
+                  {jobActionLabels[recurrenceAction]} →
                 </button>
               </div>
             )}

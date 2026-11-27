@@ -69,6 +69,8 @@ export interface FetchJobByIdQuery {
 }
 
 export interface JobDetailsViewModel {
+  jobUrgency?: string;
+  endDate?: string;
   isListed?: boolean;
   hasReviewedJobOwner?: boolean;
   canCloseContract?: boolean;
